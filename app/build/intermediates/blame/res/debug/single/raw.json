@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\raw\\ding.wav",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\raw\\ding.wav"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\raw\\message.mp3",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\raw\\message.mp3"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\raw\\send.wav",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\raw\\send.wav"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\raw\\intel.wav",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\raw\\intel.wav"
+    }
+]

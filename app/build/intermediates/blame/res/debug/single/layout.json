@@ -1,0 +1,482 @@
+[
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\show_btn_set_query_add_remove.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\show_btn_set_query_add_remove.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\line2.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\line2.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_020.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_020.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_020.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_020.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_120.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_120.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_03_080.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_03_080.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\floopq_04.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\floopq_04.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_06_040.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_06_040.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_050.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_050.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_100.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_100.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main_channel_page.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\activity_main_channel_page.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_030.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_030.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\line3.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\line3.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_title_08.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_title_08.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listview_rtu_logs_double.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\listview_rtu_logs_double.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_06_010.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_06_010.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_01_040.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_01_040.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_05_030.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_05_030.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\show_btn_set_add_remove_add_remove.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\show_btn_set_add_remove_add_remove.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\show_only_btn_add_remove.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\show_only_btn_add_remove.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_title_07.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_title_07.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_03_020.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_03_020.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_060.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_060.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_050.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_050.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_080.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_080.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\floopq_02.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\floopq_02.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_05_060.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_05_060.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fch_04.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\fch_04.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_090.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_090.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_07_010.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_07_010.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_03_050.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_03_050.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listview_rtu_logs.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\listview_rtu_logs.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_080.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_080.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\line1.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\line1.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_01_070.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_01_070.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_050.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_050.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_03_060.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_03_060.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_040.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_040.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main_loopquery_page.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\activity_main_loopquery_page.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_01_050.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_01_050.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_title_05.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_title_05.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_05_070.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_05_070.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_101.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_101.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_070.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_070.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_030.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_030.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_040.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_040.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_05_010.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_05_010.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fch_02.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\fch_02.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fch_05.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\fch_05.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fnp_03.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\fnp_03.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_03_070.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_03_070.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\lb_reset_btn_press.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\lb_reset_btn_press.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_110.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_110.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\floopq_03.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\floopq_03.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_060.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_060.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_06_050.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_06_050.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\show_btn_open_close.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\show_btn_open_close.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\show_btn_only_resulttime.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\show_btn_only_resulttime.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fnp_01.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\fnp_01.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_090.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_090.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_03_010.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_03_010.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_090.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_090.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\spinner_style.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\spinner_style.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main_noprotocol_page.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\activity_main_noprotocol_page.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_login.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_01_100.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_01_100.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_title_02.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_title_02.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_03_040.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_03_040.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main_function_page.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\activity_main_function_page.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_splash.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\activity_splash.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_05_050.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_05_050.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_01_030.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_01_030.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_01_060.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_01_060.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\show_btn_set.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\show_btn_set.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_05_020.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_05_020.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\show_btn_set_query.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\show_btn_set_query.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listview_rtu_com_results.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\listview_rtu_com_results.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_title_01.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_title_01.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\spinner_item.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\spinner_item.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_title_04.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_title_04.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_010.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_010.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_110.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_110.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_020.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_020.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_160.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_160.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_100.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_100.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_010.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_010.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fnp_02.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\fnp_02.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_130.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_130.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fch_01.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\fch_01.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fch_03.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\fch_03.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\floopq_01.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\floopq_01.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_070.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_070.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_title_06.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_title_06.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_05_040.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_05_040.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_06_030.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_06_030.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\show_btn_set_adjust_query.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\show_btn_set_adjust_query.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_01_010.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_01_010.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_100.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_100.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_01_080.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_01_080.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_140.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_140.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\listview_refresh.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\listview_refresh.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_040.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_040.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_080.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_080.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_03_090.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_03_090.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_030.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_030.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\show_btn_set_add_remove.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\show_btn_set_add_remove.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_01_090.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_01_090.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_010.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_010.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\show_btn_query.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\show_btn_query.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_08_150.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_08_150.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_01_020.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_01_020.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_03_030.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_03_030.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_120.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_120.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_04_070.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_04_070.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_06_020.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_06_020.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_03_011.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_03_011.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_title_03.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_title_03.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_110.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_110.xml"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\layout\\f_func_02_060.xml",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\layout\\f_func_02_060.xml"
+    }
+]

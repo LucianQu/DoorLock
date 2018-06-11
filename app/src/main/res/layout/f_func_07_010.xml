@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/func_out_linearlayout_style"
+    >
+    <LinearLayout
+        style="@style/func_title_linearlayout_style" 
+        >
+        <TextView
+            android:id="@+id/f_07_010_Title"
+            android:drawableLeft="@drawable/item003"
+            android:text="@string/func_07_010"
+            style="@style/func_title_viewtext_style"
+            />
+       <!--  <ImageView
+            android:id="@+id/commandStatus"
+            style="@style/func_itemtitle_imageview_style"
+            android:contentDescription="@string/txtBtn"/> -->
+    </LinearLayout>
+     <!-- start 具体内布局 -->
+    <FrameLayout
+    	android:id="@+id/f_07_010_Frm"
+		style="@style/func_framelayout_style">
+    
+		 <!-- start 具体内容 -->
+		<LinearLayout 
+	        style="@style/func_linearlayout_style">
+			<LinearLayout
+			    android:layout_width="match_parent"
+			    android:layout_height="@dimen/common_line_height40"
+			    >
+			    <TextView
+			        android:text="@string/func_07_010_item01"
+			    	style="@style/func_item_viewtext_style_100_a"/>
+			    <!-- 新版本SDK要求填写属性lableFor,类似于填写一个ID来绑定这个控件，否则警告 -->
+			     <ImageView 
+			        android:id="@+id/btn_in"
+			    	android:layout_width="@dimen/img_btn_layout_width_30"
+			        android:layout_height="@dimen/img_btn_layout_height_30"
+			        android:layout_marginLeft="2dp"
+			        android:paddingTop="3dp"
+			        android:src="@drawable/as_in"
+			        android:contentDescription="@string/txtBtn"/>
+			       <ProgressBar
+				    	android:id="@+id/paramInProgress"
+				    	style="@style/func_progressbar_style"  
+				        android:layout_width="25dp"
+				        android:layout_height="25dp"
+					    android:layout_marginLeft="2dp"
+			            android:layout_gravity="center_vertical|center_horizontal"
+				    	android:visibility="gone"/>
+			</LinearLayout>
+			
+			<LinearLayout
+			    android:layout_width="match_parent"
+			    android:layout_height="@dimen/common_line_height40"
+			    >
+			    <TextView
+			        android:text="@string/func_07_010_item02"
+			    	style="@style/func_item_viewtext_style_100_a"/>
+			    <!-- 新版本SDK要求填写属性lableFor,类似于填写一个ID来绑定这个控件，否则警告 -->
+			    <ImageView 
+			        android:id="@+id/btn_out"
+			     	android:layout_width="@dimen/img_btn_layout_width_30"
+			        android:layout_height="@dimen/img_btn_layout_height_30"
+			        android:layout_marginLeft="2dp"
+			        android:paddingTop="3dp"
+			        android:src="@drawable/as_out"
+			        android:contentDescription="@string/txtBtn"/>
+			        <ProgressBar
+				    	android:id="@+id/outProgress"
+				    	style="@style/func_progressbar_style"  
+				        android:layout_width="25dp"
+				        android:layout_height="25dp"
+					    android:layout_marginLeft="2dp"
+			            android:layout_gravity="center_vertical|center_horizontal"
+				    	android:visibility="gone"/>
+			</LinearLayout>
+			
+		 </LinearLayout>
+	     
+		 <!-- start 底部 -->
+		<!--  <LinearLayout 
+	        android:id="@+id/f_05_070_Load"
+	        style="@style/func_progressbar_linearlayout_style" >
+		    <ProgressBar
+		        style="@style/func_progressbar_style" />
+		 </LinearLayout> -->
+	</FrameLayout>
+</LinearLayout>

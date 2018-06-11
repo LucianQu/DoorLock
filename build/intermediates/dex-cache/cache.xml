@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\jars\libs\internal_impl-20.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d">
+        <dex dex="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\pre-dexed\debug\internal_impl-20.0.0_b4a944104a02e80939013801a3f2e3da2fad0cbb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="H:\WorkFile\Download\RtuAssistant_1.0\app\libs\mina-core-2.0.7.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="b2bf41f34da46e8e40ba76301f7ca56cf36c2d26">
+        <dex dex="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\pre-dexed\debug\mina-core-2.0.7_53d5cd4cad0346ebb50456b00c120b223d8a51ba.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="H:\WorkFile\Download\RtuAssistant_1.0\app\libs\xpp3_min-1.1.4c.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="19d4e90b43059058f6e056f794f0ea4030d60b86">
+        <dex dex="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\pre-dexed\debug\xpp3_min-1.1.4c_97baa16b275cbae3a02105e9549411b52276261f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="H:\WorkSortware\Android\extras\android\m2repository\com\android\support\support-annotations\20.0.0\support-annotations-20.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa">
+        <dex dex="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\pre-dexed\debug\support-annotations-20.0.0_607d39882452a3a83681967da3eb38046fd9d3cb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0">
+        <dex dex="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-20.0.0_0904973baca9c841db39cbfa9c5f8b18db8063dc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="H:\WorkFile\Download\RtuAssistant_1.0\app\libs\xstream-1.4.7.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="bce3282142b63068260f021fcbe48b72e8d71a1a">
+        <dex dex="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\pre-dexed\debug\xstream-1.4.7_c0a8caf0246b514b4725077c18f9bc2070cac80a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="H:\WorkFile\Download\RtuAssistant_1.0\app\libs\model.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="b0f7cd11fab75b4a454cf1885048ccdae5ebce95">
+        <dex dex="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\pre-dexed\debug\model_3a2d7528f39fab3a4b6b6599d4733d2080b8a0bf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="H:\WorkFile\Download\RtuAssistant_1.0\app\libs\utils.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="95e3dab4c969d4a5ea8542cfe1ebc92c1bafc24a">
+        <dex dex="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\pre-dexed\debug\utils_fde25b1d85cd775ca96b20ffc39620800897bfb4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="H:\WorkFile\Download\RtuAssistant_1.0\app\libs\slf4j-android-1.6.1-RC1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="a0b527e8aabcc1f1e97d1674dc3f4f0794ec5df1">
+        <dex dex="H:\WorkFile\Download\RtuAssistant_1.0\app\build\intermediates\pre-dexed\debug\slf4j-android-1.6.1-RC1_3e0dc34a014cfab0c692aa9c47e78de4cf19708b.jar" />
+    </item>
+
+</items>

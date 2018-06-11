@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\app_category_checked.png",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\drawable-xhdpi\\app_category_checked.png"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_user.png",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\drawable-xhdpi\\ic_user.png"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\input_bg.png",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\drawable-xhdpi\\input_bg.png"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\icon.png",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\drawable-xhdpi\\icon.png"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_psw.png",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\drawable-xhdpi\\ic_psw.png"
+    },
+    {
+        "merged": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\app_category_unchecked.png",
+        "source": "H:\\WorkFile\\Download\\RtuAssistant_1.0\\app\\src\\main\\res\\drawable-xhdpi\\app_category_unchecked.png"
+    }
+]
