@@ -6,4 +6,63 @@
     <color name="gold">#b89766</color>
     <color name="red">#FF0000</color>
     <color name="orange">#FF5500</color>
+
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="titlebarbg">#3c3c3c</color>
+    <color name="general_list_back_color">#ffffffff</color>
+    <color name="background_gray">#f0eff5</color>
+    <color name="background_white">#ffffff</color>
+    <color name="background_dark_gray">#999999</color>
+    <color name="bg_violet">#8399E6</color>
+
+    <color name="text_color_white">#ffffff</color>
+    <color name="text_color_light_gray">#d5d5d5</color>
+    <color name="text_color_dark_gray">#999999</color>
+    <color name="text_color_black">#000000</color>
+    <color name="text_color_blue">#1e81d2</color>
+    <color name="text_color_pink">#e6437c</color>
+    <color name="text_color_red">#ff3333</color>
+    <color name="text_color_green">#67cb33</color>
+
+    <color name="black">#000000</color>
+    <color name="titlebar_green">#67cb33</color>
+    <color name="titlebar_gray">#999999</color>
+    <color name="bg_nfc_wirte_gray">#9c9c9c</color>
+    <color name="titlebar_red">#ff3333</color>
+    <color name="bg_search_well">#c4c4c2</color>
+    <color name="bg_blue">#65b0e7</color>
+    <color name="bg_red_less">#e6437a</color>
+    <color name="bg_light_black">#262426</color>
+
+    <!--返回字体颜色-->
+    <color name="text_blue_back">#0080fc</color>
+
+    <!--选择开关-->
+    <!-- 白色 -->
+    <color name="common_white">#FFFFFF</color>
+    <!-- 浅灰色 -->
+    <color name="light_gray">#DDDDDD</color>
+    <!-- 浅蓝色 -->
+    <color name="common_light_blue">#039AE3</color>
+    <color name="common_light_green">#00e266</color>
+
+    <!--NFC颜色相关-->
+    <color name="bg_title">#FF009688</color>
+    <color name="tv_title_first">#FFFFFF</color>
+    <color name="tv_title_second">#cae1ff</color>
+    <color name="tv_item_name">#878787</color>
+    <color name="tv_item_content">#000000</color>
+    <color name="tv_base_blue">#008fff</color>
+    <color name="tv_base_blue1">#008fff</color>
+    <color name="btn_bg_1">#f1f5f7</color>
+    <color name="tv_base_gray1">#4e575f</color>
+    <!--提供-->
+    <color name="bg_cool_gray">#f2f5f7</color>
+    <color name="tv_main_gray">#838387</color>
+    <color name="main_blue">#52a0f0</color>
+    <color name="bg_main_blue">#4181cc</color>
+    <color name="bg_warm_gray">#f6f6f6</color>
 </resources>

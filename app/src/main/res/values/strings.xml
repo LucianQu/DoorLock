@@ -12,14 +12,14 @@
        
     <string name="txtVersion">Version</string>
     
-    <string name="app_name">水表/中继器</string>
-    <string name="rtuAssiName">中继器助手</string>
-    <string name="welcome">北京奥特美克科技股份有限公司</string>
+    <string name="app_name">智能门</string>
+    <string name="rtuAssiName">智能门控制系统</string>
+    <string name="welcome">做智能门，找蓝翔!</string>
     
-    <string name="functionItems">功能选项</string>
-    <string name="functionLoopQuery">一键查询</string>
-    <string name="functionResultLog">命令日志</string>
-    <string name="functionNoProtocol">调试信息</string>
+    <string name="thirdPage">副页面2</string>
+    <string name="secondPage">副页面1</string>
+    <string name="fourPage">副页面3</string>
+    <string name="mainPage">主页面</string>
     
     <string name="image_description">图片</string>
     

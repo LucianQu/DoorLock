@@ -1,87 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-	<dimen name="common_line_height260">260dp</dimen>
-	<dimen name="common_line_height40">40dp</dimen>
-	<dimen name="common_line_height35">35dp</dimen>
-	<dimen name="common_line_height30">30dp</dimen>
-	<dimen name="common_line_height28">28dp</dimen>
-	<dimen name="common_line_height26">26dp</dimen>
-	<dimen name="common_line_height24">24dp</dimen>
-	<dimen name="common_edit_height24">24dp</dimen>
-	<dimen name="common_drawablePadding3">3dp</dimen>
-	<dimen name="common_drawablePadding5">5dp</dimen>
-	
-	<!-- 此处最大设置与show_btn_****.xml中的作为button中的ImageView高一样，因为一些命令，只有button一行 -->
-	<dimen name="progressBar_width">35dp</dimen>
-	<dimen name="progressBar_height">35dp</dimen>
-				
-	<dimen name="tv_width_30">30dp</dimen>
-	<dimen name="tv_width_40">40dp</dimen>
-	<dimen name="tv_width_50">50dp</dimen>
-	<dimen name="tv_width_60">60dp</dimen>
-	<dimen name="tv_width_80">80dp</dimen>
-	<dimen name="tv_width_90">90dp</dimen>
-	<dimen name="tv_width_100">100dp</dimen>
-	<dimen name="tv_width_150">150dp</dimen>
-	<dimen name="tv_width_160">160dp</dimen>
-	<dimen name="tv_width_200">200dp</dimen>
-	<dimen name="tv_width_300">300dp</dimen>
-	
-	<dimen name="ed_width_20">20dp</dimen>
-	<dimen name="ed_width_32">32dp</dimen>
-	<dimen name="ed_width_40">40dp</dimen>
-	<dimen name="ed_width_50">50dp</dimen>
-	<dimen name="ed_width_60">60dp</dimen>
-	<dimen name="ed_width_70">70dp</dimen>
-	<dimen name="ed_width_72">72dp</dimen>
-	<dimen name="ed_width_80">80dp</dimen>
-	<dimen name="ed_width_90">90dp</dimen>
-	<dimen name="ed_width_92">92dp</dimen>
-	<dimen name="ed_width_100">100dp</dimen>
-	<dimen name="ed_width_110">110dp</dimen>
-	<dimen name="ed_width_120">120dp</dimen>
-	<dimen name="ed_width_150">150dp</dimen>
-	<dimen name="ed_width_180">180dp</dimen>
-	
-	<dimen name="ch_width_60">60dp</dimen>
-	<dimen name="ch_width_70">70dp</dimen>
-	<dimen name="ch_width_140">140dp</dimen>
-							
-	<dimen name="layout_width_126">126dp</dimen>
-		
-	<dimen name="layoutMarginLeft_50">50dp</dimen>
-	<dimen name="layoutMarginLeft_20">20dp</dimen>
-	
-	<dimen name="img_btn_layout_width_35">35dp</dimen>
-	<dimen name="img_btn_layout_height_35">35dp</dimen>
-	
-	<dimen name="img_btn_layout_width_30">30dp</dimen>
-	<dimen name="img_btn_layout_height_30">30dp</dimen>
-					
-	<dimen name="text12">12sp</dimen>
-	<dimen name="text13">13sp</dimen>
-	<dimen name="text14">14sp</dimen>
-	<dimen name="text15">15sp</dimen>
-	<dimen name="text16">16sp</dimen>
-	<dimen name="text17">17sp</dimen>
-	<dimen name="text18">18sp</dimen>
-	<dimen name="text19">19sp</dimen>
-	<dimen name="text20">20sp</dimen>
-	
-	<dimen name="ch_radion_group_layout_marginTop_10">0dp</dimen>
-	<dimen name="ch_radion_paddingLeft_25">0dp</dimen>
-	<dimen name="ch_radion_layout_marginTop_15">15dp</dimen>
-	
-	<dimen name="commandOutIn_marginLeft">25dp</dimen>
-		
-	<dimen name="ch_edt_width_189">189dp</dimen>
-	<dimen name="ch_edt_width_55">55dp</dimen>
-	<dimen name="ch_edt_width_32">32dp</dimen>
-	
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
-	<dimen name="ch_rtuDataListViewHeight_small">235dp</dimen>
-	<dimen name="ch_rtuDataListViewHeight_big">480dp</dimen>
-	
-	
+    <dimen name="text10">10sp</dimen>
+    <dimen name="text11.5">11.5sp</dimen>
+    <dimen name="text12">12sp</dimen>
+    <dimen name="text13">13sp</dimen>
+    <dimen name="text14">14sp</dimen>
+    <dimen name="text14.5">14.5sp</dimen>
+    <dimen name="text15">15sp</dimen>
+    <dimen name="text15.5">15.5sp</dimen>
+    <dimen name="text16">16sp</dimen>
+    <dimen name="text17">17sp</dimen>
+    <dimen name="text18">18sp</dimen>
+    <dimen name="text19">19sp</dimen>
+    <dimen name="text20">20sp</dimen>
+    <dimen name="text21">21sp</dimen>
+    <dimen name="text22">22sp</dimen>
+    <dimen name="text25">25sp</dimen>
+    <dimen name="text23">23sp</dimen>
+    <dimen name="text24">24sp</dimen>
+    <dimen name="common_drawablePadding0">0dp</dimen>
+    <dimen name="common_drawablePadding1">1dp</dimen>
+    <dimen name="common_drawablePadding2">2dp</dimen>
+    <dimen name="common_drawablePadding3">3dp</dimen>
+    <dimen name="common_drawablePadding5">5dp</dimen>
+    <dimen name="common_drawablePadding5.5">5.5dp</dimen>
+    <dimen name="common_drawablePadding10">10dp</dimen>
+    <dimen name="common_drawablePadding12">12dp</dimen>
+    <dimen name="common_drawablePadding13.5">13.5dp</dimen>
+    <dimen name="common_drawablePadding14">14dp</dimen>
+    <dimen name="common_drawablePadding15">15dp</dimen>
+    <dimen name="common_drawablePadding15.5">15.5dp</dimen>
+    <dimen name="common_drawablePadding17.5">17.5dp</dimen>
+    <dimen name="common_drawablePadding20">20dp</dimen>
+    <dimen name="common_drawablePadding22">22dp</dimen>
+    <dimen name="common_drawablePadding23">23dp</dimen>
+    <dimen name="common_drawablePadding27.5">27.5dp</dimen>
+    <dimen name="common_drawablePadding48">48dp</dimen>
+    <dimen name="common_drawablePadding32.5">32.5dp</dimen>
+    <dimen name="common_drawablePadding50">50dp</dimen>
+    <dimen name="common_drawablePadding63">63dp</dimen>
+    <dimen name="common_drawablePadding67">67dp</dimen>
+    <dimen name="common_drawablePadding80">80dp</dimen>
+    <dimen name="common_drawablePadding130">130dp</dimen>
+    <dimen name="common_drawablePadding155">155dp</dimen>
+
+    <dimen name="progressBar_width">50dp</dimen>
+    <dimen name="progressBar_height">50dp</dimen>
+<!--常用尺寸 不同手机不同base-->
+    <dimen name="base0.5dp">0.5dp</dimen>
+    <dimen name="base1dp">1dp</dimen>
+    <dimen name="base2dp">2dp</dimen>
+    <dimen name="base3dp">3dp</dimen>
+    <dimen name="base4dp">4dp</dimen>
+    <dimen name="base5dp">5dp</dimen>
+    <dimen name="base6dp">6dp</dimen>
+    <dimen name="base7dp">7dp</dimen>
+    <dimen name="base8dp">8dp</dimen>
+    <dimen name="base9dp">9dp</dimen>
+    <dimen name="base10dp">10dp</dimen>
+    <dimen name="base11dp">11dp</dimen>
+    <dimen name="base12dp">12dp</dimen>
+    <dimen name="base13dp">13dp</dimen>
+    <dimen name="base14dp">14dp</dimen>
+    <dimen name="base15dp">15dp</dimen>
+    <dimen name="base16dp">16dp</dimen>
+    <dimen name="base17dp">17dp</dimen>
+    <dimen name="base18dp">18dp</dimen>
+    <dimen name="base19dp">19dp</dimen>
+    <dimen name="base20dp">20dp</dimen>
+    <dimen name="base21dp">21dp</dimen>
+    <dimen name="base22dp">22dp</dimen>
+    <dimen name="base23dp">23dp</dimen>
+    <dimen name="base24dp">24dp</dimen>
+    <dimen name="base25dp">25dp</dimen>
+    <dimen name="base26dp">26dp</dimen>
+    <dimen name="base27dp">27dp</dimen>
+    <dimen name="base28dp">28dp</dimen>
+    <dimen name="base29dp">29dp</dimen>
+    <dimen name="base30dp">30dp</dimen>
+    <dimen name="base31dp">31dp</dimen>
+    <dimen name="base32dp">32dp</dimen>
+    <dimen name="base33dp">33dp</dimen>
+    <dimen name="base34dp">34dp</dimen>
+    <dimen name="base35dp">35dp</dimen>
+    <dimen name="base36dp">36dp</dimen>
+    <dimen name="base37dp">37dp</dimen>
+    <dimen name="base38dp">38dp</dimen>
+    <dimen name="base39dp">39dp</dimen>
+    <dimen name="base40dp">40dp</dimen>
+
+
+
+
+
 </resources>

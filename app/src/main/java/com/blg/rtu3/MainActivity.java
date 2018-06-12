@@ -1,8 +1,5 @@
 package com.blg.rtu3;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
@@ -44,8 +41,10 @@ import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.ResourceUtils;
 import com.blg.rtu.util.SoundAlert;
 import com.blg.rtu.util.StringValueForActivity;
-import com.blg.rtu3.R;
 import com.blg.rtu3.server.LocalServer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -114,6 +113,11 @@ public class MainActivity  extends Activity {
     private int bmpW ;
     //一倍滚动量
     private int doubleRoll ;
+
+	private AutoScrollTextView scrollTextView ;
+
+
+
 	
     //这是实现客户端与服务端通信的一个关键类。要想实现它，就必须重写两个回调方法：onServiceConnected()以及onServiceDisconnected()，
     //而我们可以通过这两个回调方法得到服务端里面的IBinder对象，从而达到通信的目的
@@ -207,7 +211,7 @@ public class MainActivity  extends Activity {
         this.mActivityStub = StubActivity.createSingle(this)  ;
 
         //wifiOpenStatus = isWiFiActive();
-        wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+        wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if(!wifiManager.isWifiEnabled()) {
         	wifiManager.setWifiEnabled(true);
         }
@@ -284,15 +288,20 @@ public class MainActivity  extends Activity {
 		pageView_function = mInflater.inflate(R.layout.activity_main_function_page, null) ;
 		pageView_channel = mInflater.inflate(R.layout.activity_main_channel_page, null) ;
 		rtuAssiName = (TextView) findViewById(R.id.rtuAssiName) ;
+
+		scrollTextView = (AutoScrollTextView) findViewById(R.id.ScrollNotice) ;
+		scrollTextView.init(getWindowManager());
+		scrollTextView.startScroll();
+		//如果想改变跑马灯的文字内容或者文字效果，则在调用完setText方法之后，需要再调用一下init方法，重新进行初始化和相关参数的计算。
 		
-		int type = Preferences.getInstance().getInt(Constant.wifi_connect_type) ;
+		/*int type = Preferences.getInstance().getInt(Constant.wifi_connect_type) ;
 		if(type == 0) {
 			rtuAssiName.setText("水表Ⅰ代") ;
 		}else if(type == 1) {
 			rtuAssiName.setText("水表Ⅱ代") ;
 		}else{
 			rtuAssiName.setText("中继器") ;
-		}
+		}*/
 		
 		listPages = new ArrayList<View>();
 		listPages.add(pageView_noProtocol);

@@ -1,86 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
-    android:focusable="true" 
-    android:focusableInTouchMode="true" 
-	不叫界面中editText在打开界面时自动获得焦点
- -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
+    android:orientation="vertical"
+	android:background="@color/background_gray"
     android:focusable="true" 
     android:focusableInTouchMode="true" 
     >
-    <LinearLayout android:id="@+id/rtuAssiTitle"
+	<com.blg.rtu3.AutoScrollTextView
+		android:id="@+id/ScrollNotice"
+		android:layout_height="36dp"
+		android:layout_width="fill_parent"
+		android:text="重大喜讯：我公司的锁买一赠二，厉害吧!"
+		android:gravity="center_vertical"
+		android:textColor="@color/red"
+		android:inputType="text"
+		android:background="#259B24"
+		android:textSize="20sp">
+		</com.blg.rtu3.AutoScrollTextView>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35.0dp"
-        android:layout_gravity="top"
+        android:layout_height="wrap_content"
        	android:orientation="horizontal"
-        android:background="#1c81e6"
-        android:baselineAligned="false" >
-        <!-- android:background="@drawable/bar_bg" -->
+		android:layout_marginTop="1dp"
+        android:background="#259B24"
+		>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
+			android:gravity="center"
+			android:layout_marginTop="@dimen/base10dp"
+			android:layout_marginBottom="@dimen/base10dp"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             >
-            
+			<ImageView
+				android:layout_width="50dp"
+				android:layout_height="50dp"
+				android:src="@drawable/logo1"
+				/>
         </LinearLayout>
-          
-       <!--    <ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:contentDescription="@string/txtBtn"
-			android:src="@drawable/widget_bar_cut_off"/> -->
-        
-          <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-	     	android:orientation="horizontal" 
-	        android:gravity="center"
-            >
-            <!--   android:drawableLeft="@drawable/img_bd_left_0"
-	            android:drawableRight="@drawable/img_bd_right_0"
-	             android:paddingTop="13dp"
-	             android:drawablePadding="2dp"
-	             -->
-            <TextView
-                android:id="@+id/rtuAssiName"
-	            android:layout_width="wrap_content"
-	            android:layout_height="match_parent"
-	            android:text="@string/rtuAssiName"
-	            android:gravity="center_horizontal|center_vertical"
-	            android:textColor="#FFFFFF"
-	            android:textSize="20sp" />
-          </LinearLayout>
-         
-          <!--   <ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:contentDescription="@string/txtBtn"
-			android:src="@drawable/widget_bar_cut_off"/>
-			android:layout_marginBottom="2dp"
-		      	android:layout_marginRight="4dp"
-			 -->
-          
-            <LinearLayout
-	            android:layout_width="0dp"
-	            android:layout_weight="1"
-	            android:layout_height="match_parent"
-		      	android:orientation="horizontal" 
-		      	android:gravity="center"
-           		>
-            <TextView
-		        android:id="@+id/tcpConnectStatus1"
-		        android:layout_width="wrap_content"
-		        android:layout_height="match_parent"
-		        android:gravity="center_horizontal|center_vertical"
-		        android:textColor="#CC0000"
-		        android:textSize="@dimen/text12"/>    
-            </LinearLayout>
-        	<!-- android:drawableLeft="@drawable/label" -->
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_weight="5"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			android:layout_marginTop="@dimen/base10dp"
+			android:layout_marginBottom="@dimen/base10dp"
+			android:gravity="left|center_vertical"
+			>
+				<TextView
+					android:id="@+id/rtuAssiName"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/rtuAssiName"
+					android:gravity="center"
+					android:textStyle="bold"
+					android:textColor="@color/bg_light_black"
+					android:textSize="16sp" />
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/base20dp"
+					android:orientation="horizontal"
+					android:gravity="left|center_vertical"
+					>
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:text="用户名称:"
+						android:gravity="center"
+						android:textSize="14sp"
+						android:textColor="@color/bg_light_black"
+						/>
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:text="张三"
+						android:textSize="14sp"
+						android:gravity="center"
+						android:textColor="@color/bg_light_black"
+						/>
+			</LinearLayout>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/base20dp"
+				android:orientation="horizontal"
+				android:gravity="left|center_vertical"
+				>
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:text="Wifi连接状态:"
+					android:gravity="center"
+					android:textColor="@color/bg_light_black"
+					/>
+				<TextView
+					android:id="@+id/tcpConnectStatus1"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:text="已连接"
+					android:gravity="center"
+					android:textColor="@color/bg_light_black"
+					/>
+			</LinearLayout>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/base20dp"
+				android:orientation="horizontal"
+				android:gravity="left|center_vertical"
+				>
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:text="产品代码:"
+					android:gravity="center"
+					android:textColor="@color/bg_light_black"
+					/>
+				<TextView
+					android:id="@+id/productID"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:text="201806100001"
+					android:gravity="center"
+					android:textColor="@color/bg_light_black"
+					/>
+			</LinearLayout>
+		</LinearLayout>
+
     </LinearLayout>
    
     <LinearLayout 
@@ -104,7 +151,7 @@
            android:layout_width="wrap_content"
            android:clickable="true"
            android:layout_height="match_parent"
-           android:text="@string/functionNoProtocol"
+           android:text="@string/mainPage"
            android:gravity="center_horizontal|center_vertical"
            android:textColor="#b2b2b2"
            android:textSize="15sp" />
@@ -123,7 +170,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="match_parent"
 	            android:clickable="true"
-	            android:text="@string/functionLoopQuery"
+	            android:text="@string/secondPage"
 	            android:gravity="center_horizontal|center_vertical"
 	            android:textColor="#b2b2b2"
 	            android:textSize="15sp" />
@@ -141,7 +188,7 @@
 	           android:layout_width="wrap_content"
 	           android:clickable="true"
 	           android:layout_height="match_parent"
-	           android:text="@string/functionItems"
+	           android:text="@string/thirdPage"
 	           android:gravity="center_horizontal|center_vertical"
 	           android:textColor="#b2b2b2"
 	           android:textSize="15sp" /> 
@@ -160,7 +207,7 @@
 	           android:layout_width="wrap_content"
 	           android:clickable="true"
 	           android:layout_height="match_parent"
-	           android:text="@string/functionResultLog"
+	           android:text="@string/fourPage"
 	           android:gravity="center_horizontal|center_vertical"
 	           android:textColor="#b2b2b2"
 	           android:textSize="15sp" /> 
