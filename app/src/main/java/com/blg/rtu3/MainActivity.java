@@ -449,12 +449,12 @@ public class MainActivity  extends Activity {
 		this.tcpConnected = isConnected ;
 		if(this.tcpConnected){
 			//网络已经连接
-			tcpConnectStatus.setText(this.getResources().getString(R.string.tcpStatus) + this.getResources().getString(R.string.connected)) ;
+			tcpConnectStatus.setText(this.getResources().getString(R.string.connected)) ;
 			tcpConnectStatus.setTextColor(Color.RED);
 			
 		}else{
 			//网络已经断开
-			tcpConnectStatus.setText(this.getResources().getString(R.string.tcpStatus) + this.getResources().getString(R.string.disconnected)) ;
+			tcpConnectStatus.setText(this.getResources().getString(R.string.disconnected)) ;
 			tcpConnectStatus.setTextColor(Color.WHITE);
 		}
 	}
