@@ -6,42 +6,14 @@
     android:layout_gravity="center_vertical"
     android:orientation="vertical"
     android:background="#f0eff5">
-   <!--  @drawable/line_top_bg_b -->
- 	<!-- <LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="36dp" 
-	    android:background="#f0eff5">
-		<TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:paddingLeft="20dp"
-	        android:layout_gravity="center_vertical"
-	        android:gravity="center_vertical"
-	        android:text="@string/functionLoopQuery"
-	        android:textSize="@dimen/text18"
-	        android:typeface="monospace"
-	        android:textColor="#000000"
-	        android:drawableLeft="@drawable/func_loopquery"  
-	        android:drawablePadding="5.0dp" />
- 	</LinearLayout> -->
- 	
-<!--  	<LinearLayout 
- 	    android:id="@+id/lqLine_01"
-	    android:layout_width="match_parent"
-	    android:layout_height="100dp" >
-		<fragment android:id="@+id/lqFragment_01"
-			 android:name="com.blg.rtu.frmLoopQuery.LpFragment_01"
-			 android:layout_width="match_parent"
-			 android:layout_height="match_parent"
-			 android:layout_gravity="center_vertical"/>
- 	</LinearLayout> -->
- 	
+
  	<LinearLayout 
  	    android:id="@+id/lqLine_02"
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" 
 	    android:layout_weight="1">
-		<fragment android:id="@+id/lqFragment_02"
+		<fragment
+			 android:id="@+id/lqFragment_02"
 			 android:name="com.blg.rtu.frmLoopQuery.LpFragment_02"
 			 android:layout_width="match_parent"
 			 android:layout_height="match_parent"
@@ -53,7 +25,8 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" 
 	    android:layout_weight="1">
-		<fragment android:id="@+id/lqFragment_03"
+		<fragment
+			 android:id="@+id/lqFragment_03"
 			 android:name="com.blg.rtu.frmLoopQuery.LpFragment_03"
 			 android:layout_width="match_parent"
 			 android:layout_height="match_parent" 
@@ -65,16 +38,16 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" 
 	    android:layout_weight="1">
-		<fragment android:id="@+id/lqFragment_04"
+		<fragment
+			 android:id="@+id/lqFragment_04"
 			 android:name="com.blg.rtu.frmLoopQuery.LpFragment_04"
 			 android:layout_width="match_parent"
 			 android:layout_height="match_parent" 
 			 android:layout_gravity="center_vertical"/>
  	</LinearLayout> 
   	
- 	<TextView android:id="@+id/chWelcome"
+ 	<TextView
+		android:id="@+id/chWelcome"
 		android:textColor="#9c9ca0" 
 		style="@style/welcome"/>
-  				
- 					
 </LinearLayout>

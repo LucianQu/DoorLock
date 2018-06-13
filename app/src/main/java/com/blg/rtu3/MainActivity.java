@@ -56,10 +56,10 @@ public class MainActivity  extends Activity {
 	private ViewPager mPager;// Tab页卡 
 	private List<View> listPages; // Tab页面列表
 	
-	private View pageView_noProtocol ;// Tab第0页 
-	private View pageView_loopQuery ;// Tab第1页 
-	private View pageView_function ;// Tab第2页 
-	private View pageView_channel ;// Tab第3页
+	private View pageView_fourth;// Tab第0页
+	private View pageView_second;// Tab第1页
+	private View pageView_main;// Tab第2页
+	private View pageView_third;// Tab第3页
 	
 	public Boolean tcpConnected;
 	public TextView tcpConnectStatus;
@@ -283,10 +283,12 @@ public class MainActivity  extends Activity {
 		mPager = (ViewPager) findViewById(R.id.vPager);
 		LayoutInflater mInflater = this.getLayoutInflater();
 		scrollbar = (ImageView)findViewById(R.id.scrollbar) ;
-		pageView_noProtocol = mInflater.inflate(R.layout.activity_main_noprotocol_page, null) ;
-		pageView_loopQuery = mInflater.inflate(R.layout.activity_main_loopquery_page, null) ;
-		pageView_function = mInflater.inflate(R.layout.activity_main_function_page, null) ;
-		pageView_channel = mInflater.inflate(R.layout.activity_main_channel_page, null) ;
+		pageView_main = mInflater.inflate(R.layout.activity_main_function_page, null) ;
+		pageView_second = mInflater.inflate(R.layout.activity_main_loopquery_page, null) ;
+		pageView_fourth = mInflater.inflate(R.layout.activity_main_noprotocol_page, null) ;
+		pageView_third = mInflater.inflate(R.layout.activity_main_channel_page, null) ;
+
+
 		rtuAssiName = (TextView) findViewById(R.id.rtuAssiName) ;
 
 		scrollTextView = (AutoScrollTextView) findViewById(R.id.ScrollNotice) ;
@@ -304,11 +306,11 @@ public class MainActivity  extends Activity {
 		}*/
 		
 		listPages = new ArrayList<View>();
-		listPages.add(pageView_noProtocol);
-		listPages.add(pageView_loopQuery);
-		listPages.add(pageView_function);
-		listPages.add(pageView_channel);
-		
+		listPages.add(pageView_main);
+		listPages.add(pageView_second);
+		listPages.add(pageView_third);
+		listPages.add(pageView_fourth);
+
 		tcpConnectStatus = (TextView) findViewById(R.id.tcpConnectStatus1);
 		switchFun = (TextView) findViewById(R.id.switchFun) ;
 		switchOnce = (TextView) findViewById(R.id.switchOnce) ;
@@ -334,8 +336,8 @@ public class MainActivity  extends Activity {
 		scrollbar.setImageMatrix(matrix) ;
 		
 		mPager.setAdapter(new ViewPagerAdapter(listPages));//绑定适配器
-		mPager.setCurrentItem(2);//设置viewPager的初始界面
-		defaultAnimation(2) ;
+		mPager.setCurrentItem(0);//设置viewPager的初始界面
+		defaultAnimation(0) ;
 		mPager.setOnPageChangeListener(new FlipPageChangeListener());//切换界面监听
 		
 		switchQuery.setOnClickListener(new clickLableListener()) ; 
@@ -345,12 +347,12 @@ public class MainActivity  extends Activity {
 		
 		//////////////////////////////////////////////////////////////
 		//功能子页
-	func_scrollView = (ScrollView)pageView_function.findViewById(R.id.f_func_scrollView) ;
+	func_scrollView = (ScrollView) pageView_main.findViewById(R.id.f_func_scrollView) ;
        
-			/*chLine_01 = (LinearLayout)pageView_channel.findViewById(R.id.chLine_01) ;
-		chLine_02 = (LinearLayout)pageView_channel.findViewById(R.id.chLine_02) ;
-		chLine_03 = (LinearLayout)pageView_channel.findViewById(R.id.chLine_03) ;*/
-		chLine_04 = (LinearLayout)pageView_channel.findViewById(R.id.chLine_04) ;
+			/*chLine_01 = (LinearLayout)pageView_third.findViewById(R.id.chLine_01) ;
+		chLine_02 = (LinearLayout)pageView_third.findViewById(R.id.chLine_02) ;
+		chLine_03 = (LinearLayout)pageView_third.findViewById(R.id.chLine_03) ;*/
+		chLine_04 = (LinearLayout) pageView_third.findViewById(R.id.chLine_04) ;
 		
 		chLine_04.setOnLongClickListener(new OnLongClickListener(){
 			@Override
@@ -360,16 +362,16 @@ public class MainActivity  extends Activity {
 			}
 		}) ;
 		
-		npFragmentLinear_02 = (LinearLayout)pageView_noProtocol.findViewById(R.id.npFragmentLinear_02) ;
-		npFragmentLinear_03 = (LinearLayout)pageView_noProtocol.findViewById(R.id.npFragmentLinear_03) ;
+		npFragmentLinear_02 = (LinearLayout) pageView_fourth.findViewById(R.id.npFragmentLinear_02) ;
+		npFragmentLinear_03 = (LinearLayout) pageView_fourth.findViewById(R.id.npFragmentLinear_03) ;
        
         ////////////////////////////////////////////////////////
         //帮助类
         //实例化fragment回调类对象
         this.frgCallback = new FragmentCallback(this) ;
         //实例化主界面设置帮助类对象
-        this.mainHelp = new MainActivityHelp(this, pageView_noProtocol, pageView_loopQuery, pageView_function, pageView_channel) ;
-        //this.mainHelp = new MainActivityHelp(this, pageView_noProtocol, pageView_loopQuery, pageView_function) ;
+        this.mainHelp = new MainActivityHelp(this, pageView_fourth, pageView_second, pageView_main, pageView_third) ;
+        //this.mainHelp = new MainActivityHelp(this, pageView_fourth, pageView_second, pageView_main) ;
         //执行初始设置
         this.mainHelp.onCreateView() ;
 	}
@@ -455,7 +457,7 @@ public class MainActivity  extends Activity {
 		}else{
 			//网络已经断开
 			tcpConnectStatus.setText(this.getResources().getString(R.string.disconnected)) ;
-			tcpConnectStatus.setTextColor(Color.WHITE);
+			tcpConnectStatus.setTextColor(Color.parseColor("#f0eff5"));
 		}
 	}
 	

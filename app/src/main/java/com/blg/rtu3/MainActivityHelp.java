@@ -1,8 +1,6 @@
 package com.blg.rtu3;
 
 
-import com.blg.rtu3.R;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -11,16 +9,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 public class MainActivityHelp {
 
 	private MainActivity mainAct;
 	@SuppressWarnings("unused")
-	private View pageView_noProtocol;// Tab第0页
+	private View pageView_fourth;// Tab第0页
 	@SuppressWarnings("unused")
-	private View pageView_loopQuery;// Tab第1页
-	private View pageView_function;// Tab第2页
+	private View pageView_second;// Tab第1页
+	private View pageView_main;// Tab第2页
 	@SuppressWarnings("unused")
-	private View pageView_channel;// Tab第3页
+	private View pageView_third;// Tab第3页
 	private TextView tvUrl;
 	private ImageView mainItem ;
 /*	private ImageView closeMainAll ;
@@ -53,18 +55,18 @@ public class MainActivityHelp {
 	private LinearLayout func_08;
 	private int clickSubItem = 1;
 	private int clickMainItem = 1;
-	public MainActivityHelp(MainActivity mainAct, View pageView_noProtocol, View pageView_loopQuery, View pageView_function, View pageView_channel) {
+	public MainActivityHelp(MainActivity mainAct, View pageView_fourth, View pageView_second, View pageView_main, View pageView_third) {
 		this.mainAct = mainAct;
-		this.pageView_noProtocol = pageView_noProtocol;
-		this.pageView_loopQuery = pageView_loopQuery ;
-		this.pageView_function = pageView_function;
-		this.pageView_channel = pageView_channel;
+		this.pageView_fourth = pageView_fourth;
+		this.pageView_second = pageView_second;
+		this.pageView_main = pageView_main;
+		this.pageView_third = pageView_third;
 	}
 
 	public void onCreateView() {
-		//openSubAll = (ImageView) pageView_function.findViewById(R.id.openSubAll) ;
-		subItem = (ImageView) pageView_function.findViewById(R.id.subItem) ;
-		subItem.setImageResource(R.drawable.close9) ;
+		//openSubAll = (ImageView) pageView_main.findViewById(R.id.openSubAll) ;
+		//subItem = (ImageView) pageView_main.findViewById(R.id.subItem) ;
+		//subItem.setImageResource(R.drawable.close9) ;
 	/*	subItem.setBackgroundResource(R.drawable.close9) ;
 		subItem.setPadding(subItem.getPaddingLeft(), subItem.getPaddingTop(),
 				subItem.getPaddingRight(), subItem.getPaddingBottom()) ;*/
@@ -73,25 +75,31 @@ public class MainActivityHelp {
 		subItem.setBackground(rs.getDrawable(R.drawable.close9));
 		subItem.setPadding(subItem.getPaddingLeft(), subItem.getPaddingTop(),
 				subItem.getPaddingRight(), subItem.getPaddingBottom()) ;*/
-		mainItem = (ImageView) pageView_function.findViewById(R.id.mainItem);
-		mainItem.setImageResource(R.drawable.close10) ;
+		//mainItem = (ImageView) pageView_main.findViewById(R.id.mainItem);
+		//mainItem.setImageResource(R.drawable.close10) ;
 		//mainItem.setBackgroundResource(R.drawable.close10) ;
 	/*	mainItem.setPadding(subItem.getPaddingLeft(), subItem.getPaddingTop(),
 				subItem.getPaddingRight(), subItem.getPaddingBottom()) ;*/
 		
 		//mainItem.setTop(5);
-		//closeMainAll = (ImageView) pageView_function.findViewById(R.id.closeMainAll2);
-		tvUrl =  (TextView) pageView_function.findViewById(R.id.fcWelcome) ;
-		labelImgReset = (ImageView) pageView_function.findViewById(R.id.labelImgReset);
+		//closeMainAll = (ImageView) pageView_main.findViewById(R.id.closeMainAll2);
+		tvUrl =  (TextView) pageView_main.findViewById(R.id.fcWelcome) ;
+		//labelImgReset = (ImageView) pageView_main.findViewById(R.id.labelImgReset);
 		tvUrl.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Uri uri = Uri.parse("http://www.automic.com.cn/Hardware/Sensor/2016/0731/68.html"); 
+				List<String> list = new ArrayList<String>() ;
+				list.add("1号门");
+				list.add("2号门");
+				list.add("3号门");
+				list.add("4号门");
+				mainAct.frgTool.f_1_0.updateSpinnerValue(list);
+				Uri uri = Uri.parse("https://www.baidu.com/");
 		    	Intent intent = new Intent(Intent.ACTION_VIEW, uri); 
 		    	MainActivity.instance.startActivity(intent);
 			}
 		});
-		subItem.setOnClickListener(new OnClickListener() {
+		/*subItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(clickSubItem % 2 ==1) {
@@ -103,35 +111,35 @@ public class MainActivityHelp {
 				}
 				clickSubItem++;
 			}
-		});
-		mainItem.setOnClickListener(new OnClickListener(){
+		});*/
+		/*mainItem.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				if(clickMainItem % 2 == 1) {
 					mainItem.setImageResource(R.drawable.open10) ;
-					openFunc_0X(func_01) ;
-					openFunc_0X(func_02) ;
+					//openFunc_0X(func_01) ;
+					//openFunc_0X(func_02) ;
 					//openFunc_0X(func_03) ;
 					//openFunc_0X(func_04) ;
-					openFunc_0X(func_05) ;
-					openFunc_0X(func_06) ;
-					openFunc_0X(func_07);
-					openFunc_0X(func_08);
+					//openFunc_0X(func_05) ;
+					//openFunc_0X(func_06) ;
+					//openFunc_0X(func_07);
+					//openFunc_0X(func_08);
 				}else{
 					mainItem.setImageResource(R.drawable.close10) ;
-					closeFunc_0X(func_01) ;
-					closeFunc_0X(func_02) ;
+					//closeFunc_0X(func_01) ;
+					//closeFunc_0X(func_02) ;
 					//closeFunc_0X(func_03) ;
 					//closeFunc_0X(func_04) ;
-					closeFunc_0X(func_05) ;
-					closeFunc_0X(func_06) ;
-					closeFunc_0X(func_07);
-					closeFunc_0X(func_08);
+					//closeFunc_0X(func_05) ;
+					//closeFunc_0X(func_06) ;
+					//closeFunc_0X(func_07);
+					//closeFunc_0X(func_08);
 					
 				}
 				clickMainItem++;
 			}
-		}) ;
+		}) ;*/
 		
 		/*closeSubAll.setOnClickListener(new OnClickListener() {
 			@Override
@@ -154,39 +162,39 @@ public class MainActivityHelp {
 			}
 		}) ;*/
 		
-		labelImgReset.setOnClickListener(new OnClickListener(){
+		/*labelImgReset.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				mainAct.frgTool.resetLabelImgFunctionFragment() ;
 				//return true;//return true时，点击(短按)事件将不响应
 			}
 		}) ;
-		
+		*/
 		
 		//////////////////////////
 		
-		funcTitle_01 = (LinearLayout) pageView_function.findViewById(R.id.f_01_title);
-		func_01 = (LinearLayout) pageView_function.findViewById(R.id.f_func_01);
+	/*	funcTitle_01 = (LinearLayout) pageView_main.findViewById(R.id.f_01_title);*/
+		//func_01 = (LinearLayout) pageView_main.findViewById(R.id.f_func_01);
 
-		funcTitle_01.setOnClickListener(new OnClickListener() {
+	/*	funcTitle_01.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openCloseFunc_0X(func_01) ;
+				//openCloseFunc_0X(func_01) ;
 			}
-		});
+		});*/
 		
-		funcTitle_02 = (LinearLayout) pageView_function.findViewById(R.id.f_02_title);
-		func_02 = (LinearLayout) pageView_function.findViewById(R.id.f_func_02);
+		/*funcTitle_02 = (LinearLayout) pageView_main.findViewById(R.id.f_02_title);
+		func_02 = (LinearLayout) pageView_main.findViewById(R.id.f_func_02);*/
 
-		funcTitle_02.setOnClickListener(new OnClickListener() {
+/*		funcTitle_02.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openCloseFunc_0X(func_02) ;
+				//openCloseFunc_0X(func_02) ;
 			}
-		});
+		});*/
 		
-	/*	funcTitle_03 = (LinearLayout) pageView_function.findViewById(R.id.f_03_title);
-		func_03 = (LinearLayout) pageView_function.findViewById(R.id.f_func_03);
+	/*	funcTitle_03 = (LinearLayout) pageView_main.findViewById(R.id.f_03_title);
+		func_03 = (LinearLayout) pageView_main.findViewById(R.id.f_func_03);
 
 		funcTitle_03.setOnClickListener(new OnClickListener() {
 			@Override
@@ -195,8 +203,8 @@ public class MainActivityHelp {
 			}
 		});*/
 		
-	/*	funcTitle_04 = (LinearLayout) pageView_function.findViewById(R.id.f_04_title);
-		func_04 = (LinearLayout) pageView_function.findViewById(R.id.f_func_04);
+	/*	funcTitle_04 = (LinearLayout) pageView_main.findViewById(R.id.f_04_title);
+		func_04 = (LinearLayout) pageView_main.findViewById(R.id.f_func_04);
 
 		funcTitle_04.setOnClickListener(new OnClickListener() {
 			@Override
@@ -205,18 +213,18 @@ public class MainActivityHelp {
 			}
 		});*/
 		
-		funcTitle_05 = (LinearLayout) pageView_function.findViewById(R.id.f_05_title);
-		func_05 = (LinearLayout) pageView_function.findViewById(R.id.f_func_05);
+		/*funcTitle_05 = (LinearLayout) pageView_main.findViewById(R.id.f_05_title);
+		func_05 = (LinearLayout) pageView_main.findViewById(R.id.f_func_05);*/
 
-		funcTitle_05.setOnClickListener(new OnClickListener() {
+		/*funcTitle_05.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				openCloseFunc_0X(func_05) ;
 			}
 		});
 		
-		funcTitle_06 = (LinearLayout) pageView_function.findViewById(R.id.f_06_title);
-		func_06 = (LinearLayout) pageView_function.findViewById(R.id.f_func_06);
+		funcTitle_06 = (LinearLayout) pageView_main.findViewById(R.id.f_06_title);
+		func_06 = (LinearLayout) pageView_main.findViewById(R.id.f_func_06);
 
 		funcTitle_06.setOnClickListener(new OnClickListener() {
 			@Override
@@ -225,8 +233,8 @@ public class MainActivityHelp {
 			}
 		});
 		
-		funcTitle_07 = (LinearLayout) pageView_function.findViewById(R.id.f_07_title);
-		func_07 = (LinearLayout) pageView_function.findViewById(R.id.f_func_07);
+		funcTitle_07 = (LinearLayout) pageView_main.findViewById(R.id.f_07_title);
+		func_07 = (LinearLayout) pageView_main.findViewById(R.id.f_func_07);
 		funcTitle_07.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -234,23 +242,23 @@ public class MainActivityHelp {
 			}
 		});
 		
-		funcTitle_08 = (LinearLayout) pageView_function.findViewById(R.id.f_08_title);
-		func_08 = (LinearLayout) pageView_function.findViewById(R.id.f_func_08);
+		funcTitle_08 = (LinearLayout) pageView_main.findViewById(R.id.f_08_title);
+		func_08 = (LinearLayout) pageView_main.findViewById(R.id.f_func_08);
 
 		funcTitle_08.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				openCloseFunc_0X(func_08) ;
 			}
-		});
+		})*/;
 		
-		closeFunc_0X(func_01) ;
-		closeFunc_0X(func_02) ;
+		//closeFunc_0X(func_01) ;
+		//closeFunc_0X(func_02) ;
 		//closeFunc_0X(func_04) ;
-		closeFunc_0X(func_05) ;
-		closeFunc_0X(func_06);
-		closeFunc_0X(func_07);
-		closeFunc_0X(func_08);
+		//closeFunc_0X(func_05) ;
+		//closeFunc_0X(func_06);
+		//closeFunc_0X(func_07);
+		//closeFunc_0X(func_08);
 		
 	}
 	

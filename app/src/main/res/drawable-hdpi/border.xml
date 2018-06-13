@@ -8,8 +8,8 @@
     <!-- 边框 
     <stroke android:width="0.01dp"  
         android:color="#AA5D14" />--> 
-    <stroke android:width="0.01dp"  
-        android:color="#FFFFFF" /> 
+    <stroke android:width="0.01dp"
+        android:color="#f0eff5" />
     
     <!-- 内容与边框距离 -->
     <padding android:left="2dp"  

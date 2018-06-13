@@ -17,51 +17,7 @@
 		android:orientation="vertical" 
 	    >
 	    
-		<!-- <LinearLayout android:layout_weight="1" 
-            android:layout_width="match_parent"
-		    android:layout_height="0dip"
-			android:orientation="horizontal">
-		   <TextView
-		        android:text="@string/txtLoopQuery_onLine"
-		        style="@style/loopq_item_viewtext_style_100_a_"/>
-		   <TextView
-				android:id="@+id/f_02_010_item"  
-				android:labelFor="@id/f_02_010_item" 
-				android:layout_marginLeft="5dp"
-			    style="@style/loopq_item_edittext_style_150"
-			    android:inputType="none"/>		
-		</LinearLayout>			
-		<LinearLayout android:layout_weight="1" 
-            android:layout_width="match_parent"
-		    android:layout_height="0dip"
-			android:orientation="horizontal">
-		   <TextView
-		        android:text="@string/txtLoopQuery_signal"
-		        style="@style/loopq_item_viewtext_style_100_a_"/>
-		   <TextView
-				android:id="@+id/f_02_020_item"  
-				android:labelFor="@id/f_02_020_item" 
-				android:layout_marginLeft="5dp"
-			    style="@style/loopq_item_edittext_style_150"
-			    android:inputType="none"/>		
-		</LinearLayout>			
-		<LinearLayout android:layout_weight="1" 
-            android:layout_width="match_parent"
-		    android:layout_height="0dip"
-			android:orientation="horizontal">
-		   <TextView
-		        android:text="@string/txtLoopQuery_voltage"
-		        style="@style/loopq_item_viewtext_style_100_a_"/>
-		   <TextView
-				android:id="@+id/f_02_030_item"  
-				android:labelFor="@id/f_02_030_item" 
-				android:layout_marginLeft="5dp"
-			    style="@style/loopq_item_edittext_style_150"
-			    android:inputType="none"/>	
-		   <TextView
-			    android:text="@string/func_item_unit_v"
-			    style="@style/loopq_item_viewtext_style_unit_100"/>			    	
-		</LinearLayout>			 -->
+
 		<LinearLayout android:layout_weight="1" 
             android:layout_width="match_parent"
 		    android:layout_height="0dip"

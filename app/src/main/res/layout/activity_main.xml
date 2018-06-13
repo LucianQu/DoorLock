@@ -86,6 +86,7 @@
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="@dimen/base20dp"
+				android:layout_marginTop="4dp"
 				android:orientation="horizontal"
 				android:gravity="left|center_vertical"
 				>
@@ -109,6 +110,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="@dimen/base20dp"
 				android:orientation="horizontal"
+				android:layout_marginTop="4dp"
 				android:gravity="left|center_vertical"
 				>
 				<TextView

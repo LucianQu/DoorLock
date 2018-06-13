@@ -5,78 +5,27 @@
     android:orientation="vertical"
     android:background="#f0eff5"
     android:focusableInTouchMode="true" >
-    <!-- android:background="@drawable/deskbg4" -->
-<!-- <LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="36dp"
-	    android:orientation="horizontal"
-	    android:layout_alignParentTop="true"
-	    android:background="#f0eff5">
-	    <TextView
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:paddingLeft="20dp"
-	        android:gravity="left|center_vertical"
-	        android:layout_gravity="left|center_vertical"
-	        android:text="@string/functionItems"
-	        android:textSize="@dimen/text18"
-	        android:textColor="#000000"
-	        android:typeface="monospace"
-	        android:drawableLeft="@drawable/func_set" 
-	        android:drawablePadding="5.0dp" />	    	    	    
- 	</LinearLayout> -->
- 	
 	<ScrollView
 	    android:id="@+id/f_func_scrollView"
 	    android:layout_width="match_parent"  
 	    android:layout_height="match_parent"  
 	    android:layout_marginTop="0.1dp"
-	    android:layout_marginBottom="50dp"
+	    android:layout_marginBottom="0.1dp"
 	    android:scrollbars="none"  
 	    android:fadingEdge="vertical">
 	    
 		<LinearLayout 
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
 		    android:orientation="vertical">
+			<fragment
+				android:id="@+id/f_1_00"
+				android:name="com.blg.rtu.frmFunction.F_1_0"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
 
-		    <include layout="@layout/f_func_title_01" />  			    
-			<LinearLayout  
-			    android:id="@+id/f_func_01"
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-			    android:orientation="vertical"
-			    >
-		       <!--  <fragment android:id="@+id/f_01_010"
-			        android:name="com.blg.rtu.frmFunction.F_01_010"
-				    style="@style/func_fragment_style"/> -->
-				<fragment android:id="@+id/f_01_100"
-			        android:name="com.blg.rtu.frmFunction.F_01_100"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_01_020"
-			        android:name="com.blg.rtu.frmFunction.F_01_020"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_01_040"
-			        android:name="com.blg.rtu.frmFunction.F_01_040"
-				    style="@style/func_fragment_style"/>   
-				 <fragment android:id="@+id/f_05_020"
-			        android:name="com.blg.rtu.frmFunction.F_05_020"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_01_050"
-			        android:name="com.blg.rtu.frmFunction.F_01_050"
-				    style="@style/func_fragment_style"/>   
-		        <fragment android:id="@+id/f_01_090"
-			        android:name="com.blg.rtu.frmFunction.F_01_090"
-				    style="@style/func_fragment_style"/>   
-		        <!--   <fragment android:id="@+id/f_01_030"
-			        android:name="com.blg.rtu.frmFunction.F_01_030"
-				    style="@style/func_fragment_style"/> -->   	       		        
-	       </LinearLayout>
-	       
-		   <include layout="@layout/f_func_title_02" />  
-		   			    
+		  <!-- <include layout="@layout/f_func_title_01" />
+		   <include layout="@layout/f_func_title_02" />
 		   <LinearLayout  
 			    android:id="@+id/f_func_02"
 			    android:layout_width="match_parent"
@@ -107,24 +56,6 @@
 		       <fragment android:id="@+id/f_03_090"
 			        android:name="com.blg.rtu.frmFunction.F_03_090"
 				    style="@style/func_fragment_style"/>
-		        
-		       <!--      <fragment android:id="@+id/f_02_020"
-			        android:name="com.blg.rtu.frmFunction.F_02_020"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_02_030"
-			        android:name="com.blg.rtu.frmFunction.F_02_030"
-				    style="@style/func_fragment_style"/> -->   
-		     <!--    <fragment android:id="@+id/	"
-			        android:name="com.blg.rtu.frmFunction.F_02_060"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_02_070"
-			        android:name="com.blg.rtu.frmFunction.F_02_070"
-				    style="@style/func_fragment_style"/>
-		      
-		        <fragment android:id="@+id/f_02_090"
-			        android:name="com.blg.rtu.frmFunction.F_02_090"
-				    style="@style/func_fragment_style"/> -->
-		        		        		        		        		        		        		        		        		        
 	       </LinearLayout>
 		   
 		   
@@ -184,91 +115,7 @@
 			        android:name="com.blg.rtu.frmFunction.F_08_150"
 				    style="@style/func_fragment_style"/> 
 	       </LinearLayout>
-		   
-		   <!-- <include layout="@layout/f_func_title_03" />  			    
-			<LinearLayout  
-			    android:id="@+id/f_func_03"
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-			    android:orientation="vertical"
-			    >
-		        f_03_010 被f_03_011代替
-		        <fragment android:id="@+id/f_03_010"
-			        android:name="com.blg.rtu.frmFunction.F_03_010"
-				    style="@style/func_fragment_style"/>
-				
-		        <fragment android:id="@+id/f_03_011"
-			        android:name="com.blg.rtu.frmFunction.F_03_011"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_03_020"
-			        android:name="com.blg.rtu.frmFunction.F_03_020"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_03_030"
-			        android:name="com.blg.rtu.frmFunction.F_03_030"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_03_040"
-			        android:name="com.blg.rtu.frmFunction.F_03_040"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_03_050"
-			        android:name="com.blg.rtu.frmFunction.F_03_050"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_03_060"
-			        android:name="com.blg.rtu.frmFunction.F_03_060"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_03_070"
-			        android:name="com.blg.rtu.frmFunction.F_03_070"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_03_080"
-			        android:name="com.blg.rtu.frmFunction.F_03_080"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_03_090"
-			        android:name="com.blg.rtu.frmFunction.F_03_090"
-				    style="@style/func_fragment_style"/>
-		        		        		        		        		        		        		        		        		        		        		        		        		        		        		        		        		        
-	       </LinearLayout> -->
-		   
-		 <!--   <include layout="@layout/f_func_title_04" />  			    
-		   <LinearLayout  
-			    android:id="@+id/f_func_04"
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent"
-			    android:orientation="vertical"
-			    >
-		        <fragment android:id="@+id/f_04_090"
-			        android:name="com.blg.rtu.frmFunction.F_04_090"
-				    style="@style/func_fragment_style"/>
-			   <fragment android:id="@+id/f_04_010"
-			        android:name="com.blg.rtu.frmFunction.F_04_010"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_04_020"
-			        android:name="com.blg.rtu.frmFunction.F_04_020"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_04_030"
-			        android:name="com.blg.rtu.frmFunction.F_04_030"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_04_040"
-			        android:name="com.blg.rtu.frmFunction.F_04_040"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_04_050"
-			        android:name="com.blg.rtu.frmFunction.F_04_050"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_04_060"
-			        android:name="com.blg.rtu.frmFunction.F_04_060"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_04_070"
-			        android:name="com.blg.rtu.frmFunction.F_04_070"
-				    style="@style/func_fragment_style"/>	
-				<fragment android:id="@+id/f_04_100"
-			        android:name="com.blg.rtu.frmFunction.F_04_100"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_04_110"
-			        android:name="com.blg.rtu.frmFunction.F_04_110"
-				    style="@style/func_fragment_style"/>
-		        <fragment android:id="@+id/f_04_120"
-			        android:name="com.blg.rtu.frmFunction.F_04_120"
-				    style="@style/func_fragment_style"/>
-		   </LinearLayout>
- -->
+
 		   <include layout="@layout/f_func_title_05" />  			    
 		   <LinearLayout  
 			    android:id="@+id/f_func_05"
@@ -297,14 +144,6 @@
 				  <fragment android:id="@+id/f_01_060"
 			        android:name="com.blg.rtu.frmFunction.F_01_060"
 				    style="@style/func_fragment_style"/>
-				
-				<!--  <fragment android:id="@+id/f_05_030"
-			        android:name="com.blg.rtu.frmFunction.F_05_030"
-				    style="@style/func_fragment_style"/> -->
-				    <!-- <fragment android:id="@+id/f_05_050"
-			        android:name="com.blg.rtu.frmFunction.F_05_050"
-				    style="@style/func_fragment_style"/> -->
-				
 		   </LinearLayout>
 		   
 		   <include layout="@layout/f_func_title_06" />  			    
@@ -354,7 +193,7 @@
 			        android:name="com.blg.rtu.frmChannel.ChFragment_05"
 				    style="@style/func_fragment_style"/>
 		   </LinearLayout>
-		   
+		   -->
 		   <TextView android:id="@+id/fcWelcome"
 		       android:layout_marginTop="10dp"
 				android:textColor="#9c9ca0" 
@@ -363,7 +202,7 @@
 		</LinearLayout>
 	</ScrollView>  
 	
-	<LinearLayout
+	<!--<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="50dp"
 	    android:orientation="horizontal"
@@ -386,39 +225,8 @@
 	        	android:paddingBottom="5dp"
 		        android:background="#FFFFFF"
 		        android:contentDescription="@string/txtBtn"/>
-	       <!-- android:src="@drawable/close9" -->
 	  	</LinearLayout>
-		
-	<!--    <ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:contentDescription="@string/txtBtn"
-			android:src="@drawable/widget_bar_cut_off"
-			/> -->
-	   
-	  <!--  <LinearLayout
-		    android:layout_weight="1"
-		    android:layout_width="0dip"
-		    android:layout_height="match_parent"
-		    android:orientation="horizontal"
-		    android:gravity="center"
-		    android:layout_marginTop="3dp"
-		    >
-	  		 <ImageView 
-		        android:id="@+id/openSubAll"
-		        android:layout_width="48dp"
-		        android:layout_height="30dp"
-		        android:src="@drawable/open"
-		        android:contentDescription="@string/txtBtn"/>
-	   </LinearLayout>
-	  
-  		
-	  <ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:contentDescription="@string/txtBtn"
-			android:src="@drawable/widget_bar_cut_off"/> -->
-	  
+
 	  <LinearLayout
 	      android:layout_weight="1"
 	      android:layout_width="0dip"
@@ -433,36 +241,9 @@
 	        android:layout_height="30dp"
 	        android:background="@layout/lb_reset_btn_press"
 	        android:contentDescription="@string/txtBtn"/>
-	      <!--  android:src="@drawable/lb_reset1" -->
+	      &lt;!&ndash;  android:src="@drawable/lb_reset1" &ndash;&gt;
 	  </LinearLayout>
-	  
-<!-- 	  <ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:contentDescription="@string/txtBtn"
-			android:src="@drawable/widget_bar_cut_off"/>   -->   
-	
-	    <!--  <LinearLayout
-	        android:layout_weight="1"
-	        android:layout_width="0dip"
-	        android:layout_height="match_parent"
-	        android:layout_marginTop="1dp"
-	        android:orientation="horizontal" 
-	        android:gravity="center"
-	        >
-	        <ImageView 
-	        android:id="@+id/closeMainAll2"
-	      	android:layout_width="35dp"
-	        android:layout_height="30dp"
-	        android:src="@drawable/close1"
-	        android:contentDescription="@string/txtBtn"/>
-	    </LinearLayout>
-	  <ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:contentDescription="@string/txtBtn"
-			android:src="@drawable/widget_bar_cut_off"/> -->
-	  
+
 	   <LinearLayout
 	      android:layout_weight="1"
 	      android:layout_width="0dip"
@@ -480,8 +261,7 @@
 	        android:paddingBottom="5dp"
 	        android:background="#FFFFFF"
 	        android:contentDescription="@string/txtBtn"/>
-	       <!--  android:src="@drawable/close10" -->
 	  </LinearLayout>
-	 </LinearLayout>
+	 </LinearLayout>-->
 </RelativeLayout>
 
