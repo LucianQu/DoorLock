@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.blg.rtu3"
     android:versionCode="1"
-    android:versionName="3.0" >
-    
+    android:versionName="3.0">
+
+    <!--极光推送-->
+    <permission
+        android:name="com.blg.rtu3.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+    <!-- Required  一些系统要求的权限，如访问网络等-->
+    <uses-permission android:name="com.blg.rtu3.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- Optional for location -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
@@ -42,7 +57,8 @@
 	
     <uses-sdk
         android:minSdkVersion="17"
-        android:targetSdkVersion="20" />
+        android:targetSdkVersion="20"
+        />
     
     <!-- android:hardwareAccelerated="false": 取消硬件加速，否则加载大图片时，不显示，实际是抛异常了： Bitmap too large to be uploaded into a texture -->
     <application
@@ -50,7 +66,9 @@
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="Android:icon, android:theme"
+        >
         
         <activity
             android:name="com.blg.rtu3.SplashActivity"
@@ -83,8 +101,19 @@
 <!--             </intent-filter> -->
         </activity>
 
-        
-        
+        <receiver
+            android:name="com.blg.rtu3.receiver.MyAiReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.blg.rtu3" />
+            </intent-filter>
+        </receiver>
         
         <service 
             android:name="com.blg.rtu3.server.LocalServer" 

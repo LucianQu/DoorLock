@@ -3,6 +3,7 @@ package com.blg.rtu.frmFunction;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
@@ -21,12 +23,18 @@ import com.blg.rtu.util.ImageUtil;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
+import com.blg.rtu.util.Utils;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
+import lecho.lib.hellocharts.model.PieChartData;
+import lecho.lib.hellocharts.model.SliceValue;
+import lecho.lib.hellocharts.view.PieChartView;
 
 public class F_1_0 extends FrmParent {
 
@@ -35,6 +43,15 @@ public class F_1_0 extends FrmParent {
 
 	private TextView tv_jiaquan ;
 	private TextView tv_open ;
+	private TextView tv_close ;
+	private TextView tv_stop ;
+
+	private PieChartView pieChart;
+	private PieChartData pieChardata;
+	List<SliceValue> values = new ArrayList<SliceValue>();
+	private int[] data = {135,80,100,45};
+	private int[] colors = {Color.parseColor("#ffffff"),Color.parseColor("#FF4040"),Color.parseColor("#CDC9C9"),Color.parseColor("#ffffff")};
+
 	private TextView tv1;
 	private TextView item02 ;
 
@@ -80,6 +97,28 @@ public class F_1_0 extends FrmParent {
 				ToastUtils.show(act, "点击开门");
 			}
 		});
+
+		tv_close = (TextView) view.findViewById(R.id.tv_close) ;
+		tv_close.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ToastUtils.show(act, "点击关门");
+			}
+		});
+		tv_stop = (TextView) view.findViewById(R.id.tv_stop) ;
+		tv_stop.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ToastUtils.show(act, "点击停止");
+			}
+		});
+
+		pieChart = (PieChartView) view.findViewById(R.id.pie_chart);
+		//pieChart.setOnValueTouchListener(selectListener);//设置点击事件监听
+
+		setPieChartData();
+		initPieChart();
+
 		//title = (TextView)view.findViewById(R.id.f_01_040_Title) ;
 		//funcFrm = (FrameLayout)view.findViewById(R.id.f_01_040_Frm) ;
 		//cover = (LinearLayout)view.findViewById(R.id.f_01_040_Load) ;
@@ -112,6 +151,78 @@ public class F_1_0 extends FrmParent {
 
 		return view ;
 	}
+
+	/**
+	 * 监听事件
+	 */
+	private PieChartOnValueSelectListener selectListener = new PieChartOnValueSelectListener() {
+
+		@Override
+		public void onValueDeselected() {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onValueSelected(int arg0, SliceValue value) {
+			// TODO Auto-generated method stub
+			//Toast.makeText(act, "Selected: " + value.getValue(), Toast.LENGTH_SHORT).show();
+		}
+	};
+
+	/**
+	 * 获取数据
+	 */
+	private void setPieChartData(){
+
+		for (int i = 0; i < data.length; ++i) {
+			SliceValue sliceValue = new SliceValue((float) data[i], colors[i]);//这里的颜色是我写了一个工具类 是随机选择颜色的
+			values.add(sliceValue);
+		}
+	}
+
+	/**
+	 * 初始化
+	 */
+	private void initPieChart() {
+		pieChardata = new PieChartData();
+		pieChardata.setHasLabels(false);//显示表情
+		pieChardata.setHasLabelsOnlyForSelected(false);//不用点击显示占的百分比
+		pieChardata.setHasLabelsOutside(false);//占的百分比是否显示在饼图外面
+		pieChardata.setHasCenterCircle(false);//是否是环形显示
+		pieChardata.setValues(values);//填充数据
+		pieChardata.setCenterCircleScale(1f);//设置环形的大小级别
+		pieChardata.setSlicesSpacing(0);//设置间隔为0
+
+
+		pieChart.setPieChartData(pieChardata);
+		pieChart.setValueSelectionEnabled(true);//选择饼图某一块变大
+		pieChart.setAlpha(0.9f);//设置透明度
+		pieChart.setCircleFillRatio(1f);//设置饼图大小
+		pieChart.setFocusable(false);
+		pieChart.setClickable(false);
+		pieChart.setFocusableInTouchMode(false);
+		pieChart.setActivated(false);
+		pieChart.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+		pieChart.setOnValueTouchListener(new PieChartOnValueSelectListener() {
+			@Override
+			public void onValueSelected(int arcIndex, SliceValue value) {
+
+			}
+
+			@Override
+			public void onValueDeselected() {
+
+			}
+		});
+
+	}
+
 	public void updateSpinnerValue(List<String> list) {
 		int i = 0 ;
 		spinnerAdapter1.clear();

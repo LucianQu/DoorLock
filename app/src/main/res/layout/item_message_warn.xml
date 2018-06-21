@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+<RelativeLayout
+    android:layout_width="48dp"
+    android:id="@+id/ll_image"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="32dp"
+    android:layout_height="match_parent">
+    <ImageButton
+        android:layout_width="41dp"
+        android:id="@+id/imgv_log_warn"
+      android:layout_centerVertical="true"
+        android:background="@mipmap/ic_openbox"
+        android:layout_height="46dp" />
+    <ImageButton
+        android:layout_width="14dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/imgbtn_msg_point"
+        android:background="@mipmap/ic_msg_point"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="0dp"
+        android:layout_height="14dp" />
+</RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@+id/ll_image"
+        android:orientation="vertical"
+        android:layout_marginLeft="17dp"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="开箱提醒"
+            android:layout_marginTop="11dp"
+            android:id="@+id/tvw_warn_type"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="0条未读信息"
+            android:layout_marginTop="8dp"
+            android:id="@+id/tvw_count_msg"
+            android:textSize="12sp"
+            android:textColor="@color/text_color_dark_gray"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="8dp"
+        android:layout_centerVertical="true"
+        android:background="@mipmap/ic_msg_detail"
+        android:id="@+id/imgbtn_detail"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="22dp"
+        android:layout_height="11dp" />
+    <View
+        android:layout_width="match_parent"
+        android:background="#cccccc"
+        android:layout_marginLeft="@dimen/common_drawablePadding12"
+        android:layout_marginRight="@dimen/common_drawablePadding12"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:layout_height="1dp"></View>
+</RelativeLayout>

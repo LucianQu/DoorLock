@@ -41,6 +41,7 @@ import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.ResourceUtils;
 import com.blg.rtu.util.SoundAlert;
 import com.blg.rtu.util.StringValueForActivity;
+import com.blg.rtu3.receiver.JPushActivity;
 import com.blg.rtu3.server.LocalServer;
 
 import java.util.ArrayList;
@@ -115,7 +116,7 @@ public class MainActivity  extends Activity {
     private int doubleRoll ;
 
 	private AutoScrollTextView scrollTextView ;
-
+	private JPushActivity mJPush ;
 
 
 	
@@ -218,26 +219,17 @@ public class MainActivity  extends Activity {
  		//绑定后台服务，后台服务在接受第一个绑定时会启动自己
         this.bindService(new Intent(MainActivity.this, LocalServer.class), mConnection, Context.BIND_AUTO_CREATE);
         //没有设置类名，通过明确的类名调用bindService(new Intent("forServiceAidl"), conn, Service.BIND_AUTO_CREATE);  
-        //<intent-filter><action android:name="forServiceAidl"></action></intent-filter>  
-        
+        //<intent-filter><action android:name="forServiceAidl"></action></intent-filter>
+
+		mJPush = new JPushActivity(this) ;
+		mJPush.initJPush();//初始化极光推送
+		mJPush.registerMessageReceiver();//注册信息接收器
+		mJPush.setTag("admin1,admin2");//为设备设置标签
+		mJPush.setAlias("doorlock");//为设备设置别名
+
+
 	}
-    
- /*   public boolean isWiFiActive() {    
-        ConnectivityManager connectivity = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);    
-        if (connectivity != null) {    
-            NetworkInfo[] infos = connectivity.getAllNetworkInfo();    
-            if (infos != null) {    
-            	for(NetworkInfo ni : infos){
-            		if(ni.getTypeName().equals("WIFI") && ni.isConnected()){
-            			return true;
-            		}
-            	}
-            }    
-        }    
-        return false;    
-    } */
-    
-    
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {

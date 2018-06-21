@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        style="@style/tab_titlebar_warn">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="onReturnClick"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imgbtn_back"
+                style="@style/TitleBack"
+                android:layout_gravity="center_vertical"
+                android:focusable="false" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:textColor="@color/text_blue_back"
+                android:textSize="@dimen/text16"
+                android:layout_marginLeft="5dp"
+                android:text="返回"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/wellinfo_tvw_title"
+            style="@style/TitleText"
+            android:text="报警消息" />
+
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="#cccccc"
+        android:layout_height="0.5dp">
+
+    </View>
+    <View
+        android:layout_width="match_parent"
+        android:background="#e7e7e7"
+        android:layout_height="0.5dp">
+    </View>
+    <include
+        android:id="@+id/ll_warn1"
+        layout="@layout/item_message_warn"></include>
+
+    <include
+        android:id="@+id/ll_warn2"
+        layout="@layout/item_message_warn"></include>
+
+    <include
+        android:id="@+id/ll_warn3"
+        layout="@layout/item_message_warn"></include>
+
+    <include
+        android:id="@+id/ll_warn4"
+        layout="@layout/item_message_warn"></include>
+
+    <include
+        android:id="@+id/ll_warn5"
+        layout="@layout/item_message_warn"></include>
+
+
+</LinearLayout>

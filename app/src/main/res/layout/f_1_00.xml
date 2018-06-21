@@ -151,11 +151,41 @@
 					android:text="停"
 					android:gravity="center"/>
 			</LinearLayout>
-
 		</LinearLayout>
-
-
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:orientation="vertical"
+			android:layout_marginTop="8dp"
+			android:layout_marginLeft="6dp"
+			android:layout_marginRight="6dp"
+			android:clickable="false"
+			android:layout_height="wrap_content">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:text="门开关角度"
+				android:textSize="@dimen/text16"
+				android:textColor="#262626"
+				/>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:gravity="center"
+				android:clickable="false"
+				android:focusableInTouchMode="false"
+				android:layout_height="wrap_content">
+				<lecho.lib.hellocharts.view.PieChartView
+					android:id="@+id/pie_chart"
+					android:layout_width="60dp"
+					android:clickable="false"
+					android:focusableInTouchMode="false"
+					android:layout_height="60dp" />
+			</LinearLayout>
+		</LinearLayout>
 	</LinearLayout>
+
+
 
 </LinearLayout>
 
