@@ -52,6 +52,9 @@ public class F_1_0 extends FrmParent {
 	private int[] data = {135,80,100,45};
 	private int[] colors = {Color.parseColor("#ffffff"),Color.parseColor("#FF4040"),Color.parseColor("#CDC9C9"),Color.parseColor("#ffffff")};
 
+	private ImageView imgDoorPower ;
+	private ImageView imgDoorAlarm ;
+
 	private TextView tv1;
 	private TextView item02 ;
 
@@ -114,19 +117,15 @@ public class F_1_0 extends FrmParent {
 		});
 
 		pieChart = (PieChartView) view.findViewById(R.id.pie_chart);
-		//pieChart.setOnValueTouchListener(selectListener);//设置点击事件监听
+		pieChart.setOnValueTouchListener(selectListener);//设置点击事件监听
+
+		imgDoorPower = (ImageView) view.findViewById(R.id.img_door_power) ;
+		imgDoorAlarm = (ImageView) view.findViewById(R.id.img_door_alarm) ;
 
 		setPieChartData();
 		initPieChart();
 
-		//title = (TextView)view.findViewById(R.id.f_01_040_Title) ;
-		//funcFrm = (FrameLayout)view.findViewById(R.id.f_01_040_Frm) ;
-		//cover = (LinearLayout)view.findViewById(R.id.f_01_040_Load) ;
-		
-		//tv1 = (TextView)view.findViewById(R.id.func_01_040_item01);
-		//item02 = (TextView)view.findViewById(R.id.func_01_040_item02);
-		
-		
+
 		String str = Preferences.getInstance().getString(Constant.func_vk_01_040_01) ;
 		if(!str.equals(Constant.errorStr)){
 			tv1.setText(str);
@@ -136,18 +135,6 @@ public class F_1_0 extends FrmParent {
 		if(!str.equals(Constant.errorStr)){
 			item02.setText(str); 
 		}
-		
-		//btnRead = (ImageView)view.findViewById(R.id.btn_read);
-		//resultDt = (TextView)view.findViewById(R.id.resultDatetime);
-		
-		//设置监听器
-		//title.setOnClickListener(titleClickLisn) ;
-		//btnRead.setOnClickListener(btnReadLisn);
-		
-		//str = Preferences.getInstance().getString(Constant.func_vk_01_040_dt) ;
-		//if(!str.equals(Constant.errorStr)){
-			//this.resultDt.setText(str) ;
-		//}
 
 		return view ;
 	}
@@ -166,7 +153,11 @@ public class F_1_0 extends FrmParent {
 		@Override
 		public void onValueSelected(int arg0, SliceValue value) {
 			// TODO Auto-generated method stub
-			//Toast.makeText(act, "Selected: " + value.getValue(), Toast.LENGTH_SHORT).show();
+			if (arg0 == 1) {
+				Toast.makeText(act, "门打开的角度: " +(int) value.getValue()+"度", Toast.LENGTH_SHORT).show();
+			}else if (arg0 == 2) {
+				Toast.makeText(act, "门闭合的角度: " +(int) value.getValue()+"度", Toast.LENGTH_SHORT).show();
+			}
 		}
 	};
 
@@ -194,32 +185,12 @@ public class F_1_0 extends FrmParent {
 		pieChardata.setCenterCircleScale(1f);//设置环形的大小级别
 		pieChardata.setSlicesSpacing(0);//设置间隔为0
 
-
 		pieChart.setPieChartData(pieChardata);
-		pieChart.setValueSelectionEnabled(true);//选择饼图某一块变大
-		pieChart.setAlpha(0.9f);//设置透明度
+		pieChart.setValueSelectionEnabled(false);//设置是否选中值
+		pieChart.setAlpha(1f);//设置透明度
 		pieChart.setCircleFillRatio(1f);//设置饼图大小
-		pieChart.setFocusable(false);
-		pieChart.setClickable(false);
-		pieChart.setFocusableInTouchMode(false);
-		pieChart.setActivated(false);
-		pieChart.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
-		pieChart.setOnValueTouchListener(new PieChartOnValueSelectListener() {
-			@Override
-			public void onValueSelected(int arcIndex, SliceValue value) {
-
-			}
-
-			@Override
-			public void onValueDeselected() {
-
-			}
-		});
+		pieChart.setViewportCalculationEnabled(true);//设置饼图自动适应大小
+		pieChart.setChartRotationEnabled(false);
 
 	}
 

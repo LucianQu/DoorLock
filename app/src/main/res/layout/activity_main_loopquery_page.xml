@@ -6,46 +6,18 @@
     android:layout_gravity="center_vertical"
     android:orientation="vertical"
     android:background="#f0eff5">
-
  	<LinearLayout 
  	    android:id="@+id/lqLine_02"
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" 
 	    android:layout_weight="1">
 		<fragment
-			 android:id="@+id/lqFragment_02"
-			 android:name="com.blg.rtu.frmLoopQuery.LpFragment_02"
-			 android:layout_width="match_parent"
-			 android:layout_height="match_parent"
-			 android:layout_gravity="center_vertical"/>
- 	</LinearLayout> 	
- 	
-  	<LinearLayout 
-  	    android:id="@+id/lqLine_03"
-	    android:layout_width="match_parent"
-	    android:layout_height="0dp" 
-	    android:layout_weight="1">
-		<fragment
-			 android:id="@+id/lqFragment_03"
-			 android:name="com.blg.rtu.frmLoopQuery.LpFragment_03"
-			 android:layout_width="match_parent"
-			 android:layout_height="match_parent" 
-			 android:layout_gravity="center_vertical"/>
+			android:id="@+id/f_1_01"
+			android:name="com.blg.rtu.frmFunction.F_1_1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
  	</LinearLayout> 	
 
-  	<LinearLayout 
-  	    android:id="@+id/lqLine_04"
-	    android:layout_width="match_parent"
-	    android:layout_height="0dp" 
-	    android:layout_weight="1">
-		<fragment
-			 android:id="@+id/lqFragment_04"
-			 android:name="com.blg.rtu.frmLoopQuery.LpFragment_04"
-			 android:layout_width="match_parent"
-			 android:layout_height="match_parent" 
-			 android:layout_gravity="center_vertical"/>
- 	</LinearLayout> 
-  	
  	<TextView
 		android:id="@+id/chWelcome"
 		android:textColor="#9c9ca0" 

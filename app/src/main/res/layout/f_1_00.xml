@@ -5,6 +5,7 @@
 	android:background="#f0eff5"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
+	<!--操作门选择-->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:orientation="vertical"
@@ -43,7 +44,7 @@
 				android:src="@mipmap/ic_down_more_gray"/>
 		</LinearLayout>
 	</LinearLayout>
-
+<!--甲醛检测-->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:orientation="vertical"
@@ -77,11 +78,13 @@
 			<TextView
 				android:id="@+id/tv_jiaquan"
 				android:layout_width="wrap_content"
+				android:layout_marginLeft="@dimen/base6dp"
 				android:layout_height="wrap_content"
 				android:textSize="14sp"
 				/>
 		</LinearLayout>
 	</LinearLayout>
+	<!--门控制-->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:orientation="vertical"
@@ -152,6 +155,7 @@
 					android:gravity="center"/>
 			</LinearLayout>
 		</LinearLayout>
+		<!--门开关角度-->
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:orientation="vertical"
@@ -184,7 +188,74 @@
 			</LinearLayout>
 		</LinearLayout>
 	</LinearLayout>
+<!--门报警-->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:orientation="vertical"
+		android:layout_marginTop="2dp"
+		android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:background="@drawable/border"
+		android:layout_height="wrap_content">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="16dp"
+			android:text="门报警"
+			android:textSize="@dimen/text16"
+			android:textColor="#262626"
+			android:textStyle="bold"
+			/>
 
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:layout_marginTop="6dp"
+			android:layout_height="30dp">
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:gravity="center"
+				android:orientation="horizontal"
+				android:layout_height="match_parent">
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:textSize="14sp"
+					android:textColor="@color/black"
+					android:text="电池欠压:"
+					android:gravity="center"/>
+				<ImageView
+					android:id="@+id/img_door_power"
+					android:layout_width="14dp"
+					android:layout_height="14dp"
+					android:layout_marginLeft="@dimen/base6dp"
+					android:src="@mipmap/ic_circle_green"
+					/>
+			</LinearLayout>
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:gravity="center"
+				android:orientation="horizontal"
+				android:layout_height="match_parent">
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:textSize="14sp"
+					android:textColor="@color/black"
+					android:text="关门故障:"
+					android:gravity="center"/>
+				<ImageView
+					android:id="@+id/img_door_alarm"
+					android:layout_width="14dp"
+					android:layout_height="14dp"
+					android:layout_marginLeft="@dimen/base6dp"
+					android:src="@mipmap/ic_circle_red"
+					/>
+			</LinearLayout>
+		</LinearLayout>
+	</LinearLayout>
 
 
 </LinearLayout>

@@ -33,6 +33,7 @@ public class FragmentTool {
 
 	private static List<FrmParent> frms = new ArrayList<FrmParent>() ;;
 	public F_1_0 f_1_0 ;
+	public F_1_1 f_1_1 ;
 	public F_01_010 f_01_010 ;
 	public F_01_020 f_01_020 ;
 	//public F_01_030 f_01_030 ;
@@ -121,16 +122,11 @@ public class FragmentTool {
         FragmentManager fm = this.mainAct.getFragmentManager();
 		f_1_0 = (F_1_0) fm.findFragmentById(R.id.f_1_00) ;
 		frms.add(f_1_0);
+		f_1_1 = (F_1_1) fm.findFragmentById(R.id.f_1_01) ;
+		frms.add(f_1_1);
 
         fragment_np01 = (NpFragment_01)fm.findFragmentById(R.id.npFragment_01) ;
-        
-        fragment_loopq02 = (LpFragment_02)fm.findFragmentById(R.id.lqFragment_02) ;
-        fragment_loopq03 = (LpFragment_03)fm.findFragmentById(R.id.lqFragment_03) ;
-        fragment_loopq04 = (LpFragment_04)fm.findFragmentById(R.id.lqFragment_04) ;
-        
-  /*      fragment_ch01 = (ChFragment_01)fm.findFragmentById(R.id.chFragment_01) ;
-        fragment_ch02 = (ChFragment_02)fm.findFragmentById(R.id.chFragment_02) ;
-        fragment_ch03 = (ChFragment_03)fm.findFragmentById(R.id.chFragment_03) ;*/
+
         fragment_ch04 = (ChFragment_04)fm.findFragmentById(R.id.chFragment_04) ;
         //fragment_ch05 = (ChFragment_05)fm.findFragmentById(R.id.chFragment_05) ;
        /* f_01_010 = (F_01_010)fm.findFragmentById(R.id.f_01_010) ;
