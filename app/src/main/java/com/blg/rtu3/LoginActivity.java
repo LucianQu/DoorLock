@@ -1,7 +1,5 @@
 package com.blg.rtu3;
 
-import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
@@ -11,22 +9,19 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.automic.watersource.model.UserInfo;
 import com.automic.watersource.utils.Utils;
-import com.blg.rtu.frmFunction.F_02_110;
 import com.blg.rtu.util.AppUtils;
-import com.blg.rtu.util.Constant;
-import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.SpinnerVO;
-import com.blg.rtu3.R;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
@@ -143,7 +138,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 	}
 	
 	private void switchConnectType() {
-		WifiManager wifiMan = (WifiManager) getSystemService(Context.WIFI_SERVICE) ;
+		WifiManager wifiMan = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE) ;
 		WifiInfo info = wifiMan.getConnectionInfo() ;
 		
 		int ipAddress = info.getIpAddress() ;

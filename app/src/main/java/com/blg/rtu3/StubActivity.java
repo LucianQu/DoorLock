@@ -81,7 +81,7 @@ public class StubActivity extends ActivityAidl.Stub{
 		//Log(MessageFormat.format("rect[bottom={0},top={1},left={2},right={3},test1={4},test2={5}]", rect.bottom,rect.top,rect.left,rect.right,rect.data.test1, rect.data.test2));
 		final RtuData data = parcel.packet.data ;
 		Log.i(tag, data.toString()) ;
-		Log.i("com.blg.rtu.StubActivity", "在server端的Activity代理，通过回调的方式向根Activity端传来了命令结果数据") ;
+		Log.i("StubActivity", "在server端的Activity代理，通过回调的方式向根Activity端传来了命令结果数据") ;
 		mAct.mHandler.post(new Runnable(){
 			@Override
 			public void run() {

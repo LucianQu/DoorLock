@@ -44,46 +44,6 @@
 				android:src="@mipmap/ic_down_more_gray"/>
 		</LinearLayout>
 	</LinearLayout>
-	<!--甲醛检测-->
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:orientation="vertical"
-		android:layout_marginTop="2dp"
-		android:layout_marginLeft="6dp"
-		android:layout_marginRight="6dp"
-		android:background="@drawable/border"
-		android:layout_height="wrap_content">
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="16dp"
-			android:text="甲醛检测"
-			android:textSize="@dimen/text16"
-			android:textColor="#262626"
-			android:textStyle="bold"
-			/>
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:orientation="horizontal"
-			android:layout_marginTop="6dp"
-			android:layout_marginLeft="26dp"
-			android:gravity="left|center_vertical"
-			android:layout_height="wrap_content">
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="浓度(mg/m³) : "
-				android:textSize="14sp"
-				/>
-			<TextView
-				android:id="@+id/tv_jiaquan"
-				android:layout_width="wrap_content"
-				android:layout_marginLeft="@dimen/base6dp"
-				android:layout_height="wrap_content"
-				android:textSize="14sp"
-				/>
-		</LinearLayout>
-	</LinearLayout>
 	<!--门控制-->
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -97,12 +57,11 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
-			android:text="门控制"
+			android:text="功能开关1"
 			android:textSize="@dimen/text16"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
-
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:orientation="horizontal"
@@ -114,7 +73,7 @@
 				android:gravity="center"
 				android:layout_height="wrap_content">
 				<TextView
-					android:id="@+id/tv_open"
+					android:id="@+id/tv_open1"
 					android:layout_width="50dp"
 					android:layout_height="50dp"
 					android:background="@drawable/usewater_selector"
@@ -129,7 +88,7 @@
 				android:gravity="center"
 				android:layout_height="wrap_content">
 				<TextView
-					android:id="@+id/tv_close"
+					android:id="@+id/tv_close1"
 					android:layout_width="50dp"
 					android:layout_height="50dp"
 					android:background="@drawable/usewater_selector"
@@ -145,7 +104,7 @@
 				android:gravity="center"
 				android:layout_height="wrap_content">
 				<TextView
-					android:id="@+id/tv_stop"
+					android:id="@+id/tv_stop1"
 					android:layout_width="50dp"
 					android:layout_height="50dp"
 					android:background="@drawable/usewater_selector"
@@ -155,40 +114,10 @@
 					android:gravity="center"/>
 			</LinearLayout>
 		</LinearLayout>
-		<!--门开关角度-->
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:orientation="vertical"
-			android:layout_marginTop="8dp"
-			android:layout_marginLeft="6dp"
-			android:layout_marginRight="6dp"
-			android:clickable="false"
-			android:layout_height="wrap_content">
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="16dp"
-				android:text="门开关角度"
-				android:textSize="@dimen/text16"
-				android:textColor="#262626"
-				/>
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:orientation="horizontal"
-				android:gravity="center"
-				android:clickable="false"
-				android:focusableInTouchMode="false"
-				android:layout_height="wrap_content">
-				<lecho.lib.hellocharts.view.PieChartView
-					android:id="@+id/pie_chart"
-					android:layout_width="60dp"
-					android:clickable="false"
-					android:focusableInTouchMode="false"
-					android:layout_height="60dp" />
-			</LinearLayout>
-		</LinearLayout>
+
 	</LinearLayout>
-<!--门报警-->
+	<!--功能开关2-->
+	<!--门控制-->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:orientation="vertical"
@@ -201,62 +130,64 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
-			android:text="门报警"
+			android:text="功能开关2"
 			android:textSize="@dimen/text16"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
-
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:orientation="horizontal"
 			android:layout_marginTop="6dp"
-			android:layout_height="30dp">
+			android:layout_height="wrap_content">
 			<LinearLayout
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:gravity="center"
-				android:orientation="horizontal"
-				android:layout_height="match_parent">
+				android:layout_height="wrap_content">
 				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
+					android:id="@+id/tv_open2"
+					android:layout_width="50dp"
+					android:layout_height="50dp"
+					android:background="@drawable/usewater_selector"
 					android:textSize="14sp"
-					android:textColor="@color/black"
-					android:text="电池欠压:"
+					android:textColor="#ffffff"
+					android:text="开"
 					android:gravity="center"/>
-				<ImageView
-					android:id="@+id/img_door_power"
-					android:layout_width="14dp"
-					android:layout_height="14dp"
-					android:layout_marginLeft="@dimen/base6dp"
-					android:src="@mipmap/ic_circle_green"
-					/>
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:gravity="center"
-				android:orientation="horizontal"
-				android:layout_height="match_parent">
+				android:layout_height="wrap_content">
 				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
+					android:id="@+id/tv_close2"
+					android:layout_width="50dp"
+					android:layout_height="50dp"
+					android:background="@drawable/usewater_selector"
 					android:textSize="14sp"
-					android:textColor="@color/black"
-					android:text="关门故障:"
+					android:textColor="#ffffff"
+					android:text="关"
 					android:gravity="center"/>
-				<ImageView
-					android:id="@+id/img_door_alarm"
-					android:layout_width="14dp"
-					android:layout_height="14dp"
-					android:layout_marginLeft="@dimen/base6dp"
-					android:src="@mipmap/ic_circle_red"
-					/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:gravity="center"
+				android:layout_height="wrap_content">
+				<TextView
+					android:id="@+id/tv_stop2"
+					android:layout_width="50dp"
+					android:layout_height="50dp"
+					android:background="@drawable/usewater_selector"
+					android:textSize="14sp"
+					android:textColor="#ffffff"
+					android:text="停"
+					android:gravity="center"/>
 			</LinearLayout>
 		</LinearLayout>
+
 	</LinearLayout>
-
-
 </LinearLayout>
 

@@ -7,27 +7,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.cdEF.Data_EF;
 import com.blg.rtu.util.Constant;
+import com.blg.rtu.util.DialogConfirm;
 import com.blg.rtu.util.Preferences;
+import com.blg.rtu.util.StringValueForActivity;
+import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 
-public class F_1_1 extends FrmParent {
+public class F_1_3 extends FrmParent {
 
+	private View view ;
 
-	private TextView tvLockStatus;
+	private ImageView flag ;
+	private EditText npInput ;
+	private ImageView sendBtn ;
+	private ImageView clearBtn ;
 
-	private ImageView imgLockInit ;
-	private ImageView imgLockAlarm ;
-	private ImageView imgLockPower ;
-
+	private TextView tvLearn ;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -48,16 +54,86 @@ public class F_1_1 extends FrmParent {
 			LayoutInflater inflater, 
 			ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.f_1_01, container, false);
+		View view = inflater.inflate(R.layout.f_1_03, container, false);
 
-		tvLockStatus = (TextView) view.findViewById(R.id.tv_lock_status) ;
+		tvLearn = (TextView) view.findViewById(R.id.tv_door_learn) ;
+		tvLearn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ToastUtils.show(act,"门学习");
+			}
+		});
 
-		imgLockInit = (ImageView) view.findViewById(R.id.img_lock_init) ;
-		imgLockAlarm = (ImageView) view.findViewById(R.id.img_lock_alarm) ;
-		imgLockPower = (ImageView) view.findViewById(R.id.img_lock_power) ;
+		npInput = (EditText)view.findViewById(R.id.npInput) ;
+		sendBtn = (ImageView)view.findViewById(R.id.npSend) ;
+		clearBtn = (ImageView)view.findViewById(R.id.npClear) ;
+		sendBtn.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				sendNoProtocolData() ;
+			}
+		}) ;
+
+		clearBtn.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				clearNoProtocolData() ;
+			}
+		}) ;
 
 
 		return view ;
+	}
+
+	private void sendNoProtocolData(){
+		if(StringValueForActivity.noProtocolSendNeedConfirm){
+			new DialogConfirm().showDialog(act,
+					act.getResources().getString(R.string.txtConfirmSend) ,
+					new DialogConfirm.CallBackInterface(){
+						@Override
+						public void dialogCallBack(Object o) {
+							if((Boolean)o){
+								doSendNoProtocolData() ;
+							}else{
+							}
+						}
+					}) ;
+		}else{
+			doSendNoProtocolData() ;
+		}
+	}
+
+	private void doSendNoProtocolData(){
+		if(act.mServerProxyHandler != null && act.mServerProxyHandler.isTcpConnected()){
+			String str = this.npInput.getText().toString() ;
+
+			if(str == null || str.equals("")){
+				Toast.makeText(act, "发送内容不能为空，请输入内容！", Toast.LENGTH_SHORT).show() ;
+			}else{
+				str = str.trim() ;
+				if(str.equals("")){
+					Toast.makeText(act, "发送内容不能为空，请输入内容！", Toast.LENGTH_SHORT).show() ;
+				}else{
+					this.act.mServerProxyHandler.sendRtuNoProtocolTxtDataByTcp(str) ;
+				}
+			}
+		}else{
+			Toast.makeText(act, "网络未连接，不能发送数据！", Toast.LENGTH_SHORT).show() ;
+		}
+	}
+
+	private void clearNoProtocolData(){
+		new DialogConfirm().showDialog(act,
+				act.getResources().getString(R.string.txtConfirmClear) ,
+				new DialogConfirm.CallBackInterface(){
+					@Override
+					public void dialogCallBack(Object o) {
+						if((Boolean)o){
+							npInput.setText("") ;
+						}else{
+						}
+					}
+				}) ;
 	}
 
 	/**

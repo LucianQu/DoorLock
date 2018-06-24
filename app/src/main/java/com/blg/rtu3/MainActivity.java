@@ -354,8 +354,8 @@ public class MainActivity  extends Activity {
 			}
 		}) ;
 		
-		npFragmentLinear_02 = (LinearLayout) pageView_fourth.findViewById(R.id.npFragmentLinear_02) ;
-		npFragmentLinear_03 = (LinearLayout) pageView_fourth.findViewById(R.id.npFragmentLinear_03) ;
+		//npFragmentLinear_02 = (LinearLayout) pageView_fourth.findViewById(R.id.npFragmentLinear_02) ;
+		//npFragmentLinear_03 = (LinearLayout) pageView_fourth.findViewById(R.id.npFragmentLinear_03) ;
        
         ////////////////////////////////////////////////////////
         //帮助类

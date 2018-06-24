@@ -19,6 +19,11 @@
 		    android:layout_height="wrap_content"
 		    android:orientation="vertical">
 			<fragment
+				android:id="@+id/f_01_010"
+				android:name="com.blg.rtu.frmFunction.F_01_010"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+			<fragment
 				android:id="@+id/f_1_00"
 				android:name="com.blg.rtu.frmFunction.F_1_0"
 				android:layout_width="match_parent"

@@ -1,18 +1,70 @@
 package com.blg.rtu3;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.FragmentManager;
 
-import com.blg.rtu.frmFunction.*;
+import com.blg.rtu.frmChannel.ChFragment_01;
+import com.blg.rtu.frmChannel.ChFragment_02;
+import com.blg.rtu.frmChannel.ChFragment_03;
+import com.blg.rtu.frmChannel.ChFragment_04;
+import com.blg.rtu.frmChannel.ChFragment_05;
+import com.blg.rtu.frmFunction.F_01_010;
+import com.blg.rtu.frmFunction.F_01_020;
+import com.blg.rtu.frmFunction.F_01_040;
+import com.blg.rtu.frmFunction.F_01_050;
+import com.blg.rtu.frmFunction.F_01_060;
+import com.blg.rtu.frmFunction.F_01_070;
+import com.blg.rtu.frmFunction.F_01_080;
+import com.blg.rtu.frmFunction.F_01_090;
+import com.blg.rtu.frmFunction.F_01_100;
+import com.blg.rtu.frmFunction.F_02_010;
+import com.blg.rtu.frmFunction.F_02_040;
+import com.blg.rtu.frmFunction.F_02_050;
+import com.blg.rtu.frmFunction.F_02_080;
+import com.blg.rtu.frmFunction.F_02_100;
+import com.blg.rtu.frmFunction.F_02_110;
+import com.blg.rtu.frmFunction.F_03_090;
+import com.blg.rtu.frmFunction.F_04_080;
+import com.blg.rtu.frmFunction.F_04_100;
+import com.blg.rtu.frmFunction.F_04_110;
+import com.blg.rtu.frmFunction.F_05_010;
+import com.blg.rtu.frmFunction.F_05_020;
+import com.blg.rtu.frmFunction.F_05_040;
+import com.blg.rtu.frmFunction.F_05_060;
+import com.blg.rtu.frmFunction.F_05_070;
+import com.blg.rtu.frmFunction.F_06_020;
+import com.blg.rtu.frmFunction.F_06_030;
+import com.blg.rtu.frmFunction.F_06_040;
+import com.blg.rtu.frmFunction.F_06_050;
+import com.blg.rtu.frmFunction.F_07_010;
+import com.blg.rtu.frmFunction.F_08_010;
+import com.blg.rtu.frmFunction.F_08_020;
+import com.blg.rtu.frmFunction.F_08_030;
+import com.blg.rtu.frmFunction.F_08_040;
+import com.blg.rtu.frmFunction.F_08_050;
+import com.blg.rtu.frmFunction.F_08_060;
+import com.blg.rtu.frmFunction.F_08_070;
+import com.blg.rtu.frmFunction.F_08_080;
+import com.blg.rtu.frmFunction.F_08_090;
+import com.blg.rtu.frmFunction.F_08_101;
+import com.blg.rtu.frmFunction.F_08_110;
+import com.blg.rtu.frmFunction.F_08_120;
+import com.blg.rtu.frmFunction.F_08_130;
+import com.blg.rtu.frmFunction.F_08_140;
+import com.blg.rtu.frmFunction.F_08_150;
+import com.blg.rtu.frmFunction.F_08_160;
+import com.blg.rtu.frmFunction.F_1_0;
+import com.blg.rtu.frmFunction.F_1_1;
+import com.blg.rtu.frmFunction.F_1_2;
+import com.blg.rtu.frmFunction.F_1_3;
+import com.blg.rtu.frmFunction.FrmParent;
 import com.blg.rtu.frmLoopQuery.LpFragment_01;
 import com.blg.rtu.frmLoopQuery.LpFragment_02;
 import com.blg.rtu.frmLoopQuery.LpFragment_03;
 import com.blg.rtu.frmLoopQuery.LpFragment_04;
 import com.blg.rtu.frmNoProtocol.NpFragment_01;
-import com.blg.rtu.frmChannel.*;
-import com.blg.rtu3.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentTool {
 
@@ -34,6 +86,12 @@ public class FragmentTool {
 	private static List<FrmParent> frms = new ArrayList<FrmParent>() ;;
 	public F_1_0 f_1_0 ;
 	public F_1_1 f_1_1 ;
+	public F_1_2 f_1_2 ;
+	public F_1_3 f_1_3 ;
+
+
+
+
 	public F_01_010 f_01_010 ;
 	public F_01_020 f_01_020 ;
 	//public F_01_030 f_01_030 ;
@@ -121,16 +179,20 @@ public class FragmentTool {
 		
         FragmentManager fm = this.mainAct.getFragmentManager();
 		f_1_0 = (F_1_0) fm.findFragmentById(R.id.f_1_00) ;
-		frms.add(f_1_0);
 		f_1_1 = (F_1_1) fm.findFragmentById(R.id.f_1_01) ;
+		f_1_2 = (F_1_2) fm.findFragmentById(R.id.f_1_02) ;
+		f_1_3 = (F_1_3) fm.findFragmentById(R.id.f_1_03) ;
+		frms.add(f_1_0);
 		frms.add(f_1_1);
+		frms.add(f_1_2);
+		frms.add(f_1_3);
 
-        fragment_np01 = (NpFragment_01)fm.findFragmentById(R.id.npFragment_01) ;
+        //fragment_np01 = (NpFragment_01)fm.findFragmentById(R.id.npFragment_01) ;
 
-        fragment_ch04 = (ChFragment_04)fm.findFragmentById(R.id.chFragment_04) ;
+        //fragment_ch04 = (ChFragment_04)fm.findFragmentById(R.id.chFragment_04) ;
         //fragment_ch05 = (ChFragment_05)fm.findFragmentById(R.id.chFragment_05) ;
-       /* f_01_010 = (F_01_010)fm.findFragmentById(R.id.f_01_010) ;
-        frms.add(f_01_010);*/
+        f_01_010 = (F_01_010)fm.findFragmentById(R.id.f_01_010) ;
+        frms.add(f_01_010);
 //        f_01_020 = (F_01_020)fm.findFragmentById(R.id.f_01_020) ;
 //        frms.add(f_01_020);
        /* f_01_030 = (F_01_030)fm.findFragmentById(R.id.f_01_030) ;
