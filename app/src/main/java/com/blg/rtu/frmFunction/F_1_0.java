@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
+import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.cdEF.Data_EF;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.ImageUtil;
@@ -65,7 +66,7 @@ public class F_1_0 extends FrmParent {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.act = (MainActivity)activity ;
-		this.queryCommandCode = Code206.cd_EF ;
+		this.queryCommandCode = Code206.cd_F4 ;
 	}
 
 	@Override
@@ -98,6 +99,7 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击开门");
+				setCommand(1) ;
 			}
 		});
 
@@ -106,6 +108,7 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击关门");
+				setCommand(0) ;
 			}
 		});
 		tv_stop = (TextView) view.findViewById(R.id.tv_stop) ;
@@ -113,6 +116,7 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击停止");
+				setCommand(2) ;
 			}
 		});
 
@@ -250,6 +254,10 @@ public class F_1_0 extends FrmParent {
 	 */
 	@Override
 	protected void setCommand(){
+	}
+
+	private void setCommand(int command) {
+		this.sendRtuCommand(new CommandCreator().cd_F_1(command,null), false);
 	}
 	
 	/**

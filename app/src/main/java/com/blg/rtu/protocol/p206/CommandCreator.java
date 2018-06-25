@@ -1,6 +1,7 @@
 package com.blg.rtu.protocol.p206;
 
 import com.blg.rtu.protocol.RtuCommand;
+import com.blg.rtu.protocol.p206.F1.Param_F;
 import com.blg.rtu.protocol.p206.cd02.Param_02;
 import com.blg.rtu.protocol.p206.cd10_50.Param_10;
 import com.blg.rtu.protocol.p206.cd11_51.Param_11;
@@ -94,6 +95,42 @@ public class CommandCreator {
 		Param_10 p = new Param_10() ;
 		p.setNewId(regionNum + clientId) ;
 		com.getParams().put(Param_10.KEY, p) ;
+		return com ;
+	}
+
+	public RtuCommand cd_F_1(int command, String rtuId){
+		RtuCommand com = new RtuCommand() ;
+		com.setCommandCode(Code206.cd_F1) ;
+		com.setRtuId(rtuId);
+		Param_F p = new Param_F() ;
+		p.setDoorContral(command);
+		com.getParams().put(Param_F.KEY, p) ;
+		return com ;
+	}
+	public RtuCommand cd_F_2(int command, String rtuId){
+		RtuCommand com = new RtuCommand() ;
+		com.setCommandCode(Code206.cd_F2) ;
+		com.setRtuId(rtuId);
+		Param_F p = new Param_F() ;
+		p.setDoorContral(command);
+		com.getParams().put(Param_F.KEY, p) ;
+		return com ;
+	}
+
+	public RtuCommand cd_F_3(int command, String rtuId){
+		RtuCommand com = new RtuCommand() ;
+		com.setCommandCode(Code206.cd_F3) ;
+		com.setRtuId(rtuId);
+		Param_F p = new Param_F() ;
+		p.setDoorContral(command);
+		com.getParams().put(Param_F.KEY, p) ;
+		return com ;
+	}
+
+	public RtuCommand cd_F_4(String rtuId){
+		RtuCommand com = new RtuCommand() ;
+		com.setRtuId(rtuId);
+		com.setCommandCode(Code206.cd_F4) ;
 		return com ;
 	}
 	
