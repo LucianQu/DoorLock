@@ -1,7 +1,7 @@
-package com.blg.rtu.protocol.p206.F1;
+package com.blg.rtu.protocol.p206.F2;
 
 
-public class Data_F {
+public class Data_F2 {
 
 	private int doorOpen;
 	private int jiaQuan ;

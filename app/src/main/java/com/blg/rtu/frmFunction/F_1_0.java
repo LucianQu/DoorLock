@@ -18,13 +18,11 @@ import android.widget.Toast;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
-import com.blg.rtu.protocol.p206.cdEF.Data_EF;
+import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.util.Constant;
-import com.blg.rtu.util.ImageUtil;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
-import com.blg.rtu.util.Utils;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
@@ -265,7 +263,6 @@ public class F_1_0 extends FrmParent {
 	 */
 	@Override
 	public void commandHasProblem(){
-		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_problem(this.act), null);
 	}
 	
 	/**
@@ -273,7 +270,6 @@ public class F_1_0 extends FrmParent {
 	 */
 	@Override
 	public void commandSended(){
-		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_blue(this.act), null);
 	}
 	
 	/**
@@ -281,14 +277,12 @@ public class F_1_0 extends FrmParent {
 	 */
 	@Override
 	public void commandSendedCallBack(){
-		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_red(this.act), null);
 	}
 	/**
 	 * 功能项右侧图标复原
 	 */
 	@Override
 	public void resetLabelImg(){
-		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_gray(this.act), null);
 	}
 
 	/**
@@ -300,18 +294,8 @@ public class F_1_0 extends FrmParent {
 		super.receiveRtuData(d) ;
 		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null);
 		
-		Data_EF sd = (Data_EF)d.subData ;
-		
-		String str1 = sd.getHard1() + "." + sd.getHard2() + "." + sd.getHard3() ;
-		String str2 = sd.getSoft1() + "." + sd.getSoft2() + "." + sd.getSoft3() ;
-		
-		tv1.setText(str1) ;
-		item02.setText(str2) ;
-		
-		Preferences.getInstance().putString(Constant.func_vk_01_040_01, str1) ;
-		Preferences.getInstance().putString(Constant.func_vk_01_040_02, str2) ;
-		
-		Preferences.getInstance().putString(Constant.func_vk_01_040_dt, this.resultDt.getText().toString()) ;
+		Data_F1 data = (Data_F1)d.subData ;
+
 	}
 	/**
 	 * 导出设置数据

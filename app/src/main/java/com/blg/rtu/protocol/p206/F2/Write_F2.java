@@ -1,23 +1,20 @@
-package com.blg.rtu.protocol.p206.cdE3_F3;
+package com.blg.rtu.protocol.p206.F2;
+
+import com.blg.rtu.protocol.p206.common.ProtocolSupport;
+import com.blg.rtu.protocol.p206.util.Constant;
 
 import java.util.HashMap;
 
-import com.blg.rtu.protocol.p206.common.*;
-import com.blg.rtu.protocol.p206.util.Constant;
-
-public class Read_E3 extends ProtocolSupport{
-	
+public class Write_F2 extends ProtocolSupport{
 	private static final int len = Constant.Bits_Head 
 									+ Constant.Bits_Control
 									+ Constant.Bits_RTU_ID 
 									+ Constant.Bits_Code 
-								//	+ Constant.Bits_Password 
-								//	+ Constant.Bits_Time 
+									+ Constant.Bits_Password 
+									+ Constant.Bits_Time 
 									+ Constant.Bits_CRC
 									+ Constant.Bits_Tail 
-									+ 0 ;//数据域长度
-
-	
+									+ 1 ;//数据域长度
 	/**
 	 * 构造RTU 命令
 	 * @param code 功能码
@@ -29,16 +26,19 @@ public class Read_E3 extends ProtocolSupport{
 	 * @throws Exception
 	 */
 	public byte[] create(String code, byte controlFunCode, String rtuId, HashMap<String , Object> params, String password) throws Exception {
+		Param_F2 param = (Param_F2)params.get(Param_F2.KEY) ;
+		if(param == null ){
+			throw new Exception("出错，未提供参数Bean！") ;
+		}
 		/////////////////////////////
 		//构造数据
 		byte[] b = new byte[len];
 
-		this.createDownDataHead(rtuId, code, b, len, controlFunCode) ;
+		int n = this.createDownDataHead(rtuId, code, b, len, controlFunCode) ;
 		
 		
-		// 数据尾(包括CRC)
-		b = new TailProtocol().createTail(b);
-		
+		b[n++] = (byte)(param.getDoorContral()) ;
+		this.createDownDataTail(b, password) ;
 		return b;
 	}
 

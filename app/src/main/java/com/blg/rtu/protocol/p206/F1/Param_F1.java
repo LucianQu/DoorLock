@@ -3,11 +3,11 @@ package com.blg.rtu.protocol.p206.F1;
 import java.io.Serializable;
 
 
-public class Param_F implements Serializable{
+public class Param_F1 implements Serializable{
 	
 	private static final long serialVersionUID = 20180625005700123L;
 
-	public static final String KEY = Param_F.class.getName() ;
+	public static final String KEY = Param_F1.class.getName() ;
 	private int doorContral ;
 	public String toString(){
 		String s = "\n" ;
@@ -16,7 +16,7 @@ public class Param_F implements Serializable{
 		return s ;
 	}
 
-	public Param_F() {
+	public Param_F1() {
 	}
 
 	public int getDoorContral() {

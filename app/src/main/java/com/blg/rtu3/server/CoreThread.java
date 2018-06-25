@@ -6,7 +6,6 @@ import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.StringValueForServer;
-import com.blg.rtu3.LoginActivity;
 
 public class CoreThread {
 	
@@ -42,7 +41,6 @@ public class CoreThread {
 	
 	/**
 	 * 本方法创建单例，只有 本地Server启动时创建本单例。
-	 * @param activityProxy
 	 * @return
 	 */
 	public static CoreThread creatSingle(LocalServer server){
@@ -732,7 +730,7 @@ public class CoreThread {
 						obj.autoSetCommand(Code206.cd_11) ;//设置遥测终端、中继站时钟
 						break;}
 					case 2 :{
-						obj.autoSetCommand(Code206.cd_F1) ;//设置电池池电压报警值
+						//obj.autoSetCommand(Code206.cd_F1) ;//设置电池池电压报警值
 						break;}
 					case 3 :{
 						//obj.autoSetCommand(Code206.cd_90) ;//复位遥测终端参数和状态 

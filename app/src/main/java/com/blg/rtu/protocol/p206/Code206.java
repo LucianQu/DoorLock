@@ -98,7 +98,7 @@ public class Code206 {
 	//扩展命令
 	public static final String cd_E0 = "E0" ; //查询供电方式及电压
 	public static final String cd_E1 = "E1" ; //查询电池池电压报警值
-	public static final String cd_F1 = "F1" ; //设置电池池电压报警值
+	public static final String cd_F1 = "F1" ; //门控制
 	public static final String cd_EF = "EF" ; //查询遥测终端硬软件版本号
 	public static final String cd_CF = "CF" ; //查询DTU工作模式
 	public static final String cd_DF = "DF" ; //设置DTU工作模式
@@ -120,7 +120,7 @@ public class Code206 {
 	public static final String cd_DE = "DE" ; //设置卫星中心号码
 	public static final String cd_C8 = "C8" ; //查询RTU在线状态
 	public static final String cd_E2 = "E2" ; //查询电源采集校准系数
-	public static final String cd_F2 = "F2" ; //设置电源采集校准系数
+	public static final String cd_F2 = "F2" ; //附加功能：门控制
 	public static final String cd_D8 = "D8" ; //设置AD校准命令(代替了F2命令)
 	public static final String cd_D2 = "D2" ; //查询定时报协议格式
 	public static final String cd_D6 = "D6" ; //设置定时报协议格式

@@ -1,7 +1,7 @@
 package com.blg.rtu.protocol.p206;
 
 import com.blg.rtu.protocol.RtuCommand;
-import com.blg.rtu.protocol.p206.F1.Param_F;
+import com.blg.rtu.protocol.p206.F1.Param_F1;
 import com.blg.rtu.protocol.p206.cd02.Param_02;
 import com.blg.rtu.protocol.p206.cd10_50.Param_10;
 import com.blg.rtu.protocol.p206.cd11_51.Param_11;
@@ -60,8 +60,6 @@ import com.blg.rtu.protocol.p206.cdCF_DF.Param_DF;
 import com.blg.rtu.protocol.p206.cdD2_D6.Param_D6;
 import com.blg.rtu.protocol.p206.cdD3_3E.Param_3E;
 import com.blg.rtu.protocol.p206.cdD8.Param_D8;
-import com.blg.rtu.protocol.p206.cdE1_F1.Param_F1;
-import com.blg.rtu.protocol.p206.cdE2_F2.Param_F2;
 import com.blg.rtu.protocol.p206.cdE3_F3.Param_F3;
 import com.blg.rtu.protocol.p206.cdE4_F4.Param_F4;
 import com.blg.rtu.protocol.p206.cdE5_F5.Param_F5;
@@ -102,18 +100,18 @@ public class CommandCreator {
 		RtuCommand com = new RtuCommand() ;
 		com.setCommandCode(Code206.cd_F1) ;
 		com.setRtuId(rtuId);
-		Param_F p = new Param_F() ;
+		Param_F1 p = new Param_F1() ;
 		p.setDoorContral(command);
-		com.getParams().put(Param_F.KEY, p) ;
+		com.getParams().put(Param_F1.KEY, p) ;
 		return com ;
 	}
 	public RtuCommand cd_F_2(int command, String rtuId){
 		RtuCommand com = new RtuCommand() ;
 		com.setCommandCode(Code206.cd_F2) ;
 		com.setRtuId(rtuId);
-		Param_F p = new Param_F() ;
+		Param_F1 p = new Param_F1() ;
 		p.setDoorContral(command);
-		com.getParams().put(Param_F.KEY, p) ;
+		com.getParams().put(Param_F1.KEY, p) ;
 		return com ;
 	}
 
@@ -121,9 +119,9 @@ public class CommandCreator {
 		RtuCommand com = new RtuCommand() ;
 		com.setCommandCode(Code206.cd_F3) ;
 		com.setRtuId(rtuId);
-		Param_F p = new Param_F() ;
+		Param_F1 p = new Param_F1() ;
 		p.setDoorContral(command);
-		com.getParams().put(Param_F.KEY, p) ;
+		com.getParams().put(Param_F1.KEY, p) ;
 		return com ;
 	}
 
@@ -318,14 +316,7 @@ public class CommandCreator {
 		com.setCommandCode(Code206.cd_E1) ;
 		return com ;
 	}
-	
-	public RtuCommand cd_F1(Param_F1 p, String rtuId){
-		RtuCommand com = new RtuCommand() ;
-		com.setCommandCode(Code206.cd_F1) ;
-		com.setRtuId(rtuId);
-		com.getParams().put(Param_F1.KEY, p);
-		return com ;
-	}
+
 
 	public RtuCommand cd_3E(Param_3E p, String rtuId){
 		RtuCommand com = new RtuCommand() ;
@@ -595,11 +586,11 @@ public class CommandCreator {
 		return com ;
 	}
 	
-	public RtuCommand cd_F2(Param_F2 p, String rtuId){
+	public RtuCommand cd_F2(com.blg.rtu.protocol.p206.cdE2_F2.Param_F2 p, String rtuId){
 		RtuCommand com = new RtuCommand() ;
 		com.setCommandCode(Code206.cd_F2) ;
 		com.setRtuId(rtuId);
-		com.getParams().put(Param_F2.KEY, p);
+		com.getParams().put(com.blg.rtu.protocol.p206.cdE2_F2.Param_F2.KEY, p);
 		return com ;
 	}
 	

@@ -5,7 +5,7 @@ import com.blg.rtu.protocol.p206.util.Constant;
 
 import java.util.HashMap;
 
-public class Write_F extends ProtocolSupport{
+public class Write_F1 extends ProtocolSupport{
 	private static final int len = Constant.Bits_Head 
 									+ Constant.Bits_Control
 									+ Constant.Bits_RTU_ID 
@@ -26,7 +26,7 @@ public class Write_F extends ProtocolSupport{
 	 * @throws Exception
 	 */
 	public byte[] create(String code, byte controlFunCode, String rtuId, HashMap<String , Object> params, String password) throws Exception {
-		Param_F param = (Param_F)params.get(Param_F.KEY) ;
+		Param_F1 param = (Param_F1)params.get(Param_F1.KEY) ;
 		if(param == null ){
 			throw new Exception("出错，未提供参数Bean！") ;
 		}

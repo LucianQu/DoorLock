@@ -7,9 +7,9 @@ import com.blg.rtu.protocol.p206.common.ControlProtocol;
 import com.blg.rtu.protocol.p206.common.ProtocolSupport;
 import com.blg.rtu.util.ByteUtil;
 
-public class Answer_F extends ProtocolSupport{
+public class Answer_F1 extends ProtocolSupport{
 
-	private static String tag = Answer_F.class.getName() ;
+	private static String tag = Answer_F1.class.getName() ;
 
 	/**
 	 * 解析上行数据 
@@ -28,7 +28,7 @@ public class Answer_F extends ProtocolSupport{
 		return d;
 	}
 	private RtuData doParse(byte[] b, int index, RtuData d, ControlProtocol cp) throws Exception {
-		Data_F subD = new Data_F() ;
+		Data_F1 subD = new Data_F1() ;
 		d.setSubData(subD) ;
 
 		subD.setDoorOpen(b[index++]);
