@@ -17,8 +17,6 @@ import android.widget.TextView;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
-import com.blg.rtu.protocol.p206.cdE1_F1.Data_E1_F1;
-import com.blg.rtu.protocol.p206.cdE1_F1.Param_F1;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.ImageUtil;
@@ -150,20 +148,6 @@ public class F_01_080  extends FrmParent {
 		String voltage1 = item01_1.getText().toString() ;//整数部分
 		String voltage2 = item01_2.getText().toString() ;//小数部分
 
-		Param_F1 p = new Param_F1() ;
-		if(voltage1 == null || voltage1.equals("")){
-			p.setVoltage1(0) ;
-		}else{
-			p.setVoltage1(Integer.valueOf(voltage1)) ;
-		}
-		
-		if(voltage2 == null || voltage2.equals("")){
-			p.setVoltage2(0) ;
-		}else{
-			p.setVoltage2(Integer.valueOf(voltage2)) ;
-		}
-		CoreThread.getInstance().newRtuId(F_01_100.getInstance().getRtuSelectedItem().replaceAll(" ", ""));
-		this.sendRtuCommand(new CommandCreator().cd_F1(p, null), false) ;
 	}
 	
 	/**
@@ -206,11 +190,7 @@ public class F_01_080  extends FrmParent {
 		super.receiveRtuData(d) ;
 		this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item005(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null); 
 //		super.scrollTo(this.btnRead) ;
-		
-		Data_E1_F1 sd = (Data_E1_F1)d.subData ;
-		item01_1.setText(sd.getVoltage1() + "") ;
-		item01_2.setText(sd.getVoltage2() + "") ;
-		
+
 		Preferences.getInstance().putString(Constant.func_vk_01_080_dt, this.resultDt.getText().toString()) ;
 	}
 	

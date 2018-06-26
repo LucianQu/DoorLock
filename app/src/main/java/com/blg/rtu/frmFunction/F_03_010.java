@@ -23,8 +23,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
-import com.blg.rtu.protocol.p206.cdE2_F2.Data_E2_F2;
-import com.blg.rtu.protocol.p206.cdE2_F2.Param_F2;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.ImageUtil;
@@ -196,19 +194,7 @@ public class F_03_010  extends FrmParent {
 	 */
 	@Override
 	protected void setCommand(){
-		Param_F2 p = new Param_F2() ;
-		
-		p.setEnable_1(Integer.valueOf(spinnerAdapter01_1.getItem(spinnerPosition01_1).getId())) ;
-		p.setEnable_2(Integer.valueOf(spinnerAdapter02_1.getItem(spinnerPosition02_1).getId())) ;
-		
-		String v1 = item01_2.getText().toString().trim() ;
-		String v2 = item02_2.getText().toString().trim() ;
-		
-		p.setValue_1_0to65535(Integer.valueOf(v1)) ;
-		p.setValue_2_0to65535(Integer.valueOf(v2)) ;
 
-		
-		this.sendRtuCommand(new CommandCreator().cd_F2(p, null), false) ;
 	}
 	
 	/**
@@ -250,17 +236,7 @@ public class F_03_010  extends FrmParent {
 	public void receiveRtuData(RtuData d){
 		super.receiveRtuData(d) ;
 		this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item003(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null); 
-//		super.scrollTo(this.btnRead) ;
-		
-		Data_E2_F2 sd = (Data_E2_F2)d.subData ;
 
-		item01_1.setSelection(sd.getEnable_1().intValue()) ;
-		item01_2.setText("" + sd.getValue_1());
-
-		item02_1.setSelection(sd.getEnable_2().intValue()) ;
-		item02_2.setText("" + sd.getValue_2());
-
-		
 		Preferences.getInstance().putString(Constant.func_vk_03_010_dt, this.resultDt.getText().toString()) ;
 	}
 	

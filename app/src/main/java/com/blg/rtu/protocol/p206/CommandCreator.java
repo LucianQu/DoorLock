@@ -60,8 +60,6 @@ import com.blg.rtu.protocol.p206.cdCF_DF.Param_DF;
 import com.blg.rtu.protocol.p206.cdD2_D6.Param_D6;
 import com.blg.rtu.protocol.p206.cdD3_3E.Param_3E;
 import com.blg.rtu.protocol.p206.cdD8.Param_D8;
-import com.blg.rtu.protocol.p206.cdE3_F3.Param_F3;
-import com.blg.rtu.protocol.p206.cdE4_F4.Param_F4;
 import com.blg.rtu.protocol.p206.cdE5_F5.Param_F5;
 import com.blg.rtu.protocol.p206.cdE6_F6.Param_F6;
 import com.blg.rtu.protocol.p206.cdE7_F7.Param_F7;
@@ -585,15 +583,7 @@ public class CommandCreator {
 		com.setCommandCode(Code206.cd_E2) ;
 		return com ;
 	}
-	
-	public RtuCommand cd_F2(com.blg.rtu.protocol.p206.cdE2_F2.Param_F2 p, String rtuId){
-		RtuCommand com = new RtuCommand() ;
-		com.setCommandCode(Code206.cd_F2) ;
-		com.setRtuId(rtuId);
-		com.getParams().put(com.blg.rtu.protocol.p206.cdE2_F2.Param_F2.KEY, p);
-		return com ;
-	}
-	
+
 	public RtuCommand cd_D8(Param_D8 p, String rtuId){
 		RtuCommand com = new RtuCommand() ;
 		com.setCommandCode(Code206.cd_D8) ;
@@ -609,14 +599,7 @@ public class CommandCreator {
 		com.setCommandCode(Code206.cd_E3) ;
 		return com ;
 	}
-	
-	public RtuCommand cd_F3(Param_F3 p, String rtuId){
-		RtuCommand com = new RtuCommand() ;
-		com.setCommandCode(Code206.cd_F3) ;
-		com.setRtuId(rtuId);
-		com.getParams().put(Param_F3.KEY, p);
-		return com ;
-	}
+
 	
 	public RtuCommand cd_E4(String rtuId){
 		RtuCommand com = new RtuCommand() ;
@@ -624,14 +607,7 @@ public class CommandCreator {
 		com.setCommandCode(Code206.cd_E4) ;
 		return com ;
 	}
-	
-	public RtuCommand cd_F4(Param_F4 p, String rtuId){
-		RtuCommand com = new RtuCommand() ;
-		com.setCommandCode(Code206.cd_F4) ;
-		com.setRtuId(rtuId);
-		com.getParams().put(Param_F4.KEY, p);
-		return com ;
-	}
+
 	
 	public RtuCommand cd_E5(String rtuId){
 		RtuCommand com = new RtuCommand() ;

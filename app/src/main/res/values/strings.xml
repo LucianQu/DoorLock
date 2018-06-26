@@ -798,7 +798,7 @@
 	<!-- 时钟相差大于以下配置时时长(分钟)时，进行时钟同步 -->
 	<string name="protocolSynClockDeviate">1</string>
 	<!-- 广播命令Rtu ID -->
-	<string name="protocolBroastCommandRtuId">10101065535</string>
+	<string name="protocolBroastCommandRtuId">0000000000</string>
 	<!-- 非协议(调试)数据显示的最大长度(字符数) -->
 	<string name="noProtocolTxtMaxLen">6000</string>
 	<!-- 显示RTU结果数据最大条数 -->

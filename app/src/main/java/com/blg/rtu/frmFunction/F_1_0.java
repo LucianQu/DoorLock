@@ -26,6 +26,7 @@ import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
+import com.blg.rtu3.utils.DataTranslateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ import lecho.lib.hellocharts.view.PieChartView;
 
 public class F_1_0 extends FrmParent {
 
-	private Spinner item01;
+	private Spinner spinner;
 	private ArrayAdapter<SpinnerVO> spinnerAdapter1;
 
 	private TextView tv_jiaquan ;
@@ -81,13 +82,13 @@ public class F_1_0 extends FrmParent {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.f_1_00, container, false);
 
-		item01 = (Spinner)view.findViewById(R.id.spinner_doorList);
+		spinner = (Spinner)view.findViewById(R.id.spinner_doorList);
 		spinnerAdapter1 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
 		this.putSpinnerValue1();
 		spinnerAdapter1.setDropDownViewResource(R.layout.spinner_item);
 		// 将adapter 添加到spinner中
-		item01.setAdapter(spinnerAdapter1);
-		item01.setOnItemSelectedListener(new SpinnerSelectedListener());
+		spinner.setAdapter(spinnerAdapter1);
+		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
 
 		tv_jiaquan = (TextView) view.findViewById(R.id.tv_jiaquan) ;
 		tv_jiaquan.setText("0.001");
@@ -212,7 +213,7 @@ public class F_1_0 extends FrmParent {
 
 	private class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			if(parent.getId() == item01.getId()){
+			if(parent.getId() == spinner.getId()){
 
 			}
 		}
@@ -295,6 +296,13 @@ public class F_1_0 extends FrmParent {
 		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null);
 		
 		Data_F1 data = (Data_F1)d.subData ;
+		if (data != null) {
+			int jq = data.getJiaQuan() ;
+			tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree((jq/1000) + "." +(jq%1000)));
+
+		}else {
+			ToastUtils.show(act, "F1接收数据为空");
+		}
 
 	}
 	/**

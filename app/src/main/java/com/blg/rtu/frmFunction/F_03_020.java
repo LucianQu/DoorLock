@@ -27,8 +27,6 @@ import android.widget.TextView;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
-import com.blg.rtu.protocol.p206.cdE3_F3.Data_E3_F3;
-import com.blg.rtu.protocol.p206.cdE3_F3.Param_F3;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.DialogConfirm;
@@ -562,37 +560,21 @@ public class F_03_020  extends FrmParent {
 	 */
 	@Override
 	protected void setCommand(){
-		Param_F3 p = new Param_F3() ;
-		
+
 		String e1 = spinnerAdapter01_1.getItem(spinnerPosition01_1).getId() ;
 		String e2 = spinnerAdapter02_1.getItem(spinnerPosition02_1).getId() ;
 		String e3 = spinnerAdapter03_1.getItem(spinnerPosition03_1).getId() ;
 		String e4 = spinnerAdapter04_1.getItem(spinnerPosition04_1).getId() ;
 		String e5 = spinnerAdapter05_1.getItem(spinnerPosition05_1).getId() ;
 		String e6 = spinnerAdapter06_1.getItem(spinnerPosition06_1).getId() ;
-		
-		p.setEnable_level_0To1(Integer.valueOf(e1)) ;
-		p.setEnable_qaulity_0To1(Integer.valueOf(e2)) ;
-		p.setEnable_temperature_0To1(Integer.valueOf(e3)) ;
-		p.setEnable_amount1_0To1(Integer.valueOf(e4)) ;
-		p.setEnable_amount2_0To1(Integer.valueOf(e5)) ;
-		p.setEnable_amount3_0To1(Integer.valueOf(e6)) ;
-		
+
 		String v1 = spinnerAdapter01_2.getItem(spinnerPosition01_2).getId() ;
 		String v2 = spinnerAdapter02_2.getItem(spinnerPosition02_2).getId() ;
 		String v3 = spinnerAdapter03_2.getItem(spinnerPosition03_2).getId() ;
 		String v4 = spinnerAdapter04_2.getItem(spinnerPosition04_2).getId() ;
 		String v5 = spinnerAdapter05_2.getItem(spinnerPosition05_2).getId() ;
 		String v6 = spinnerAdapter06_2.getItem(spinnerPosition06_2).getId() ;
-		
-		p.setMeter_level_0To255(Integer.valueOf(v1)) ;//水位仪表种类
-		p.setMeter_qaulity_0To255(Integer.valueOf(v2)) ;//水质仪表种类
-		p.setMeter_temperature_0To255(Integer.valueOf(v3)) ;//水温仪表种类
-		p.setMeter_amount1_0To255(Integer.valueOf(v4)) ;//流量仪表种类
-		p.setMeter_amount2_0To255(Integer.valueOf(v5)) ;//流量仪表种类
-		p.setMeter_amount3_0To255(Integer.valueOf(v6)) ;//流量仪表种类
 
-		this.sendRtuCommand(new CommandCreator().cd_F3(p, null), false) ;
 	}
 	
 	/**
@@ -635,28 +617,7 @@ public class F_03_020  extends FrmParent {
 		super.receiveRtuData(d) ;
 		this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item003(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null); 
 //		super.scrollTo(this.btnRead) ;
-		
-		Data_E3_F3 sd = (Data_E3_F3)d.subData ;
 
-		item01_1.setSelection(sd.getEnable_level().intValue()) ;
-		itemXY_2_SetSelection(item01_2, sd.getMeter_level());
-
-		item02_1.setSelection(sd.getEnable_qaulity().intValue()) ;
-		itemXY_2_SetSelection(item02_2, sd.getMeter_qaulity());
-
-		item03_1.setSelection(sd.getEnable_temperature().intValue()) ;
-		itemXY_2_SetSelection(item03_2, sd.getMeter_temperature());
-
-		item04_1.setSelection(sd.getEnable_amount1().intValue()) ;
-		itemXY_2_SetSelection(item04_2, sd.getMeter_amount1());
-
-		item05_1.setSelection(sd.getEnable_amount2().intValue()) ;
-		itemXY_2_SetSelection(item05_2, sd.getMeter_amount2());
-
-		item06_1.setSelection(sd.getEnable_amount3().intValue()) ;
-		itemXY_2_SetSelection(item06_2, sd.getMeter_amount3());
-
-		
 		Preferences.getInstance().putString(Constant.func_vk_03_020_dt, this.resultDt.getText().toString()) ;
 	}
 	

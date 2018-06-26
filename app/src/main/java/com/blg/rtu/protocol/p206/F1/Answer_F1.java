@@ -31,14 +31,48 @@ public class Answer_F1 extends ProtocolSupport{
 		Data_F1 subD = new Data_F1() ;
 		d.setSubData(subD) ;
 
+		subD.setJiaQuan(ByteUtil.bytes2Int_an(new byte[]{b[index++],b[index++],b[index++],0},0));
+		subD.setDoorStatus(b[index++]);
 		subD.setDoorOpen(b[index++]);
-		subD.setJiaQuan(ByteUtil.bytes2Int_an(new byte[]{b[index++],b[index++],0,0},0));
-		subD.setDoorAlarmPower(b[index++]);
-		subD.setDoorAlarmClose(b[index++]);
+		subD.setLockFlag(b[index++]);
 		subD.setLockStatus(b[index++]);
-		subD.setLockInit(b[index++]);
-		subD.setLockAlarm(b[index++]);
-		subD.setLockPower(b[index++]);
+		subD.setPowerFlag(b[index++]);
+		subD.setPowerStatus(b[index++]);
+		subD.setAlarmFlag(b[index++]);
+		subD.setAlarmStaus(b[index++]);
+
+		byte lockStatus = (byte) subD.getLockStatus() ;
+		if ((lockStatus & 0x04) == 0x04) {
+			subD.setHasPower(true);
+		}else {
+			subD.setHasPower(false);
+		}
+		if ((lockStatus & 0x02) == 0x02) {
+			subD.setLockInitPosition(true);
+		}else {
+			subD.setLockInitPosition(false);
+		}
+		if ((lockStatus & 0x01) == 0x01) {
+			subD.setOpenLock(true);
+		}else {
+			subD.setOpenLock(false);
+		}
+		byte powerStatus = (byte) subD.getPowerStatus() ;
+		if ((powerStatus & 0x04) == 0x04) {
+			subD.setDoorNormal(false);
+		}else {
+			subD.setDoorNormal(true);
+		}
+		if ((powerStatus & 0x02) == 0x02) {
+			subD.setNormalCurrent(false);
+		}else {
+			subD.setNormalCurrent(true);
+		}
+		if ((powerStatus & 0x01) == 0x01) {
+			subD.setNormalPower(false);
+		}else {
+			subD.setNormalPower(true);
+		}
 		return d;
 	}
 	
