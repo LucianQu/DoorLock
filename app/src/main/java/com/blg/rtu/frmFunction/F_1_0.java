@@ -27,6 +27,11 @@ import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.utils.DataTranslateUtils;
+import com.blg.rtu3.utils.LogUtils;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -220,7 +225,45 @@ public class F_1_0 extends FrmParent {
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
 	}
-	
+
+	/**
+	 * 获取功能卡列表
+	 * @param startTime
+	 * @param endTime
+	 * @param type
+	 */
+	private void getOpenCardRecord(String startTime, String endTime, String type) {
+
+		String url = "" ;
+		LogUtils.e("sjt","url=="+url);
+		RequestParams requestParams = new RequestParams(url);
+
+		//requestParams.addBodyParameter("count", "10");
+		x.http().get(requestParams, new Callback.CommonCallback<String>() {
+			@Override
+			public void onSuccess(String result) {
+
+			}
+
+			@Override
+			public void onError(Throwable ex, boolean isOnCallback) {
+
+				LogUtils.e("sjt", "查询失败");
+			}
+
+			@Override
+			public void onCancelled(CancelledException cex) {
+
+			}
+
+			@Override
+			public void onFinished() {
+
+			}
+		});
+	}
+
+
 
 	/**
 	 * 查询命令前进行检查

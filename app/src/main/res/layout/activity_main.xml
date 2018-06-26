@@ -11,7 +11,7 @@
 		android:id="@+id/ScrollNotice"
 		android:layout_height="36dp"
 		android:layout_width="fill_parent"
-		android:text="重大喜讯：我公司的锁买一赠二，厉害吧!"
+		android:text="重大喜讯：我公司的刘智力买一赠二，白送也可以!"
 		android:gravity="center_vertical"
 		android:textColor="@color/red"
 		android:inputType="text"
