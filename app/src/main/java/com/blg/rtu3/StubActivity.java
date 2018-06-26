@@ -87,12 +87,11 @@ public class StubActivity extends ActivityAidl.Stub{
 				if(data.dataCode != null && !data.dataCode.equals("")){
 					if(data.dataCode.equals(Code206.cd_10) || data.dataCode.equals(Code206.cd_50)){
 						//设置或查询终端地址
-						mAct.frgTool.f_01_100.receiveRtuData(data) ;
-						mAct.frgTool.fragment_loopq02.receiveRtuData(Code206.cd_50,data) ;
+						//qulusheng
 					}else
 					if(data.dataCode.equals(Code206.cd_44) || data.dataCode.equals(Code206.cd_74)){
 						//设置或查询终端地址
-						mAct.frgTool.f_01_100.receiveRtuData(data) ;
+                        //qulusheng
 						//mAct.frgTool.fragment_loopq02.receiveRtuData(Code206.cd_50,data) ;
 					}else
 					if(data.dataCode.equals(Code206.cd_F1)){
@@ -109,10 +108,6 @@ public class StubActivity extends ActivityAidl.Stub{
 						//设置或查询仪表系数
 						mAct.frgTool.f_1_0.receiveRtuData(data);
 						mAct.frgTool.f_1_1.receiveRtuData(data);
-					}else
-					if(data.dataCode.equals(Code206.cd_16) || data.dataCode.equals(Code206.cd_56)){
-						//设置剩余水量报警值或查询遥测终端的剩余水量和报警值
-						mAct.frgTool.f_04_110.receiveRtuData(data) ;
 					}
 				}
 				//mAct.frgTool.fragment_ch04.setRtuData(data) ;
@@ -152,11 +147,9 @@ public class StubActivity extends ActivityAidl.Stub{
 				if(data.dataCode != null && !data.dataCode.equals("")){
 					if(data.dataCode.equals(Code206.cd_10) || data.dataCode.equals(Code206.cd_50)){
 						//设置或查询终端地址
-						mAct.frgTool.f_01_100.commandSendedCallBack() ;
 					}else
 					if(data.dataCode.equals(Code206.cd_44) || data.dataCode.equals(Code206.cd_74)){
 						//设置或查询终端地址
-						mAct.frgTool.f_01_100.commandSendedCallBack() ;
 					}else
 					if(data.dataCode.equals(Code206.cd_F1)){
 						//设置门控制
@@ -169,14 +162,6 @@ public class StubActivity extends ActivityAidl.Stub{
 					if(data.dataCode.equals(Code206.cd_E3) || data.dataCode.equals(Code206.cd_F3)){
 						//设置或查询仪表系数
 						mAct.frgTool.f_1_2.commandSendedCallBack() ;
-					}else
-					if(data.dataCode.equals(Code206.cd_16) || data.dataCode.equals(Code206.cd_56)){
-						//设置遥测终端剩余水量报警值,查询遥测终端的剩余水量和报警值
-						mAct.frgTool.f_04_110.commandSendedCallBack() ;
-					}else
-					if(data.dataCode.equals(Code206.cd_F0)){
-						//循环查询关键参数
-						mAct.frgTool.fragment_loopq01.commandSendedCallBack() ;
 					}
 					
 				}
@@ -195,11 +180,7 @@ public class StubActivity extends ActivityAidl.Stub{
 				public void run() {
 					if(code.equals(Code206.cd_B1)){
 						//查询水表历史数据
-						mAct.frgTool.f_05_040.autoQuery() ;
-					}else
-					if(code.equals(Code206.cd_ED)){
-						//查询日志信息
-						mAct.frgTool.f_05_060.autoQuery() ;
+
 					}else{
 						//未实现的
 						Log.e(tag, "未实现的自动查询命令" + code) ;
@@ -219,45 +200,8 @@ public class StubActivity extends ActivityAidl.Stub{
 				@Override
 				public void run() {
 					if(code.equals(Code206.cd_44)){//设置遥测终端、中继站地址
-						mAct.frgTool.f_01_100.autoSet() ;
-					}else
-					if(code.equals(Code206.cd_11)){//设置遥测终端、中继站时钟
-						mAct.frgTool.f_01_020.autoSet() ;
-					}else
-				/*	if(code.equals(Code206.cd_12)){//设置遥测终端工作模式
-						mAct.frgTool.f_01_030.autoSet() ;
-					}else*/
-					if(code.equals(Code206.cd_90)){//复位遥测终端参数和状态 
-						mAct.frgTool.f_01_050.autoSet() ;
-					}else
-					if(code.equals(Code206.cd_91)){//清空遥测终端历史数据单元 
-						mAct.frgTool.f_01_060.autoSet() ;
-					}else
-					if(code.equals(Code206.cd_DF)){//设置DTU工作模式
-						mAct.frgTool.f_02_010.autoSet() ;
-					}else
-					if(code.equals(Code206.cd_DA)){//设置GPRS接入点
-						mAct.frgTool.f_02_040.autoSet() ;
-					}else
-					if(code.equals(Code206.cd_DC)){//设置中心网址
-						mAct.frgTool.f_02_050.autoSet() ;
-					}else
-					if(code.equals(Code206.cd_F8)){//设置上报起始时间
-						mAct.frgTool.f_03_090.autoSet() ;
-					}else
-					if(code.equals(Code206.cd_D6)){//设置上报协议配置
-						mAct.frgTool.f_02_110.autoSet() ;
-					}else
-					if(code.equals(Code206.cd_96)){//设置上报协议配置
-						mAct.frgTool.f_02_080.autoSet() ;
-					}else
-					if(code.equals(Code206.cd_15)){//设置遥测终端本次充值量
-						mAct.frgTool.f_04_100.autoSet() ;
-					}else
-					if(code.equals(Code206.cd_16)) {//设置遥测终端剩余水量报警值
-						mAct.frgTool.f_04_110.autoSet();
-					}
-					else{
+
+					}else{
 						//未实现的
 						Log.e(tag, "未实现的自动设置命令" + code) ;
 					}

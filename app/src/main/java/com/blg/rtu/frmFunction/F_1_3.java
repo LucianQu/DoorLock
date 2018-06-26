@@ -14,10 +14,7 @@ import android.widget.Toast;
 
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
-import com.blg.rtu.protocol.p206.cdEF.Data_EF;
-import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.DialogConfirm;
-import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.StringValueForActivity;
 import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
@@ -207,17 +204,7 @@ public class F_1_3 extends FrmParent {
 	@Override
 	public void receiveRtuData(RtuData d){
 		super.receiveRtuData(d) ;
-		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null);
-		
-		Data_EF sd = (Data_EF)d.subData ;
-		
-		String str1 = sd.getHard1() + "." + sd.getHard2() + "." + sd.getHard3() ;
-		String str2 = sd.getSoft1() + "." + sd.getSoft2() + "." + sd.getSoft3() ;
 
-		Preferences.getInstance().putString(Constant.func_vk_01_040_01, str1) ;
-		Preferences.getInstance().putString(Constant.func_vk_01_040_02, str2) ;
-		
-		Preferences.getInstance().putString(Constant.func_vk_01_040_dt, this.resultDt.getText().toString()) ;
 	}
 	/**
 	 * 导出设置数据

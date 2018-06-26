@@ -1,8 +1,11 @@
 package com.blg.rtu.protocol.p206.common.data;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
-import com.blg.rtu.protocol.p206.common.data.Data206_2012_AlarmStatus;;
+;
 
 public class DataMap  extends Data206_2012_AlarmStatus {
 	

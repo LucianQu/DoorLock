@@ -102,10 +102,7 @@ public class CoreControl {
 				}
 			}
 		}
-		
-		if(action.contain(Action.synchronizeClock)){
-			this.sendRtuCommandByTcp(new CommandCreator().cd_11(null, driver.getRtuId()), true,  false) ;
-		}
+
 		
 		if(action.contain(Action.remoteConfirmAction)){
 			byte[] data = driver.getDownData() ;

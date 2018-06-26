@@ -455,62 +455,7 @@ public class CoreThread {
 						//查询时钟
 						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_51(CoreThread.rtuId), false, true) ;
 						break;}
-					case 1 :{
-						//查询版本号
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_EF(CoreThread.rtuId), false, true) ;
-						break;}
-					case 2 :{
-						//查询终端状态和报警状态
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_5E(CoreThread.rtuId), false, true) ;
-						break;}
-					case 3 :{
-						//查询电池电压
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_E0(CoreThread.rtuId), false, true) ;
-						break;}
-					case 4 :{
-						//查询电池电压报警值
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_E1(CoreThread.rtuId), false, true) ;
-						break;}
-					case 6 :{
-						//查询DTU工作模式
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_CF(CoreThread.rtuId), false, true) ;
-						break;}
-					case 5 :{
-						//查询出厂编号
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_D3(CoreThread.rtuId), false, true) ;
-						break;}
-					case 7 :{
-						//查询GPRS接入点
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_CA(CoreThread.rtuId), false, true) ;
-						break;}
-					case 8 :{
-						//查询中心IP地址
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_CC(CoreThread.rtuId), false, true) ;
-						break;}
-					case 9 :{
-						//查询ICCID
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_D4(CoreThread.rtuId), false, true) ;
-						break;}
-					case 10 :{
-						//查询上报协议配置
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_D2(CoreThread.rtuId), false, true) ;
-						break;}
-					case 11 :{
-						//数据上报间隔
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_53(CoreThread.rtuId), false, true) ;
-						break;}
-					case 12 :{
-						//上报起始时刻
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_E8(CoreThread.rtuId), false, true) ;
-						break;}
-					case 13 :{
-						//查询事件记录
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_5D(CoreThread.rtuId), false, true) ;
-						break;}
-					case 15 :{
-						//查询瞬时和累计
-						new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_C2(CoreThread.rtuId), false, true) ;
-						break;}
+
 					case 14 :{
 						//查询历史数据
 						ActivityProxyHandler obj = ActivityProxyHandler.getInstance();
