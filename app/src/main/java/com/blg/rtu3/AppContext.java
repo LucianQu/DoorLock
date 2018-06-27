@@ -1,11 +1,15 @@
 package com.blg.rtu3;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
-public class AppContext extends Application {
+import org.xutils.*;
+
+public class AppContext extends Application{
 
 	private static AppContext mInstance = null;
-
+	private static Context mAppContext;
 	public AppContext() {
 	}
 
@@ -14,8 +18,9 @@ public class AppContext extends Application {
 		super.onCreate();
 
 		mInstance = this;
-		//CrashHandler catchHandler = CrashHandler.getInstance();
-//		catchHandler.init(getApplicationContext());
+		mAppContext = getApplicationContext();
+		x.Ext.init(this);
+		x.Ext.setDebug(org.xutils.BuildConfig.DEBUG); // 是否输出debug日志, 开启debug会影响性能.
 
 	}
 

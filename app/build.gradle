@@ -8,7 +8,7 @@ android {
         applicationId "com.blg.rtu3"
         minSdkVersion 17
         targetSdkVersion 20
-
+        multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
@@ -45,4 +45,5 @@ dependencies {
     compile 'cn.jiguang.sdk:jcore:1.1.9'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'org.xutils:xutils:3.3.44'
+    compile 'com.google.code.gson:gson:2.6.2'
 }

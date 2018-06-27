@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blg.rtu.frmFunction.bean.DoorInfo;
+import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
@@ -28,11 +30,19 @@ import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.utils.DataTranslateUtils;
 import com.blg.rtu3.utils.LogUtils;
+import com.google.gson.Gson;
 
+import org.apache.http.protocol.RequestContent;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
+import org.xutils.http.body.RequestBody;
 import org.xutils.x;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +74,8 @@ public class F_1_0 extends FrmParent {
 	private TextView item02 ;
 
 	private ImageView btnRead ;
-	
+	private DoorInfo doorInfo ;
+	private DoorStatus doorStatus ;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -103,7 +114,9 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击开门");
-				setCommand(1) ;
+				doorContralServer("123456789012","F1","2") ;
+				messSend("滑新波") ;
+				//setCommand(1) ;
 			}
 		});
 
@@ -112,7 +125,8 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击关门");
-				setCommand(0) ;
+				doorContralServer("123456789012","F1","滑新波") ;
+				//setCommand(0) ;
 			}
 		});
 		tv_stop = (TextView) view.findViewById(R.id.tv_stop) ;
@@ -120,7 +134,8 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击停止");
-				setCommand(2) ;
+				doorContralServer("123456789012","F1","3") ;
+				//setCommand(2) ;
 			}
 		});
 
@@ -228,37 +243,88 @@ public class F_1_0 extends FrmParent {
 
 	/**
 	 * 获取功能卡列表
-	 * @param startTime
-	 * @param endTime
-	 * @param type
 	 */
-	private void getOpenCardRecord(String startTime, String endTime, String type) {
-
-		String url = "" ;
-		LogUtils.e("sjt","url=="+url);
+	private void doorContralServer(String dtuId, String code, String flag) {
+		String url = "http://bc8986a4.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
-
-		//requestParams.addBodyParameter("count", "10");
+		requestParams.addBodyParameter("dtuId", dtuId);
+		requestParams.addBodyParameter("code", code);
+		requestParams.addBodyParameter("flag", flag);
+		LogUtils.e("门控制服务", requestParams.toString());
 		x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
+				JSONObject jsonResult = null;
+				try {
+					jsonResult = new JSONObject(result);
+					String code = jsonResult.getString("succ");
+					if (code.equals("1")) {
+						Gson gson = new Gson();
+						String data = jsonResult.getString("data");
+						doorStatus = gson.fromJson(data,DoorStatus.class);
+						if (null != doorStatus) {
+							ToastUtils.show(act, doorStatus.getAngle()+doorStatus.getDoorState());
+						}
+					}else {
+							ToastUtils.show(act, "请求失败！");
+					}
 
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
-
 			@Override
 			public void onError(Throwable ex, boolean isOnCallback) {
-
-				LogUtils.e("sjt", "查询失败");
+				LogUtils.e("onError", "查询失败");
 			}
 
 			@Override
 			public void onCancelled(CancelledException cex) {
-
 			}
 
 			@Override
 			public void onFinished() {
+			}
+		});
+	}
+	/**
+	 * 获取功能卡列表
+	 */
+	private void messSend(String mess) {
+		String url = "http://bc8986a4.ngrok.io/door/door/pushAdver.actmess="+mess ;
 
+		RequestParams requestParams = new RequestParams(url);
+		LogUtils.e("广告发送", requestParams.toString());
+		requestParams.addBodyParameter("mess", mess);
+		LogUtils.e("广告发送", requestParams.toString());
+		x.http().post(requestParams, new Callback.CommonCallback<String>() {
+			@Override
+			public void onSuccess(String result) {
+				JSONObject jsonResult = null;
+				try {
+					jsonResult = new JSONObject(result);
+					String code = jsonResult.getString("succ");
+					if (code.equals("1")) {
+						ToastUtils.show(act, "广告发送成功!");
+					}else {
+						ToastUtils.show(act, "广告发送失败！");
+					}
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			@Override
+			public void onError(Throwable ex, boolean isOnCallback) {
+				LogUtils.e("onError", "服务异常");
+			}
+
+			@Override
+			public void onCancelled(CancelledException cex) {
+			}
+
+			@Override
+			public void onFinished() {
 			}
 		});
 	}
