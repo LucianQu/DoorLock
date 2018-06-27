@@ -2,7 +2,6 @@ package com.blg.rtu3;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
 
 import org.xutils.*;
 

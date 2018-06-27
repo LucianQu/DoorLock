@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.blg.rtu.frmFunction.bean.DoorInfo;
 import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
@@ -29,20 +31,14 @@ import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.utils.DataTranslateUtils;
-import com.blg.rtu3.utils.LogUtils;
-import com.google.gson.Gson;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 
-import org.apache.http.protocol.RequestContent;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.http.body.RequestBody;
-import org.xutils.x;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,11 +47,13 @@ import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.view.PieChartView;
 
+
+
 public class F_1_0 extends FrmParent {
 
 	private Spinner spinner;
 	private ArrayAdapter<SpinnerVO> spinnerAdapter1;
-
+	private RequestQueue queue;
 	private TextView tv_jiaquan ;
 	private TextView tv_open ;
 	private TextView tv_close ;
@@ -98,6 +96,8 @@ public class F_1_0 extends FrmParent {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.f_1_00, container, false);
 
+		queue = Volley.newRequestQueue(getActivity());
+
 		spinner = (Spinner)view.findViewById(R.id.spinner_doorList);
 		spinnerAdapter1 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
 		this.putSpinnerValue1();
@@ -114,8 +114,8 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击开门");
-				doorContralServer("123456789012","F1","2") ;
-				messSend("滑新波") ;
+				//doorContralServer("123456789012","F1","2") ;
+                postMessage1("滑新波") ;
 				//setCommand(1) ;
 			}
 		});
@@ -125,7 +125,7 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击关门");
-				doorContralServer("123456789012","F1","滑新波") ;
+				//doorContralServer("123456789012","F1","滑新波") ;
 				//setCommand(0) ;
 			}
 		});
@@ -134,7 +134,7 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击停止");
-				doorContralServer("123456789012","F1","3") ;
+				//doorContralServer("123456789012","F1","3") ;
 				//setCommand(2) ;
 			}
 		});
@@ -244,7 +244,7 @@ public class F_1_0 extends FrmParent {
 	/**
 	 * 获取功能卡列表
 	 */
-	private void doorContralServer(String dtuId, String code, String flag) {
+	/*private void doorContralServer(String dtuId, String code, String flag) {
 		String url = "http://bc8986a4.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
@@ -286,17 +286,22 @@ public class F_1_0 extends FrmParent {
 			public void onFinished() {
 			}
 		});
-	}
+	}*/
 	/**
 	 * 获取功能卡列表
 	 */
-	private void messSend(String mess) {
-		String url = "http://bc8986a4.ngrok.io/door/door/pushAdver.actmess="+mess ;
+	/*private void messSend(String mess) {
+		String url = "http://bc8986a4.ngrok.io/door/door/pushAdver.act&mess=" +mess;
 
-		RequestParams requestParams = new RequestParams(url);
+		RequestParams requestParams = new RequestParams("utf-8");
+		requestParams.setUri(url);
+
 		LogUtils.e("广告发送", requestParams.toString());
-		requestParams.addBodyParameter("mess", mess);
+		//requestParams.addQueryStringParameter("mess",mess);
+		//requestParams.addBodyParameter("mess", mess);
+
 		LogUtils.e("广告发送", requestParams.toString());
+
 		x.http().post(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
@@ -327,7 +332,82 @@ public class F_1_0 extends FrmParent {
 			public void onFinished() {
 			}
 		});
-	}
+	}*/
+
+/*	private void postMessage(String mess) {
+
+		String url = "http://bc8986a4.ngrok.io/door/door/pushAdver.act&mess=" +mess;
+		url = url.trim();
+		StringRequest stringRequest = new StringRequest(Request.Method.POST,
+				url, new com.android.volley.Response.Listener<String>() {
+			@Override
+			public void onResponse(String response) {
+				JSONObject json;
+				try {
+					json = new JSONObject(response);
+					//String content = json.getString("succ");
+					String code = json.getString("succ");
+					//GsonUtils.fromJson(content, HistorySmStatistics.class);
+				} catch (Exception ex) {
+					LogUtils.e("sjt", "异常" + ex);
+				}
+			}
+		}, new com.android.volley.Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError volleyError) {
+
+			}
+		});
+		// Add the request to the RequestQueue.
+		queue.add(stringRequest);
+
+	}*/
+
+    private  void postMessage1(String mess){//请求参数个数不确定，可变长参数,可变长参数放在最后一个
+        try {
+
+            String url = "http://bc8986a4.ngrok.io/door/door/pushAdver.act";
+            RequestParams params = new RequestParams();
+            params.addBodyParameter("mess",mess);
+            HttpUtils http = new HttpUtils();
+            http.configCurrentHttpCacheExpiry(1000 * 5);
+            http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
+                        @Override
+                        public void onStart() {
+                            System.out.println("开始");
+                        }
+
+                        @Override
+                        public void onLoading(long total, long current,
+                                              boolean isUploading) {
+                            System.out.println("正在加载");
+                        }
+                        @Override
+                        public void onSuccess(ResponseInfo arg0) {
+                            System.out.println("请求成功");
+                        }
+                        @Override
+                        public void onFailure(HttpException arg0,
+                                              String arg1) {
+                            System.out.println("请求失败");
+                            ToastUtils.show(act, "联网失败!");
+                        }
+
+                    });
+        } catch (Exception e) {
+            String msg = null;
+            if (e instanceof InvocationTargetException) {
+                Throwable targetEx = ((InvocationTargetException) e)
+                        .getTargetException();
+                if (targetEx != null) {
+                    msg = targetEx.getMessage();
+                }
+            } else {
+                msg = e.getMessage();
+            }
+            e.printStackTrace();
+        }
+    }
 
 
 

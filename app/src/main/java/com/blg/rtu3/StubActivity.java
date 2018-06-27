@@ -86,7 +86,7 @@ public class StubActivity extends ActivityAidl.Stub{
 			public void run() {
 				if(data.dataCode != null && !data.dataCode.equals("")){
 					if(data.dataCode.equals(Code206.cd_10) || data.dataCode.equals(Code206.cd_50)){
-						//设置或查询终端地址
+						//设置qulusheng或查询终端地址
 						//qulusheng
 					}else
 					if(data.dataCode.equals(Code206.cd_44) || data.dataCode.equals(Code206.cd_74)){
