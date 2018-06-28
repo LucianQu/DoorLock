@@ -14,12 +14,25 @@ import android.widget.Toast;
 
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
+import com.blg.rtu.util.AppUtils;
 import com.blg.rtu.util.DialogConfirm;
 import com.blg.rtu.util.StringValueForActivity;
 import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
+import com.blg.rtu3.utils.LogUtils;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class F_1_3 extends FrmParent {
 
@@ -83,7 +96,7 @@ public class F_1_3 extends FrmParent {
 	}
 
 	private void sendNoProtocolData(){
-		if(StringValueForActivity.noProtocolSendNeedConfirm){
+		//if(StringValueForActivity.noProtocolSendNeedConfirm){
 			new DialogConfirm().showDialog(act,
 					act.getResources().getString(R.string.txtConfirmSend) ,
 					new DialogConfirm.CallBackInterface(){
@@ -91,31 +104,89 @@ public class F_1_3 extends FrmParent {
 						public void dialogCallBack(Object o) {
 							if((Boolean)o){
 								doSendNoProtocolData() ;
+
 							}else{
 							}
 						}
 					}) ;
-		}else{
+		/*}else{
 			doSendNoProtocolData() ;
-		}
+		}*/
 	}
 
 	private void doSendNoProtocolData(){
-		if(act.mServerProxyHandler != null && act.mServerProxyHandler.isTcpConnected()){
-			String str = this.npInput.getText().toString() ;
 
-			if(str == null || str.equals("")){
+		if (AppUtils.checkNetworkType(act) != AppUtils.TYPE_NET_WORK_DISABLED) {
+			String str = this.npInput.getText().toString() ;
+			if(str.equals("")){
 				Toast.makeText(act, "发送内容不能为空，请输入内容！", Toast.LENGTH_SHORT).show() ;
 			}else{
 				str = str.trim() ;
 				if(str.equals("")){
 					Toast.makeText(act, "发送内容不能为空，请输入内容！", Toast.LENGTH_SHORT).show() ;
 				}else{
-					this.act.mServerProxyHandler.sendRtuNoProtocolTxtDataByTcp(str) ;
+					postMessage1(str) ;
 				}
 			}
 		}else{
-			Toast.makeText(act, "网络未连接，不能发送数据！", Toast.LENGTH_SHORT).show() ;
+			Toast.makeText(act, "网络未连接，不能发送消息！", Toast.LENGTH_SHORT).show() ;
+		}
+	}
+
+	private  void postMessage1(String mess){//请求参数个数不确定，可变长参数,可变长参数放在最后一个
+		try {
+			String url = "http://415e2a05.ngrok.io/door/door/pushAdver.act";
+			RequestParams params = new RequestParams();
+			params.addBodyParameter("mess",mess);
+			final HttpUtils http = new HttpUtils();
+			http.configCurrentHttpCacheExpiry(1000 * 5);
+			http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
+				@Override
+				public void onStart() {
+					LogUtils.e("广播推送","开始");
+				}
+
+				@Override
+				public void onLoading(long total, long current,
+									  boolean isUploading) {
+					LogUtils.e("广播推送","加载");
+				}
+				@Override
+				public void onSuccess(ResponseInfo arg0) {
+					LogUtils.e("广播推送","成功");
+					JSONObject jsonResult = null;
+					try {
+						jsonResult = new JSONObject(arg0.result.toString());
+						String code = jsonResult.getString("succ");
+						if (code.equals("1")) {
+							ToastUtils.show(act, "消息发送成功!");
+						}else {
+							ToastUtils.show(act, "消息发送失败!");
+						}
+
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+				@Override
+				public void onFailure(HttpException arg0,String arg1) {
+					ToastUtils.show(act, "消息发送失败!");
+				}
+			});
+		} catch (Exception e) {
+			String msg = null;
+			if (e instanceof InvocationTargetException) {
+				Throwable targetEx = ((InvocationTargetException) e)
+						.getTargetException();
+				if (targetEx != null) {
+					msg = targetEx.getMessage();
+					ToastUtils.show(act, "消息发送异常！");
+				}
+			} else {
+				msg = e.getMessage();
+				ToastUtils.show(act, "消息发送异常！");
+			}
+			e.printStackTrace();
 		}
 	}
 

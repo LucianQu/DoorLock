@@ -2,6 +2,7 @@ package com.blg.rtu.frmFunction;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,14 +33,15 @@ import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.utils.DataTranslateUtils;
-import com.lidroid.xutils.HttpUtils;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.RequestParams;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
-import com.lidroid.xutils.http.client.HttpRequest;
+import com.blg.rtu3.utils.LogUtils;
+import com.google.gson.Gson;
 
-import java.lang.reflect.InvocationTargetException;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,11 +61,14 @@ public class F_1_0 extends FrmParent {
 	private TextView tv_open ;
 	private TextView tv_close ;
 	private TextView tv_stop ;
+	private ProgressBar pb_open ;
+	private ProgressBar pb_close ;
+	private ProgressBar pb_stop ;
 
 	private PieChartView pieChart;
 	private PieChartData pieChardata;
 	List<SliceValue> values = new ArrayList<SliceValue>();
-	private int[] data = {135,80,100,45};
+	private int[] data = {135,0,180,45};
 	private int[] colors = {Color.parseColor("#ffffff"),Color.parseColor("#FF4040"),Color.parseColor("#CDC9C9"),Color.parseColor("#ffffff")};
 
 	private ImageView imgDoorPower ;
@@ -114,30 +120,34 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击开门");
-				//doorContralServer("123456789012","F1","2") ;
-                postMessage1("滑新波") ;
-				//setCommand(1) ;
+				setProgressVisible(1) ;
+				doorContralServer("123456789012","F1","2") ;
 			}
 		});
+		pb_open = (ProgressBar) view.findViewById(R.id.pb_open);
 
 		tv_close = (TextView) view.findViewById(R.id.tv_close) ;
 		tv_close.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击关门");
-				//doorContralServer("123456789012","F1","滑新波") ;
-				//setCommand(0) ;
+				setProgressVisible(2) ;
+				doorContralServer("123456789012","F1","滑新波") ;
 			}
 		});
+		pb_close = (ProgressBar) view.findViewById(R.id.pb_close);
+
 		tv_stop = (TextView) view.findViewById(R.id.tv_stop) ;
 		tv_stop.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击停止");
-				//doorContralServer("123456789012","F1","3") ;
-				//setCommand(2) ;
+				setProgressVisible(3) ;
+				doorContralServer("123456789012","F1","3") ;
 			}
 		});
+		pb_stop= (ProgressBar) view.findViewById(R.id.pb_stop);
+
 
 		pieChart = (PieChartView) view.findViewById(R.id.pie_chart);
 		pieChart.setOnValueTouchListener(selectListener);//设置点击事件监听
@@ -160,6 +170,26 @@ public class F_1_0 extends FrmParent {
 		}
 
 		return view ;
+	}
+
+	private void setProgressVisible(int position){
+		if (position == 1) {
+			pb_open.setVisibility(View.VISIBLE);
+			pb_close.setVisibility(View.INVISIBLE);
+			pb_stop.setVisibility(View.INVISIBLE);
+		}else if (position == 2) {
+			pb_open.setVisibility(View.INVISIBLE);
+			pb_close.setVisibility(View.VISIBLE);
+			pb_stop.setVisibility(View.INVISIBLE);
+		}else if (position == 3) {
+			pb_open.setVisibility(View.INVISIBLE);
+			pb_close.setVisibility(View.INVISIBLE);
+			pb_stop.setVisibility(View.VISIBLE);
+		}else {
+			pb_open.setVisibility(View.INVISIBLE);
+			pb_close.setVisibility(View.INVISIBLE);
+			pb_stop.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	/**
@@ -241,10 +271,8 @@ public class F_1_0 extends FrmParent {
 		}
 	}
 
-	/**
-	 * 获取功能卡列表
-	 */
-	/*private void doorContralServer(String dtuId, String code, String flag) {
+
+	private void doorContralServer(final String dtuId, String code, String flag) {
 		String url = "http://bc8986a4.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
@@ -254,19 +282,32 @@ public class F_1_0 extends FrmParent {
 		x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
+				setProgressVisible(0) ;
 				JSONObject jsonResult = null;
 				try {
 					jsonResult = new JSONObject(result);
-					String code = jsonResult.getString("succ");
-					if (code.equals("1")) {
-						Gson gson = new Gson();
-						String data = jsonResult.getString("data");
-						doorStatus = gson.fromJson(data,DoorStatus.class);
-						if (null != doorStatus) {
-							ToastUtils.show(act, doorStatus.getAngle()+doorStatus.getDoorState());
-						}
+					String returnDtuId = jsonResult.getString("dtuId");
+					if ("null".equals(returnDtuId) || "".equals(returnDtuId) || null == returnDtuId) {
+						ToastUtils.show(act, "产品ID为空，数据未知!");
 					}else {
-							ToastUtils.show(act, "请求失败！");
+						if (dtuId.equals(returnDtuId)) {
+							String code = jsonResult.getString("succ");
+							if (code.equals("1")) {
+								Gson gson = new Gson();
+								String data = jsonResult.getString("data");
+								doorStatus = gson.fromJson(data,DoorStatus.class);
+								if(null != doorStatus) {
+									displayData(doorStatus) ;
+								}else {
+									ToastUtils.show(act, "返回数据为空！");
+								}
+							}else {
+								ToastUtils.show(act, "请求失败："+ jsonResult.getString("error"));
+
+							}
+						}else {
+							ToastUtils.show(act, "返回数据ID与请求ID不一致!");
+						}
 					}
 
 				} catch (JSONException e) {
@@ -276,140 +317,80 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onError(Throwable ex, boolean isOnCallback) {
 				LogUtils.e("onError", "查询失败");
+				setProgressVisible(0) ;
 			}
 
 			@Override
 			public void onCancelled(CancelledException cex) {
+				setProgressVisible(0) ;
 			}
 
 			@Override
 			public void onFinished() {
+				setProgressVisible(0) ;
 			}
 		});
-	}*/
-	/**
-	 * 获取功能卡列表
-	 */
-	/*private void messSend(String mess) {
-		String url = "http://bc8986a4.ngrok.io/door/door/pushAdver.act&mess=" +mess;
+	}
+	private void displayData(DoorStatus doorStatus) {
+		//甲醛浓度
+		if (!checkNull(doorStatus.getHcho())){
+			tv_jiaquan.setText(doorStatus.getHcho()+"");
+		}else {
+			tv_jiaquan.setText("未知!");
+		}
 
-		RequestParams requestParams = new RequestParams("utf-8");
-		requestParams.setUri(url);
-
-		LogUtils.e("广告发送", requestParams.toString());
-		//requestParams.addQueryStringParameter("mess",mess);
-		//requestParams.addBodyParameter("mess", mess);
-
-		LogUtils.e("广告发送", requestParams.toString());
-
-		x.http().post(requestParams, new Callback.CommonCallback<String>() {
-			@Override
-			public void onSuccess(String result) {
-				JSONObject jsonResult = null;
-				try {
-					jsonResult = new JSONObject(result);
-					String code = jsonResult.getString("succ");
-					if (code.equals("1")) {
-						ToastUtils.show(act, "广告发送成功!");
-					}else {
-						ToastUtils.show(act, "广告发送失败！");
-					}
-
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+		if (!checkNull(doorStatus.getDoorState())) {
+			if (doorStatus.getDoorState()== 2) {
+				tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
+				tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+				tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			}else if (doorStatus.getDoorState()== 1) {
+				tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
+				tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+				tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			}else if (doorStatus.getDoorState()== 3) {
+				tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
+				tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+				tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			}else {
+				tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+				tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+				tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 			}
-			@Override
-			public void onError(Throwable ex, boolean isOnCallback) {
-				LogUtils.e("onError", "服务异常");
-			}
+		}else {
+			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+		}
 
-			@Override
-			public void onCancelled(CancelledException cex) {
-			}
+		if (!checkNull(doorStatus.getAngle())) {
 
-			@Override
-			public void onFinished() {
-			}
-		});
-	}*/
+		}else {
 
-/*	private void postMessage(String mess) {
+		}
 
-		String url = "http://bc8986a4.ngrok.io/door/door/pushAdver.act&mess=" +mess;
-		url = url.trim();
-		StringRequest stringRequest = new StringRequest(Request.Method.POST,
-				url, new com.android.volley.Response.Listener<String>() {
-			@Override
-			public void onResponse(String response) {
-				JSONObject json;
-				try {
-					json = new JSONObject(response);
-					//String content = json.getString("succ");
-					String code = json.getString("succ");
-					//GsonUtils.fromJson(content, HistorySmStatistics.class);
-				} catch (Exception ex) {
-					LogUtils.e("sjt", "异常" + ex);
-				}
-			}
-		}, new com.android.volley.Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError volleyError) {
+	}
 
-			}
-		});
-		// Add the request to the RequestQueue.
-		queue.add(stringRequest);
+	private void setPieChart(int open){
+		int close = 0 ;
+		if (open <= 180) {
+			close = 180 - open ;
+			data[1] = open ;
+			data[2] = close ;
+			setPieChartData() ;
+			initPieChart() ;
+		}else {
+			data[1] = 0 ;
+			data[2] = 180 ;
+			setPieChartData() ;
+			initPieChart() ;
+			ToastUtils.show(act, "门角度超出范围:" + open);
+		}
+	}
 
-	}*/
-
-    private  void postMessage1(String mess){//请求参数个数不确定，可变长参数,可变长参数放在最后一个
-        try {
-
-            String url = "http://bc8986a4.ngrok.io/door/door/pushAdver.act";
-            RequestParams params = new RequestParams();
-            params.addBodyParameter("mess",mess);
-            HttpUtils http = new HttpUtils();
-            http.configCurrentHttpCacheExpiry(1000 * 5);
-            http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
-                        @Override
-                        public void onStart() {
-                            System.out.println("开始");
-                        }
-
-                        @Override
-                        public void onLoading(long total, long current,
-                                              boolean isUploading) {
-                            System.out.println("正在加载");
-                        }
-                        @Override
-                        public void onSuccess(ResponseInfo arg0) {
-                            System.out.println("请求成功");
-                        }
-                        @Override
-                        public void onFailure(HttpException arg0,
-                                              String arg1) {
-                            System.out.println("请求失败");
-                            ToastUtils.show(act, "联网失败!");
-                        }
-
-                    });
-        } catch (Exception e) {
-            String msg = null;
-            if (e instanceof InvocationTargetException) {
-                Throwable targetEx = ((InvocationTargetException) e)
-                        .getTargetException();
-                if (targetEx != null) {
-                    msg = targetEx.getMessage();
-                }
-            } else {
-                msg = e.getMessage();
-            }
-            e.printStackTrace();
-        }
-    }
-
-
+	private boolean checkNull(Object o) {
+		return "null".equals(o.toString()) ;
+	}
 
 	/**
 	 * 查询命令前进行检查
