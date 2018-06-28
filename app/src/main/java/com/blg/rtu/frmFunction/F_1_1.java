@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.vo2xml.Vo2Xml;
@@ -55,6 +56,42 @@ public class F_1_1 extends FrmParent {
 
 
 		return view ;
+	}
+
+	public void displayData(DoorStatus doorStatus) {
+		//锁状态
+		if (doorStatus.getLockStates()[0] == 1) {
+			tvLockStatus.setText("开锁");
+		}else if (doorStatus.getLockStates()[0] == 0) {
+			tvLockStatus.setText("关锁");
+		}else {
+			tvLockStatus.setText("未知");
+		}
+		//锁原点
+		if (doorStatus.getLockStates()[1] == 1) {
+			imgLockInit.setImageResource(R.mipmap.ic_circle_green);
+		}else if (doorStatus.getLockStates()[1] == 0) {
+			imgLockInit.setImageResource(R.mipmap.ic_circle_red);
+		}else {
+			imgLockInit.setImageResource(R.mipmap.ic_circle_gray1);
+		}
+		//锁报警
+		/*if (doorStatus.getLockStates()[0] == 1) {
+			imgLockAlarm
+		}else if (doorStatus.getLockStates()[0] == 0) {
+			imgLockAlarm
+		}else {
+			imgLockAlarm
+		}*/
+		//锁电源
+		if (doorStatus.getLockStates()[0] == 1) {
+			imgLockPower.setImageResource(R.mipmap.ic_circle_green);
+		}else if (doorStatus.getLockStates()[0] == 0) {
+			imgLockPower.setImageResource(R.mipmap.ic_circle_red);
+		}else {
+			imgLockPower.setImageResource(R.mipmap.ic_circle_gray1);
+		}
+
 	}
 
 	/**

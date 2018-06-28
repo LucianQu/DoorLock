@@ -2,9 +2,11 @@ package com.blg.rtu3;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -54,7 +56,12 @@ public class MainActivity  extends Activity {
 	public static MainActivity instance = null ;
 //	private static final String TAG = MainActivity.class.getSimpleName() ;
 	public ChBusi_01_Operate chb;
-	private ViewPager mPager;// Tab页卡 
+	private MessageReceiver mMessageReceiver;
+	public static final String MESSAGE_RECEIVED_ACTION = "com.blg.rtu3.MESSAGE_RECEIVED_ACTION";
+	public static final String KEY_MESSAGE = "message";
+	public static final String KEY_EXTRAS = "extras";
+
+	private ViewPager mPager;// Tab页卡
 	private List<View> listPages; // Tab页面列表
 	
 	private View pageView_fourth;// Tab第0页
@@ -118,9 +125,32 @@ public class MainActivity  extends Activity {
 	private AutoScrollTextView scrollTextView ;
 	private JPushActivity mJPush ;
 
+	public void registerMessageReceiver() {
+		mMessageReceiver = new MessageReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+		filter.addAction(MESSAGE_RECEIVED_ACTION);
+		registerReceiver(mMessageReceiver, filter);
+		//JpushUtils.setTag("admin");//设置灌溉的管理员
+	}
 
-	
-    //这是实现客户端与服务端通信的一个关键类。要想实现它，就必须重写两个回调方法：onServiceConnected()以及onServiceDisconnected()，
+	public class MessageReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
+              // String messge = intent.getStringExtra(KEY_MESSAGE);
+				String extras = intent.getStringExtra(KEY_EXTRAS);
+
+                scrollTextView.setText(extras);
+                scrollTextView.init(getWindowManager());
+                scrollTextView.startScroll();
+			}
+		}
+	}
+
+
+	//这是实现客户端与服务端通信的一个关键类。要想实现它，就必须重写两个回调方法：onServiceConnected()以及onServiceDisconnected()，
     //而我们可以通过这两个回调方法得到服务端里面的IBinder对象，从而达到通信的目的
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -226,7 +256,7 @@ public class MainActivity  extends Activity {
 		mJPush.registerMessageReceiver();//注册信息接收器
 		mJPush.setTag("admin1,admin2");//为设备设置标签
 		mJPush.setAlias("doorlock");//为设备设置别名
-
+		registerMessageReceiver();
 
 	}
 
@@ -260,6 +290,7 @@ public class MainActivity  extends Activity {
 		super.onDestroy();
 		//取消广播接收注册
 		broadcastReceiver.unRegisterBroadcastReceiver() ;
+        unregisterReceiver(mMessageReceiver);
 		//activity绑定了server，在activity退出前要取消绑定，
 		//否则android系统会报错，然后android系统替你完成取消绑定
 		if(mActivityStub != null){

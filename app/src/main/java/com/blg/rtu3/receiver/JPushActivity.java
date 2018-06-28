@@ -6,7 +6,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -49,7 +48,7 @@ public class JPushActivity {
         IntentFilter filter = new IntentFilter();
         filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         filter.addAction(MESSAGE_RECEIVED_ACTION);
-        LocalBroadcastManager.getInstance(mContext).registerReceiver(mMessageReceiver, filter);
+        //LocalBroadcastManager.getInstance(mContext).registerReceiver(mMessageReceiver, filter);
     }
 
     /**
@@ -85,7 +84,7 @@ public class JPushActivity {
      * 取消注册接收服务
      */
     public void unregisterReceiver() {
-        LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mMessageReceiver);
+        //LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mMessageReceiver);
     }
 
     /**

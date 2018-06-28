@@ -2,7 +2,6 @@ package com.blg.rtu.frmFunction;
 
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,8 +24,6 @@ import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.F1.Data_F1;
-import com.blg.rtu.util.Constant;
-import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
@@ -74,10 +71,6 @@ public class F_1_0 extends FrmParent {
 	private ImageView imgDoorPower ;
 	private ImageView imgDoorAlarm ;
 
-	private TextView tv1;
-	private TextView item02 ;
-
-	private ImageView btnRead ;
 	private DoorInfo doorInfo ;
 	private DoorStatus doorStatus ;
 
@@ -119,7 +112,7 @@ public class F_1_0 extends FrmParent {
 		tv_open.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ToastUtils.show(act, "点击开门");
+				//ToastUtils.show(act, "点击开门");
 				setProgressVisible(1) ;
 				doorContralServer("123456789012","F1","2") ;
 			}
@@ -130,9 +123,9 @@ public class F_1_0 extends FrmParent {
 		tv_close.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ToastUtils.show(act, "点击关门");
+				//ToastUtils.show(act, "点击关门");
 				setProgressVisible(2) ;
-				doorContralServer("123456789012","F1","滑新波") ;
+				doorContralServer("123456789012","F1","1") ;
 			}
 		});
 		pb_close = (ProgressBar) view.findViewById(R.id.pb_close);
@@ -141,7 +134,7 @@ public class F_1_0 extends FrmParent {
 		tv_stop.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ToastUtils.show(act, "点击停止");
+				//ToastUtils.show(act, "点击停止");
 				setProgressVisible(3) ;
 				doorContralServer("123456789012","F1","3") ;
 			}
@@ -158,16 +151,6 @@ public class F_1_0 extends FrmParent {
 		setPieChartData();
 		initPieChart();
 
-
-		String str = Preferences.getInstance().getString(Constant.func_vk_01_040_01) ;
-		if(!str.equals(Constant.errorStr)){
-			tv1.setText(str);
-		}
-		
-		str = Preferences.getInstance().getString(Constant.func_vk_01_040_02) ;
-		if(!str.equals(Constant.errorStr)){
-			item02.setText(str); 
-		}
 
 		return view ;
 	}
@@ -316,7 +299,8 @@ public class F_1_0 extends FrmParent {
 			}
 			@Override
 			public void onError(Throwable ex, boolean isOnCallback) {
-				LogUtils.e("onError", "查询失败");
+				ToastUtils.show(act, "请求失败!");
+				LogUtils.e("onError", "请求失败");
 				setProgressVisible(0) ;
 			}
 
@@ -364,11 +348,28 @@ public class F_1_0 extends FrmParent {
 		}
 
 		if (!checkNull(doorStatus.getAngle())) {
-
+			setPieChart(doorStatus.getAngle()) ;
 		}else {
-
+			setPieChart(0);
 		}
 
+		if (doorStatus.getWarnStates()[0] == 1) {
+			imgDoorPower.setImageResource(R.mipmap.ic_circle_red);
+		}else if (doorStatus.getWarnStates()[0] == 0){
+			imgDoorPower.setImageResource(R.mipmap.ic_circle_green);
+		}else {
+			imgDoorPower.setImageResource(R.mipmap.ic_circle_gray1);
+		}
+
+		if (doorStatus.getWarnStates()[2] == 1) {
+			imgDoorAlarm.setImageResource(R.mipmap.ic_circle_red);
+		}else if (doorStatus.getWarnStates()[2] == 0) {
+			imgDoorAlarm.setImageResource(R.mipmap.ic_circle_green);
+		}else {
+			imgDoorPower.setImageResource(R.mipmap.ic_circle_gray1);
+		}
+
+		act.frgTool.f_1_1.displayData(doorStatus);//显示第二页数据
 	}
 
 	private void setPieChart(int open){

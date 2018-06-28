@@ -254,7 +254,7 @@
 					android:layout_width="14dp"
 					android:layout_height="14dp"
 					android:layout_marginLeft="@dimen/base6dp"
-					android:src="@mipmap/ic_circle_green"
+					android:src="@mipmap/ic_circle_gray1"
 					/>
 			</LinearLayout>
 			<LinearLayout
@@ -275,7 +275,7 @@
 					android:layout_width="14dp"
 					android:layout_height="14dp"
 					android:layout_marginLeft="@dimen/base6dp"
-					android:src="@mipmap/ic_circle_red"
+					android:src="@mipmap/ic_circle_gray1"
 					/>
 			</LinearLayout>
 		</LinearLayout>
