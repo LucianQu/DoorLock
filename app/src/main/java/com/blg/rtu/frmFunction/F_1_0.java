@@ -256,7 +256,7 @@ public class F_1_0 extends FrmParent {
 
 
 	private void doorContralServer(final String dtuId, String code, String flag) {
-		String url = "http://bc8986a4.ngrok.io/door/door/state.act?" ;
+		String url = "http://39.106.112.210:7090/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
 		requestParams.addBodyParameter("code", code);
