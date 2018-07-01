@@ -3,31 +3,20 @@ package com.blg.rtu.protocol.p206.cd10_50;
 
 public class Data_10_50 {
 	
-	private String rtuId ;
-	private String rtuIdHex ;
+
+	private int passWord ;
 
 	public String toString(){
 		String s = "\n" ;
-		s += "rtuId" + "=" + (this.rtuId==null?"":this.rtuId) ;
-		s += "rtuIdHex" + "=" + (this.rtuIdHex==null?"":this.rtuIdHex) ;
+		s += "password" + "=" + passWord ;
 		return s ;
 	}
 
-	public String getRtuId() {
-		return rtuId;
+	public int getPassWord() {
+		return passWord;
 	}
 
-	public void setRtuId(String rtuId) {
-		this.rtuId = rtuId;
+	public void setPassWord(int passWord) {
+		this.passWord = passWord;
 	}
-
-	public String getRtuIdHex() {
-		return rtuIdHex;
-	}
-
-	public void setRtuIdHex(String rtuIdHex) {
-		this.rtuIdHex = rtuIdHex;
-	}
-
-
 }

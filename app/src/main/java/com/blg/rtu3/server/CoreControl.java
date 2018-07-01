@@ -2,12 +2,12 @@ package com.blg.rtu3.server;
 
 import android.util.Log;
 
-import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.protocol.Action;
 import com.blg.rtu.protocol.RtuCommand;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.Driver206;
+import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.ByteUtil;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.StringValueForServer;

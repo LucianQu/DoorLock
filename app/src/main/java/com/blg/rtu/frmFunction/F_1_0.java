@@ -115,6 +115,7 @@ public class F_1_0 extends FrmParent {
 				//ToastUtils.show(act, "点击开门");
 				setProgressVisible(1) ;
 				doorContralServer("123456789012","F1","2") ;
+				setCommand(2) ;
 			}
 		});
 		pb_open = (ProgressBar) view.findViewById(R.id.pb_open);
@@ -126,6 +127,7 @@ public class F_1_0 extends FrmParent {
 				//ToastUtils.show(act, "点击关门");
 				setProgressVisible(2) ;
 				doorContralServer("123456789012","F1","1") ;
+				setCommand(1) ;
 			}
 		});
 		pb_close = (ProgressBar) view.findViewById(R.id.pb_close);
@@ -137,6 +139,7 @@ public class F_1_0 extends FrmParent {
 				//ToastUtils.show(act, "点击停止");
 				setProgressVisible(3) ;
 				doorContralServer("123456789012","F1","3") ;
+				setCommand(3) ;
 			}
 		});
 		pb_stop= (ProgressBar) view.findViewById(R.id.pb_stop);
@@ -238,10 +241,23 @@ public class F_1_0 extends FrmParent {
 		}
 		spinnerAdapter1.notifyDataSetChanged();
 	}
+	public void updateSpinnerValue(String data) {
+		if (!"".equals(data)) {
+			spinnerAdapter1.clear();
+
+			String[] arr = data.split("-") ;
+			if (arr.length >= 1) {
+				for (int i = 0; i < arr.length; i++) {
+					spinnerAdapter1.add(new SpinnerVO(i + "", arr[i]));
+					spinnerAdapter1.notifyDataSetChanged();
+				}
+			}
+		}
+	}
 
 	private void putSpinnerValue1(){
-		spinnerAdapter1.add(new SpinnerVO("0", "1号门")) ;
-		spinnerAdapter1.add(new SpinnerVO("1", "2号门")) ;
+		/*spinnerAdapter1.add(new SpinnerVO("0", "1号门")) ;
+		spinnerAdapter1.add(new SpinnerVO("1", "2号门")) ;*/
 	}
 
 	private class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
@@ -424,6 +440,7 @@ public class F_1_0 extends FrmParent {
 	 */
 	@Override
 	protected void setCommand(){
+
 	}
 
 	private void setCommand(int command) {

@@ -251,6 +251,8 @@ public class MainActivity  extends Activity {
         //没有设置类名，通过明确的类名调用bindService(new Intent("forServiceAidl"), conn, Service.BIND_AUTO_CREATE);  
         //<intent-filter><action android:name="forServiceAidl"></action></intent-filter>
 
+		waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
+
 		mJPush = new JPushActivity(this) ;
 		mJPush.initJPush();//初始化极光推送
 		mJPush.registerMessageReceiver();//注册信息接收器
@@ -258,6 +260,45 @@ public class MainActivity  extends Activity {
 		mJPush.setAlias("doorlock");//为设备设置别名
 		registerMessageReceiver();
 
+	}
+
+	/**
+	 * 等待后台服务启动后，生成了代理对象，进行连接网络
+	 * @param url
+	 * @param port
+	 */
+	private void waitServerStartedAndToConnectNet(final String url, final int port){
+		mHandler.postDelayed(new Runnable(){
+			public void run(){
+				if(mServerProxyHandler == null){
+					//递归循环
+					waitServerStartedAndToConnectNet(url, port) ;
+				}else{
+					doToConnectNet(url, port) ;
+				}
+			}
+		}, 500) ;
+	}
+
+	/**
+	 * 后台服务已经启动，连接网络
+	 * @param url
+	 * @param port
+	 */
+	private void doToConnectNet(String url, int port){
+		mServerProxyHandler.startAndConnectTcpServer(url, port) ;
+		mHandler.postDelayed(new Runnable(){
+			public void run(){
+				//chf.tcpConnected
+				if(!mServerProxyHandler.isTcpConnected()){
+					//if(!CoreThread.getInstance().getNetStatus()){
+					//closeWaitTcpConnectFlash() ;
+					//if(chf.getSelectedChannel() == Constant.channelTcp){
+					Toast.makeText(MainActivity.this, "网络未连接，请检查！", Toast.LENGTH_SHORT).show() ;
+					//}
+				}
+			}
+		}, StringValueForActivity.tcpConnectTimeout) ;
 	}
 
 	@Override

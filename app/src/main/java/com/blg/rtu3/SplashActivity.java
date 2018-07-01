@@ -1,8 +1,6 @@
 package com.blg.rtu3;
 
 
-import com.blg.rtu3.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;

@@ -16,7 +16,6 @@ import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.util.AppUtils;
 import com.blg.rtu.util.DialogConfirm;
-import com.blg.rtu.util.StringValueForActivity;
 import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
@@ -44,6 +43,7 @@ public class F_1_3 extends FrmParent {
 	private ImageView clearBtn ;
 
 	private TextView tvLearn ;
+	private boolean isLearning = false;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -70,6 +70,7 @@ public class F_1_3 extends FrmParent {
 		tvLearn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				isLearning = true ;
 				ToastUtils.show(act,"门学习");
 			}
 		});
@@ -202,6 +203,14 @@ public class F_1_3 extends FrmParent {
 						}
 					}
 				}) ;
+	}
+
+	public boolean learningClick() {
+		return isLearning ;
+	}
+
+	public void setLearningClickStatus(boolean isLearning) {
+		this.isLearning = isLearning ;
 	}
 
 	/**

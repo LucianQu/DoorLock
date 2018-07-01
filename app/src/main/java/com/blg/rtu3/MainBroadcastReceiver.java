@@ -1,14 +1,12 @@
 package com.blg.rtu3;
 
-import com.blg.rtu.util.Constant;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
+
+import com.blg.rtu.util.Constant;
 
 public class MainBroadcastReceiver {
 

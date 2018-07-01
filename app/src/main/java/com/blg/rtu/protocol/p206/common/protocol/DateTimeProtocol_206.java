@@ -1,7 +1,7 @@
 package com.blg.rtu.protocol.p206.common.protocol;
 
+import com.blg.rtu.protocol.p206.common.data.DateTime206_2012;
 import com.blg.rtu.util.ByteUtil;
-import com.blg.rtu.protocol.p206.common.data.* ;
 import com.blg.rtu.util.DateTime;
 
 public class DateTimeProtocol_206 {

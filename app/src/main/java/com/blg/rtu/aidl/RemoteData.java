@@ -1,9 +1,9 @@
 package com.blg.rtu.aidl;
 
-import java.io.Serializable;
-
 import com.blg.rtu.protocol.RtuCommand;
 import com.blg.rtu.protocol.RtuData;
+
+import java.io.Serializable;
 
 public class RemoteData implements Serializable {
 	

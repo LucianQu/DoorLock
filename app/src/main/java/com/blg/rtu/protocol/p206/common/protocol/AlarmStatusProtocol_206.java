@@ -1,6 +1,6 @@
 package com.blg.rtu.protocol.p206.common.protocol;
 
-import com.blg.rtu.protocol.p206.common.data.* ;
+import com.blg.rtu.protocol.p206.common.data.Data206_2012_AlarmStatus;
 
 public class AlarmStatusProtocol_206 extends AlarmProtocol_206 {
 	/*

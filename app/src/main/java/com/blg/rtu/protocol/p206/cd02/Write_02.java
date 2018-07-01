@@ -1,9 +1,9 @@
 package com.blg.rtu.protocol.p206.cd02;
 
-import java.util.HashMap;
-
 import com.blg.rtu.protocol.p206.common.ProtocolSupport;
 import com.blg.rtu.protocol.p206.util.Constant;
+
+import java.util.HashMap;
 
 public class Write_02  extends ProtocolSupport{
 

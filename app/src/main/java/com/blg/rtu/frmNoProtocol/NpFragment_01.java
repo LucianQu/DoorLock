@@ -1,8 +1,6 @@
 package com.blg.rtu.frmNoProtocol;
 
 
-import java.io.File;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -18,6 +16,8 @@ import com.blg.rtu.util.DateTime;
 import com.blg.rtu.util.StringValueForActivity;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
+
+import java.io.File;
 
 public class NpFragment_01 extends Fragment {
 	

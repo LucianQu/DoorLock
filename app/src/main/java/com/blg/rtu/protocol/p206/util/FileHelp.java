@@ -1,6 +1,8 @@
 package com.blg.rtu.protocol.p206.util;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class FileHelp {
 

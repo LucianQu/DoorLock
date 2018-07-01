@@ -1,8 +1,11 @@
 package com.blg.rtu3.sm;
 
 //import com.blg.rtu.R;
-import android.content.*;
-import android.os.*;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.telephony.SmsMessage;
 
 public class SmsReceiver extends BroadcastReceiver {

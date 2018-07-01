@@ -1,9 +1,10 @@
 package com.blg.rtu.protocol.p206.cd10_50;
 
-import java.util.HashMap;
-
-import com.blg.rtu.protocol.p206.common.*;
+import com.blg.rtu.protocol.p206.common.ProtocolSupport;
+import com.blg.rtu.protocol.p206.common.RtuIdProtocol;
 import com.blg.rtu.protocol.p206.util.Constant;
+
+import java.util.HashMap;
 
 public class Write_10 extends ProtocolSupport{
 

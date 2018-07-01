@@ -1,10 +1,6 @@
 package com.blg.rtu.frmChannel;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -17,9 +13,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
+import com.blg.rtu.compound.FixHeightListView;
 import com.blg.rtu.frmChannel.helpCh4.ListRtuData;
 import com.blg.rtu.frmChannel.helpCh4.RtuDataListViewAdapter;
-import com.blg.rtu.compound.FixHeightListView;
 import com.blg.rtu.help.HelpSaveProtocolDataToFile;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.util.Constant;
@@ -28,6 +24,10 @@ import com.blg.rtu.util.ResourceUtils;
 import com.blg.rtu.util.StringValueForActivity;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChFragment_04 extends Fragment {
 	/**

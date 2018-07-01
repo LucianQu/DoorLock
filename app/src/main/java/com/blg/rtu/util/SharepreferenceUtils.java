@@ -72,16 +72,16 @@ public class SharepreferenceUtils {
         return type;
     }
 
-    public static void saveIsWechatPay(Context context, boolean is) {
-        SharedPreferences preferences = context.getSharedPreferences("preference_wechat_pay", 0);
+    public static void saveHasLearn(Context context, boolean is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_HasLearn", 0);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("is_wechat_pay", is);
+        editor.putBoolean("HasLearn", is);
         editor.commit();
     }
 
-    public static boolean getIsWechatPay(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("preference_wechat_pay", 0);
-        boolean type = preferences.getBoolean("is_wechat_pay", false);
+    public static boolean getHasLearn(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_HasLearn", 0);
+        boolean type = preferences.getBoolean("HasLearn", false);
         return type;
     }
 
@@ -98,17 +98,29 @@ public class SharepreferenceUtils {
         return rechargemax;
     }
 
-    public static void saveCardValidMonth(Context context, String is) {
-        SharedPreferences preferences = context.getSharedPreferences("preference_card_valid_month", 0);
+    public static void saveDeviceId(Context context, String is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("card_valid_month", is);
+        editor.putString("device_id", is);
+        editor.commit();
+    }
+    public static void savePassword(Context context, String is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_password", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("password", is);
         editor.commit();
     }
 
-    public static String getCardValidMonth(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("preference_card_valid_month", 0);
-        String card_valid_month = preferences.getString("card_valid_month", "");
-        return card_valid_month;
+    public static String getDeviceId(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
+        String deviceId = preferences.getString("device_id", "");
+        return deviceId;
+    }
+
+    public static String getPassword(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_password", 0);
+        String device_password = preferences.getString("password", "");
+        return device_password;
     }
 
     public static void savePhoneIMEI(Context context, String imei) {

@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-
 import com.automic.watersource.model.UserInfo;
 import com.blg.rtu3.AppContext;
 import com.blg.rtu3.utils.LogUtils;

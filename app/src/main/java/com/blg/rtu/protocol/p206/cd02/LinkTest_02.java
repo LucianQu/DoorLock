@@ -4,8 +4,9 @@ package com.blg.rtu.protocol.p206.cd02;
 import android.util.Log;
 
 import com.blg.rtu.protocol.RtuData;
+import com.blg.rtu.protocol.p206.common.ControlProtocol;
+import com.blg.rtu.protocol.p206.common.ProtocolSupport;
 import com.blg.rtu.protocol.p206.util.Constant;
-import com.blg.rtu.protocol.p206.common.*;
 /**
  * 链路检测（AFN=02H）
  * 用于GPRS、CDMA登录、退出登录、在线保持。数据域：1个字节，F0登录，F1退出登录，F2在线保持。

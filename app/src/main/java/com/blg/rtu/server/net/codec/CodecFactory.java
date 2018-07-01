@@ -1,9 +1,9 @@
 package com.blg.rtu.server.net.codec;
 
-import org.apache.mina.filter.codec.ProtocolCodecFactory;
-import org.apache.mina.filter.codec.ProtocolEncoder;
-import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.filter.codec.ProtocolCodecFactory;
+import org.apache.mina.filter.codec.ProtocolDecoder;
+import org.apache.mina.filter.codec.ProtocolEncoder;
 
 public class CodecFactory implements ProtocolCodecFactory {
 	private ProtocolEncoder encoder;

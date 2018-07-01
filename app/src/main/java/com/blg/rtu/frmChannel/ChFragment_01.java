@@ -1,12 +1,5 @@
 package com.blg.rtu.frmChannel;
 
-import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Action;
-import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Init;
-import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Operate;
-import com.blg.rtu.util.Constant;
-import com.blg.rtu3.MainActivity;
-import com.blg.rtu3.R;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -20,6 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Action;
+import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Init;
+import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Operate;
+import com.blg.rtu.util.Constant;
+import com.blg.rtu3.MainActivity;
+import com.blg.rtu3.R;
 
 public class ChFragment_01 extends Fragment {
 	//public static final String TAG = ChFragment_01.class.getSimpleName() ;

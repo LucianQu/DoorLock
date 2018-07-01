@@ -1,7 +1,6 @@
 package com.blg.rtu.protocol.p206.common;
 
 import com.blg.rtu.util.ByteUtil;
-
 import com.blg.rtu.util.DateTime;
 
 /**

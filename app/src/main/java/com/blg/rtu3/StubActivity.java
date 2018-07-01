@@ -5,8 +5,7 @@ import android.util.Log;
 
 import com.blg.rtu.aidl.ActivityAidl;
 import com.blg.rtu.aidl.RemoteParcel;
-
-import com.blg.rtu.protocol.RtuData ;
+import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 
 public class StubActivity extends ActivityAidl.Stub{

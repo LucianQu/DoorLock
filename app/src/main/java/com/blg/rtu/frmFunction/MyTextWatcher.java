@@ -1,9 +1,9 @@
 package com.blg.rtu.frmFunction;
 
-import com.blg.rtu.util.Preferences;
-
 import android.text.Editable;
 import android.text.TextWatcher;
+
+import com.blg.rtu.util.Preferences;
 
 public class MyTextWatcher implements TextWatcher{
 	

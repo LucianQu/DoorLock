@@ -1,10 +1,10 @@
 package com.blg.rtu3.sm;
 
-import com.blg.rtu.util.Constant;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+
+import com.blg.rtu.util.Constant;
 
 public class SmBroadcastSender {
 

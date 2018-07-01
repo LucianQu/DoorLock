@@ -1,9 +1,6 @@
 package com.blg.rtu.compound;
 
 
-import java.util.Date;
-
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
@@ -14,16 +11,18 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.blg.rtu.util.DateTime;
 import com.blg.rtu3.R;
+
+import java.util.Date;
 
 public class PullListView extends ListView implements OnScrollListener {
 

@@ -1,7 +1,7 @@
 package com.blg.rtu.protocol.p206.common;
 
-import com.blg.rtu.util.CRC8_for_2_0;
 import com.blg.rtu.util.ByteUtil;
+import com.blg.rtu.util.CRC8_for_2_0;
 
 public class CRCProtocol {
 	/**

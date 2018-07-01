@@ -1,9 +1,5 @@
 package com.blg.rtu.server.net;
 
-import java.util.*;
-
-import org.apache.mina.core.session.IoSession;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -13,6 +9,11 @@ import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.StringValueForServer;
 import com.blg.rtu3.server.CoreControl;
 import com.blg.rtu3.server.LocalServer;
+
+import org.apache.mina.core.session.IoSession;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NetManager {
 	

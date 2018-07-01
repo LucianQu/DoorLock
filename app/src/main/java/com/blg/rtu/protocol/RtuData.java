@@ -1,8 +1,8 @@
 package com.blg.rtu.protocol;
 
-import java.io.Serializable;
-
 import com.blg.rtu.util.Constant;
+
+import java.io.Serializable;
 
 
 /**

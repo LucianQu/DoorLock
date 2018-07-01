@@ -1,8 +1,10 @@
 package com.blg.rtu.protocol.p206.cd10_50;
 
-import java.util.HashMap;
-import com.blg.rtu.protocol.p206.common.*;
+import com.blg.rtu.protocol.p206.common.ProtocolSupport;
+import com.blg.rtu.protocol.p206.common.TailProtocol;
 import com.blg.rtu.protocol.p206.util.Constant;
+
+import java.util.HashMap;
 
 
 public class Read_50 extends ProtocolSupport{

@@ -3,8 +3,6 @@ package com.blg.rtu3.server;
 
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
-import com.blg.rtu.util.Constant;
-import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.StringValueForServer;
 
 public class CoreThread {
@@ -221,8 +219,8 @@ public class CoreThread {
 								lastSendAutoCommandTime = now ;
 							}
 							//可以进行默认命令查询
-							CoreThread.autoQueryThread.setCanAutoQuery(true) ;
-							CoreThread.autoSetThread.setCanAutoSet(true) ;
+							//CoreThread.autoQueryThread.setCanAutoQuery(true) ;
+							//CoreThread.autoSetThread.setCanAutoSet(true) ;
 							CoreThread.event = 0 ;
 						}else{
 							//event=0或其他
@@ -249,12 +247,7 @@ public class CoreThread {
 					CoreThread.server.mHandler.postDelayed(new Runnable(){
 						@Override
 						public void run() {
-							int type = Preferences.getInstance().getInt(Constant.wifi_connect_type) ;
-							if(type == 0 || type == 1) {
-								new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_50(), true, true) ;
-							}else{
-								new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_74(), true, true) ;
-							}
+							new CoreControl(CoreThread.server).sendRtuCommandByTcp(new CommandCreator().cd_50(), true, true) ;
 						}
 					}, 500) ;//可能一段时间一直查询不到RTU ID，所以这里用postDelayed，等待0.5秒
 				}catch(Exception e){

@@ -5,8 +5,8 @@ import android.os.RemoteException;
 import com.blg.rtu.aidl.ActivityAidl;
 import com.blg.rtu.aidl.RemoteParcel;
 import com.blg.rtu.aidl.ServiceAidl;
-import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.protocol.RtuCommand;
+import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.ByteUtil;
 import com.blg.rtu.util.Constant;
 

@@ -1,10 +1,10 @@
 package com.blg.rtu3.sm;
 
-import com.blg.rtu3.MainActivity;
-
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.telephony.SmsManager;
+
+import com.blg.rtu3.MainActivity;
 
 public class SmsSender {
 

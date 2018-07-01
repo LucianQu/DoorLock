@@ -1,13 +1,13 @@
 package com.blg.rtu.frmChannel.helpCh1;
 
-import com.blg.rtu.frmChannel.ChFragment_01;
-import com.blg.rtu.util.Constant;
-import com.blg.rtu.util.Preferences;
-
 import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import com.blg.rtu.frmChannel.ChFragment_01;
+import com.blg.rtu.util.Constant;
+import com.blg.rtu.util.Preferences;
 
 /**
  * frmChannel01内部行为类

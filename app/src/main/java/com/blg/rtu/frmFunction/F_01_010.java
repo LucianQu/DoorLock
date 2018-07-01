@@ -22,6 +22,8 @@ import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.ImageUtil;
 import com.blg.rtu.util.Preferences;
+import com.blg.rtu.util.SharepreferenceUtils;
+import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
@@ -305,21 +307,66 @@ public class F_01_010  extends FrmParent {
 	@Override
 	public void receiveRtuData(RtuData d){
 		super.receiveRtuData(d) ;
-		this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null); 
-		//super.scrollTo(this.btnRead) ;
-		
-		Preferences p = Preferences.getInstance() ;
-		
+		String deviceID = SharepreferenceUtils.getDeviceId(act) ;
+		String password = SharepreferenceUtils.getPassword(act) ;
+		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null);
 		Data_10_50 sd = (Data_10_50)d.subData ;
-		String rtuId = sd.getRtuId() ;
-		if(rtuId != null && rtuId.length() > 6){
-			item01.setText(rtuId.substring(0, 6)) ;
-			item02.setText(rtuId.substring(6)) ;
-			//item03.setText(sd.getRtuIdHex()) ;
-			//p.putString(Constant.func_vk_01_010_03, d.getRtuId_hex()) ;
+		if (act.frgTool.f_1_3.learningClick()) {
+			SharepreferenceUtils.saveHasLearn(act,true);
+			act.frgTool.f_1_3.setLearningClickStatus(false);
+			if (!"".equals(deviceID)) {
+				String[] listId = deviceID.split("-") ;
+				String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
+				if (deviceID.contains(d.getRtuId())) {
+					ToastUtils.show(act, "设备已经学习过，不在学习!");
+					int position = -1 ;
+					for (int i = 0; i < listId.length; i++) {
+						if (d.getRtuId().equals(listId[i])) {
+							listPassword[i] = sd.getPassWord()+"" ;
+							position = i ;
+						}
+					}
+
+					if (position != -1) {
+						String ids = "";
+						String pws = "";
+						for (int j = 0; j < listId.length; j++) {
+							if (j == 0) {
+								ids = listId[0] ;
+								pws = listPassword[0] ;
+							}else {
+								ids = ids + "-"+listId[j] ;
+								pws = pws +"-" + listPassword[j] ;
+							}
+						}
+						SharepreferenceUtils.saveDeviceId(act,ids);
+						SharepreferenceUtils.savePassword(act, pws);
+					}
+				}else {
+					SharepreferenceUtils.saveDeviceId(act,deviceID+"-"+d.getRtuId());
+					SharepreferenceUtils.savePassword(act, password + "-" + sd.getPassWord());
+				}
+			}else {
+				SharepreferenceUtils.saveDeviceId(act, d.getRtuId());
+				SharepreferenceUtils.savePassword(act, sd.getPassWord()+"");
+			}
+
+		}else {
+
+			if (!"".equals(deviceID)) {
+				if (deviceID.contains(d.getRtuId())) {
+					SharepreferenceUtils.saveHasLearn(act,true);
+				}else {
+					SharepreferenceUtils.saveHasLearn(act,false);
+					ToastUtils.show(act, "该设备未学习，请先学习！");
+				}
+			}else {
+				ToastUtils.show(act, "该设备未学习，请先学习！");
+			}
 		}
-		
-		p.putString(Constant.func_vk_01_010_dt, this.resultDt.getText().toString()) ;
+
+		act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+
 	}
 	
 	
