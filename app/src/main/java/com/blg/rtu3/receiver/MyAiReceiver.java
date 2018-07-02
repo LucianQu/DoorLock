@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.blg.rtu3.MainActivity;
+import com.blg.rtu3.utils.LogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,12 +104,11 @@ public class MyAiReceiver extends BroadcastReceiver {
 	
 	//send msg to mainActivity
 	private void processCustomMessage(Context context, Bundle bundle) {
-			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-			String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+
+			String EXTRA_ALERT = bundle.getString(JPushInterface.EXTRA_ALERT);
+		LogUtils.e("EXTRA_ALERT",EXTRA_ALERT);
 			Intent msgIntent = new Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
-			msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
-			if (extras.equals("")) {
-			}
+			msgIntent.putExtra(MainActivity.KEY_EXTRAS, EXTRA_ALERT);
 			context.sendBroadcast(msgIntent);
 	}
 

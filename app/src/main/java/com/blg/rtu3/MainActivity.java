@@ -43,8 +43,10 @@ import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.ResourceUtils;
 import com.blg.rtu.util.SoundAlert;
 import com.blg.rtu.util.StringValueForActivity;
+import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu3.receiver.JPushActivity;
 import com.blg.rtu3.server.LocalServer;
+import com.blg.rtu3.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,7 @@ public class MainActivity  extends Activity {
 	private MessageReceiver mMessageReceiver;
 	public static final String MESSAGE_RECEIVED_ACTION = "com.blg.rtu3.MESSAGE_RECEIVED_ACTION";
 	public static final String KEY_MESSAGE = "message";
-	public static final String KEY_EXTRAS = "extras";
+	public static final String KEY_EXTRAS = "EXTRA_ALERT";
 
 	private ViewPager mPager;// Tab页卡
 	private List<View> listPages; // Tab页面列表
@@ -139,12 +141,17 @@ public class MainActivity  extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
-              // String messge = intent.getStringExtra(KEY_MESSAGE);
 				String extras = intent.getStringExtra(KEY_EXTRAS);
 
-                scrollTextView.setText(extras);
-                scrollTextView.init(getWindowManager());
-                scrollTextView.startScroll();
+				if (extras != null) {
+					LogUtils.e("消息接收-extras", extras);
+					scrollTextView.setText(extras);
+					scrollTextView.init(getWindowManager());
+				}else {
+					ToastUtils.show(MainActivity.this, "推送消息为空！");
+				}
+
+                //scrollTextView.startScroll();
 			}
 		}
 	}
@@ -252,6 +259,8 @@ public class MainActivity  extends Activity {
         //<intent-filter><action android:name="forServiceAidl"></action></intent-filter>
 
 		waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
+		//waitServerStartedAndToConnectNet("192.168.4.1", 333) ; //wifi连接
+		//waitServerStartedAndToConnectNet("10.10.100.254", 8899) ; //wifi连接
 
 		mJPush = new JPushActivity(this) ;
 		mJPush.initJPush();//初始化极光推送

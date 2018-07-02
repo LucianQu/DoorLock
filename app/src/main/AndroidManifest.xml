@@ -62,7 +62,7 @@
     
     <!-- android:hardwareAccelerated="false": 取消硬件加速，否则加载大图片时，不显示，实际是抛异常了： Bitmap too large to be uploaded into a texture -->
     <application
-        android:name=".AppContext"
+        android:name="com.blg.rtu3.AppContext"
         android:hardwareAccelerated="false" 
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -92,7 +92,7 @@
             </intent-filter>-->
         </activity>
         <activity
-            android:name="LoginActivity"
+            android:name="com.blg.rtu3.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>   
         <!-- 
@@ -117,7 +117,7 @@
         </receiver>
         
         <service 
-            android:name="com.blg.rtu3.server.LocalServer" 
+            android:name="com.blg.rtu3.server.LocalServer"
             android:exported="false" 
             android:enabled="true"></service>
 		<!-- android:exported 这个服务能否被其它应用程序组件调用或者跟它交互 ，它的默认值依赖于该服务所包含的过滤器。没有过滤器则意味着该服务只能通过指定明确的类名调用
@@ -132,7 +132,7 @@
         	 （优先级的大小范围为 -1000 到 1000）这个优先级比收到短信的那个软件优先级高。
         	 所以SmsReceiver接收到了短信并不再往下传了，起到了拦截短信的作用。 
          -->
-        <receiver android:name="com.blg.rtu3.sm.SmsReceiver" android:enabled="true"> 
+        <receiver android:name="com.blg.rtu3.sm.SmsReceiver" android:enabled="true">
           <intent-filter android:priority="100"> 
               <action android:name="android.provider.Telephony.SMS_RECEIVED"/> 
           </intent-filter> 

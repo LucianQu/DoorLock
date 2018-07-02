@@ -60,20 +60,24 @@ public class F_1_1 extends FrmParent {
 
 	public void displayData(DoorStatus doorStatus) {
 		//锁状态
-		if (doorStatus.getLockStates()[0] == 1) {
-			tvLockStatus.setText("开锁");
-		}else if (doorStatus.getLockStates()[0] == 0) {
-			tvLockStatus.setText("关锁");
-		}else {
-			tvLockStatus.setText("未知");
+		if(null != doorStatus.getLockStates()&& doorStatus.getLockStates().length >= 3) {
+			if (doorStatus.getLockStates()[0] == 1) {
+				tvLockStatus.setText("开锁");
+			}else if (doorStatus.getLockStates()[0] == 0) {
+				tvLockStatus.setText("关锁");
+			}else {
+				tvLockStatus.setText("未知");
+			}
 		}
 		//锁原点
-		if (doorStatus.getLockStates()[1] == 1) {
-			imgLockInit.setImageResource(R.mipmap.ic_circle_green);
-		}else if (doorStatus.getLockStates()[1] == 0) {
-			imgLockInit.setImageResource(R.mipmap.ic_circle_red);
-		}else {
-			imgLockInit.setImageResource(R.mipmap.ic_circle_gray1);
+		if(null != doorStatus.getLockStates()&& doorStatus.getLockStates().length >= 2) {
+			if (doorStatus.getLockStates()[1] == 1) {
+				imgLockInit.setImageResource(R.mipmap.ic_circle_green);
+			} else if (doorStatus.getLockStates()[1] == 0) {
+				imgLockInit.setImageResource(R.mipmap.ic_circle_red);
+			} else {
+				imgLockInit.setImageResource(R.mipmap.ic_circle_gray1);
+			}
 		}
 		//锁报警
 		/*if (doorStatus.getLockStates()[0] == 1) {
@@ -84,12 +88,14 @@ public class F_1_1 extends FrmParent {
 			imgLockAlarm
 		}*/
 		//锁电源
-		if (doorStatus.getLockStates()[0] == 1) {
-			imgLockPower.setImageResource(R.mipmap.ic_circle_green);
-		}else if (doorStatus.getLockStates()[0] == 0) {
-			imgLockPower.setImageResource(R.mipmap.ic_circle_red);
-		}else {
-			imgLockPower.setImageResource(R.mipmap.ic_circle_gray1);
+		if(null != doorStatus.getLockStates()&& doorStatus.getLockStates().length >= 1) {
+			if (doorStatus.getLockStates()[0] == 1) {
+				imgLockPower.setImageResource(R.mipmap.ic_circle_green);
+			} else if (doorStatus.getLockStates()[0] == 0) {
+				imgLockPower.setImageResource(R.mipmap.ic_circle_red);
+			} else {
+				imgLockPower.setImageResource(R.mipmap.ic_circle_gray1);
+			}
 		}
 
 	}

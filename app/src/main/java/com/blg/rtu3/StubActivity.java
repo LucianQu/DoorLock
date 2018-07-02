@@ -141,7 +141,7 @@ public class StubActivity extends ActivityAidl.Stub{
 		mAct.mHandler.post(new Runnable(){
 			@Override
 			public void run() {
-				mAct.frgTool.fragment_ch04.setSendBackCommandData(data) ;
+				//mAct.frgTool.fragment_ch04.setSendBackCommandData(data) ; qls
 				
 				if(data.dataCode != null && !data.dataCode.equals("")){
 					if(data.dataCode.equals(Code206.cd_10) || data.dataCode.equals(Code206.cd_50)){

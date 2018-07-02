@@ -136,7 +136,7 @@ public class F_1_3 extends FrmParent {
 
 	private  void postMessage1(String mess){//请求参数个数不确定，可变长参数,可变长参数放在最后一个
 		try {
-			String url = "http://39.106.112.210:7090/door/door/pushAdver.act";
+			String url = "http://39.106.112.210:8090/door/door/pushAdver.act";
 			RequestParams params = new RequestParams();
 			params.addBodyParameter("mess",mess);
 			final HttpUtils http = new HttpUtils();

@@ -27,6 +27,7 @@ import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
+import com.blg.rtu3.utils.LogUtils;
 
 public class F_01_010  extends FrmParent {
 	
@@ -311,6 +312,9 @@ public class F_01_010  extends FrmParent {
 		String password = SharepreferenceUtils.getPassword(act) ;
 		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null);
 		Data_10_50 sd = (Data_10_50)d.subData ;
+		LogUtils.e("50H", sd.toString());
+		item02.setText(sd.getPassWord()+"");
+		item01.setText(sd.getPassWord()+"");
 		if (act.frgTool.f_1_3.learningClick()) {
 			SharepreferenceUtils.saveHasLearn(act,true);
 			act.frgTool.f_1_3.setLearningClickStatus(false);
@@ -350,7 +354,7 @@ public class F_01_010  extends FrmParent {
 				SharepreferenceUtils.saveDeviceId(act, d.getRtuId());
 				SharepreferenceUtils.savePassword(act, sd.getPassWord()+"");
 			}
-
+			act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		}else {
 
 			if (!"".equals(deviceID)) {
@@ -364,8 +368,6 @@ public class F_01_010  extends FrmParent {
 				ToastUtils.show(act, "该设备未学习，请先学习！");
 			}
 		}
-
-		act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 
 	}
 	

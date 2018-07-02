@@ -24,6 +24,7 @@ import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.F1.Data_F1;
+import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
@@ -258,6 +259,7 @@ public class F_1_0 extends FrmParent {
 	private void putSpinnerValue1(){
 		/*spinnerAdapter1.add(new SpinnerVO("0", "1号门")) ;
 		spinnerAdapter1.add(new SpinnerVO("1", "2号门")) ;*/
+		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 	}
 
 	private class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
@@ -368,21 +370,24 @@ public class F_1_0 extends FrmParent {
 		}else {
 			setPieChart(0);
 		}
-
-		if (doorStatus.getWarnStates()[0] == 1) {
-			imgDoorPower.setImageResource(R.mipmap.ic_circle_red);
-		}else if (doorStatus.getWarnStates()[0] == 0){
-			imgDoorPower.setImageResource(R.mipmap.ic_circle_green);
-		}else {
-			imgDoorPower.setImageResource(R.mipmap.ic_circle_gray1);
+		if(null != doorStatus.getWarnStates() && doorStatus.getWarnStates().length >= 1) {
+			if (doorStatus.getWarnStates()[0] == 1) {
+				imgDoorPower.setImageResource(R.mipmap.ic_circle_red);
+			}else if (doorStatus.getWarnStates()[0] == 0){
+				imgDoorPower.setImageResource(R.mipmap.ic_circle_green);
+			}else {
+				imgDoorPower.setImageResource(R.mipmap.ic_circle_gray1);
+			}
 		}
 
-		if (doorStatus.getWarnStates()[2] == 1) {
-			imgDoorAlarm.setImageResource(R.mipmap.ic_circle_red);
-		}else if (doorStatus.getWarnStates()[2] == 0) {
-			imgDoorAlarm.setImageResource(R.mipmap.ic_circle_green);
-		}else {
-			imgDoorPower.setImageResource(R.mipmap.ic_circle_gray1);
+		if(null != doorStatus.getWarnStates()&& doorStatus.getWarnStates().length >= 3) {
+			if (doorStatus.getWarnStates()[2] == 1) {
+				imgDoorAlarm.setImageResource(R.mipmap.ic_circle_red);
+			} else if (doorStatus.getWarnStates()[2] == 0) {
+				imgDoorAlarm.setImageResource(R.mipmap.ic_circle_green);
+			} else {
+				imgDoorPower.setImageResource(R.mipmap.ic_circle_gray1);
+			}
 		}
 
 		act.frgTool.f_1_1.displayData(doorStatus);//显示第二页数据
