@@ -36,7 +36,7 @@ public class Answer_10_50 extends ProtocolSupport{
 		d.setSubData(subD) ;
 		//String[] ss = new RtuIdProtocol().parseRtuId_1(b, index , (index + Constant.Bits_RTU_ID - 1)) ;
 		//subD.setRtuId(ss[0]) ;
-		int password = ByteUtil.bytes2Int(new byte[]{b[index++],b[index++],0,0},0) ;
+		int password = ByteUtil.bytes2Int(new byte[]{0,0,b[index++],b[index++]},0) ;
 		subD.setPassWord(password);
 
 	}

@@ -27,6 +27,7 @@ import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
+import com.blg.rtu.util.Util;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
@@ -113,10 +114,12 @@ public class F_1_0 extends FrmParent {
 		tv_open.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//ToastUtils.show(act, "点击开门");
-				setProgressVisible(1) ;
-				doorContralServer("123456789012","F1","2") ;
-				setCommand(2) ;
+				ToastUtils.show(act, "点击开门");
+				if (Util.checkIsHasLearned(act)) {
+					setProgressVisible(1);
+					doorContralServer("123456789012", "F1", "2");
+					setCommand(2);
+				}
 			}
 		});
 		pb_open = (ProgressBar) view.findViewById(R.id.pb_open);
@@ -125,10 +128,12 @@ public class F_1_0 extends FrmParent {
 		tv_close.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//ToastUtils.show(act, "点击关门");
-				setProgressVisible(2) ;
-				doorContralServer("123456789012","F1","1") ;
-				setCommand(1) ;
+				ToastUtils.show(act, "点击关门");
+				if (Util.checkIsHasLearned(act)) {
+					setProgressVisible(2);
+					doorContralServer("123456789012", "F1", "1");
+					setCommand(1);
+				}
 			}
 		});
 		pb_close = (ProgressBar) view.findViewById(R.id.pb_close);
@@ -137,10 +142,12 @@ public class F_1_0 extends FrmParent {
 		tv_stop.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//ToastUtils.show(act, "点击停止");
-				setProgressVisible(3) ;
-				doorContralServer("123456789012","F1","3") ;
-				setCommand(3) ;
+				ToastUtils.show(act, "点击停止");
+				if (Util.checkIsHasLearned(act)) {
+					setProgressVisible(3);
+					doorContralServer("123456789012", "F1", "3");
+					setCommand(3);
+				}
 			}
 		});
 		pb_stop= (ProgressBar) view.findViewById(R.id.pb_stop);
@@ -158,6 +165,8 @@ public class F_1_0 extends FrmParent {
 
 		return view ;
 	}
+
+
 
 	private void setProgressVisible(int position){
 		if (position == 1) {
@@ -274,7 +283,7 @@ public class F_1_0 extends FrmParent {
 
 
 	private void doorContralServer(final String dtuId, String code, String flag) {
-		String url = "http://39.106.112.210:7090/door/door/state.act?" ;
+		String url = "http://39.106.112.210:8090/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
 		requestParams.addBodyParameter("code", code);

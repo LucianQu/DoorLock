@@ -42,9 +42,9 @@
     
     <string name="result_datetime">收到应答时刻</string>
     
-    <string name="func_01_010">终端地址</string>
-    <string name="func_01_010_item1">行政区编号</string>
-    <string name="func_01_010_item2">设备编号</string>
+    <string name="func_01_010">门出厂编号和密码</string>
+    <string name="func_01_010_item1">门出厂遍号</string>
+    <string name="func_01_010_item2">密码</string>
     <string name="func_01_010_item3">地址</string>
     <string name="func_01_020">时钟</string>
     <string name="func_01_020_item1">手机时钟</string>

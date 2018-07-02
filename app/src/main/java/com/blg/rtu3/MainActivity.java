@@ -80,6 +80,7 @@ public class MainActivity  extends Activity {
 	public TextView switchLog ;
 	
 	public TextView rtuAssiName ;
+	private TextView tvProductID ;
 	
 	public ScrollView func_scrollView ;
 	
@@ -288,7 +289,9 @@ public class MainActivity  extends Activity {
 			}
 		}, 500) ;
 	}
-
+	protected void setDeviceID(String id) {
+		tvProductID.setText(id);
+	}
 	/**
 	 * 后台服务已经启动，连接网络
 	 * @param url
@@ -385,6 +388,8 @@ public class MainActivity  extends Activity {
 		listPages.add(pageView_fourth);
 
 		tcpConnectStatus = (TextView) findViewById(R.id.tcpConnectStatus1);
+		tvProductID = (TextView) findViewById(R.id.productID);
+
 		switchFun = (TextView) findViewById(R.id.switchFun) ;
 		switchOnce = (TextView) findViewById(R.id.switchOnce) ;
 		switchQuery = (TextView) findViewById(R.id.switchQuery) ;

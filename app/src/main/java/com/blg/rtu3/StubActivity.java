@@ -87,6 +87,8 @@ public class StubActivity extends ActivityAidl.Stub{
 					if(data.dataCode.equals(Code206.cd_10) || data.dataCode.equals(Code206.cd_50)){
 						//设置qulusheng或查询终端地址
 						//qulusheng
+						mAct.frgTool.f_01_010.receiveRtuData(data);
+						mAct.setDeviceID(data.getRtuId());
 					}else
 					if(data.dataCode.equals(Code206.cd_44) || data.dataCode.equals(Code206.cd_74)){
 						//设置或查询终端地址

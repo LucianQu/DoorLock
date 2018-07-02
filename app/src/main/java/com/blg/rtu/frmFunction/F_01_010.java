@@ -31,8 +31,8 @@ import com.blg.rtu3.utils.LogUtils;
 
 public class F_01_010  extends FrmParent {
 	
-	private final static int requestLen_1 = 6 ; 
-	private final static int requestLen_2 = 5 ; 
+	private final static int requestLen_1 = 10 ;
+	private final static int requestLen_2 = 10 ;
 	//private final static int requestLen_3 = 14 ; 
 
 	private TextView title ;
@@ -313,8 +313,8 @@ public class F_01_010  extends FrmParent {
 		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null);
 		Data_10_50 sd = (Data_10_50)d.subData ;
 		LogUtils.e("50H", sd.toString());
+		item01.setText(d.getRtuId()+"");
 		item02.setText(sd.getPassWord()+"");
-		item01.setText(sd.getPassWord()+"");
 		if (act.frgTool.f_1_3.learningClick()) {
 			SharepreferenceUtils.saveHasLearn(act,true);
 			act.frgTool.f_1_3.setLearningClickStatus(false);

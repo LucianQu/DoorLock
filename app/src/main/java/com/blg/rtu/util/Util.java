@@ -1,6 +1,8 @@
 package com.blg.rtu.util;
 
-import java.text.DecimalFormat; 
+import com.blg.rtu3.MainActivity;
+
+import java.text.DecimalFormat;
 
 public class Util {
 
@@ -25,6 +27,16 @@ public class Util {
 			}
 		}
 		return s ;
+	}
+
+	public static boolean checkIsHasLearned(MainActivity act){
+		boolean ishaslearn = SharepreferenceUtils.getHasLearn(act) ;
+		if (ishaslearn) {
+			return true ;
+		}else {
+			ToastUtils.show(act, "该设备未学习，请先学习再操作!");
+			return false ;
+		}
 	}
 	
 	public static String formatFloat2(float f){

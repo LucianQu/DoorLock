@@ -71,6 +71,7 @@ public class F_1_3 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				isLearning = true ;
+				act.frgTool.f_01_010.queryCommand();
 				ToastUtils.show(act,"门学习");
 			}
 		});

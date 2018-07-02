@@ -11,7 +11,7 @@
 		android:id="@+id/ScrollNotice"
 		android:layout_height="36dp"
 		android:layout_width="fill_parent"
-		android:text="重大喜讯：xixixi!"
+		android:text="石家庄专业智能门设备制造商!"
 		android:gravity="center_vertical"
 		android:textColor="@color/red"
 		android:inputType="text"
@@ -60,7 +60,7 @@
 			android:gravity="left|center_vertical"
 			>
 
-				<LinearLayout
+				<!--<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="@dimen/base20dp"
 					android:orientation="horizontal"
@@ -82,7 +82,7 @@
 						android:gravity="center"
 						android:textColor="@color/bg_light_black"
 						/>
-			</LinearLayout>
+			</LinearLayout>-->
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="@dimen/base20dp"
@@ -101,7 +101,7 @@
 					android:id="@+id/tcpConnectStatus1"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:text="已连接"
+					android:text="未连接"
 					android:gravity="center"
 					android:textColor="@color/bg_light_black"
 					/>
