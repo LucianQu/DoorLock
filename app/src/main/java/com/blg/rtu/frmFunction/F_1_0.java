@@ -557,8 +557,7 @@ public class F_1_0 extends FrmParent {
 		
 		Data_F1 data = (Data_F1)d.subData ;
 		if (data != null) {
-			int jq = data.getJiaQuan() ;
-			tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree((jq/1000) + "." +(jq%1000)));
+			displayWifiData(data) ;
 		}else {
 			ToastUtils.show(act, "F1接收数据为空");
 		}
