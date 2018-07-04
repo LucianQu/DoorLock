@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
     
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	style="@style/func_out_linearlayout_style">
-
-	<!-- start 头部标题 --> 
-	<LinearLayout style="@style/func_title_linearlayout_style">
+	android:orientation="vertical"
+	android:layout_height="match_parent"
+	android:layout_width="match_parent"
+	android:layout_marginLeft="@dimen/base10dp"
+	android:layout_marginRight="@dimen/base10dp"
+	>
+	<LinearLayout
+		android:layout_height="55dp"
+		android:layout_width="match_parent"
+		android:layout_gravity="center_vertical"
+		android:background="@drawable/border"
+		android:orientation="horizontal"
+		android:layout_marginRight="@dimen/base6dp"
+		android:layout_marginLeft="@dimen/base6dp"
+		>
 	    <TextView
 	    	android:id="@+id/f_01_010_Title"
 	        android:drawableLeft="@drawable/item001"
 	        android:text="@string/func_01_010"
 			style="@style/func_title_viewtext_style"/>
-	    <!-- 注释掉，以备用，若应用并显示在界面上时，要调整上面textView的宽度（如300dp） 
-	    <ImageView 
-	        android:id="@+id/commandStatus"
-	        style="@style/func_itemtitle_imageview_style"
-	        android:contentDescription="@string/txtBtn"/>
-	    -->
-	</LinearLayout>  
-	
-	
+
+	</LinearLayout>
     <!-- start 具体内布局 -->
     <FrameLayout
     	android:id="@+id/f_01_010_Frm"
 		style="@style/func_framelayout_style">
-    
 		 <!-- start 具体内容 -->
 		 <LinearLayout 
 	        style="@style/func_linearlayout_style">
-	        
 			<LinearLayout
 			    android:layout_width="match_parent"
 			    android:layout_height="@dimen/common_line_height40"
@@ -55,40 +57,7 @@
 					android:id="@+id/func_01_010_item02"  
 					android:labelFor="@id/func_01_010_item02" 
 				    style="@style/func_item_editnumber_style_120"/>
-			    
-			   <!--  <ImageView 
-			        android:id="@+id/btn_set_1"
-			        android:layout_width="@dimen/img_btn_layout_width_35"
-			        android:layout_height="@dimen/img_btn_layout_height_35"
-			        android:layout_marginLeft="6dp"
-			        android:src="@drawable/btn_ball_1"
-			        android:contentDescription="@string/txtBtn"/> -->
-			    
 			</LinearLayout>
-	      <!--   
-			<LinearLayout
-			    android:layout_width="match_parent"
-			    android:layout_height="@dimen/common_line_height40"
-			    >
-			    <TextView
-			        android:text="@string/func_01_010_item3"
-			        style="@style/func_item_viewtext_style_100_a"/>
-			    
-			    新版本SDK要求填写属性lableFor,类似于填写一个ID来绑定这个控件，否则警告
-			    <EditText
-					android:id="@+id/func_01_010_item03"  
-					android:labelFor="@id/func_01_010_item03" 
-				    style="@style/func_item_editHex_style_120" />
-			    			    
-			    <ImageView 
-			        android:id="@+id/btn_set_2"
-			        android:layout_width="@dimen/img_btn_layout_width_35"
-			        android:layout_height="@dimen/img_btn_layout_height_35"
-			        android:layout_marginLeft="6dp"
-			        android:src="@drawable/btn_ball_1"
-			        android:contentDescription="@string/txtBtn"/>
-			</LinearLayout> -->
-									
 		    <include layout="@layout/show_btn_set_query" />
 		 </LinearLayout>
 	     

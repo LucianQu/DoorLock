@@ -21,7 +21,6 @@ import com.android.volley.toolbox.Volley;
 import com.blg.rtu.frmFunction.bean.DoorInfo;
 import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
-import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.util.SharepreferenceUtils;
@@ -54,7 +53,9 @@ import lecho.lib.hellocharts.view.PieChartView;
 public class F_1_0 extends FrmParent {
 
 	private Spinner spinner;
+	private Spinner spinner2;
 	private ArrayAdapter<SpinnerVO> spinnerAdapter1;
+	private ArrayAdapter<SpinnerVO> spinnerAdapter2;
 	private RequestQueue queue;
 	private TextView tv_jiaquan ;
 	private TextView tv_open ;
@@ -80,7 +81,7 @@ public class F_1_0 extends FrmParent {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.act = (MainActivity)activity ;
-		this.queryCommandCode = Code206.cd_F4 ;
+		this.queryCommandCode = null ;
 	}
 
 	@Override
@@ -103,9 +104,15 @@ public class F_1_0 extends FrmParent {
 		spinnerAdapter1 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
 		this.putSpinnerValue1();
 		spinnerAdapter1.setDropDownViewResource(R.layout.spinner_item);
-		// 将adapter 添加到spinner中
 		spinner.setAdapter(spinnerAdapter1);
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
+
+		spinner2 = (Spinner)view.findViewById(R.id.spinner_communication);
+		spinnerAdapter2 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
+		spinnerAdapter2.setDropDownViewResource(R.layout.spinner_item);
+		this.putSpinnerValue2();
+		spinner2.setAdapter(spinnerAdapter2);
+		spinner2.setOnItemSelectedListener(new SpinnerSelectedListener2());
 
 		tv_jiaquan = (TextView) view.findViewById(R.id.tv_jiaquan) ;
 		tv_jiaquan.setText("0.001");
@@ -117,8 +124,11 @@ public class F_1_0 extends FrmParent {
 				ToastUtils.show(act, "点击开门");
 				if (Util.checkIsHasLearned(act)) {
 					setProgressVisible(1);
-					doorContralServer("123456789012", "F1", "2");
-					setCommand(2);
+					if (SharepreferenceUtils.getIsWifi(act)) {
+						setCommand(2);
+					}else {
+						doorContralServer("123456789012", "F1", "2");
+					}
 				}
 			}
 		});
@@ -131,8 +141,11 @@ public class F_1_0 extends FrmParent {
 				ToastUtils.show(act, "点击关门");
 				if (Util.checkIsHasLearned(act)) {
 					setProgressVisible(2);
-					doorContralServer("123456789012", "F1", "1");
-					setCommand(1);
+					if (SharepreferenceUtils.getIsWifi(act)) {
+						setCommand(1);
+					}else {
+						doorContralServer("123456789012", "F1", "1");
+					}
 				}
 			}
 		});
@@ -145,8 +158,12 @@ public class F_1_0 extends FrmParent {
 				ToastUtils.show(act, "点击停止");
 				if (Util.checkIsHasLearned(act)) {
 					setProgressVisible(3);
-					doorContralServer("123456789012", "F1", "3");
-					setCommand(3);
+					if (SharepreferenceUtils.getIsWifi(act)) {
+						setCommand(3);
+					}else {
+						doorContralServer("123456789012", "F1", "3");
+					}
+
 				}
 			}
 		});
@@ -270,11 +287,30 @@ public class F_1_0 extends FrmParent {
 		spinnerAdapter1.add(new SpinnerVO("1", "2号门")) ;*/
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 	}
+	private void putSpinnerValue2(){
+		spinnerAdapter2.add(new SpinnerVO("0", "服务通信")) ;
+		spinnerAdapter2.add(new SpinnerVO("1", "Wifi通信")) ;
+	}
 
 	private class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			if(parent.getId() == spinner.getId()){
 
+			}
+		}
+		public void onNothingSelected(AdapterView<?> arg0) {
+		}
+	}
+	private class SpinnerSelectedListener2 implements AdapterView.OnItemSelectedListener {
+		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			if(parent.getId() == spinner2.getId()){
+				if (position == 0) {
+					ToastUtils.show(act, "通信对象：服务器");
+					SharepreferenceUtils.saveIsWifi(act, false);
+				}else {
+					ToastUtils.show(act, "通信对象：WIFI");
+					SharepreferenceUtils.saveIsWifi(act, true);
+				}
 			}
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
@@ -307,7 +343,7 @@ public class F_1_0 extends FrmParent {
 								String data = jsonResult.getString("data");
 								doorStatus = gson.fromJson(data,DoorStatus.class);
 								if(null != doorStatus) {
-									displayData(doorStatus) ;
+									displayServiceData(doorStatus) ;
 								}else {
 									ToastUtils.show(act, "返回数据为空！");
 								}
@@ -342,7 +378,7 @@ public class F_1_0 extends FrmParent {
 			}
 		});
 	}
-	private void displayData(DoorStatus doorStatus) {
+	private void displayServiceData(DoorStatus doorStatus) {
 		//甲醛浓度
 		if (!checkNull(doorStatus.getHcho())){
 			tv_jiaquan.setText(doorStatus.getHcho()+"");
@@ -351,55 +387,77 @@ public class F_1_0 extends FrmParent {
 		}
 
 		if (!checkNull(doorStatus.getDoorState())) {
-			if (doorStatus.getDoorState()== 2) {
-				tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
-				tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-				tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-			}else if (doorStatus.getDoorState()== 1) {
-				tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
-				tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-				tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-			}else if (doorStatus.getDoorState()== 3) {
-				tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
-				tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-				tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-			}else {
-				tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-				tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-				tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-			}
+			setDoorButtonImg(doorStatus.getDoorState()) ; //门控制按钮状态
+		}else {
+			setDoorButtonImg(0) ;
+		}
+
+		if (!checkNull(doorStatus.getAngle())) {
+			setPieChart(doorStatus.getAngle()) ; //门开关角度
+		}else {
+			setPieChart(0);
+		}
+		if(null != doorStatus.getWarnStates() && doorStatus.getWarnStates().length >= 1) {
+			setDoorPowerImg(doorStatus.getWarnStates()[0]) ; //电池欠压
+		}
+
+		if(null != doorStatus.getWarnStates()&& doorStatus.getWarnStates().length >= 3) {
+			setDoorAlarmImg(doorStatus.getWarnStates()[2]) ; //门关门故障
+		}
+
+		act.frgTool.f_1_1.displayServiceData(doorStatus);//显示第二页数据
+	}
+
+	/**
+	 * 设置门故障状态
+	 * @param positon
+	 */
+	private void setDoorAlarmImg(int positon) {
+		if (positon == 1) {
+			imgDoorAlarm.setImageResource(R.mipmap.ic_circle_red);
+		} else if (positon == 0) {
+			imgDoorAlarm.setImageResource(R.mipmap.ic_circle_green);
+		} else {
+			imgDoorAlarm.setImageResource(R.mipmap.ic_circle_gray1);
+		}
+	}
+
+	/**
+	 * 设置门欠压状态
+	 * @param positon
+	 */
+	private void setDoorPowerImg(int positon) {
+		if (positon == 1) {
+			imgDoorPower.setImageResource(R.mipmap.ic_circle_red);
+		}else if (positon == 0){
+			imgDoorPower.setImageResource(R.mipmap.ic_circle_green);
+		}else {
+			imgDoorPower.setImageResource(R.mipmap.ic_circle_gray1);
+		}
+	}
+
+	/**
+	 * 设置门控制按键状态
+	 * @param positon
+	 */
+	private void setDoorButtonImg(int positon) {
+		if (positon== 2) {
+			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
+			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+		}else if (positon == 1) {
+			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
+			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+		}else if (positon == 3) {
+			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
+			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 		}else {
 			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 		}
-
-		if (!checkNull(doorStatus.getAngle())) {
-			setPieChart(doorStatus.getAngle()) ;
-		}else {
-			setPieChart(0);
-		}
-		if(null != doorStatus.getWarnStates() && doorStatus.getWarnStates().length >= 1) {
-			if (doorStatus.getWarnStates()[0] == 1) {
-				imgDoorPower.setImageResource(R.mipmap.ic_circle_red);
-			}else if (doorStatus.getWarnStates()[0] == 0){
-				imgDoorPower.setImageResource(R.mipmap.ic_circle_green);
-			}else {
-				imgDoorPower.setImageResource(R.mipmap.ic_circle_gray1);
-			}
-		}
-
-		if(null != doorStatus.getWarnStates()&& doorStatus.getWarnStates().length >= 3) {
-			if (doorStatus.getWarnStates()[2] == 1) {
-				imgDoorAlarm.setImageResource(R.mipmap.ic_circle_red);
-			} else if (doorStatus.getWarnStates()[2] == 0) {
-				imgDoorAlarm.setImageResource(R.mipmap.ic_circle_green);
-			} else {
-				imgDoorPower.setImageResource(R.mipmap.ic_circle_gray1);
-			}
-		}
-
-		act.frgTool.f_1_1.displayData(doorStatus);//显示第二页数据
 	}
 
 	private void setPieChart(int open){
@@ -501,11 +559,26 @@ public class F_1_0 extends FrmParent {
 		if (data != null) {
 			int jq = data.getJiaQuan() ;
 			tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree((jq/1000) + "." +(jq%1000)));
-
 		}else {
 			ToastUtils.show(act, "F1接收数据为空");
 		}
+	}
 
+	private void displayWifiData(Data_F1 data) {
+		//甲醛浓度
+		if (data.getJiaQuan() == 0) {
+			tv_jiaquan.setText("0.000") ;
+		}else {
+			tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree(
+					(data.getJiaQuan() / 1000) + "" + (data.getJiaQuan() % 1000)));
+		}
+
+		setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
+		setPieChart(data.getDoorOpen()) ; //门开关角度
+		setDoorPowerImg(data.isNormalPower() ? 0 : 1) ; //电池欠压
+		setDoorAlarmImg(data.isDoorNormal() ? 0 : 1) ; //门关门故障
+
+		act.frgTool.f_1_1.displayWifiData(data);//显示第二页数据
 	}
 	/**
 	 * 导出设置数据

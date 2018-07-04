@@ -79,6 +79,19 @@ public class SharepreferenceUtils {
         editor.commit();
     }
 
+    public static boolean getIsWifi(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_IsWifi", 0);
+        boolean type = preferences.getBoolean("IsWifi", false);
+        return type;
+    }
+
+    public static void saveIsWifi(Context context, boolean is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_IsWifi", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("IsWifi", is);
+        editor.commit();
+    }
+
     public static boolean getHasLearn(Context context) {
         SharedPreferences preferences = context.getSharedPreferences("preference_HasLearn", 0);
         boolean type = preferences.getBoolean("HasLearn", false);

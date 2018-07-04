@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
+import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
@@ -58,28 +59,29 @@ public class F_1_1 extends FrmParent {
 		return view ;
 	}
 
-	public void displayData(DoorStatus doorStatus) {
-		//锁状态
-		if(null != doorStatus.getLockStates()&& doorStatus.getLockStates().length >= 3) {
-			if (doorStatus.getLockStates()[0] == 1) {
-				tvLockStatus.setText("开锁");
-			}else if (doorStatus.getLockStates()[0] == 0) {
-				tvLockStatus.setText("关锁");
-			}else {
-				tvLockStatus.setText("未知");
+	public void displayServiceData(DoorStatus doorStatus) {
+		if (null != doorStatus) {
+			//锁状态
+			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 3) {
+				if (doorStatus.getLockStates()[0] == 1) {
+					tvLockStatus.setText("开锁");
+				} else if (doorStatus.getLockStates()[0] == 0) {
+					tvLockStatus.setText("关锁");
+				} else {
+					tvLockStatus.setText("未知");
+				}
 			}
-		}
-		//锁原点
-		if(null != doorStatus.getLockStates()&& doorStatus.getLockStates().length >= 2) {
-			if (doorStatus.getLockStates()[1] == 1) {
-				imgLockInit.setImageResource(R.mipmap.ic_circle_green);
-			} else if (doorStatus.getLockStates()[1] == 0) {
-				imgLockInit.setImageResource(R.mipmap.ic_circle_red);
-			} else {
-				imgLockInit.setImageResource(R.mipmap.ic_circle_gray1);
+			//锁原点
+			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 2) {
+				if (doorStatus.getLockStates()[1] == 1) {
+					imgLockInit.setImageResource(R.mipmap.ic_circle_green);
+				} else if (doorStatus.getLockStates()[1] == 0) {
+					imgLockInit.setImageResource(R.mipmap.ic_circle_red);
+				} else {
+					imgLockInit.setImageResource(R.mipmap.ic_circle_gray1);
+				}
 			}
-		}
-		//锁报警
+			//锁报警
 		/*if (doorStatus.getLockStates()[0] == 1) {
 			imgLockAlarm
 		}else if (doorStatus.getLockStates()[0] == 0) {
@@ -87,17 +89,50 @@ public class F_1_1 extends FrmParent {
 		}else {
 			imgLockAlarm
 		}*/
-		//锁电源
-		if(null != doorStatus.getLockStates()&& doorStatus.getLockStates().length >= 1) {
-			if (doorStatus.getLockStates()[0] == 1) {
-				imgLockPower.setImageResource(R.mipmap.ic_circle_green);
-			} else if (doorStatus.getLockStates()[0] == 0) {
-				imgLockPower.setImageResource(R.mipmap.ic_circle_red);
-			} else {
-				imgLockPower.setImageResource(R.mipmap.ic_circle_gray1);
+			//锁电源
+			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 1) {
+				if (doorStatus.getLockStates()[0] == 1) {
+					imgLockPower.setImageResource(R.mipmap.ic_circle_green);
+				} else if (doorStatus.getLockStates()[0] == 0) {
+					imgLockPower.setImageResource(R.mipmap.ic_circle_red);
+				} else {
+					imgLockPower.setImageResource(R.mipmap.ic_circle_gray1);
+				}
 			}
 		}
 
+	}
+
+	public void displayWifiData(Data_F1 data) {
+		if (null != data) {
+			//锁状态
+			if (data.isOpenLock()) {
+				tvLockStatus.setText("开锁");
+			}else{
+				tvLockStatus.setText("关锁");
+			}
+			//锁原点
+			if (data.isLockInitPosition()) {
+				imgLockInit.setImageResource(R.mipmap.ic_circle_green);
+			}else{
+				imgLockInit.setImageResource(R.mipmap.ic_circle_red);
+			}
+			//锁报警
+		/*if (doorStatus.getLockStates()[0] == 1) {
+			imgLockAlarm
+		}else if (doorStatus.getLockStates()[0] == 0) {
+			imgLockAlarm
+		}else {
+			imgLockAlarm
+		}*/
+			//锁电源
+
+			if (data.isHasPower()) {
+				imgLockPower.setImageResource(R.mipmap.ic_circle_green);
+			}else{
+				imgLockPower.setImageResource(R.mipmap.ic_circle_red);
+			}
+		}
 	}
 
 	/**

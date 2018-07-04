@@ -18,6 +18,45 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
+			android:text="通信类型选择"
+			android:textSize="@dimen/text16"
+			android:textColor="#262626"
+			android:textStyle="bold"
+			/>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:layout_marginTop="6dp"
+			android:gravity="left|center_vertical"
+			android:layout_height="wrap_content">
+			<Spinner
+				android:id="@+id/spinner_communication"
+				android:layout_width="150dp"
+				android:layout_gravity="center_vertical"
+				android:layout_marginLeft="26dp"
+				android:background="@drawable/border0"
+				android:layout_height="30dp">
+			</Spinner>
+			<ImageView
+				android:layout_width="12dp"
+				android:layout_height="12dp"
+				android:layout_marginLeft="-20dp"
+				android:src="@mipmap/ic_down_more_gray"/>
+		</LinearLayout>
+	</LinearLayout>
+	<!--操作门选择-->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:orientation="vertical"
+		android:layout_marginTop="2dp"
+		android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:background="@drawable/border"
+		android:layout_height="wrap_content">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="16dp"
 			android:text="操作门选择"
 			android:textSize="@dimen/text16"
 			android:textColor="#262626"
@@ -35,7 +74,7 @@
 				android:layout_gravity="center_vertical"
 				android:layout_marginLeft="26dp"
 				android:background="@drawable/border0"
-				android:layout_height="wrap_content">
+				android:layout_height="30dp">
 			</Spinner>
 			<ImageView
 				android:layout_width="12dp"
