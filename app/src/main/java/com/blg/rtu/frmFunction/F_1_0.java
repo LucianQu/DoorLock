@@ -76,6 +76,7 @@ public class F_1_0 extends FrmParent {
 
 	private DoorInfo doorInfo ;
 	private DoorStatus doorStatus ;
+	public String currentID = "" ;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -125,9 +126,13 @@ public class F_1_0 extends FrmParent {
 				if (Util.checkIsHasLearned(act)) {
 					setProgressVisible(1);
 					if (SharepreferenceUtils.getIsWifi(act)) {
-						setCommand(2);
+						setCommand(1);
 					}else {
-						doorContralServer("123456789012", "F1", "2");
+						if (getCurrentIDIsempty()) {
+							ToastUtils.show(act, "没有可操作的门！");
+						}else {
+							doorContralServer(currentID, "F1", "2");
+						}
 					}
 				}
 			}
@@ -142,9 +147,13 @@ public class F_1_0 extends FrmParent {
 				if (Util.checkIsHasLearned(act)) {
 					setProgressVisible(2);
 					if (SharepreferenceUtils.getIsWifi(act)) {
-						setCommand(1);
+						setCommand(2);
 					}else {
-						doorContralServer("123456789012", "F1", "1");
+						if (getCurrentIDIsempty()) {
+							ToastUtils.show(act, "没有可操作的门！");
+						}else {
+							doorContralServer(currentID, "F1", "1");
+						}
 					}
 				}
 			}
@@ -161,7 +170,11 @@ public class F_1_0 extends FrmParent {
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						setCommand(3);
 					}else {
-						doorContralServer("123456789012", "F1", "3");
+						if (getCurrentIDIsempty()) {
+							ToastUtils.show(act, "没有可操作的门！");
+						}else {
+							doorContralServer(currentID, "F1", "3");
+						}
 					}
 
 				}
@@ -182,8 +195,28 @@ public class F_1_0 extends FrmParent {
 
 		return view ;
 	}
+	public boolean getCurrentIDIsempty() {
+		if (spinnerAdapter1.isEmpty()) {
+			return true ;
+		}else {
+			currentID = spinnerAdapter1.getItem(0).getName() ;
+			return false ;
+		}
+	}
 
+	public int getCurrentPosition() {
+		if (spinnerAdapter1.isEmpty()) {
+			return -1 ;
+		}else {
+			return spinner.getSelectedItemPosition() ;
+		}
+	}
 
+	public void setCurrentPosition(int position) {
+		if (!spinnerAdapter1.isEmpty()) {
+			spinner.setSelection(position);
+		}
+	}
 
 	private void setProgressVisible(int position){
 		if (position == 1) {
@@ -283,7 +316,7 @@ public class F_1_0 extends FrmParent {
 	}
 
 	private void putSpinnerValue1(){
-		/*spinnerAdapter1.add(new SpinnerVO("0", "1号门")) ;
+	/*	spinnerAdapter1.add(new SpinnerVO("0", "1号门")) ;
 		spinnerAdapter1.add(new SpinnerVO("1", "2号门")) ;*/
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 	}
@@ -292,10 +325,20 @@ public class F_1_0 extends FrmParent {
 		spinnerAdapter2.add(new SpinnerVO("1", "Wifi通信")) ;
 	}
 
+	public void setCurrentID(String s) {
+		this.currentID = s ;
+	}
+
 	private class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			if(parent.getId() == spinner.getId()){
-
+			if (!SharepreferenceUtils.getIsWifi(act)) {
+				if (parent.getId() == spinner.getId()) {
+					currentID = parent.getSelectedItem().toString();
+					act.frgTool.f_1_2.setCurrentPosition(position);
+					act.frgTool.f_1_2.setCurrentID(currentID);
+				}
+			}else {
+				ToastUtils.show(act, "请注意：当前通信类型为WIFI");
 			}
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
@@ -318,7 +361,7 @@ public class F_1_0 extends FrmParent {
 	}
 
 
-	private void doorContralServer(final String dtuId, String code, String flag) {
+	public void doorContralServer(final String dtuId, String code, String flag) {
 		String url = "http://39.106.112.210:8090/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
@@ -378,7 +421,7 @@ public class F_1_0 extends FrmParent {
 			}
 		});
 	}
-	private void displayServiceData(DoorStatus doorStatus) {
+	public void displayServiceData(DoorStatus doorStatus) {
 		//甲醛浓度
 		if (!checkNull(doorStatus.getHcho())){
 			tv_jiaquan.setText(doorStatus.getHcho()+"");

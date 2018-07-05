@@ -355,6 +355,7 @@ public class F_01_010  extends FrmParent {
 				SharepreferenceUtils.savePassword(act, sd.getPassWord()+"");
 			}
 			act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+			act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		}else {
 
 			if (!"".equals(deviceID)) {

@@ -2,6 +2,8 @@ package com.blg.rtu.protocol.p206;
 
 import com.blg.rtu.protocol.RtuCommand;
 import com.blg.rtu.protocol.p206.F1.Param_F1;
+import com.blg.rtu.protocol.p206.F2.Param_F2;
+import com.blg.rtu.protocol.p206.F3.Param_F3;
 import com.blg.rtu.protocol.p206.cd02.Param_02;
 import com.blg.rtu.protocol.p206.cd10_50.Param_10;
 import com.blg.rtu.util.StringValueForServer;
@@ -42,9 +44,9 @@ public class CommandCreator {
 		RtuCommand com = new RtuCommand() ;
 		com.setCommandCode(Code206.cd_F2) ;
 		com.setRtuId(rtuId);
-		Param_F1 p = new Param_F1() ;
+		Param_F2 p = new Param_F2() ;
 		p.setDoorContral(command);
-		com.getParams().put(Param_F1.KEY, p) ;
+		com.getParams().put(Param_F2.KEY, p) ;
 		return com ;
 	}
 
@@ -52,9 +54,9 @@ public class CommandCreator {
 		RtuCommand com = new RtuCommand() ;
 		com.setCommandCode(Code206.cd_F3) ;
 		com.setRtuId(rtuId);
-		Param_F1 p = new Param_F1() ;
+		Param_F3 p = new Param_F3() ;
 		p.setDoorContral(command);
-		com.getParams().put(Param_F1.KEY, p) ;
+		com.getParams().put(Param_F3.KEY, p) ;
 		return com ;
 	}
 

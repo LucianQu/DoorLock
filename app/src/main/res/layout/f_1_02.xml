@@ -71,6 +71,7 @@
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:gravity="center"
+				android:orientation="vertical"
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_open1"
@@ -81,11 +82,19 @@
 					android:textColor="#ffffff"
 					android:text="开"
 					android:gravity="center"/>
+				<ProgressBar
+					android:id="@+id/pb_open1"
+					android:visibility="invisible"
+					style="?android:attr/progressBarStyleSmall"
+					android:layout_gravity="center"
+					android:layout_width="20dp"
+					android:layout_height="20dp" />
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:gravity="center"
+				android:orientation="vertical"
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_close1"
@@ -96,12 +105,20 @@
 					android:textColor="#ffffff"
 					android:text="关"
 					android:gravity="center"/>
+				<ProgressBar
+					android:id="@+id/pb_close1"
+					android:visibility="invisible"
+					style="?android:attr/progressBarStyleSmall"
+					android:layout_gravity="center"
+					android:layout_width="20dp"
+					android:layout_height="20dp" />
 			</LinearLayout>
 
 			<LinearLayout
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:gravity="center"
+				android:orientation="vertical"
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_stop1"
@@ -112,6 +129,13 @@
 					android:textColor="#ffffff"
 					android:text="停"
 					android:gravity="center"/>
+				<ProgressBar
+					android:id="@+id/pb_stop1"
+					android:visibility="invisible"
+					style="?android:attr/progressBarStyleSmall"
+					android:layout_gravity="center"
+					android:layout_width="20dp"
+					android:layout_height="20dp" />
 			</LinearLayout>
 		</LinearLayout>
 
@@ -144,6 +168,7 @@
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:gravity="center"
+				android:orientation="vertical"
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_open2"
@@ -154,11 +179,19 @@
 					android:textColor="#ffffff"
 					android:text="开"
 					android:gravity="center"/>
+				<ProgressBar
+					android:id="@+id/pb_open2"
+					android:visibility="invisible"
+					style="?android:attr/progressBarStyleSmall"
+					android:layout_gravity="center"
+					android:layout_width="20dp"
+					android:layout_height="20dp" />
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:gravity="center"
+				android:orientation="vertical"
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_close2"
@@ -169,12 +202,20 @@
 					android:textColor="#ffffff"
 					android:text="关"
 					android:gravity="center"/>
+				<ProgressBar
+					android:id="@+id/pb_close2"
+					android:visibility="invisible"
+					style="?android:attr/progressBarStyleSmall"
+					android:layout_gravity="center"
+					android:layout_width="20dp"
+					android:layout_height="20dp" />
 			</LinearLayout>
 
 			<LinearLayout
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:gravity="center"
+				android:orientation="vertical"
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_stop2"
@@ -185,6 +226,13 @@
 					android:textColor="#ffffff"
 					android:text="停"
 					android:gravity="center"/>
+				<ProgressBar
+					android:id="@+id/pb_stop2"
+					android:visibility="invisible"
+					style="?android:attr/progressBarStyleSmall"
+					android:layout_gravity="center"
+					android:layout_width="20dp"
+					android:layout_height="20dp" />
 			</LinearLayout>
 		</LinearLayout>
 

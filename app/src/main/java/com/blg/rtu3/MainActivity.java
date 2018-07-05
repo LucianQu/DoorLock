@@ -306,7 +306,7 @@ public class MainActivity  extends Activity {
 					//if(!CoreThread.getInstance().getNetStatus()){
 					//closeWaitTcpConnectFlash() ;
 					//if(chf.getSelectedChannel() == Constant.channelTcp){
-					Toast.makeText(MainActivity.this, "网络未连接，请检查！", Toast.LENGTH_SHORT).show() ;
+					Toast.makeText(MainActivity.this, "手机未与设备Wifi连接，请注意！", Toast.LENGTH_SHORT).show() ;
 					//}
 				}
 			}

@@ -18,7 +18,6 @@
 		>
 	    <TextView
 	    	android:id="@+id/f_01_010_Title"
-	        android:drawableLeft="@drawable/item001"
 	        android:text="@string/func_01_010"
 			style="@style/func_title_viewtext_style"/>
 
