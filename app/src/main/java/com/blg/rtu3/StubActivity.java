@@ -7,6 +7,7 @@ import com.blg.rtu.aidl.ActivityAidl;
 import com.blg.rtu.aidl.RemoteParcel;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
+import com.blg.rtu.util.DialogAlarm;
 
 public class StubActivity extends ActivityAidl.Stub{
 	
@@ -52,7 +53,7 @@ public class StubActivity extends ActivityAidl.Stub{
 		mAct.mHandler.post(new Runnable(){
 			@Override
 			public void run() {
-				mAct.setNetConnectedStatus(true) ;
+				mAct.setWifiConnectedStatus(true) ;
 			}
 		});
 	}
@@ -65,7 +66,7 @@ public class StubActivity extends ActivityAidl.Stub{
 		mAct.mHandler.post(new Runnable(){
 			@Override
 			public void run() {
-				mAct.setNetConnectedStatus(false) ;
+				mAct.setWifiConnectedStatus(false) ;
 			}
 		});
 	}
@@ -87,8 +88,10 @@ public class StubActivity extends ActivityAidl.Stub{
 					if(data.dataCode.equals(Code206.cd_10) || data.dataCode.equals(Code206.cd_50)){
 						//设置qulusheng或查询终端地址
 						//qulusheng
-						mAct.frgTool.f_01_010.receiveRtuData(data);
-						mAct.setDeviceID(data.getRtuId());
+						//ToastUtils.show(mAct,data.toString());
+						new DialogAlarm().showDialog(mAct,data.toString());
+						//mAct.frgTool.f_01_010.receiveRtuData(data);
+						//mAct.setDeviceID(data.getRtuId());
 					}else
 					if(data.dataCode.equals(Code206.cd_44) || data.dataCode.equals(Code206.cd_74)){
 						//设置或查询终端地址

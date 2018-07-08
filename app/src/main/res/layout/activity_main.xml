@@ -91,9 +91,10 @@
 				android:gravity="left|center_vertical"
 				>
 				<TextView
+					android:id="@+id/tv_connectType"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:text="Wifi连接状态:"
+					android:text="服务器连接状态:"
 					android:gravity="center"
 					android:textColor="@color/bg_light_black"
 					/>
@@ -101,6 +102,7 @@
 					android:id="@+id/tcpConnectStatus1"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
+					android:layout_marginLeft="@dimen/base4dp"
 					android:text="未连接"
 					android:gravity="center"
 					android:textColor="@color/bg_light_black"
@@ -123,8 +125,9 @@
 				<TextView
 					android:id="@+id/productID"
 					android:layout_width="wrap_content"
+					android:layout_marginLeft="@dimen/base4dp"
 					android:layout_height="match_parent"
-					android:text="201806100001"
+					android:text="0102031284"
 					android:gravity="center"
 					android:textColor="@color/bg_light_black"
 					/>

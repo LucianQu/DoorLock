@@ -41,6 +41,7 @@ import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Operate;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.ResourceUtils;
+import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SoundAlert;
 import com.blg.rtu.util.StringValueForActivity;
 import com.blg.rtu.util.ToastUtils;
@@ -71,9 +72,10 @@ public class MainActivity  extends Activity {
 	private View pageView_main;// Tab第2页
 	private View pageView_third;// Tab第3页
 	
-	public Boolean tcpConnected;
+	public Boolean tcpConnected = false;
 	public TextView tcpConnectStatus;
-	
+	public TextView tv_connectType;
+
 	public TextView switchFun ;
 	public TextView switchOnce ;
 	public TextView switchQuery ;
@@ -221,6 +223,17 @@ public class MainActivity  extends Activity {
             }  
         }  
     };
+	private Handler handler = new Handler() ;
+	private Runnable queryF1Task = new Runnable() {
+		@Override
+		public void run() {
+			handler.removeCallbacks(queryF1Task);
+			handler.postDelayed(queryF1Task, 15*1000) ;
+			if (!frgTool.f_1_0.isServering) {
+				frgTool.f_1_0.doorContralServer("0102031284", "0", "F1");
+			}
+		}
+	};
 	
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -259,10 +272,10 @@ public class MainActivity  extends Activity {
         //没有设置类名，通过明确的类名调用bindService(new Intent("forServiceAidl"), conn, Service.BIND_AUTO_CREATE);  
         //<intent-filter><action android:name="forServiceAidl"></action></intent-filter>
 
-		waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
+		//waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
 		//waitServerStartedAndToConnectNet("192.168.4.1", 333) ; //wifi连接
 		//waitServerStartedAndToConnectNet("10.10.100.254", 8899) ; //wifi连接
-
+		connectWifiAndServer() ;
 		mJPush = new JPushActivity(this) ;
 		mJPush.initJPush();//初始化极光推送
 		mJPush.registerMessageReceiver();//注册信息接收器
@@ -270,6 +283,29 @@ public class MainActivity  extends Activity {
 		mJPush.setAlias("doorlock");//为设备设置别名
 		registerMessageReceiver();
 
+	}
+
+	public void connectWifiAndServer() {
+		if (SharepreferenceUtils.getIsWifi(MainActivity.this)) {
+			updateConnectedType(1);
+			if (this.tcpConnected) {
+				updateConnectedStatus(true);
+			}else {
+				updateConnectedStatus(false);
+				waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
+			}
+		}else {
+			updateConnectedType(2);
+			updateConnectedStatus(false);
+			//if (!frgTool.f_1_0.getCurrentIDIsempty()) {
+			if (true) {
+				//frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID,"0","F1");
+				//frgTool.f_1_0.doorContralServer("0102031284","0","F1");
+				handler.postDelayed(queryF1Task, 15*1000) ;
+			}else {
+				ToastUtils.show(MainActivity.this, "没有可操作的门，无法请求服务连接!");
+			}
+		}
 	}
 
 	/**
@@ -301,13 +337,10 @@ public class MainActivity  extends Activity {
 		mServerProxyHandler.startAndConnectTcpServer(url, port) ;
 		mHandler.postDelayed(new Runnable(){
 			public void run(){
-				//chf.tcpConnected
 				if(!mServerProxyHandler.isTcpConnected()){
-					//if(!CoreThread.getInstance().getNetStatus()){
-					//closeWaitTcpConnectFlash() ;
-					//if(chf.getSelectedChannel() == Constant.channelTcp){
-					Toast.makeText(MainActivity.this, "手机未与设备Wifi连接，请注意！", Toast.LENGTH_SHORT).show() ;
-					//}
+					if (SharepreferenceUtils.getIsWifi(MainActivity.this)) {
+						Toast.makeText(MainActivity.this, "手机未与设备Wifi连接，请注意！", Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 		}, StringValueForActivity.tcpConnectTimeout) ;
@@ -388,6 +421,7 @@ public class MainActivity  extends Activity {
 		listPages.add(pageView_fourth);
 
 		tcpConnectStatus = (TextView) findViewById(R.id.tcpConnectStatus1);
+		tv_connectType = (TextView) findViewById(R.id.tv_connectType);
 		tvProductID = (TextView) findViewById(R.id.productID);
 
 		switchFun = (TextView) findViewById(R.id.switchFun) ;
@@ -525,19 +559,38 @@ public class MainActivity  extends Activity {
 	 * 设置网络连接状态
 	 * @param isConnected
 	 */
-	public void setNetConnectedStatus(boolean isConnected) {
-		this.tcpConnected = isConnected ;
-		if(this.tcpConnected){
-			//网络已经连接
-			tcpConnectStatus.setText(this.getResources().getString(R.string.connected)) ;
+	public void setWifiConnectedStatus(boolean isConnected) {
+		if (SharepreferenceUtils.getIsWifi(MainActivity.this)) {
+			updateConnectedType(1) ;
+			this.tcpConnected = isConnected;
+			if (this.tcpConnected) {
+				//网络已经连接
+				updateConnectedStatus(true) ;
+			} else {
+				updateConnectedStatus(false) ;
+			}
+		}
+	}
+
+	public void updateConnectedType(int data) {
+		if (data == 1) {
+			tv_connectType.setText("Wifi连接状态:");
+		}else {
+			tv_connectType.setText("服务器连接状态:");
+		}
+	}
+
+	public void updateConnectedStatus(boolean isConnect) {
+		if (isConnect) {
+			tcpConnectStatus.setText(this.getResources().getString(R.string.connected));
 			tcpConnectStatus.setTextColor(Color.RED);
-			
-		}else{
+		}else {
 			//网络已经断开
-			tcpConnectStatus.setText(this.getResources().getString(R.string.disconnected)) ;
+			tcpConnectStatus.setText(this.getResources().getString(R.string.noConnected));
 			tcpConnectStatus.setTextColor(Color.parseColor("#f0eff5"));
 		}
 	}
+
 	
 	/**
 	 * ViewPager适配器

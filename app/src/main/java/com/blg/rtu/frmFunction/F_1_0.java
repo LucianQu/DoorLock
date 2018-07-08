@@ -26,7 +26,6 @@ import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
-import com.blg.rtu.util.Util;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
@@ -77,6 +76,7 @@ public class F_1_0 extends FrmParent {
 	private DoorInfo doorInfo ;
 	private DoorStatus doorStatus ;
 	public String currentID = "" ;
+	public boolean isServering = false ;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -116,14 +116,15 @@ public class F_1_0 extends FrmParent {
 		spinner2.setOnItemSelectedListener(new SpinnerSelectedListener2());
 
 		tv_jiaquan = (TextView) view.findViewById(R.id.tv_jiaquan) ;
-		tv_jiaquan.setText("0.001");
+		tv_jiaquan.setText("---");
 
 		tv_open = (TextView) view.findViewById(R.id.tv_open) ;
 		tv_open.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击开门");
-				if (Util.checkIsHasLearned(act)) {
+				//if (Util.checkIsHasLearned(act)) {
+				if (true) {
 					setProgressVisible(1);
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						setCommand(1);
@@ -131,7 +132,8 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
-							doorContralServer(currentID, "F1", "2");
+							//doorContralServer(currentID, "F1", "2");
+							doorContralServer("0102031284", "F1", "2");
 						}
 					}
 				}
@@ -144,7 +146,8 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击关门");
-				if (Util.checkIsHasLearned(act)) {
+				//if (Util.checkIsHasLearned(act)) {
+				if (true) {
 					setProgressVisible(2);
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						setCommand(2);
@@ -152,7 +155,8 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
-							doorContralServer(currentID, "F1", "1");
+							//doorContralServer(currentID, "F1", "1");
+							doorContralServer("0102031284", "F1", "1");
 						}
 					}
 				}
@@ -165,7 +169,8 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击停止");
-				if (Util.checkIsHasLearned(act)) {
+				//if (Util.checkIsHasLearned(act)) {
+				if (true) {
 					setProgressVisible(3);
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						setCommand(3);
@@ -173,7 +178,8 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
-							doorContralServer(currentID, "F1", "3");
+							//doorContralServer(currentID, "F1", "3");
+							doorContralServer("0102031284", "F1", "3");
 						}
 					}
 
@@ -264,7 +270,7 @@ public class F_1_0 extends FrmParent {
 	 * 获取数据
 	 */
 	private void setPieChartData(){
-
+			values.clear();
 		for (int i = 0; i < data.length; ++i) {
 			SliceValue sliceValue = new SliceValue((float) data[i], colors[i]);//这里的颜色是我写了一个工具类 是随机选择颜色的
 			values.add(sliceValue);
@@ -316,13 +322,13 @@ public class F_1_0 extends FrmParent {
 	}
 
 	private void putSpinnerValue1(){
-	/*	spinnerAdapter1.add(new SpinnerVO("0", "1号门")) ;
-		spinnerAdapter1.add(new SpinnerVO("1", "2号门")) ;*/
-		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+	/*	spinnerAdapter1.add(new SpinnerVO("0", "1号门")) ;*/
+		spinnerAdapter1.add(new SpinnerVO("0", "0102031284")) ;
+		//updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 	}
 	private void putSpinnerValue2(){
 		spinnerAdapter2.add(new SpinnerVO("0", "服务通信")) ;
-		spinnerAdapter2.add(new SpinnerVO("1", "Wifi通信")) ;
+		//spinnerAdapter2.add(new SpinnerVO("1", "Wifi通信")) ;
 	}
 
 	public void setCurrentID(String s) {
@@ -348,11 +354,13 @@ public class F_1_0 extends FrmParent {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			if(parent.getId() == spinner2.getId()){
 				if (position == 0) {
-					ToastUtils.show(act, "通信对象：服务器");
+					//ToastUtils.show(act, "通信对象：服务器");
 					SharepreferenceUtils.saveIsWifi(act, false);
+					act.connectWifiAndServer() ;
 				}else {
-					ToastUtils.show(act, "通信对象：WIFI");
+					//ToastUtils.show(act, "通信对象：WIFI");
 					SharepreferenceUtils.saveIsWifi(act, true);
+					act.connectWifiAndServer() ;
 				}
 			}
 		}
@@ -362,6 +370,7 @@ public class F_1_0 extends FrmParent {
 
 
 	public void doorContralServer(final String dtuId, String code, String flag) {
+		isServering = true ;
 		String url = "http://39.106.112.210:8090/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
@@ -371,8 +380,10 @@ public class F_1_0 extends FrmParent {
 		x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
+				isServering = false ;
 				setProgressVisible(0) ;
 				JSONObject jsonResult = null;
+				act.updateConnectedStatus(true);
 				try {
 					jsonResult = new JSONObject(result);
 					String returnDtuId = jsonResult.getString("dtuId");
@@ -383,19 +394,21 @@ public class F_1_0 extends FrmParent {
 							String code = jsonResult.getString("succ");
 							if (code.equals("1")) {
 								Gson gson = new Gson();
-								String data = jsonResult.getString("data");
+								String data = jsonResult.getString("rltState");
 								doorStatus = gson.fromJson(data,DoorStatus.class);
 								if(null != doorStatus) {
 									displayServiceData(doorStatus) ;
+									ToastUtils.show(act, "服务获取数据成功");
+
 								}else {
-									ToastUtils.show(act, "返回数据为空！");
+									ToastUtils.show(act, "服务获取数据为空！");
 								}
 							}else {
-								ToastUtils.show(act, "请求失败："+ jsonResult.getString("error"));
+								ToastUtils.show(act, "服务获取数据失败："+ jsonResult.getString("error"));
 
 							}
 						}else {
-							ToastUtils.show(act, "返回数据ID与请求ID不一致!");
+							ToastUtils.show(act, "服务获取数据返回地址与请求地址不一致!");
 						}
 					}
 
@@ -405,18 +418,21 @@ public class F_1_0 extends FrmParent {
 			}
 			@Override
 			public void onError(Throwable ex, boolean isOnCallback) {
-				ToastUtils.show(act, "请求失败!");
+				isServering = false ;
+				ToastUtils.show(act, "服务获取数据错误："+ex.getMessage());
 				LogUtils.e("onError", "请求失败");
 				setProgressVisible(0) ;
 			}
 
 			@Override
 			public void onCancelled(CancelledException cex) {
+				isServering = false ;
 				setProgressVisible(0) ;
 			}
 
 			@Override
 			public void onFinished() {
+				isServering = false ;
 				setProgressVisible(0) ;
 			}
 		});
@@ -521,6 +537,9 @@ public class F_1_0 extends FrmParent {
 	}
 
 	private boolean checkNull(Object o) {
+		if (o == null) {
+			return true ;
+		}
 		return "null".equals(o.toString()) ;
 	}
 
