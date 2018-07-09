@@ -27,7 +27,6 @@ public abstract class DriverRtu {
 	
 	/**
 	 * 带参数的构造方法，参数为协议名称
-	 * @param agreementName 协议名称
 	 */
 	public DriverRtu(){
 	}
@@ -36,9 +35,7 @@ public abstract class DriverRtu {
 	
 	/**
 	 * 分析测控终端数据
-	 * @param rtuId
 	 * @param data
-	 * @param dataHex
 	 * @return
 	 */
 	public abstract Action analyseData(byte[] data) ;

@@ -6,6 +6,7 @@ import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.common.ControlProtocol;
 import com.blg.rtu.protocol.p206.common.ProtocolSupport;
 import com.blg.rtu.util.ByteUtil;
+import com.blg.rtu.util.ToastUtils;
 
 //设置、查询遥测终端地址，中继站地址
 
@@ -36,8 +37,10 @@ public class Answer_10_50 extends ProtocolSupport{
 		d.setSubData(subD) ;
 		//String[] ss = new RtuIdProtocol().parseRtuId_1(b, index , (index + Constant.Bits_RTU_ID - 1)) ;
 		//subD.setRtuId(ss[0]) ;
-		int password = ByteUtil.bytes2Int(new byte[]{0,0,b[index++],b[index++]},0) ;
-		subD.setPassWord(password);
-
+		try {
+			int password = ByteUtil.bytes2Short(new byte[]{b[index++],b[index++]},0)&0xffff ;
+			subD.setPassWord(password);
+		}catch (Exception e) {
+		}
 	}
 }

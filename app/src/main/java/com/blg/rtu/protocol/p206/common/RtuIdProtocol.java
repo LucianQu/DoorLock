@@ -52,7 +52,7 @@ public class RtuIdProtocol {
 				int tailId =  ByteUtilUnsigned.bytes2Short_an(bs, startIndex + 3) ;
 				id = preId +  tailId ;
 			//}
-			
+			//startIndex = 4   endIndex - startIndex + 1 = 5
 			hex = ByteUtil.bytes2Hex(bs, true, startIndex, (endIndex - startIndex + 1)) ;
 			
 		}catch(Exception e){

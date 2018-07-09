@@ -87,8 +87,7 @@ public class Action {
 	}
 
 	/**
-	 * 比较两个Action是否想等
-	 * @param Action Action
+	 * 比较两个Action是否相等
 	 * @return boolean
 	 */
 	public boolean equals(Action action) {

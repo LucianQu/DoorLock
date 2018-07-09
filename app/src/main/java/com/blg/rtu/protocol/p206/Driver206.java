@@ -59,15 +59,16 @@ public class Driver206 extends DriverRtu {
 			ControlProtocol ca = new ControlProtocol().parseControl(b) ;
 			
 			//进行RTU 地址域分析
-			int index = Constant.Site_RTUID ;
+			int index = Constant.Site_RTUID ; //index = 4
 			if(ca.hasDIVS){
 				index += 1 ;
 			}
+			//index = 4  index + Constant.Bits_RTU_ID - 1 = 8
 			String[] strs = new RtuIdProtocol().parseRtuId_2(b, index, index + Constant.Bits_RTU_ID - 1) ;
 			this.rtuId = strs[0] ;
 			this.rtuId_hex = strs[1] ;
 			
-			//得到数据中的功能码
+			//得到数据中的功能码 index = 9
 			index = Constant.Site_Code ;
 			if(ca.hasDIVS){
 				index += 1 ;

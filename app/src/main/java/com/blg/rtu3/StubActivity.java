@@ -157,15 +157,15 @@ public class StubActivity extends ActivityAidl.Stub{
 					}else
 					if(data.dataCode.equals(Code206.cd_F1)){
 						//设置门控制
-						mAct.frgTool.f_1_0.commandSendedCallBack() ;
+						//mAct.frgTool.f_1_0.commandSendedCallBack() ;
 					}
 					if(data.dataCode.equals(Code206.cd_F2)){
 						//附加功能设置门控制
-						mAct.frgTool.f_1_2.commandSendedCallBack() ;
+						//mAct.frgTool.f_1_2.commandSendedCallBack() ;
 					}else
 					if(data.dataCode.equals(Code206.cd_E3) || data.dataCode.equals(Code206.cd_F3)){
 						//设置或查询仪表系数
-						mAct.frgTool.f_1_2.commandSendedCallBack() ;
+						//mAct.frgTool.f_1_2.commandSendedCallBack() ;
 					}
 					
 				}
