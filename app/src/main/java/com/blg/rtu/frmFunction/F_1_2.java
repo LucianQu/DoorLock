@@ -101,7 +101,7 @@ public class F_1_2 extends FrmParent {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
                             //act.frgTool.f_1_0.doorContralServer(currentID, "F2", "1");
-                            act.frgTool.f_1_0.doorContralServer("0102031284", "F2", "1");
+                            act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "1");
                         }
                     }
                 }
@@ -125,7 +125,7 @@ public class F_1_2 extends FrmParent {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
                             //act.frgTool.f_1_0.doorContralServer(currentID, "F2", "2");
-                            act.frgTool.f_1_0.doorContralServer("0102031284", "F2", "2");
+                            act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "2");
                         }
                     }
                 }
@@ -146,7 +146,7 @@ public class F_1_2 extends FrmParent {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
                             //act.frgTool.f_1_0.doorContralServer(currentID, "F2", "3");
-                            act.frgTool.f_1_0.doorContralServer("0102031284", "F2", "3");
+                            act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "3");
                         }
                     }
                 }
@@ -168,7 +168,7 @@ public class F_1_2 extends FrmParent {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
                             //act.frgTool.f_1_0.doorContralServer(currentID, "F3", "1");
-                            act.frgTool.f_1_0.doorContralServer("0102031284", "F3", "1");
+                            act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "1");
                         }
                     }
                 }
@@ -189,7 +189,7 @@ public class F_1_2 extends FrmParent {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
                             //act.frgTool.f_1_0.doorContralServer(currentID, "F3", "2");
-                            act.frgTool.f_1_0.doorContralServer("0102031284", "F3", "2");
+                            act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "2");
                         }
                     }
                 }
@@ -210,7 +210,7 @@ public class F_1_2 extends FrmParent {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
                             //act.frgTool.f_1_0.doorContralServer(currentID, "F3", "3");
-                            act.frgTool.f_1_0.doorContralServer("0102031284", "F3", "3");
+                            act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "3");
                         }
                     }
                 }

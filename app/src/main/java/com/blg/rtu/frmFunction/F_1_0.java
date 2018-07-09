@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
+import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -133,7 +134,7 @@ public class F_1_0 extends FrmParent {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
 							//doorContralServer(currentID, "F1", "2");
-							doorContralServer("0102031284", "F1", "2");
+							doorContralServer("0102030405", "F1", "2");
 						}
 					}
 				}
@@ -156,7 +157,7 @@ public class F_1_0 extends FrmParent {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
 							//doorContralServer(currentID, "F1", "1");
-							doorContralServer("0102031284", "F1", "1");
+							doorContralServer("0102030405", "F1", "1");
 						}
 					}
 				}
@@ -179,7 +180,7 @@ public class F_1_0 extends FrmParent {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
 							//doorContralServer(currentID, "F1", "3");
-							doorContralServer("0102031284", "F1", "3");
+							doorContralServer("0102030405", "F1", "3");
 						}
 					}
 
@@ -323,7 +324,7 @@ public class F_1_0 extends FrmParent {
 
 	private void putSpinnerValue1(){
 	/*	spinnerAdapter1.add(new SpinnerVO("0", "1号门")) ;*/
-		spinnerAdapter1.add(new SpinnerVO("0", "0102031284")) ;
+		spinnerAdapter1.add(new SpinnerVO("0", "0102030405")) ;
 		//updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 	}
 	private void putSpinnerValue2(){
@@ -377,13 +378,13 @@ public class F_1_0 extends FrmParent {
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
 		LogUtils.e("门控制服务", requestParams.toString());
-		x.http().get(requestParams, new Callback.CommonCallback<String>() {
+		Callback.Cancelable get = x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
 				isServering = false ;
 				setProgressVisible(0) ;
 				JSONObject jsonResult = null;
-				act.updateConnectedStatus(true);
+
 				try {
 					jsonResult = new JSONObject(result);
 					String returnDtuId = jsonResult.getString("dtuId");
@@ -397,6 +398,7 @@ public class F_1_0 extends FrmParent {
 								String data = jsonResult.getString("rltState");
 								doorStatus = gson.fromJson(data,DoorStatus.class);
 								if(null != doorStatus) {
+									act.updateConnectedStatus(true);
 									displayServiceData(doorStatus) ;
 									ToastUtils.show(act, "服务获取数据成功");
 
@@ -422,6 +424,17 @@ public class F_1_0 extends FrmParent {
 				ToastUtils.show(act, "服务获取数据错误："+ex.getMessage());
 				LogUtils.e("onError", "请求失败");
 				setProgressVisible(0) ;
+
+				if (ex instanceof HttpException) { // 网络错误
+					HttpException httpEx = (HttpException) ex;
+					int responseCode = httpEx.getCode();
+					String responseMsg = httpEx.getMessage();
+					String errorResult = httpEx.getResult();
+					// ...
+				} else { // 其他错误
+					// ...
+				}
+
 			}
 
 			@Override
@@ -436,6 +449,7 @@ public class F_1_0 extends FrmParent {
 				setProgressVisible(0) ;
 			}
 		});
+		//get.cancel();
 	}
 	public void displayServiceData(DoorStatus doorStatus) {
 		//甲醛浓度
