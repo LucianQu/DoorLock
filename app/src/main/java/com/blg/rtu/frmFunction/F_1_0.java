@@ -26,6 +26,7 @@ import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
+import com.blg.rtu.util.Util;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
@@ -78,7 +79,13 @@ public class F_1_0 extends FrmParent {
 	private DoorStatus doorStatus ;
 	public String currentID = "" ;
 	public boolean isServering = false ;
-
+	public boolean netServerErr = false ;
+	public Callback.Cancelable httpGet ;
+	private long seconds30 = 30 * 1000 ;
+	private long minute10 = 10 * 60 * 1000 ;
+	private long minute5 = 5 * 60 * 1000 ;
+	private long minute2 = 2 * 60 * 1000 ;
+	private long minute30 = 30 * 60 * 1000 ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -123,11 +130,12 @@ public class F_1_0 extends FrmParent {
 		tv_open.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ToastUtils.show(act, "点击开门");
+				//ToastUtils.show(act, "点击开门");
 				//if (Util.checkIsHasLearned(act)) {
 				if (true) {
 					setProgressVisible(1);
 					if (SharepreferenceUtils.getIsWifi(act)) {
+						httpGet.cancel();
 						setCommand(1);
 					}else {
 						if (getCurrentIDIsempty()) {
@@ -151,6 +159,7 @@ public class F_1_0 extends FrmParent {
 				if (true) {
 					setProgressVisible(2);
 					if (SharepreferenceUtils.getIsWifi(act)) {
+						httpGet.cancel();
 						setCommand(2);
 					}else {
 						if (getCurrentIDIsempty()) {
@@ -174,6 +183,7 @@ public class F_1_0 extends FrmParent {
 				if (true) {
 					setProgressVisible(3);
 					if (SharepreferenceUtils.getIsWifi(act)) {
+						httpGet.cancel();
 						setCommand(3);
 					}else {
 						if (getCurrentIDIsempty()) {
@@ -329,7 +339,7 @@ public class F_1_0 extends FrmParent {
 	}
 	private void putSpinnerValue2(){
 		spinnerAdapter2.add(new SpinnerVO("0", "服务通信")) ;
-		//spinnerAdapter2.add(new SpinnerVO("1", "Wifi通信")) ;
+		spinnerAdapter2.add(new SpinnerVO("1", "Wifi通信")) ;
 	}
 
 	public void setCurrentID(String s) {
@@ -378,9 +388,13 @@ public class F_1_0 extends FrmParent {
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
 		LogUtils.e("门控制服务", requestParams.toString());
-		Callback.Cancelable get = x.http().get(requestParams, new Callback.CommonCallback<String>() {
+		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
+				if (act.delayMillis != seconds30) {
+					act.delayMillis = seconds30 ;
+				}
+				netServerErr = false ;
 				isServering = false ;
 				setProgressVisible(0) ;
 				JSONObject jsonResult = null;
@@ -401,12 +415,18 @@ public class F_1_0 extends FrmParent {
 									act.updateConnectedStatus(true);
 									displayServiceData(doorStatus) ;
 									ToastUtils.show(act, "服务获取数据成功");
-
 								}else {
 									ToastUtils.show(act, "服务获取数据为空！");
 								}
 							}else {
-								ToastUtils.show(act, "服务获取数据失败："+ jsonResult.getString("error"));
+								String msg = jsonResult.getString("error") ;
+								if (msg.equals("设备尚未上线，命令发送失败！")) {
+									ToastUtils.show(act, "服务获取数据失败："+ "门锁设备未上线！");
+									act.delayMillis = minute10 ; //设备未上线，10分钟后再试
+								}else if (msg.equals("超时")) {
+									ToastUtils.show(act, "服务获取数据失败："+ "门锁设备回复数据超时！");
+									act.delayMillis = minute2 ; //设备回复超时，2分钟后再试
+								}
 
 							}
 						}else {
@@ -421,6 +441,8 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onError(Throwable ex, boolean isOnCallback) {
 				isServering = false ;
+				netServerErr = true ;
+				act.delayMillis = minute30 ; //服务异常，30分钟后再试
 				ToastUtils.show(act, "服务获取数据错误："+ex.getMessage());
 				LogUtils.e("onError", "请求失败");
 				setProgressVisible(0) ;

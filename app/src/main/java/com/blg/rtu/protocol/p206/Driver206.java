@@ -26,6 +26,7 @@ import com.blg.rtu.protocol.p206.common.TailProtocol;
 import com.blg.rtu.protocol.p206.util.Constant;
 import com.blg.rtu.util.ByteUtil;
 import com.blg.rtu.util.StringValueForServer;
+import com.blg.rtu3.utils.LogUtils;
 
 import java.util.HashMap;
 
@@ -49,6 +50,7 @@ public class Driver206 extends DriverRtu {
 		String dataHex = null ;
 		try {
 			dataHex = ByteUtil.bytes2Hex(b, false) ;
+			LogUtils.e("接收数据分析：", "Hex 格式：" +dataHex);
 			// 检查数据头合法性
 			int dataLen = new HeadProtocol().checkHeadAndGetDataLen(b) ;
 			// 检查数据尾合法性
@@ -66,6 +68,7 @@ public class Driver206 extends DriverRtu {
 			//index = 4  index + Constant.Bits_RTU_ID - 1 = 8
 			String[] strs = new RtuIdProtocol().parseRtuId_2(b, index, index + Constant.Bits_RTU_ID - 1) ;
 			this.rtuId = strs[0] ;
+			LogUtils.e("接收数据分析：", "BCD RTU ID:" + rtuId);
 			this.rtuId_hex = strs[1] ;
 			
 			//得到数据中的功能码 index = 9
@@ -75,7 +78,6 @@ public class Driver206 extends DriverRtu {
 			}
 			this.dataCode = new CodeProtocol().parseCode(b, index) ;
 
-			
 			Action action = Action.nullAction() ;
 			
 			if(this.dataCode == null){
@@ -112,12 +114,6 @@ public class Driver206 extends DriverRtu {
 						//status为空
 					}
 				}
-			}else			
-			if(this.dataCode.equalsIgnoreCase(Code206.cd_10)){
-				//应答 - 设置遥测终端、中继站地址
-				this.upData = new Answer_10_50().parse(rtuId, b, ca, dataCode) ;
-				action.append(Action.changeRtuIdAction) ;
-				action.append(Action.commandResultAction) ;
 			}else
 			if(this.dataCode.equalsIgnoreCase(Code206.cd_50)){
 				//应答 - 查询遥测终端、中继站地址

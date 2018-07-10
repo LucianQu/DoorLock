@@ -129,6 +129,7 @@ public class MainActivity  extends Activity {
 
 	private AutoScrollTextView scrollTextView ;
 	private JPushActivity mJPush ;
+	public long delayMillis = 30 * 1000;
 
 	public void registerMessageReceiver() {
 		mMessageReceiver = new MessageReceiver();
@@ -228,10 +229,12 @@ public class MainActivity  extends Activity {
 		@Override
 		public void run() {
 			handler.removeCallbacks(queryF1Task);
-			handler.postDelayed(queryF1Task, 30*1000) ;
 			if (!frgTool.f_1_0.isServering) {
 				frgTool.f_1_0.doorContralServer("0102030405", "F1", "0");
 			}
+			//if (!frgTool.f_1_0.netServerErr) {
+				handler.postDelayed(queryF1Task, delayMillis);
+			//}
 		}
 	};
 	
@@ -301,7 +304,7 @@ public class MainActivity  extends Activity {
 			if (true) {
 				//frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID,"0","F1");
 				//frgTool.f_1_0.doorContralServer("0102030405","0","F1");
-				handler.postDelayed(queryF1Task, 15*1000) ;
+				handler.postDelayed(queryF1Task, 5*1000) ;
 			}else {
 				ToastUtils.show(MainActivity.this, "没有可操作的门，无法请求服务连接!");
 			}

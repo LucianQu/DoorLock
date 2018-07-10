@@ -62,7 +62,7 @@ public class CoreControl {
 	 */
 	public void receiveRtuProtocolData(byte[] b, Integer channelType){
 		Driver206 driver = new Driver206() ;
-		Action action = driver.analyseData(b) ;
+		Action action = driver.analyseData(b) ; //解析接收到的数据
 		
 		if(driver.getDataCode() != null){
 			NetManager.getInstance().parsedReceiveData(driver.getDataCode()) ;

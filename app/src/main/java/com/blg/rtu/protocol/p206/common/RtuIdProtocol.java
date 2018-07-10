@@ -48,9 +48,10 @@ public class RtuIdProtocol {
 				id = ByteUtil.BCD2String(bs , startIndex , startIndex + 4) ;
 			}else{*/
 				//水资源测站编码方式
-				String preId = ByteUtil.BCD2String(bs , startIndex , startIndex + 2) ;
-				int tailId =  ByteUtilUnsigned.bytes2Short_an(bs, startIndex + 3) ;
-				id = preId +  tailId ;
+				String preId = ByteUtil.BCD2String(bs , startIndex , startIndex + 4) ;
+				//int tailId =  ByteUtilUnsigned.bytes2Short_an(bs, startIndex + 3) ;
+				//id = preId +  tailId ;
+				id = preId;
 			//}
 			//startIndex = 4   endIndex - startIndex + 1 = 5
 			hex = ByteUtil.bytes2Hex(bs, true, startIndex, (endIndex - startIndex + 1)) ;

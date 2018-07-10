@@ -8,6 +8,7 @@ import com.blg.rtu.aidl.RemoteParcel;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.util.DialogAlarm;
+import com.blg.rtu3.utils.LogUtils;
 
 public class StubActivity extends ActivityAidl.Stub{
 	
@@ -71,13 +72,11 @@ public class StubActivity extends ActivityAidl.Stub{
 		});
 	}
 
-	
 	/**
 	 * 在server端的Activity代理，通过回调的方式向根Activity端传来了命令结果数据
 	 */
 	@Override
 	public void rtuCommandResult(RemoteParcel parcel) throws RemoteException {
-		//Log(MessageFormat.format("rect[bottom={0},top={1},left={2},right={3},test1={4},test2={5}]", rect.bottom,rect.top,rect.left,rect.right,rect.data.test1, rect.data.test2));
 		final RtuData data = parcel.packet.data ;
 		Log.i(tag, data.toString()) ;
 		Log.i("StubActivity", "在server端的Activity代理，通过回调的方式向根Activity端传来了命令结果数据") ;
@@ -85,31 +84,20 @@ public class StubActivity extends ActivityAidl.Stub{
 			@Override
 			public void run() {
 				if(data.dataCode != null && !data.dataCode.equals("")){
-					if(data.dataCode.equals(Code206.cd_10) || data.dataCode.equals(Code206.cd_50)){
-						//设置qulusheng或查询终端地址
-						//qulusheng
-						//ToastUtils.show(mAct,data.toString());
-						new DialogAlarm().showDialog(mAct,data.toString());
-						//mAct.frgTool.f_01_010.receiveRtuData(data);
-						//mAct.setDeviceID(data.getRtuId());
-					}else
-					if(data.dataCode.equals(Code206.cd_44) || data.dataCode.equals(Code206.cd_74)){
-						//设置或查询终端地址
-                        //qulusheng
-						//mAct.frgTool.fragment_loopq02.receiveRtuData(Code206.cd_50,data) ;
-					}else
-					if(data.dataCode.equals(Code206.cd_F1)){
+					if(data.dataCode.equals(Code206.cd_50)){
+						//设置或查询终端地址 lucian
+						mAct.frgTool.f_01_010.receiveRtuData(data);
+						mAct.setDeviceID(data.getRtuId());
+					}else if(data.dataCode.equals(Code206.cd_F1)){
 						//门控制返回数据
 						mAct.frgTool.f_1_0.receiveRtuData(data) ;
 						mAct.frgTool.f_1_1.receiveRtuData(data) ;
-					}else
-					if(data.dataCode.equals(Code206.cd_E2) || data.dataCode.equals(Code206.cd_F2)) {
-						//设置或查询电源采集校准系数
+					}else if(data.dataCode.equals(Code206.cd_F2)) {
+						//附加功能开关1
 						mAct.frgTool.f_1_0.receiveRtuData(data);
 						mAct.frgTool.f_1_1.receiveRtuData(data);
-					}else
-					if(data.dataCode.equals(Code206.cd_E3) || data.dataCode.equals(Code206.cd_F3)){
-						//设置或查询仪表系数
+					}else if( data.dataCode.equals(Code206.cd_F3)){
+						//附加功能开关2
 						mAct.frgTool.f_1_0.receiveRtuData(data);
 						mAct.frgTool.f_1_1.receiveRtuData(data);
 					}
@@ -149,10 +137,7 @@ public class StubActivity extends ActivityAidl.Stub{
 				//mAct.frgTool.fragment_ch04.setSendBackCommandData(data) ; qls
 				
 				if(data.dataCode != null && !data.dataCode.equals("")){
-					if(data.dataCode.equals(Code206.cd_10) || data.dataCode.equals(Code206.cd_50)){
-						//设置或查询终端地址
-					}else
-					if(data.dataCode.equals(Code206.cd_44) || data.dataCode.equals(Code206.cd_74)){
+					if(data.dataCode.equals(Code206.cd_50)){
 						//设置或查询终端地址
 					}else
 					if(data.dataCode.equals(Code206.cd_F1)){
@@ -163,8 +148,8 @@ public class StubActivity extends ActivityAidl.Stub{
 						//附加功能设置门控制
 						//mAct.frgTool.f_1_2.commandSendedCallBack() ;
 					}else
-					if(data.dataCode.equals(Code206.cd_E3) || data.dataCode.equals(Code206.cd_F3)){
-						//设置或查询仪表系数
+					if(data.dataCode.equals(Code206.cd_F3)){
+						//附加功能设置门控制
 						//mAct.frgTool.f_1_2.commandSendedCallBack() ;
 					}
 					
@@ -182,9 +167,9 @@ public class StubActivity extends ActivityAidl.Stub{
 			mAct.mHandler.post(new Runnable(){
 				@Override
 				public void run() {
-					if(code.equals(Code206.cd_B1)){
-						//查询水表历史数据
-
+					if(code.equals(Code206.cd_50)){
+						LogUtils.e("StubActivity后台服务启动，自动查询CD_50","开始查询");
+						mAct.frgTool.f_01_010.queryCommand();
 					}else{
 						//未实现的
 						Log.e(tag, "未实现的自动查询命令" + code) ;
@@ -203,7 +188,7 @@ public class StubActivity extends ActivityAidl.Stub{
 			mAct.mHandler.post(new Runnable(){
 				@Override
 				public void run() {
-					if(code.equals(Code206.cd_44)){//设置遥测终端、中继站地址
+					if(code.equals(Code206.cd_F1)){//设置遥测终端、中继站地址
 
 					}else{
 						//未实现的
@@ -224,7 +209,7 @@ public class StubActivity extends ActivityAidl.Stub{
 		mAct.mHandler.post(new Runnable(){
 			@Override
 			public void run() {
-				mAct.frgTool.fragment_ch04.setRtuData(data) ;
+				//mAct.frgTool.fragment_ch04.setRtuData(data) ;
 			}
 		});
 	}
