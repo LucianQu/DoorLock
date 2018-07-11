@@ -54,7 +54,7 @@ public class Driver206 extends DriverRtu {
 			// 检查数据头合法性
 			int dataLen = new HeadProtocol().checkHeadAndGetDataLen(b) ;
 			// 检查数据尾合法性
-			// 因为功能码为ED的命令CRC验证不正确，硬件方总说没有问题，所以此处把CRC校验去除了
+			// 因为功能码为ED的命令CRC验证不正确，此处把CRC校验去除了
 			new TailProtocol().checkTail(b, dataLen, false) ;
 
 			//进行控制域分析

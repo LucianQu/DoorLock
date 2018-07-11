@@ -444,6 +444,9 @@ public class F_1_0 extends FrmParent {
 				netServerErr = true ;
 				act.delayMillis = minute30 ; //服务异常，30分钟后再试
 				ToastUtils.show(act, "服务获取数据错误："+ex.getMessage());
+				if (ex.getMessage().contains("failed to connect to")) {
+					ToastUtils.show(act, "手机网络异常，请检查网络!");
+				}
 				LogUtils.e("onError", "请求失败");
 				setProgressVisible(0) ;
 
