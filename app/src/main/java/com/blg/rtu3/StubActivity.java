@@ -7,7 +7,6 @@ import com.blg.rtu.aidl.ActivityAidl;
 import com.blg.rtu.aidl.RemoteParcel;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
-import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu3.utils.LogUtils;
 
 public class StubActivity extends ActivityAidl.Stub{
@@ -118,7 +117,7 @@ public class StubActivity extends ActivityAidl.Stub{
 		mAct.mHandler.post(new Runnable(){
 			@Override
 			public void run() {
-				mAct.frgTool.fragment_np01.receiveNoProtocolData(bytes) ;
+				//mAct.frgTool.fragment_np01.receiveNoProtocolData(bytes) ;
 			}
 		});
 	}

@@ -67,13 +67,14 @@ public class F_1_3 extends FrmParent {
 		View view = inflater.inflate(R.layout.f_1_03, container, false);
 
 		tvLearn = (TextView) view.findViewById(R.id.tv_door_learn) ;
-		tvLearn.setEnabled(false);
+		tvLearn.setEnabled(true);
 		tvLearn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				isLearning = true ;
-				//act.frgTool.f_01_010.queryCommand();
 				ToastUtils.show(act,"门学习");
+				act.frgTool.f_01_010.queryCommand();
+
 			}
 		});
 

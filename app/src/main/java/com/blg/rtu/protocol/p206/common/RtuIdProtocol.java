@@ -3,6 +3,7 @@ package com.blg.rtu.protocol.p206.common;
 import com.blg.rtu.protocol.p206.util.Constant;
 import com.blg.rtu.util.ByteUtil;
 import com.blg.rtu.util.ByteUtilUnsigned;
+import com.blg.rtu3.utils.LogUtils;
 
 public class RtuIdProtocol {
 	
@@ -79,27 +80,45 @@ public class RtuIdProtocol {
 		int n = idSite ; 
 
 		//水资源测站编码
-		String preId = id.substring(0 , 6) ;
-		String tailId = id.substring(6) ;
-		byte[] cityNo_b = ByteUtil.string2BCD(preId) ;
+		//String preId = id.substring(0 , 6) ;
+		//String tailId = id.substring(6) ;
+		byte[] cityNo_b = ByteUtil.string2BCD(id) ;
 		if(cityNo_b == null){
 			throw new Exception("RTU ID不合法，其城市编号转成BCD编码时出错！" , null) ;
 		}else{
 			if(cityNo_b.length == 1) {
 				b[n++] = 0 ;
 				b[n++] = 0 ;
+				b[n++] = 0 ;
+				b[n++] = 0 ;
 				b[n++] = cityNo_b[0] ;
 			}else if(cityNo_b.length == 2) {
+				b[n++] = 0 ;
+				b[n++] = 0 ;
 				b[n++] = 0 ;
 				b[n++] = cityNo_b[0] ;
 				b[n++] = cityNo_b[1] ;
 			}else if(cityNo_b.length == 3) {
+				b[n++] = 0 ;
+				b[n++] = 0 ;
 				b[n++] = cityNo_b[0] ;
 				b[n++] = cityNo_b[1] ;
 				b[n++] = cityNo_b[2] ;
+			}else if(cityNo_b.length == 4) {
+				b[n++] = 0 ;
+				b[n++] = cityNo_b[0] ;
+				b[n++] = cityNo_b[1] ;
+				b[n++] = cityNo_b[2] ;
+				b[n++] = cityNo_b[3] ;
+			}else if(cityNo_b.length == 5) {
+				b[n++] = cityNo_b[0] ;
+				b[n++] = cityNo_b[1] ;
+				b[n++] = cityNo_b[2] ;
+				b[n++] = cityNo_b[3] ;
+				b[n++] = cityNo_b[4] ;
 			}
 			}
-			ByteUtilUnsigned.short2Bytes_an(b, Integer.parseInt(tailId), n) ;
+			//ByteUtilUnsigned.short2Bytes_an(b, Integer.parseInt(tailId), n) ;
 		return b ;
 	}
 	
