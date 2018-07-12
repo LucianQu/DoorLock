@@ -205,7 +205,7 @@ public class F_1_1 extends FrmParent {
 	 */
 	@Override
 	public void receiveRtuData(RtuData d){
-		super.receiveRtuData(d) ;
+		//super.receiveRtuData(d) ;
 	}
 	/**
 	 * 导出设置数据

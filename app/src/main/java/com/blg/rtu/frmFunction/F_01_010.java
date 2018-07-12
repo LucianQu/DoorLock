@@ -19,7 +19,6 @@ import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.cd10_50.Data_10_50;
 import com.blg.rtu.util.Constant;
-import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.ImageUtil;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.SharepreferenceUtils;
@@ -166,7 +165,7 @@ public class F_01_010  extends FrmParent {
 	 */
 	@Override
 	public void receiveRtuData(RtuData d){
-		super.receiveRtuData(d) ;
+		//super.receiveRtuData(d) ;
 		try {
 			String deviceID = SharepreferenceUtils.getDeviceId(act) ;
 			String password = SharepreferenceUtils.getPassword(act) ;

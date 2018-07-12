@@ -783,7 +783,7 @@
     <string name="noCommandIdle">120000</string>
     
     <!-- 通信协议 -->
-    <string name="defaultPassword">00 00</string><!-- 默认密码 -->
+    <string name="defaultPassword">02 01</string><!-- 默认密码 -->
     <string name="protocolPackageMinLen">3</string><!-- 此值必须是3(针对206协议)，在Decoder.java中有限制 -->
     <string name="protocolPackageMaxLen">255</string>
 	<string name="protocolPackageHead">104</string>

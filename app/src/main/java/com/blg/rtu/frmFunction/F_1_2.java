@@ -409,7 +409,7 @@ public class F_1_2 extends FrmParent {
 	 */
 	@Override
 	public void receiveRtuData(RtuData d){
-		super.receiveRtuData(d) ;
+		//super.receiveRtuData(d) ;
 
 	}
 	/**

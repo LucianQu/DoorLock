@@ -26,7 +26,6 @@ import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
-import com.blg.rtu.util.Util;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
@@ -653,7 +652,7 @@ public class F_1_0 extends FrmParent {
 	 */
 	@Override
 	public void receiveRtuData(RtuData d){
-		super.receiveRtuData(d) ;
+		//super.receiveRtuData(d) ;
 		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null);
 		
 		Data_F1 data = (Data_F1)d.subData ;
