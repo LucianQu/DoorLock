@@ -64,7 +64,7 @@ public class ProtocolSupport {
 	/**
 	 * 构造下行数据的尾部
 	 * @param b
-	 * @param password
+	 * @param
 	 * @throws Exception
 	 */
 	public void createDownDataTail(byte[] b, String passwordHex) throws Exception {

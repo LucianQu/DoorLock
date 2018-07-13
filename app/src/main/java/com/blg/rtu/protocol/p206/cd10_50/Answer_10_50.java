@@ -6,7 +6,10 @@ import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.common.ControlProtocol;
 import com.blg.rtu.protocol.p206.common.ProtocolSupport;
 import com.blg.rtu.util.ByteUtil;
+import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.ToastUtils;
+import com.blg.rtu3.MainActivity;
+import com.blg.rtu3.utils.LogUtils;
 
 //设置、查询遥测终端地址，中继站地址
 
@@ -35,10 +38,11 @@ public class Answer_10_50 extends ProtocolSupport{
 	private void doParse(byte[] b, int index, RtuData d, ControlProtocol cp) throws Exception {
 		Data_10_50 subD = new Data_10_50() ;
 		d.setSubData(subD) ;
-		//String[] ss = new RtuIdProtocol().parseRtuId_1(b, index , (index + Constant.Bits_RTU_ID - 1)) ;
-		//subD.setRtuId(ss[0]) ;
 		try {
-			int password = ByteUtil.bytes2Short(new byte[]{b[index++],b[index++]},0)&0xffff ;
+			//String password = ByteUtil.BCD2String(b, index, index+1) ;
+			String password = ByteUtil.bytes2Hex(new byte[]{b[index++],b[index++]}, false) ;
+			SharepreferenceUtils.saveComPassword(MainActivity.instance,password);
+			LogUtils.e("保存通信密码", password);
 			subD.setPassWord(password);
 		}catch (Exception e) {
 		}

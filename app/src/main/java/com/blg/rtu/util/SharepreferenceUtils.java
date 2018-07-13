@@ -124,17 +124,32 @@ public class SharepreferenceUtils {
         editor.commit();
     }
 
+    public static String getPassword(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_password", 0);
+        String device_password = preferences.getString("password", "");
+        return device_password;
+    }
+
+    public static void saveComPassword(Context context, String is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_password_com", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("password_com", is);
+        editor.commit();
+    }
+
+    public static String getComPassword(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_password_com", 0);
+        String device_password = preferences.getString("password_com", "0102");
+        return device_password;
+    }
+
     public static String getDeviceId(Context context) {
         SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
         String deviceId = preferences.getString("device_id", "");
         return deviceId;
     }
 
-    public static String getPassword(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("preference_password", 0);
-        String device_password = preferences.getString("password", "");
-        return device_password;
-    }
+
 
     public static void savePhoneIMEI(Context context, String imei) {
         SharedPreferences preferences = context.getSharedPreferences("preference_phone_imei", 0);

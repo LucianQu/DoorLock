@@ -51,7 +51,7 @@ public class CoreControl {
 				//发送链中测试命令，以保持网络连接，不叫RTU 断电
 				String rtuId = CoreThread.getInstance().getRtuId() ;
 				if(rtuId != null){
-					this.sendRtuCommandByTcp(new CommandCreator().cd_02(rtuId), true, false) ;
+					//this.sendRtuCommandByTcp(new CommandCreator().cd_02(rtuId), true, false) ;
 				}
 			}
 		}

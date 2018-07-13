@@ -6,7 +6,9 @@ import com.blg.rtu.protocol.p206.F2.Param_F2;
 import com.blg.rtu.protocol.p206.F3.Param_F3;
 import com.blg.rtu.protocol.p206.cd02.Param_02;
 import com.blg.rtu.protocol.p206.cd10_50.Param_10;
+import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.StringValueForServer;
+import com.blg.rtu3.MainActivity;
 
 public class CommandCreator {
 
@@ -35,6 +37,7 @@ public class CommandCreator {
 		RtuCommand com = new RtuCommand() ;
 		com.setCommandCode(Code206.cd_F1) ;
 		com.setRtuId(rtuId);
+		com.setPassword(SharepreferenceUtils.getComPassword(MainActivity.instance));
 		Param_F1 p = new Param_F1() ;
 		p.setDoorContral(command);
 		com.getParams().put(Param_F1.KEY, p) ;
@@ -44,6 +47,7 @@ public class CommandCreator {
 		RtuCommand com = new RtuCommand() ;
 		com.setCommandCode(Code206.cd_F2) ;
 		com.setRtuId(rtuId);
+		com.setPassword(SharepreferenceUtils.getComPassword(MainActivity.instance));
 		Param_F2 p = new Param_F2() ;
 		p.setDoorContral(command);
 		com.getParams().put(Param_F2.KEY, p) ;
@@ -54,6 +58,7 @@ public class CommandCreator {
 		RtuCommand com = new RtuCommand() ;
 		com.setCommandCode(Code206.cd_F3) ;
 		com.setRtuId(rtuId);
+		com.setPassword(SharepreferenceUtils.getComPassword(MainActivity.instance));
 		Param_F3 p = new Param_F3() ;
 		p.setDoorContral(command);
 		com.getParams().put(Param_F3.KEY, p) ;

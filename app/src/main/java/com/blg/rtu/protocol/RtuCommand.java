@@ -14,6 +14,7 @@ public class RtuCommand implements Serializable {
 	private String rtuId;// 前部分(6位数字，省2位，市2位，县2位)；后部分(测站选址范围为1-60000。中继站选址范围为60001-65534。65535 为广播地址，0 为无效地址)
 
 	private String commandCode ;//命令功能码
+	private String password ; //命令密码
 	/**
 	 * 参数java Bean 集合
 	 */
@@ -29,7 +30,8 @@ public class RtuCommand implements Serializable {
 
 	public String toString() {
 		String s = "params:\n";
-		s += this.rtuId + "\n" ;
+		s += "设备ID:"+this.rtuId + "\n" ;
+		s += "密码:"+this.password + "\n" ;
 		Set<String> keys = params.keySet();
 		for (String key : keys) {
 			s += key + ":" + params.get(key) + "\n";
@@ -43,6 +45,14 @@ public class RtuCommand implements Serializable {
 
 	public void setParams(HashMap<String, Object> params) {
 		this.params = params;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getRtuId() {

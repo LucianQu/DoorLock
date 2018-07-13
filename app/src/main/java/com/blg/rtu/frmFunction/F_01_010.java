@@ -169,11 +169,13 @@ public class F_01_010  extends FrmParent {
 		try {
 			String deviceID = SharepreferenceUtils.getDeviceId(act) ;
 			String password = SharepreferenceUtils.getPassword(act) ;
+			LogUtils.e("设备列表", deviceID);
+			LogUtils.e("密码列表", password);
 			Data_10_50 sd = (Data_10_50)d.subData ;
 			LogUtils.e("50H", sd.toString());
 			if (null != d && null != sd) {
 				item01.setText(d.getRtuId() + "");
-				item02.setText(sd.getPassWord() + "");
+				item02.setText(sd.getPassWord());
 				if (act.frgTool.f_1_3.learningClick()) {
 					SharepreferenceUtils.saveHasLearn(act, true);
 					act.frgTool.f_1_3.setLearningClickStatus(false);
@@ -211,7 +213,7 @@ public class F_01_010  extends FrmParent {
 						}
 					} else {
 						SharepreferenceUtils.saveDeviceId(act, d.getRtuId());
-						SharepreferenceUtils.savePassword(act, sd.getPassWord() + "");
+						SharepreferenceUtils.savePassword(act, sd.getPassWord());
 					}
 					act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 					act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
@@ -232,6 +234,8 @@ public class F_01_010  extends FrmParent {
 		}catch (Exception e) {
 			ToastUtils.show(act, e.getMessage());
 		}
+		LogUtils.e("设备列表", SharepreferenceUtils.getDeviceId(act));
+		LogUtils.e("密码列表", SharepreferenceUtils.getPassword(act));
 	}
 
 	/**

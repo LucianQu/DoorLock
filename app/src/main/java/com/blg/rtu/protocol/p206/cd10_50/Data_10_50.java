@@ -4,7 +4,7 @@ package com.blg.rtu.protocol.p206.cd10_50;
 public class Data_10_50 {
 	
 
-	private int passWord ;
+	private String passWord ;
 
 	public String toString(){
 		String s = "\n" ;
@@ -12,11 +12,11 @@ public class Data_10_50 {
 		return s ;
 	}
 
-	public int getPassWord() {
+	public String getPassWord() {
 		return passWord;
 	}
 
-	public void setPassWord(int passWord) {
+	public void setPassWord(String passWord) {
 		this.passWord = passWord;
 	}
 }

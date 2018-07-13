@@ -2,6 +2,9 @@ package com.blg.rtu.protocol.p206.common;
 
 import com.blg.rtu.util.ByteUtil;
 import com.blg.rtu.util.DateTime;
+import com.blg.rtu.util.SharepreferenceUtils;
+import com.blg.rtu3.MainActivity;
+import com.blg.rtu3.utils.LogUtils;
 
 /**
  * 用户数据域中附加数据(密码、时标)
@@ -51,8 +54,25 @@ public class AuxProtocol {
 		
 		
 		//根据奥特美克王书超说明，密码实现与水利部206协议定义不一样，与功能码96实现一样
-		int index = site_password ; 
-		if(passwordHex != null){
+		int index = site_password ;
+		String password = SharepreferenceUtils.getComPassword(MainActivity.instance) ;
+		byte[] pw ;
+		if (!"".equals(password)) {
+			pw = ByteUtil.hex2Bytes(password) ;
+			if(pw.length == 1){
+				b[index++] = pw[0] ;
+				b[index++] =  0 ;
+			}else if(pw.length == 2){
+				b[index++] = pw[0] ;
+				b[index++] = pw[1] ;
+			}
+		}else {
+			b[index++] = 0;
+			b[index++] = 0;
+		}
+		LogUtils.e("创建下发指令密码",b[index - 2] + "" + b[index - 1]);
+
+		/*if(passwordHex != null){
 			byte[] bs = ByteUtil.hex2Bytes(passwordHex) ;
 			if(bs.length == 1){
 				b[index++] = bs[0] ;
@@ -61,7 +81,7 @@ public class AuxProtocol {
 				b[index++] = bs[1] ;
 				b[index++] = bs[0] ;
 			}
-		}
+		}*/
 ////////////////////////////////////////////////////////////		
 //		byte[] bcd = ByteUtil.int2BCD_an(password.intValue()) ;
 //		if(bcd.length == 1){
@@ -88,7 +108,7 @@ public class AuxProtocol {
 	/**
 	 * 分析RTU数据中的时间标签
 	 * @param b
-	 * @param site_password
+	 * @param
 	 * @return Object[]{String:时间(格式例如 09 10:01:00) , int:delay}
 	 */
 	public String parseTime(byte[] b , int site_time) throws Exception{
@@ -112,8 +132,6 @@ public class AuxProtocol {
 	/**
 	 * 构造RTU命令中的密码及密码
 	 * @param b
-	 * @param site_password
-	 * @param p_key_value
 	 * @return
 	 * @throws Exception
 	 */
