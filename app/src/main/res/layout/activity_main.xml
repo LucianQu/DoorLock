@@ -11,7 +11,7 @@
 		android:id="@+id/ScrollNotice"
 		android:layout_height="36dp"
 		android:layout_width="fill_parent"
-		android:text="石家庄专业智能门设备制造商!"
+		android:text="中山市精艺家具有限公司智能门"
 		android:gravity="center_vertical"
 		android:textColor="@color/red"
 		android:inputType="text"

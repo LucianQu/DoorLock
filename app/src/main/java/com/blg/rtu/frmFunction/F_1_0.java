@@ -143,7 +143,7 @@ public class F_1_0 extends FrmParent {
 						}else {
 							currentCom = "2" ;
 							act.delayMillis = seconds5 ;
-							doorContralServer(currentID, "F1", "2");
+							doorContralServer(currentID, "F1", "1");
 							//doorContralServer("0102030407", "F1", "2");
 
 						}
@@ -168,7 +168,7 @@ public class F_1_0 extends FrmParent {
 						}else {
 							currentCom = "1" ;
 							act.delayMillis = seconds5 ;
-							doorContralServer(currentID, "F1", "1");
+							doorContralServer(currentID, "F1", "2");
 							//doorContralServer("0102030407", "F1", "1");
 
 						}
@@ -406,45 +406,46 @@ public class F_1_0 extends FrmParent {
 				isServering = false ;
 				setProgressVisible(0) ;
 				JSONObject jsonResult = null;
+				if (!"".equals(result)) {
+					try {
+						jsonResult = new JSONObject(result);
+						String returnDtuId = jsonResult.getString("dtuId");
+						if (null == returnDtuId || "null".equals(returnDtuId) || "".equals(returnDtuId)) {
+							ToastUtils.show(act, "产品ID为空，数据未知!");
+						} else {
+							if (dtuId.equals(returnDtuId)) {
+								String code = jsonResult.getString("succ");
+								if (code.equals("1")) {
+									Gson gson = new Gson();
+									String data = jsonResult.getString("rltState");
+									doorStatus = gson.fromJson(data, DoorStatus.class);
+									if (null != doorStatus) {
+										act.updateConnectedStatus(true);
+										displayServiceData(doorStatus);
+										pintServiceData(doorStatus);
+										//ToastUtils.show(act, "服务获取数据成功");
+									} else {
+										ToastUtils.show(act, "服务获取数据为空！");
+									}
+								} else {
+									String msg = jsonResult.getString("error");
+									if (msg.equals("设备尚未上线，命令发送失败！")) {
+										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备未上线！");
+										//act.delayMillis = minute10 ; //设备未上线，10分钟后再试
+									} else if (msg.contains("超时")) {
+										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
+										act.delayMillis = minute2; //设备回复超时，2分钟后再试
+									}
 
-				try {
-					jsonResult = new JSONObject(result);
-					String returnDtuId = jsonResult.getString("dtuId");
-					if (null == returnDtuId || "null".equals(returnDtuId) || "".equals(returnDtuId)) {
-						ToastUtils.show(act, "产品ID为空，数据未知!");
-					}else {
-						if (dtuId.equals(returnDtuId)) {
-							String code = jsonResult.getString("succ");
-							if (code.equals("1")) {
-								Gson gson = new Gson();
-								String data = jsonResult.getString("rltState");
-								doorStatus = gson.fromJson(data,DoorStatus.class);
-								if(null != doorStatus) {
-									act.updateConnectedStatus(true);
-									displayServiceData(doorStatus) ;
-									pintServiceData(doorStatus) ;
-									//ToastUtils.show(act, "服务获取数据成功");
-								}else {
-									ToastUtils.show(act, "服务获取数据为空！");
 								}
-							}else {
-								String msg = jsonResult.getString("error") ;
-								if (msg.equals("设备尚未上线，命令发送失败！")) {
-									ToastUtils.show(act, "服务获取数据失败："+ "门锁设备未上线！");
-									//act.delayMillis = minute10 ; //设备未上线，10分钟后再试
-								}else if (msg.contains("超时")) {
-									ToastUtils.show(act, "服务获取数据失败："+ "门锁设备回复数据超时！");
-									act.delayMillis = minute2 ; //设备回复超时，2分钟后再试
-								}
-
+							} else {
+								ToastUtils.show(act, "服务获取数据返回地址与请求地址不一致!");
 							}
-						}else {
-							ToastUtils.show(act, "服务获取数据返回地址与请求地址不一致!");
 						}
-					}
 
-				} catch (JSONException e) {
-					e.printStackTrace();
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			@Override
