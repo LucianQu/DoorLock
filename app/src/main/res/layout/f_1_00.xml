@@ -19,7 +19,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="通信类型选择"
-			android:textSize="@dimen/text16"
+			android:textSize="18dp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -58,7 +58,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="操作门选择"
-			android:textSize="@dimen/text16"
+			android:textSize="18dp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -97,7 +97,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="甲醛检测"
-			android:textSize="@dimen/text16"
+			android:textSize="18dp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -112,14 +112,14 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="浓度(mg/m³) : "
-				android:textSize="14sp"
+				android:textSize="16sp"
 				/>
 			<TextView
 				android:id="@+id/tv_jiaquan"
 				android:layout_width="wrap_content"
 				android:layout_marginLeft="@dimen/base6dp"
 				android:layout_height="wrap_content"
-				android:textSize="14sp"
+				android:textSize="16sp"
 				/>
 		</LinearLayout>
 	</LinearLayout>
@@ -137,7 +137,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="门控制"
-			android:textSize="@dimen/text16"
+			android:textSize="18dp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -155,10 +155,10 @@
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_open"
-					android:layout_width="50dp"
-					android:layout_height="50dp"
+					android:layout_width="60dp"
+					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="14sp"
+					android:textSize="16sp"
 					android:textColor="#ffffff"
 					android:text="开"
 					android:gravity="center"/>
@@ -178,10 +178,10 @@
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_close"
-					android:layout_width="50dp"
-					android:layout_height="50dp"
+					android:layout_width="60dp"
+					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="14sp"
+					android:textSize="16sp"
 					android:textColor="#ffffff"
 					android:text="关"
 					android:gravity="center"/>
@@ -202,10 +202,10 @@
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_stop"
-					android:layout_width="50dp"
-					android:layout_height="50dp"
+					android:layout_width="60dp"
+					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="14sp"
+					android:textSize="16sp"
 					android:textColor="#ffffff"
 					android:text="停"
 					android:gravity="center"/>
@@ -232,7 +232,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="16dp"
 				android:text="门开关角度"
-				android:textSize="@dimen/text16"
+				android:textSize="18dp"
 				android:textColor="#262626"
 				/>
 			<LinearLayout
@@ -244,10 +244,10 @@
 				android:layout_height="wrap_content">
 				<lecho.lib.hellocharts.view.PieChartView
 					android:id="@+id/pie_chart"
-					android:layout_width="60dp"
+					android:layout_width="100dp"
 					android:clickable="false"
 					android:focusableInTouchMode="false"
-					android:layout_height="60dp" />
+					android:layout_height="100dp" />
 			</LinearLayout>
 		</LinearLayout>
 	</LinearLayout>
@@ -265,7 +265,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="门报警"
-			android:textSize="@dimen/text16"
+			android:textSize="18dp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -284,7 +284,7 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:textSize="14sp"
+					android:textSize="18sp"
 					android:textColor="@color/black"
 					android:text="电池欠压:"
 					android:gravity="center"/>
@@ -305,7 +305,7 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:textSize="14sp"
+					android:textSize="18sp"
 					android:textColor="@color/black"
 					android:text="关门故障:"
 					android:gravity="center"/>

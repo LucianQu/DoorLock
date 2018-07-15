@@ -286,7 +286,7 @@ public class F_1_0 extends FrmParent {
 	 * 获取数据
 	 */
 	private void setPieChartData(){
-			values.clear();
+		values.clear();
 		for (int i = 0; i < data.length; ++i) {
 			SliceValue sliceValue = new SliceValue((float) data[i], colors[i]);//这里的颜色是我写了一个工具类 是随机选择颜色的
 			values.add(sliceValue);
@@ -507,7 +507,7 @@ public class F_1_0 extends FrmParent {
 	public void displayServiceData(DoorStatus doorStatus) {
 		//甲醛浓度
 		if (!checkIsNull(doorStatus.getHcho())){
-			tv_jiaquan.setText(doorStatus.getHcho()+"");
+			tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree(doorStatus.getHcho()+""));
 		}else {
 			tv_jiaquan.setText("未知!");
 		}
@@ -613,13 +613,17 @@ public class F_1_0 extends FrmParent {
 		int close = 0 ;
 		if (open <= 180) {
 			close = 180 - open ;
+			data[0] = 135;
 			data[1] = open ;
 			data[2] = close ;
+			data[3] = 45 ;
 			setPieChartData() ;
 			initPieChart() ;
 		}else {
+			data[0] = 135;
 			data[1] = 0 ;
 			data[2] = 180 ;
+			data[3] = 45 ;
 			setPieChartData() ;
 			initPieChart() ;
 			ToastUtils.show(act, "门角度超出范围:" + open);
@@ -723,8 +727,12 @@ public class F_1_0 extends FrmParent {
 		if (data.getJiaQuan() == 0) {
 			tv_jiaquan.setText("0.000") ;
 		}else {
-			tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree(
-					(data.getJiaQuan() / 1000) + "" + (data.getJiaQuan() % 1000)));
+			if (data.getJiaQuan() > 100000) {
+				ToastUtils.show(act, "甲醛值超出范围");
+			}else {
+				tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree(
+						(data.getJiaQuan() / 1000) + "" + (data.getJiaQuan() % 1000)));
+			}
 		}
 
 		setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
