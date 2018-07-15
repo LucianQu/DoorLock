@@ -98,16 +98,16 @@ public class SharepreferenceUtils {
         return type;
     }
 
-    public static void saveRechargeMax(Context context, String is) {
-        SharedPreferences preferences = context.getSharedPreferences("preference_recharge_max", 0);
+    public static void saveMessage(Context context, String is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_Message", 0);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("recharge_max", is);
+        editor.putString("Message", is);
         editor.commit();
     }
 
-    public static String getRechargeMax(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("preference_recharge_max", 0);
-        String rechargemax = preferences.getString("recharge_max", "");
+    public static String getMessage(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_Message", 0);
+        String rechargemax = preferences.getString("Message", "");
         return rechargemax;
     }
 

@@ -26,6 +26,7 @@ import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
+import com.blg.rtu.util.Util;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
@@ -81,10 +82,12 @@ public class F_1_0 extends FrmParent {
 	public boolean netServerErr = false ;
 	public Callback.Cancelable httpGet ;
 	private long seconds30 = 30 * 1000 ;
+	private long seconds5 = 5 * 1000 ;
 	private long minute10 = 10 * 60 * 1000 ;
 	private long minute5 = 5 * 60 * 1000 ;
 	private long minute2 = 2 * 60 * 1000 ;
 	private long minute30 = 30 * 60 * 1000 ;
+	private String currentCom = "" ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -129,9 +132,7 @@ public class F_1_0 extends FrmParent {
 		tv_open.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//ToastUtils.show(act, "点击开门");
-				//if (Util.checkIsHasLearned(act)) {
-				if (true) {
+				if (Util.checkIsHasLearned(act)) {
 					setProgressVisible(1);
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						httpGet.cancel();
@@ -140,8 +141,11 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
-							//doorContralServer(currentID, "F1", "2");
-							doorContralServer("0102030405", "F1", "2");
+							currentCom = "2" ;
+							act.delayMillis = seconds5 ;
+							doorContralServer(currentID, "F1", "2");
+							//doorContralServer("0102030407", "F1", "2");
+
 						}
 					}
 				}
@@ -153,9 +157,7 @@ public class F_1_0 extends FrmParent {
 		tv_close.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ToastUtils.show(act, "点击关门");
-				//if (Util.checkIsHasLearned(act)) {
-				if (true) {
+				if (Util.checkIsHasLearned(act)) {
 					setProgressVisible(2);
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						httpGet.cancel();
@@ -164,8 +166,11 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
-							//doorContralServer(currentID, "F1", "1");
-							doorContralServer("0102030405", "F1", "1");
+							currentCom = "1" ;
+							act.delayMillis = seconds5 ;
+							doorContralServer(currentID, "F1", "1");
+							//doorContralServer("0102030407", "F1", "1");
+
 						}
 					}
 				}
@@ -177,9 +182,7 @@ public class F_1_0 extends FrmParent {
 		tv_stop.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ToastUtils.show(act, "点击停止");
-				//if (Util.checkIsHasLearned(act)) {
-				if (true) {
+				if (Util.checkIsHasLearned(act)) {
 					setProgressVisible(3);
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						httpGet.cancel();
@@ -188,8 +191,9 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
-							//doorContralServer(currentID, "F1", "3");
-							doorContralServer("0102030405", "F1", "3");
+							currentCom = "3" ;
+							doorContralServer(currentID, "F1", "3");
+							//doorContralServer("0102030407", "F1", "3");
 						}
 					}
 
@@ -215,7 +219,9 @@ public class F_1_0 extends FrmParent {
 		if (spinnerAdapter1.isEmpty()) {
 			return true ;
 		}else {
-			currentID = spinnerAdapter1.getItem(0).getName() ;
+			if (getCurrentPosition() != -1) {
+				currentID = spinnerAdapter1.getItem(getCurrentPosition()).getName() ;
+			}
 			return false ;
 		}
 	}
@@ -324,7 +330,7 @@ public class F_1_0 extends FrmParent {
 			String[] arr = data.split("-") ;
 			if (arr.length >= 1) {
 				for (int i = 0; i < arr.length; i++) {
-					spinnerAdapter1.add(new SpinnerVO(i + "", arr[i]));
+					spinnerAdapter1.add(new SpinnerVO(i + "", arr[arr.length -i-1]));
 					spinnerAdapter1.notifyDataSetChanged();
 				}
 			}
@@ -333,8 +339,8 @@ public class F_1_0 extends FrmParent {
 
 	private void putSpinnerValue1(){
 	/*	spinnerAdapter1.add(new SpinnerVO("0", "1号门")) ;*/
-		spinnerAdapter1.add(new SpinnerVO("0", "0102030405")) ;
-		//updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+		//spinnerAdapter1.add(new SpinnerVO("0", "0102030405")) ;
+		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 	}
 	private void putSpinnerValue2(){
 		spinnerAdapter2.add(new SpinnerVO("0", "服务通信")) ;
@@ -352,6 +358,8 @@ public class F_1_0 extends FrmParent {
 					currentID = parent.getSelectedItem().toString();
 					act.frgTool.f_1_2.setCurrentPosition(position);
 					act.frgTool.f_1_2.setCurrentID(currentID);
+					act.setDeviceID(currentID);
+					LogUtils.e("选择的门锁地址", currentID);
 				}
 			}else {
 				ToastUtils.show(act, "请注意：当前通信类型为WIFI");
@@ -380,8 +388,11 @@ public class F_1_0 extends FrmParent {
 
 
 	public void doorContralServer(final String dtuId, String code, String flag) {
+		LogUtils.e("请求开始时间", Util.getCurrentTime());
+		LogUtils.e("请求间隔：", (act.delayMillis /1000)+"秒");
 		isServering = true ;
 		String url = "http://39.106.112.210:8090/door/door/state.act?" ;
+		//String url = "http://1bdf2aff.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
 		requestParams.addBodyParameter("code", code);
@@ -390,9 +401,7 @@ public class F_1_0 extends FrmParent {
 		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
-				if (act.delayMillis != seconds30) {
-					act.delayMillis = seconds30 ;
-				}
+				LogUtils.e("请求成功结束时间", Util.getCurrentTime());
 				netServerErr = false ;
 				isServering = false ;
 				setProgressVisible(0) ;
@@ -401,7 +410,7 @@ public class F_1_0 extends FrmParent {
 				try {
 					jsonResult = new JSONObject(result);
 					String returnDtuId = jsonResult.getString("dtuId");
-					if ("null".equals(returnDtuId) || "".equals(returnDtuId) || null == returnDtuId) {
+					if (null == returnDtuId || "null".equals(returnDtuId) || "".equals(returnDtuId)) {
 						ToastUtils.show(act, "产品ID为空，数据未知!");
 					}else {
 						if (dtuId.equals(returnDtuId)) {
@@ -413,7 +422,8 @@ public class F_1_0 extends FrmParent {
 								if(null != doorStatus) {
 									act.updateConnectedStatus(true);
 									displayServiceData(doorStatus) ;
-									ToastUtils.show(act, "服务获取数据成功");
+									pintServiceData(doorStatus) ;
+									//ToastUtils.show(act, "服务获取数据成功");
 								}else {
 									ToastUtils.show(act, "服务获取数据为空！");
 								}
@@ -421,8 +431,8 @@ public class F_1_0 extends FrmParent {
 								String msg = jsonResult.getString("error") ;
 								if (msg.equals("设备尚未上线，命令发送失败！")) {
 									ToastUtils.show(act, "服务获取数据失败："+ "门锁设备未上线！");
-									act.delayMillis = minute10 ; //设备未上线，10分钟后再试
-								}else if (msg.equals("超时")) {
+									//act.delayMillis = minute10 ; //设备未上线，10分钟后再试
+								}else if (msg.contains("超时")) {
 									ToastUtils.show(act, "服务获取数据失败："+ "门锁设备回复数据超时！");
 									act.delayMillis = minute2 ; //设备回复超时，2分钟后再试
 								}
@@ -440,11 +450,13 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onError(Throwable ex, boolean isOnCallback) {
 				isServering = false ;
-				netServerErr = true ;
-				act.delayMillis = minute30 ; //服务异常，30分钟后再试
+
+
 				ToastUtils.show(act, "服务获取数据错误："+ex.getMessage());
 				if (ex.getMessage().contains("failed to connect to")) {
 					ToastUtils.show(act, "手机网络异常，请检查网络!");
+					netServerErr = true ;
+					//act.delayMillis = minute30 ; //服务异常，30分钟后再试
 				}
 				LogUtils.e("onError", "请求失败");
 				setProgressVisible(0) ;
@@ -475,22 +487,61 @@ public class F_1_0 extends FrmParent {
 		});
 		//get.cancel();
 	}
+
+	public void pintServiceData(DoorStatus doorStatus) {
+		LogUtils.e("接收到服务器返回数据",
+				"\n甲醛浓度：" + doorStatus.getHcho()+
+						"\n门状态：" + doorStatus.getDoorState()+
+						"\n门角度：" + doorStatus.getAngle()+
+						"\n锁标记：" + doorStatus.getLockMark()+
+						"\n锁状态" + doorStatus.getLockState()+
+						"\n锁状态数组：" + doorStatus.getLockStates()+
+						"\n电源标记：" + doorStatus.getPowerMark()+
+						"\n报警状态：" + doorStatus.getWarnState()+
+						"\n报警状态数组：" + doorStatus.getWarnStates() +
+						"\n报警状态：" + doorStatus.getWarnMark()+"\n"
+
+		);
+	}
 	public void displayServiceData(DoorStatus doorStatus) {
 		//甲醛浓度
-		if (!checkNull(doorStatus.getHcho())){
+		if (!checkIsNull(doorStatus.getHcho())){
 			tv_jiaquan.setText(doorStatus.getHcho()+"");
 		}else {
 			tv_jiaquan.setText("未知!");
 		}
 
-		if (!checkNull(doorStatus.getDoorState())) {
+		if (!checkIsNull(doorStatus.getDoorState())) {
 			setDoorButtonImg(doorStatus.getDoorState()) ; //门控制按钮状态
+			if (currentCom.equals("2")) {
+				if ("1".equals(doorStatus.getDoorState()+"")) {
+					LogUtils.e("恢复轮询间隔", "开门角度已到达180°");
+					act.delayMillis = seconds30 ;
+				}
+			}else if (currentCom.equals("1")) {
+				if ("2".equals(doorStatus.getDoorState()+"")) {
+					LogUtils.e("恢复轮询间隔", "关门角度已到达180°");
+					act.delayMillis = seconds30 ;
+				}
+			}
+
 		}else {
 			setDoorButtonImg(0) ;
 		}
 
-		if (!checkNull(doorStatus.getAngle())) {
+		if (!checkIsNull(doorStatus.getAngle())) {
 			setPieChart(doorStatus.getAngle()) ; //门开关角度
+			if (currentCom.equals("2")) {
+				if (doorStatus.getAngle() == 180) {
+					LogUtils.e("恢复轮询间隔", "开门角度已到达180°");
+					act.delayMillis = seconds30 ;
+				}
+			}else if (currentCom.equals("1")) {
+				if (doorStatus.getAngle() == 0) {
+					LogUtils.e("恢复轮询间隔", "关门角度已到达180°");
+					act.delayMillis = seconds30 ;
+				}
+			}
 		}else {
 			setPieChart(0);
 		}
@@ -574,11 +625,14 @@ public class F_1_0 extends FrmParent {
 		}
 	}
 
-	private boolean checkNull(Object o) {
-		if (o == null) {
+	private boolean checkIsNull(Object obj) {
+
+		if (obj == null ||"".equals(obj)  || "-1".equals(obj.toString())) {
 			return true ;
+		}else {
+			return  false ;
 		}
-		return "null".equals(o.toString()) ;
+
 	}
 
 	/**
@@ -654,7 +708,7 @@ public class F_1_0 extends FrmParent {
 	public void receiveRtuData(RtuData d){
 		//super.receiveRtuData(d) ;
 		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null);
-		
+		setProgressVisible(0);
 		Data_F1 data = (Data_F1)d.subData ;
 		if (data != null) {
 			displayWifiData(data) ;

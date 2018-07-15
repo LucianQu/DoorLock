@@ -118,7 +118,7 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:text="产品代码:"
+					android:text="当前设备编码:"
 					android:gravity="center"
 					android:textColor="@color/bg_light_black"
 					/>

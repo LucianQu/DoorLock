@@ -3,6 +3,8 @@ package com.blg.rtu.util;
 import com.blg.rtu3.MainActivity;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Util {
 
@@ -42,6 +44,12 @@ public class Util {
 	public static String formatFloat2(float f){
 		DecimalFormat df = new DecimalFormat("###.00"); 
 		return df.format(f) ;
+	}
+	public static String getCurrentTime(){
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss:SSSS");// HH:mm:ss
+//获取当前时间
+		Date date = new Date(System.currentTimeMillis());
+		return simpleDateFormat.format(date) ;
 	}
 	
 //	/**

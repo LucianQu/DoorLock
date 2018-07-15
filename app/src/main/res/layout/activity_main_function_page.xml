@@ -33,7 +33,6 @@
 		       android:layout_marginTop="10dp"
 				android:textColor="#9c9ca0" 
 				style="@style/welcome"/>
-		    			    
 		</LinearLayout>
 	</ScrollView>  
 

@@ -165,6 +165,7 @@ public class F_01_010  extends FrmParent {
 	 */
 	@Override
 	public void receiveRtuData(RtuData d){
+		hideLoadCover();
 		//super.receiveRtuData(d) ;
 		try {
 			String deviceID = SharepreferenceUtils.getDeviceId(act) ;

@@ -149,6 +149,7 @@ public class MainActivity  extends Activity {
 
 				if (extras != null) {
 					LogUtils.e("消息接收-extras", extras);
+					SharepreferenceUtils.saveMessage(MainActivity.this, extras);
 					scrollTextView.setText(extras);
 					scrollTextView.init(getWindowManager());
 				}else {
@@ -228,10 +229,15 @@ public class MainActivity  extends Activity {
 	private Runnable queryF1Task = new Runnable() {
 		@Override
 		public void run() {
-			handler.removeCallbacks(queryF1Task);
-			if (!frgTool.f_1_0.isServering) {
-				frgTool.f_1_0.doorContralServer("0102030405", "F1", "0");
+			if (null != frgTool.f_1_0.httpGet) {
+				frgTool.f_1_0.httpGet.cancel();
 			}
+			handler.removeCallbacks(queryF1Task);
+			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
+				frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
+				//frgTool.f_1_0.doorContralServer("0102030407", "F1", "0");
+			}
+
 			//if (!frgTool.f_1_0.netServerErr) {
 				handler.postDelayed(queryF1Task, delayMillis);
 			//}
@@ -328,7 +334,7 @@ public class MainActivity  extends Activity {
 			}
 		}, 500) ;
 	}
-	protected void setDeviceID(String id) {
+	public void setDeviceID(String id) {
 		tvProductID.setText(id);
 	}
 	/**
@@ -402,8 +408,11 @@ public class MainActivity  extends Activity {
 
 
 		rtuAssiName = (TextView) findViewById(R.id.rtuAssiName) ;
-
+		String message = SharepreferenceUtils.getMessage(MainActivity.this) ;
 		scrollTextView = (AutoScrollTextView) findViewById(R.id.ScrollNotice) ;
+		if (!"".equals(message)) {
+			scrollTextView.setText(message);
+		}
 		scrollTextView.init(getWindowManager());
 		scrollTextView.startScroll();
 		//如果想改变跑马灯的文字内容或者文字效果，则在调用完setText方法之后，需要再调用一下init方法，重新进行初始化和相关参数的计算。
@@ -490,6 +499,7 @@ public class MainActivity  extends Activity {
         //执行初始设置
         this.mainHelp.onCreateView() ;
 	}
+
 	
 	/**
 	 * 最小面部分界面最大小化，其他部分界面隐藏
