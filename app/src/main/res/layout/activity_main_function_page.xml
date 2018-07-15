@@ -19,17 +19,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical">
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:visibility="gone"
-				android:orientation="vertical">
-				<fragment
-					android:id="@+id/f_01_010"
-					android:name="com.blg.rtu.frmFunction.F_01_010"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"/>
-			</LinearLayout>
 			<fragment
 				android:id="@+id/f_1_00"
 				android:name="com.blg.rtu.frmFunction.F_1_0"
@@ -40,6 +29,17 @@
 		       android:layout_marginTop="10dp"
 				android:textColor="#9c9ca0" 
 				style="@style/welcome"/>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:visibility="invisible"
+				android:orientation="vertical">
+				<fragment
+					android:id="@+id/f_01_010"
+					android:name="com.blg.rtu.frmFunction.F_01_010"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"/>
+			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>  
 
