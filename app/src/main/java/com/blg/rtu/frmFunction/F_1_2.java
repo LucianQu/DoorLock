@@ -20,6 +20,7 @@ import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
+import com.blg.rtu.util.Util;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
@@ -91,8 +92,8 @@ public class F_1_2 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击开门1");
-                //if (Util.checkIsHasLearned(act)) {
-                if (true) {
+                if (Util.checkIsHasLearned(act)) {
+                //if (true) {
                     setProgressVisible(1);
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(1,1) ;
@@ -100,8 +101,8 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            //act.frgTool.f_1_0.doorContralServer(currentID, "F2", "1");
-                            act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "1");
+                            act.frgTool.f_1_0.doorContralServer(currentID, "F2", "1");
+							//act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "1");
                         }
                     }
                 }
@@ -115,8 +116,8 @@ public class F_1_2 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击关门1");
-                //if (Util.checkIsHasLearned(act)) {
-                if (true) {
+                if (Util.checkIsHasLearned(act)) {
+					//if (true) {
                     setProgressVisible(2);
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(1,2) ;
@@ -124,8 +125,8 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            //act.frgTool.f_1_0.doorContralServer(currentID, "F2", "2");
-                            act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "2");
+                            act.frgTool.f_1_0.doorContralServer(currentID, "F2", "2");
+							//act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "2");
                         }
                     }
                 }
@@ -136,8 +137,8 @@ public class F_1_2 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击停止1");
-                //if (Util.checkIsHasLearned(act)) {
-                if (true) {
+                if (Util.checkIsHasLearned(act)) {
+					//if (true) {
                     setProgressVisible(3);
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(1,3);
@@ -145,8 +146,8 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            //act.frgTool.f_1_0.doorContralServer(currentID, "F2", "3");
-                            act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "3");
+                            act.frgTool.f_1_0.doorContralServer(currentID, "F2", "3");
+							//act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "3");
                         }
                     }
                 }
@@ -158,8 +159,8 @@ public class F_1_2 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击开门2");
-                //if (Util.checkIsHasLearned(act)) {
-                if (true) {
+                if (Util.checkIsHasLearned(act)) {
+					//if (true) {
                     setProgressVisible(4);
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(2,1);
@@ -167,8 +168,8 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            //act.frgTool.f_1_0.doorContralServer(currentID, "F3", "1");
-                            act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "1");
+                            act.frgTool.f_1_0.doorContralServer(currentID, "F3", "1");
+							//act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "1");
                         }
                     }
                 }
@@ -179,8 +180,8 @@ public class F_1_2 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击关门2");
-                //if (Util.checkIsHasLearned(act)) {
-                if (true) {
+                if (Util.checkIsHasLearned(act)) {
+					//if (true) {
                     setProgressVisible(5);
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(2,2);
@@ -188,8 +189,8 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            //act.frgTool.f_1_0.doorContralServer(currentID, "F3", "2");
-                            act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "2");
+                            act.frgTool.f_1_0.doorContralServer(currentID, "F3", "2");
+							//act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "2");
                         }
                     }
                 }
@@ -200,8 +201,8 @@ public class F_1_2 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击停止2");
-                //if (Util.checkIsHasLearned(act)) {
-                if (true) {
+                if (Util.checkIsHasLearned(act)) {
+					//if (true) {
                     setProgressVisible(6);
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(2,3);
@@ -209,8 +210,8 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            //act.frgTool.f_1_0.doorContralServer(currentID, "F3", "3");
-                            act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "3");
+                            act.frgTool.f_1_0.doorContralServer(currentID, "F3", "3");
+							//act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "3");
                         }
                     }
                 }
