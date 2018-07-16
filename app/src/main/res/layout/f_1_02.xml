@@ -19,7 +19,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="操作门选择"
-			android:textSize="@dimen/text16"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -35,7 +35,7 @@
 				android:layout_gravity="center_vertical"
 				android:layout_marginLeft="26dp"
 				android:background="@drawable/border0"
-				android:layout_height="wrap_content">
+				android:layout_height="30dp">
 			</Spinner>
 			<ImageView
 				android:layout_width="12dp"
@@ -58,7 +58,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="功能开关1"
-			android:textSize="@dimen/text16"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -75,10 +75,10 @@
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_open1"
-					android:layout_width="50dp"
-					android:layout_height="50dp"
+					android:layout_width="60dp"
+					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="14sp"
+					android:textSize="@dimen/tx16sp"
 					android:textColor="#ffffff"
 					android:text="开"
 					android:gravity="center"/>
@@ -98,10 +98,10 @@
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_close1"
-					android:layout_width="50dp"
-					android:layout_height="50dp"
+					android:layout_width="60dp"
+					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="14sp"
+					android:textSize="@dimen/tx16sp"
 					android:textColor="#ffffff"
 					android:text="关"
 					android:gravity="center"/>
@@ -122,10 +122,10 @@
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_stop1"
-					android:layout_width="50dp"
-					android:layout_height="50dp"
+					android:layout_width="60dp"
+					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="14sp"
+					android:textSize="@dimen/tx16sp"
 					android:textColor="#ffffff"
 					android:text="停"
 					android:gravity="center"/>
@@ -155,7 +155,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="功能开关2"
-			android:textSize="@dimen/text16"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -172,10 +172,10 @@
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_open2"
-					android:layout_width="50dp"
-					android:layout_height="50dp"
+					android:layout_width="60dp"
+					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="14sp"
+					android:textSize="@dimen/tx16sp"
 					android:textColor="#ffffff"
 					android:text="开"
 					android:gravity="center"/>
@@ -195,10 +195,10 @@
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_close2"
-					android:layout_width="50dp"
-					android:layout_height="50dp"
+					android:layout_width="60dp"
+					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="14sp"
+					android:textSize="@dimen/tx16sp"
 					android:textColor="#ffffff"
 					android:text="关"
 					android:gravity="center"/>
@@ -219,10 +219,10 @@
 				android:layout_height="wrap_content">
 				<TextView
 					android:id="@+id/tv_stop2"
-					android:layout_width="50dp"
-					android:layout_height="50dp"
+					android:layout_width="60dp"
+					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="14sp"
+					android:textSize="@dimen/tx16sp"
 					android:textColor="#ffffff"
 					android:text="停"
 					android:gravity="center"/>

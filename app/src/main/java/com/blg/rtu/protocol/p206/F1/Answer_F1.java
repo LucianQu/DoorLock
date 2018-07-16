@@ -32,14 +32,14 @@ public class Answer_F1 extends ProtocolSupport{
 		d.setSubData(subD) ;
 
 		subD.setJiaQuan(ByteUtil.bytes2Int_an(new byte[]{b[index++],b[index++],b[index++],0},0));
-		subD.setDoorStatus(b[index++]);
-		subD.setDoorOpen(b[index++]);
-		subD.setLockFlag(b[index++]);
-		subD.setLockStatus(b[index++]);
-		subD.setPowerFlag(b[index++]);
-		subD.setPowerStatus(b[index++]);
-		subD.setAlarmFlag(b[index++]);
-		subD.setAlarmStaus(b[index++]);
+		subD.setDoorStatus(b[index++]& 0xff);
+		subD.setDoorOpen(b[index++] & 0xff);
+		subD.setLockFlag(b[index++]& 0xff);
+		subD.setLockStatus(b[index++]& 0xff);
+		subD.setPowerFlag(b[index++]& 0xff);
+		subD.setPowerStatus(b[index++]& 0xff);
+		subD.setAlarmFlag(b[index++]& 0xff);
+		subD.setAlarmStaus(b[index++]& 0xff);
 
 		byte lockStatus = (byte) subD.getLockStatus() ;
 		if ((lockStatus & 0x04) == 0x04) {

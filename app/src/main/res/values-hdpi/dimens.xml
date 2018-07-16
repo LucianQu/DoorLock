@@ -75,7 +75,16 @@
 	<dimen name="text20">16sp</dimen>
 	<dimen name="text22">17sp</dimen>
 	<dimen name="text24">18sp</dimen>
-	
+
+	<dimen name="tx14sp">14sp</dimen>
+	<dimen name="tx15sp">15sp</dimen>
+	<dimen name="tx16sp">16sp</dimen>
+	<dimen name="tx17sp">17sp</dimen>
+	<dimen name="tx18sp">18sp</dimen>
+	<dimen name="tx19sp">19sp</dimen>
+	<dimen name="tx20sp">20sp</dimen>
+
+
 	<dimen name="ch_radion_group_layout_marginTop_10">10dp</dimen>
 	<dimen name="ch_radion_paddingLeft_25">25dp</dimen>
 	<dimen name="ch_radion_layout_marginTop_15">0dp</dimen>

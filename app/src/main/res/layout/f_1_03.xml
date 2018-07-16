@@ -19,7 +19,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="新门学习"
-			android:textSize="@dimen/text16"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -36,7 +36,7 @@
 				android:gravity="center"
 				android:background="@drawable/learn_click"
 				android:text="学习"
-				android:textSize="14sp"
+				android:textSize="@dimen/tx16sp"
 				/>
 		</LinearLayout>
 	</LinearLayout>
@@ -54,7 +54,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="消息发送"
-			android:textSize="@dimen/text16"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -67,7 +67,6 @@
 			android:background="@drawable/border"
 			android:orientation="horizontal"
 			>
-
 			<ImageView
 				android:id="@+id/npInputFlag"
 				android:layout_width="30dp"

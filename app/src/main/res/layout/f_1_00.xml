@@ -19,7 +19,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="通信类型选择"
-			android:textSize="18dp"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -58,7 +58,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="操作门选择"
-			android:textSize="18dp"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -97,7 +97,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="甲醛检测"
-			android:textSize="18dp"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -112,14 +112,14 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="浓度(mg/m³) : "
-				android:textSize="16sp"
+				android:textSize="@dimen/tx16sp"
 				/>
 			<TextView
 				android:id="@+id/tv_jiaquan"
 				android:layout_width="wrap_content"
 				android:layout_marginLeft="@dimen/base6dp"
 				android:layout_height="wrap_content"
-				android:textSize="16sp"
+				android:textSize="@dimen/tx16sp"
 				/>
 		</LinearLayout>
 	</LinearLayout>
@@ -137,7 +137,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="门控制"
-			android:textSize="18dp"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -158,7 +158,7 @@
 					android:layout_width="60dp"
 					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="16sp"
+					android:textSize="@dimen/tx16sp"
 					android:textColor="#ffffff"
 					android:text="开"
 					android:gravity="center"/>
@@ -181,7 +181,7 @@
 					android:layout_width="60dp"
 					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="16sp"
+					android:textSize="@dimen/tx16sp"
 					android:textColor="#ffffff"
 					android:text="关"
 					android:gravity="center"/>
@@ -205,7 +205,7 @@
 					android:layout_width="60dp"
 					android:layout_height="60dp"
 					android:background="@drawable/button_selector"
-					android:textSize="16sp"
+					android:textSize="@dimen/tx16sp"
 					android:textColor="#ffffff"
 					android:text="停"
 					android:gravity="center"/>
@@ -226,20 +226,22 @@
 			android:layout_marginLeft="6dp"
 			android:layout_marginRight="6dp"
 			android:clickable="false"
+			android:focusable="false"
 			android:layout_height="wrap_content">
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="16dp"
 				android:text="门开关角度"
-				android:textSize="18dp"
+				android:textSize="@dimen/tx18sp"
 				android:textColor="#262626"
 				/>
 			<LinearLayout
 				android:layout_width="match_parent"
-				android:orientation="horizontal"
+				android:orientation="vertical"
 				android:gravity="center"
 				android:clickable="false"
+				android:focusable="false"
 				android:focusableInTouchMode="false"
 				android:layout_height="wrap_content">
 				<lecho.lib.hellocharts.view.PieChartView
@@ -249,6 +251,51 @@
 					android:focusableInTouchMode="false"
 					android:layout_height="100dp" />
 			</LinearLayout>
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:gravity="center_vertical"
+				android:focusable="false"
+				android:clickable="false"
+				android:layout_marginTop="-40dp"
+				android:layout_height="wrap_content">
+				<TextView
+					android:id="@+id/tv_openTitle"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_alignParentLeft="true"
+					android:layout_marginLeft="60dp"
+					android:textSize="@dimen/tx16sp"
+					android:text="门开度:"
+					android:layout_marginRight="8dp"
+					/>
+				<TextView
+					android:id="@+id/tv_openValue"
+					android:layout_toRightOf="@id/tv_openTitle"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:textSize="@dimen/tx16sp"
+					android:textColor="#FF4040"
+					android:text="0度"
+					/>
+				<TextView
+					android:id="@+id/tv_closeValue"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_alignParentRight="true"
+					android:layout_marginRight="60dp"
+					android:textColor="#CDC9C9"
+					android:textSize="@dimen/tx16sp"
+					android:text="180度"
+					/>
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_toLeftOf="@id/tv_closeValue"
+					android:textSize="@dimen/tx16sp"
+					android:layout_marginRight="8dp"
+					android:text="门关度:"
+					/>
+			</RelativeLayout>
 		</LinearLayout>
 	</LinearLayout>
 <!--门报警-->
@@ -265,7 +312,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="16dp"
 			android:text="门报警"
-			android:textSize="18dp"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -284,7 +331,7 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:textSize="18sp"
+					android:textSize="@dimen/tx18sp"
 					android:textColor="@color/black"
 					android:text="电池欠压:"
 					android:gravity="center"/>
@@ -305,7 +352,7 @@
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:textSize="18sp"
+					android:textSize="@dimen/tx18sp"
 					android:textColor="@color/black"
 					android:text="关门故障:"
 					android:gravity="center"/>

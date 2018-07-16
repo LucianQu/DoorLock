@@ -59,8 +59,10 @@ public class F_1_0 extends FrmParent {
 	private ArrayAdapter<SpinnerVO> spinnerAdapter2;
 	private RequestQueue queue;
 	private TextView tv_jiaquan ;
+	private TextView tv_openValue ;
 	private TextView tv_open ;
 	private TextView tv_close ;
+	private TextView tv_closeValue ;
 	private TextView tv_stop ;
 	private ProgressBar pb_open ;
 	private ProgressBar pb_close ;
@@ -129,6 +131,7 @@ public class F_1_0 extends FrmParent {
 		tv_jiaquan.setText("---");
 
 		tv_open = (TextView) view.findViewById(R.id.tv_open) ;
+		tv_openValue = (TextView) view.findViewById(R.id.tv_openValue) ;
 		tv_open.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -141,7 +144,7 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
-							currentCom = "2" ;
+							currentCom = "1" ;
 							act.delayMillis = seconds5 ;
 							doorContralServer(currentID, "F1", "1");
 							//doorContralServer("0102030407", "F1", "2");
@@ -154,6 +157,7 @@ public class F_1_0 extends FrmParent {
 		pb_open = (ProgressBar) view.findViewById(R.id.pb_open);
 
 		tv_close = (TextView) view.findViewById(R.id.tv_close) ;
+		tv_closeValue = (TextView) view.findViewById(R.id.tv_closeValue) ;
 		tv_close.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -166,7 +170,7 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
-							currentCom = "1" ;
+							currentCom = "2" ;
 							act.delayMillis = seconds5 ;
 							doorContralServer(currentID, "F1", "2");
 							//doorContralServer("0102030407", "F1", "1");
@@ -274,11 +278,11 @@ public class F_1_0 extends FrmParent {
 		@Override
 		public void onValueSelected(int arg0, SliceValue value) {
 			// TODO Auto-generated method stub
-			if (arg0 == 1) {
+			/*if (arg0 == 1) {
 				Toast.makeText(act, "门打开的角度: " +(int) value.getValue()+"度", Toast.LENGTH_SHORT).show();
 			}else if (arg0 == 2) {
 				Toast.makeText(act, "门闭合的角度: " +(int) value.getValue()+"度", Toast.LENGTH_SHORT).show();
-			}
+			}*/
 		}
 	};
 
@@ -287,10 +291,16 @@ public class F_1_0 extends FrmParent {
 	 */
 	private void setPieChartData(){
 		values.clear();
+		setOpenCloseValue(data[1],data[2]);
 		for (int i = 0; i < data.length; ++i) {
 			SliceValue sliceValue = new SliceValue((float) data[i], colors[i]);//这里的颜色是我写了一个工具类 是随机选择颜色的
 			values.add(sliceValue);
 		}
+	}
+
+	private void setOpenCloseValue(int value, int value1) {
+		tv_openValue.setText(value+"度");
+		tv_closeValue.setText(value1 + "度");
 	}
 
 	/**
@@ -590,11 +600,11 @@ public class F_1_0 extends FrmParent {
 	 * @param positon
 	 */
 	private void setDoorButtonImg(int positon) {
-		if (positon== 2) {
+		if (positon== 1) {
 			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
 			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-		}else if (positon == 1) {
+		}else if (positon == 2) {
 			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
 			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
@@ -611,7 +621,7 @@ public class F_1_0 extends FrmParent {
 
 	private void setPieChart(int open){
 		int close = 0 ;
-		if (open <= 180) {
+		if (open <= 180 && open >=0) {
 			close = 180 - open ;
 			data[0] = 135;
 			data[1] = open ;
@@ -628,6 +638,7 @@ public class F_1_0 extends FrmParent {
 			initPieChart() ;
 			ToastUtils.show(act, "门角度超出范围:" + open);
 		}
+		setOpenCloseValue(data[1],data[2]);
 	}
 
 	private boolean checkIsNull(Object obj) {
