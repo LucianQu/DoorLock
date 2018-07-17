@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -435,7 +437,7 @@ public class MainActivity  extends Activity {
 		tcpConnectStatus = (TextView) findViewById(R.id.tcpConnectStatus1);
 		tv_connectType = (TextView) findViewById(R.id.tv_connectType);
 		tvProductID = (TextView) findViewById(R.id.productID);
-
+		tvProductID.setText(getSoftVersion(instance));
 		switchFun = (TextView) findViewById(R.id.switchFun) ;
 		switchOnce = (TextView) findViewById(R.id.switchOnce) ;
 		switchQuery = (TextView) findViewById(R.id.switchQuery) ;
@@ -790,7 +792,20 @@ public class MainActivity  extends Activity {
 		animation.setFillAfter(true) ;
 		animation.setDuration(200) ;
 		scrollbar.startAnimation(animation) ;
-	} 
+	}
+
+	//得到软件版本信息
+	public String getSoftVersion(Activity at){
+		PackageManager pm = at.getPackageManager();
+		String pkName = this.getPackageName() ;
+		try {
+			PackageInfo pi = pm.getPackageInfo(pkName, 0);
+			return pi.versionName ;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return "" ;
+	}
 
 
 }

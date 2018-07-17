@@ -41,8 +41,10 @@ import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.PieChartData;
@@ -90,6 +92,8 @@ public class F_1_0 extends FrmParent {
 	private long minute2 = 2 * 60 * 1000 ;
 	private long minute30 = 30 * 60 * 1000 ;
 	private String currentCom = "" ;
+	private int reSendNum = 0 ;
+	private String currentAfn = "" ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -145,8 +149,10 @@ public class F_1_0 extends FrmParent {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
 							currentCom = "1" ;
-							act.delayMillis = seconds5 ;
-							doorContralServer(currentID, "F1", "1");
+							currentAfn = "F1" ;
+							act.delayMillis = seconds30 ;
+							reSendNum = 2 ;
+							doorContralServer(currentID, currentAfn, currentCom);
 							//doorContralServer("0102030407", "F1", "2");
 
 						}
@@ -171,8 +177,10 @@ public class F_1_0 extends FrmParent {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
 							currentCom = "2" ;
-							act.delayMillis = seconds5 ;
-							doorContralServer(currentID, "F1", "2");
+							currentAfn = "F1" ;
+							reSendNum = 2 ;
+							act.delayMillis = seconds30 ;
+							doorContralServer(currentID, currentAfn, currentCom);
 							//doorContralServer("0102030407", "F1", "1");
 
 						}
@@ -196,7 +204,8 @@ public class F_1_0 extends FrmParent {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
 							currentCom = "3" ;
-							doorContralServer(currentID, "F1", "3");
+							currentAfn = "F1" ;
+							doorContralServer(currentID, currentAfn, currentCom);
 							//doorContralServer("0102030407", "F1", "3");
 						}
 					}
@@ -368,7 +377,7 @@ public class F_1_0 extends FrmParent {
 					currentID = parent.getSelectedItem().toString();
 					act.frgTool.f_1_2.setCurrentPosition(position);
 					act.frgTool.f_1_2.setCurrentID(currentID);
-					act.setDeviceID(currentID);
+					//act.setDeviceID(currentID);
 					LogUtils.e("选择的门锁地址", currentID);
 				}
 			}else {
@@ -433,6 +442,21 @@ public class F_1_0 extends FrmParent {
 										act.updateConnectedStatus(true);
 										displayServiceData(doorStatus);
 										pintServiceData(doorStatus);
+										if (reSendNum >0 && ("1".equals(currentCom) || "2".equals(currentCom))) {
+											reSendNum -- ;
+											doorContralServer(currentID, currentAfn, "0");
+										}else {
+											reSendNum = 0;
+											if ("1".equals(currentCom)) {
+												if (null != doorStatus && doorStatus.getDoorState()== 1) {
+													act.delayMillis = seconds5 ;
+												}
+											}else if ("2".equals(currentCom)) {
+												if (null != doorStatus && doorStatus.getDoorState() == 2) {
+													act.delayMillis = seconds5 ;
+												}
+											}
+										}
 										//ToastUtils.show(act, "服务获取数据成功");
 									} else {
 										ToastUtils.show(act, "服务获取数据为空！");

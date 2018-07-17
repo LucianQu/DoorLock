@@ -24,7 +24,18 @@ import com.blg.rtu.util.Util;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
+import com.blg.rtu3.utils.LogUtils;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +61,10 @@ public class F_1_2 extends FrmParent {
     private ProgressBar pb_stop2 ;
     private DoorStatus doorStatus ;
     public String currentID = "" ;
-
+	private String currentCom = "" ;
+	private int reSendNum = 0 ;
+	private String currentAfn = "" ;
+	private String mDtuId ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -101,7 +115,10 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            act.frgTool.f_1_0.doorContralServer(currentID, "F2", "1");
+							currentCom = "1" ;
+							currentAfn = "F2" ;
+							reSendNum = 2 ;
+							doorContralServer(currentID, currentAfn, currentCom);
 							//act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "1");
                         }
                     }
@@ -125,8 +142,10 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            act.frgTool.f_1_0.doorContralServer(currentID, "F2", "2");
-							//act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "2");
+							currentCom = "2" ;
+							currentAfn = "F2" ;
+							reSendNum = 2 ;
+							doorContralServer(currentID, currentAfn, currentCom);
                         }
                     }
                 }
@@ -146,8 +165,10 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            act.frgTool.f_1_0.doorContralServer(currentID, "F2", "3");
-							//act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "3");
+							currentCom = "3" ;
+							currentAfn = "F2" ;
+							reSendNum = 2 ;
+							doorContralServer(currentID, currentAfn, currentCom);
                         }
                     }
                 }
@@ -168,8 +189,10 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            act.frgTool.f_1_0.doorContralServer(currentID, "F3", "1");
-							//act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "1");
+							currentCom = "1" ;
+							currentAfn = "F3" ;
+							reSendNum = 2 ;
+							doorContralServer(currentID, currentAfn, currentCom);
                         }
                     }
                 }
@@ -189,8 +212,10 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            act.frgTool.f_1_0.doorContralServer(currentID, "F3", "2");
-							//act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "2");
+							currentCom = "2" ;
+							currentAfn = "F3" ;
+							reSendNum = 2 ;
+							doorContralServer(currentID, currentAfn, currentCom);
                         }
                     }
                 }
@@ -210,8 +235,10 @@ public class F_1_2 extends FrmParent {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-                            act.frgTool.f_1_0.doorContralServer(currentID, "F3", "3");
-							//act.frgTool.f_1_0.doorContralServer("0102030405", "F3", "3");
+							currentCom = "3" ;
+							currentAfn = "F3" ;
+							reSendNum = 2 ;
+							doorContralServer(currentID, currentAfn, currentCom);
                         }
                     }
                 }
@@ -330,6 +357,120 @@ public class F_1_2 extends FrmParent {
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
+	}
+
+	private void doorContralServer(String dtuId, String code, String flag) {
+		mDtuId = "中文" ;
+		LogUtils.e("请求开始时间", Util.getCurrentTime());
+		LogUtils.e("请求间隔：", (act.delayMillis /1000)+"秒");
+		try {
+			mDtuId = URLEncoder.encode(dtuId,"UTF-8") ;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		String url = "http://39.106.112.210:8090/door/door/state.act?" ;
+		//String url = "http://1bdf2aff.ngrok.io/door/door/state.act?" ;
+		RequestParams requestParams = new RequestParams(url);
+		requestParams.addBodyParameter("dtuId", mDtuId);
+		requestParams.addBodyParameter("code", code);
+		requestParams.addBodyParameter("flag", flag);
+		LogUtils.e("门控制服务", requestParams.toString());
+		x.http().get(requestParams, new Callback.CommonCallback<String>() {
+			@Override
+			public void onSuccess(String result) {
+				LogUtils.e("请求成功结束时间", Util.getCurrentTime());
+				setProgressVisible(0) ;
+				JSONObject jsonResult = null;
+				if (!"".equals(result)) {
+					try {
+						jsonResult = new JSONObject(result);
+						String returnDtuId = jsonResult.getString("dtuId");
+						if (null == returnDtuId || "null".equals(returnDtuId) || "".equals(returnDtuId)) {
+							ToastUtils.show(act, "产品ID为空，数据未知!");
+						} else {
+							if (mDtuId.equals(returnDtuId)) {
+								String code = jsonResult.getString("succ");
+								if (code.equals("1")) {
+									Gson gson = new Gson();
+									String data = jsonResult.getString("rltState");
+									doorStatus = gson.fromJson(data, DoorStatus.class);
+									if (null != doorStatus) {
+										act.updateConnectedStatus(true);
+										act.frgTool.f_1_0.displayServiceData(doorStatus);
+										act.frgTool.f_1_0.pintServiceData(doorStatus);
+										if (reSendNum >0 && ("1".equals(currentCom) || "2".equals(currentCom))) {
+											reSendNum -- ;
+											doorContralServer(currentID, currentAfn, "0");
+										}else {
+											reSendNum = 0;
+											if ("1".equals(currentCom)) {
+												if (null != doorStatus && doorStatus.getDoorState()== 1) {
+													//act.delayMillis = seconds5 ;
+												}
+											}else if ("2".equals(currentCom)) {
+												if (null != doorStatus && doorStatus.getDoorState() == 2) {
+													//act.delayMillis = seconds5 ;
+												}
+											}
+										}
+										//ToastUtils.show(act, "服务获取数据成功");
+									} else {
+										ToastUtils.show(act, "服务获取数据为空！");
+									}
+								} else {
+									String msg = jsonResult.getString("error");
+									if (msg.equals("设备尚未上线，命令发送失败！")) {
+										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备未上线！");
+										//act.delayMillis = minute10 ; //设备未上线，10分钟后再试
+									} else if (msg.contains("超时")) {
+										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
+										//act.delayMillis = minute2; //设备回复超时，2分钟后再试
+									}
+
+								}
+							} else {
+								ToastUtils.show(act, "服务获取数据返回地址与请求地址不一致!");
+							}
+						}
+
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			@Override
+			public void onError(Throwable ex, boolean isOnCallback) {
+				ToastUtils.show(act, "服务获取数据错误："+ex.getMessage());
+				if (ex.getMessage().contains("failed to connect to")) {
+					ToastUtils.show(act, "手机网络异常，请检查网络!");
+					//act.delayMillis = minute30 ; //服务异常，30分钟后再试
+				}
+				LogUtils.e("onError", "请求失败");
+				setProgressVisible(0) ;
+
+				if (ex instanceof HttpException) { // 网络错误
+					HttpException httpEx = (HttpException) ex;
+					int responseCode = httpEx.getCode();
+					String responseMsg = httpEx.getMessage();
+					String errorResult = httpEx.getResult();
+					// ...
+				} else { // 其他错误
+					// ...
+				}
+
+			}
+
+			@Override
+			public void onCancelled(CancelledException cex) {
+				setProgressVisible(0) ;
+			}
+
+			@Override
+			public void onFinished() {
+				setProgressVisible(0) ;
+			}
+		});
+		//get.cancel();
 	}
 
 	/**
