@@ -86,7 +86,7 @@ public class StubActivity extends ActivityAidl.Stub{
 					if(data.dataCode.equals(Code206.cd_50)){
 						//设置或查询终端地址 lucian
 						mAct.frgTool.f_01_010.receiveRtuData(data);
-						mAct.setDeviceID(data.getRtuId());
+						//mAct.setDeviceID(data.getRtuId());
 					}else if(data.dataCode.equals(Code206.cd_F1)){
 						//门控制返回数据
 						mAct.frgTool.f_1_0.receiveRtuData(data) ;

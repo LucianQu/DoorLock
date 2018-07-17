@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -41,10 +41,8 @@ import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.PieChartData;
@@ -151,9 +149,9 @@ public class F_1_0 extends FrmParent {
 							currentCom = "1" ;
 							currentAfn = "F1" ;
 							act.delayMillis = seconds30 ;
-							reSendNum = 2 ;
+							reSendNum = 10 ;
 							doorContralServer(currentID, currentAfn, currentCom);
-							//doorContralServer("0102030407", "F1", "2");
+							handler.postDelayed(queryF1Task, 500);
 
 						}
 					}
@@ -178,10 +176,11 @@ public class F_1_0 extends FrmParent {
 						}else {
 							currentCom = "2" ;
 							currentAfn = "F1" ;
-							reSendNum = 2 ;
+							reSendNum = 10 ;
 							act.delayMillis = seconds30 ;
 							doorContralServer(currentID, currentAfn, currentCom);
-							//doorContralServer("0102030407", "F1", "1");
+							//doorContralServer("0102030409", currentAfn, currentCom);
+							handler.postDelayed(queryF1Task, 500);
 
 						}
 					}
@@ -228,6 +227,24 @@ public class F_1_0 extends FrmParent {
 
 		return view ;
 	}
+
+	private Handler handler = new Handler() ;
+	private Runnable queryF1Task = new Runnable() {
+		@Override
+		public void run() {
+			if (reSendNum > 0) {
+				reSendNum-- ;
+				if (!getCurrentIDIsempty()) {
+					doorContralServer(currentID, currentAfn, "0");
+					//oorContralServer("0102030409", currentAfn, "0");
+				}
+				handler.postDelayed(queryF1Task, 1000);
+			}else {
+                handler.removeCallbacks(queryF1Task);
+				act.delayMillis = seconds5 ;
+			}
+		}
+	};
 	public boolean getCurrentIDIsempty() {
 		if (spinnerAdapter1.isEmpty()) {
 			return true ;
@@ -377,6 +394,7 @@ public class F_1_0 extends FrmParent {
 					currentID = parent.getSelectedItem().toString();
 					act.frgTool.f_1_2.setCurrentPosition(position);
 					act.frgTool.f_1_2.setCurrentID(currentID);
+					act.updateConnectedStatus(false);
 					//act.setDeviceID(currentID);
 					LogUtils.e("选择的门锁地址", currentID);
 				}
@@ -442,22 +460,7 @@ public class F_1_0 extends FrmParent {
 										act.updateConnectedStatus(true);
 										displayServiceData(doorStatus);
 										pintServiceData(doorStatus);
-										if (reSendNum >0 && ("1".equals(currentCom) || "2".equals(currentCom))) {
-											reSendNum -- ;
-											doorContralServer(currentID, currentAfn, "0");
-										}else {
-											reSendNum = 0;
-											if ("1".equals(currentCom)) {
-												if (null != doorStatus && doorStatus.getDoorState()== 1) {
-													act.delayMillis = seconds5 ;
-												}
-											}else if ("2".equals(currentCom)) {
-												if (null != doorStatus && doorStatus.getDoorState() == 2) {
-													act.delayMillis = seconds5 ;
-												}
-											}
-										}
-										//ToastUtils.show(act, "服务获取数据成功");
+
 									} else {
 										ToastUtils.show(act, "服务获取数据为空！");
 									}
@@ -765,8 +768,8 @@ public class F_1_0 extends FrmParent {
 			if (data.getJiaQuan() > 100000) {
 				ToastUtils.show(act, "甲醛值超出范围");
 			}else {
-				tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree(
-						(data.getJiaQuan() / 1000) + "" + (data.getJiaQuan() % 1000)));
+				tv_jiaquan.setText(
+						(data.getJiaQuan() / 1000) + "" + (data.getJiaQuan() % 1000));
 			}
 		}
 
