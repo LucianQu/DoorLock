@@ -83,6 +83,8 @@
 	<dimen name="tx18sp">18sp</dimen>
 	<dimen name="tx19sp">19sp</dimen>
 	<dimen name="tx20sp">20sp</dimen>
+	<dimen name="tx21sp">21sp</dimen>
+	<dimen name="tx22sp">22sp</dimen>
 
 
 	<dimen name="ch_radion_group_layout_marginTop_10">10dp</dimen>

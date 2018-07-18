@@ -218,84 +218,127 @@
 					android:layout_height="20dp" />
 			</LinearLayout>
 		</LinearLayout>
+		<View
+			android:layout_width="match_parent"
+			android:background="@color/bg_blue"
+			android:layout_marginLeft="@dimen/base20dp"
+			android:layout_marginRight="@dimen/base20dp"
+			android:layout_height="0.5dp"/>
 		<!--门开关角度-->
 		<LinearLayout
 			android:layout_width="match_parent"
-			android:orientation="vertical"
-			android:layout_marginTop="8dp"
-			android:layout_marginLeft="6dp"
-			android:layout_marginRight="6dp"
-			android:clickable="false"
-			android:focusable="false"
+			android:orientation="horizontal"
 			android:layout_height="wrap_content">
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="16dp"
-				android:text="门开关角度"
-				android:textSize="@dimen/tx18sp"
-				android:textColor="#262626"
-				/>
 			<LinearLayout
-				android:layout_width="match_parent"
+				android:layout_width="0dp"
+				android:layout_weight="2"
 				android:orientation="vertical"
-				android:gravity="center"
-				android:clickable="false"
-				android:focusable="false"
-				android:focusableInTouchMode="false"
+				android:layout_marginTop="8dp"
 				android:layout_height="wrap_content">
-				<lecho.lib.hellocharts.view.PieChartView
-					android:id="@+id/pie_chart"
-					android:layout_width="100dp"
-					android:clickable="false"
-					android:focusableInTouchMode="false"
-					android:layout_height="100dp" />
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center"
+					android:text="当前门状态"
+					android:textSize="@dimen/tx18sp"
+					android:textColor="#262626"
+					/>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:gravity="center"
+					android:layout_height="100dp">
+					<TextView
+						android:id="@+id/tv_door_status"
+						android:layout_width="70dp"
+						android:layout_height="70dp"
+						android:background="@drawable/button_selector"
+						android:textSize="@dimen/tx22sp"
+						android:textColor="#ffffff"
+						android:text="停"
+						android:gravity="center"/>
+				</LinearLayout>
 			</LinearLayout>
-			<RelativeLayout
-				android:layout_width="match_parent"
-				android:gravity="center_vertical"
-				android:focusable="false"
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_weight="3"
+				android:orientation="vertical"
+				android:layout_marginTop="8dp"
 				android:clickable="false"
-				android:layout_marginTop="-40dp"
+				android:focusable="false"
 				android:layout_height="wrap_content">
 				<TextView
-					android:id="@+id/tv_openTitle"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_alignParentLeft="true"
-					android:layout_marginLeft="60dp"
-					android:textSize="@dimen/tx16sp"
-					android:text="门开度:"
-					android:layout_marginRight="8dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center"
+					android:text="当前门开关角度"
+					android:textSize="@dimen/tx18sp"
+					android:textColor="#262626"
 					/>
-				<TextView
-					android:id="@+id/tv_openValue"
-					android:layout_toRightOf="@id/tv_openTitle"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:textSize="@dimen/tx16sp"
-					android:textColor="#FF4040"
-					android:text="0度"
-					/>
-				<TextView
-					android:id="@+id/tv_closeValue"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_alignParentRight="true"
-					android:layout_marginRight="60dp"
-					android:textColor="#CDC9C9"
-					android:textSize="@dimen/tx16sp"
-					android:text="180度"
-					/>
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_toLeftOf="@id/tv_closeValue"
-					android:textSize="@dimen/tx16sp"
-					android:layout_marginRight="8dp"
-					android:text="门关度:"
-					/>
-			</RelativeLayout>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:orientation="vertical"
+					android:gravity="center"
+					android:clickable="false"
+					android:focusable="false"
+					android:focusableInTouchMode="false"
+					android:layout_height="wrap_content">
+					<lecho.lib.hellocharts.view.PieChartView
+						android:id="@+id/pie_chart"
+						android:layout_width="100dp"
+						android:clickable="false"
+						android:focusableInTouchMode="false"
+						android:layout_height="100dp" />
+				</LinearLayout>
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:gravity="center"
+					android:focusable="false"
+					android:clickable="false"
+					android:layout_marginTop="-40dp"
+					android:layout_height="wrap_content">
+					<TextView
+						android:id="@+id/tv_openTitle"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_alignParentLeft="true"
+						android:layout_marginLeft="@dimen/base4dp"
+						android:textSize="@dimen/tx14sp"
+						android:text="门开度:"
+						android:layout_marginRight="8dp"
+						/>
+					<TextView
+						android:id="@+id/tv_openValue"
+						android:layout_toRightOf="@id/tv_openTitle"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textSize="@dimen/tx14sp"
+						android:textColor="#FF4040"
+						android:text="0度"
+						/>
+					<TextView
+						android:id="@+id/tv_closeTitle"
+						android:layout_alignParentLeft="true"
+						android:layout_below="@+id/tv_openTitle"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textSize="@dimen/tx14sp"
+						android:layout_marginLeft="@dimen/base4dp"
+						android:layout_marginRight="8dp"
+						android:text="门关度:"
+						/>
+					<TextView
+						android:id="@+id/tv_closeValue"
+						android:layout_below="@id/tv_openValue"
+						android:layout_toRightOf="@id/tv_closeTitle"
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:layout_marginRight="10dp"
+						android:textColor="#CDC9C9"
+						android:textSize="@dimen/tx14sp"
+						android:text="180度"
+						/>
+				</RelativeLayout>
+			</LinearLayout>
 		</LinearLayout>
 	</LinearLayout>
 <!--门报警-->

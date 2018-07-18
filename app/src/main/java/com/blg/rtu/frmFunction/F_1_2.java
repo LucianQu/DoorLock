@@ -35,6 +35,7 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,13 +157,14 @@ public class F_1_2 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击停止1");
-                if (Util.checkIsHasLearned(act)) {
-					//if (true) {
+				if (Util.checkIsHasLearned(act)) {
+					// if (true) {
                     setProgressVisible(3);
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(1,3);
                     }else {
-                        if (getCurrentIDIsempty()) {
+						if (getCurrentIDIsempty()) {
+							//if (false) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
 							currentCom = "3" ;
@@ -315,7 +317,6 @@ public class F_1_2 extends FrmParent {
 	public void updateSpinnerValue(String data) {
 		if (!"".equals(data)) {
 			spinnerAdapter1.clear();
-
 			String[] arr = data.split("-") ;
 			if (arr.length >= 1) {
 				for (int i = 0; i < arr.length; i++) {
@@ -360,18 +361,12 @@ public class F_1_2 extends FrmParent {
 	}
 
 	private void doorContralServer(String dtuId, String code, String flag) {
-		mDtuId = "中文" ;
 		LogUtils.e("请求开始时间", Util.getCurrentTime());
 		LogUtils.e("请求间隔：", (act.delayMillis /1000)+"秒");
-		try {
-			mDtuId = URLEncoder.encode(dtuId,"UTF-8") ;
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
 		String url = "http://39.106.112.210:8090/door/door/state.act?" ;
 		//String url = "http://1bdf2aff.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
-		requestParams.addBodyParameter("dtuId", mDtuId);
+		requestParams.addBodyParameter("dtuId", dtuId);
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
 		LogUtils.e("门控制服务", requestParams.toString());

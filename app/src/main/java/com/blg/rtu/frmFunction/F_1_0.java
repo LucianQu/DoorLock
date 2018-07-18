@@ -64,6 +64,7 @@ public class F_1_0 extends FrmParent {
 	private TextView tv_close ;
 	private TextView tv_closeValue ;
 	private TextView tv_stop ;
+	private TextView tv_door_status ;
 	private ProgressBar pb_open ;
 	private ProgressBar pb_close ;
 	private ProgressBar pb_stop ;
@@ -160,6 +161,7 @@ public class F_1_0 extends FrmParent {
 		});
 		pb_open = (ProgressBar) view.findViewById(R.id.pb_open);
 
+		tv_door_status = (TextView) view.findViewById(R.id.tv_door_status) ;
 		tv_close = (TextView) view.findViewById(R.id.tv_close) ;
 		tv_closeValue = (TextView) view.findViewById(R.id.tv_closeValue) ;
 		tv_close.setOnClickListener(new View.OnClickListener() {
@@ -544,9 +546,9 @@ public class F_1_0 extends FrmParent {
 	public void displayServiceData(DoorStatus doorStatus) {
 		//甲醛浓度
 		if (!checkIsNull(doorStatus.getHcho())){
-			tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree(doorStatus.getHcho()+""));
+			tv_jiaquan.setText(doorStatus.getHcho()+"");
 		}else {
-			tv_jiaquan.setText("未知!");
+			tv_jiaquan.setText("---");
 		}
 
 		if (!checkIsNull(doorStatus.getDoorState())) {
@@ -562,7 +564,6 @@ public class F_1_0 extends FrmParent {
 					act.delayMillis = seconds30 ;
 				}
 			}
-
 		}else {
 			setDoorButtonImg(0) ;
 		}
@@ -628,21 +629,17 @@ public class F_1_0 extends FrmParent {
 	 */
 	private void setDoorButtonImg(int positon) {
 		if (positon== 1) {
-			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
-			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_door_status.setText("开");
+			tv_door_status.setBackground(getResources().getDrawable(R.drawable.tv_selected_green_bg));
 		}else if (positon == 2) {
-			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
-			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_door_status.setText("关");
+			tv_door_status.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
 		}else if (positon == 3) {
-			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_red_bg));
-			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_door_status.setText("停");
+			tv_door_status.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 		}else {
-			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
-			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_door_status.setText("停");
+			tv_door_status.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 		}
 	}
 
@@ -763,7 +760,7 @@ public class F_1_0 extends FrmParent {
 	private void displayWifiData(Data_F1 data) {
 		//甲醛浓度
 		if (data.getJiaQuan() == 0) {
-			tv_jiaquan.setText("0.000") ;
+			tv_jiaquan.setText("0.0") ;
 		}else {
 			if (data.getJiaQuan() > 100000) {
 				ToastUtils.show(act, "甲醛值超出范围");
