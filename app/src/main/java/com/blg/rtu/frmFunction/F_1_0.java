@@ -30,7 +30,6 @@ import com.blg.rtu.util.Util;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
-import com.blg.rtu3.utils.DataTranslateUtils;
 import com.blg.rtu3.utils.LogUtils;
 import com.google.gson.Gson;
 
@@ -140,6 +139,7 @@ public class F_1_0 extends FrmParent {
 			public void onClick(View v) {
 				if (Util.checkIsHasLearned(act)) {
 					setProgressVisible(1);
+					tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_press_bg));
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						httpGet.cancel();
 						setCommand(1);
@@ -150,10 +150,10 @@ public class F_1_0 extends FrmParent {
 							currentCom = "1" ;
 							currentAfn = "F1" ;
 							act.delayMillis = seconds30 ;
-							reSendNum = 10 ;
+							reSendNum = 20 ;
 							doorContralServer(currentID, currentAfn, currentCom);
-							handler.postDelayed(queryF1Task, 500);
-
+							//doorContralServer("0102030409", currentAfn, currentCom);
+							handler.postDelayed(queryF1Task, 2000);
 						}
 					}
 				}
@@ -169,6 +169,7 @@ public class F_1_0 extends FrmParent {
 			public void onClick(View v) {
 				if (Util.checkIsHasLearned(act)) {
 					setProgressVisible(2);
+					tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_press_bg));
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						httpGet.cancel();
 						setCommand(2);
@@ -178,12 +179,11 @@ public class F_1_0 extends FrmParent {
 						}else {
 							currentCom = "2" ;
 							currentAfn = "F1" ;
-							reSendNum = 10 ;
+							reSendNum = 20 ;
 							act.delayMillis = seconds30 ;
 							doorContralServer(currentID, currentAfn, currentCom);
 							//doorContralServer("0102030409", currentAfn, currentCom);
-							handler.postDelayed(queryF1Task, 500);
-
+							handler.postDelayed(queryF1Task, 1000);
 						}
 					}
 				}
@@ -207,7 +207,7 @@ public class F_1_0 extends FrmParent {
 							currentCom = "3" ;
 							currentAfn = "F1" ;
 							doorContralServer(currentID, currentAfn, currentCom);
-							//doorContralServer("0102030407", "F1", "3");
+							//doorContralServer("0102030409", "F1", "3");
 						}
 					}
 
@@ -238,12 +238,21 @@ public class F_1_0 extends FrmParent {
 				reSendNum-- ;
 				if (!getCurrentIDIsempty()) {
 					doorContralServer(currentID, currentAfn, "0");
-					//oorContralServer("0102030409", currentAfn, "0");
+					//doorContralServer("0102030409", currentAfn, "0");
 				}
 				handler.postDelayed(queryF1Task, 1000);
 			}else {
-                handler.removeCallbacks(queryF1Task);
-				act.delayMillis = seconds5 ;
+				if (reSendNum < 0) {
+					handler.removeCallbacks(queryF1Task);
+					act.delayMillis = seconds5;
+					tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+					tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+					tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+				}else if (reSendNum == 0) {
+					handler.postDelayed(queryF1Task, 2000);
+					reSendNum--;
+				}
+
 			}
 		}
 	};
@@ -637,7 +646,13 @@ public class F_1_0 extends FrmParent {
 		}else if (positon == 3) {
 			tv_door_status.setText("停");
 			tv_door_status.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 		}else {
+			tv_open.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_close.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
+			tv_stop.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 			tv_door_status.setText("停");
 			tv_door_status.setBackground(getResources().getDrawable(R.drawable.tv_selected_bg));
 		}
