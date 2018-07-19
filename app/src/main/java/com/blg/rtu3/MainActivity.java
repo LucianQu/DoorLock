@@ -40,6 +40,8 @@ import android.widget.Toast;
 
 import com.blg.rtu.aidl.ServiceAidl;
 import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Operate;
+import com.blg.rtu.frmFunction.bean.DoorInfo;
+import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.ResourceUtils;
@@ -47,9 +49,18 @@ import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SoundAlert;
 import com.blg.rtu.util.StringValueForActivity;
 import com.blg.rtu.util.ToastUtils;
+import com.blg.rtu.util.Util;
 import com.blg.rtu3.receiver.JPushActivity;
 import com.blg.rtu3.server.LocalServer;
 import com.blg.rtu3.utils.LogUtils;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.ex.HttpException;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +143,18 @@ public class MainActivity  extends Activity {
 	private AutoScrollTextView scrollTextView ;
 	private JPushActivity mJPush ;
 	public long delayMillis = 30 * 1000;
+	private long seconds30 = 30 * 1000 ;
+	private long seconds5 = 5 * 1000 ;
+	private long minute10 = 10 * 60 * 1000 ;
+	private long minute5 = 5 * 60 * 1000 ;
+	private long minute2 = 2 * 60 * 1000 ;
+	private long minute30 = 30 * 60 * 1000 ;
+	public Callback.Cancelable httpGet ;
+	private Context mContext ;
+	private DoorInfo doorInfo ;
+	private DoorStatus doorStatus ;
+
+
 
 	public void registerMessageReceiver() {
 		mMessageReceiver = new MessageReceiver();
@@ -249,7 +272,7 @@ public class MainActivity  extends Activity {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		mContext = MainActivity.this ;
 		//初始化string.xml文件中配置的数值型数据
 		StringValueForActivity.initOnlyOnce(this) ;
 		instance = this ;
@@ -308,11 +331,11 @@ public class MainActivity  extends Activity {
 		}else {
 			updateConnectedType(2);
 			updateConnectedStatus(false);
-			//if (!frgTool.f_1_0.getCurrentIDIsempty()) {
-			if (true) {
+			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
+				//if (true) {
 				//frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID,"0","F1");
 				//frgTool.f_1_0.doorContralServer("0102030405","0","F1");
-				handler.postDelayed(queryF1Task, 5*1000) ;
+				handler.postDelayed(queryF1Task, 1*1000) ;
 			}else {
 				ToastUtils.show(MainActivity.this, "没有可操作的门，无法请求服务连接!");
 			}
@@ -582,6 +605,7 @@ public class MainActivity  extends Activity {
 				//网络已经连接
 				updateConnectedStatus(true) ;
 			} else {
+				frgTool.f_1_0.setBtnIsEnable(false) ;
 				updateConnectedStatus(false) ;
 			}
 		}
@@ -686,6 +710,8 @@ public class MainActivity  extends Activity {
 		}
 		
 	}
+
+
 	
 
 	/**
