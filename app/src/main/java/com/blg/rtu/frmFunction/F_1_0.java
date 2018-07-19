@@ -23,6 +23,8 @@ import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.F1.Data_F1;
+import com.blg.rtu.protocol.p206.F2.Data_F2;
+import com.blg.rtu.protocol.p206.F3.Data_F3;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
@@ -30,6 +32,7 @@ import com.blg.rtu.util.Util;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
+import com.blg.rtu3.utils.DataTranslateUtils;
 import com.blg.rtu3.utils.LogUtils;
 import com.google.gson.Gson;
 
@@ -555,7 +558,7 @@ public class F_1_0 extends FrmParent {
 	public void displayServiceData(DoorStatus doorStatus) {
 		//甲醛浓度
 		if (!checkIsNull(doorStatus.getHcho())){
-			tv_jiaquan.setText(doorStatus.getHcho()+"");
+			tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree(doorStatus.getHcho()+""));
 		}else {
 			tv_jiaquan.setText("---");
 		}
@@ -772,25 +775,69 @@ public class F_1_0 extends FrmParent {
 		}
 	}
 
-	private void displayWifiData(Data_F1 data) {
-		//甲醛浓度
-		if (data.getJiaQuan() == 0) {
-			tv_jiaquan.setText("0.0") ;
-		}else {
-			if (data.getJiaQuan() > 100000) {
-				ToastUtils.show(act, "甲醛值超出范围");
+	public void displayWifiData(Object data1) {
+		if (data1 instanceof Data_F1) {
+			Data_F1 data = (Data_F1)data1;
+			//甲醛浓度
+			if (data.getJiaQuan() == 0) {
+				tv_jiaquan.setText("0.000") ;
 			}else {
-				tv_jiaquan.setText(
-						(data.getJiaQuan() / 1000) + "" + (data.getJiaQuan() % 1000));
+				if (data.getJiaQuan() > 100000) {
+					ToastUtils.show(act, "甲醛值超出范围");
+				}else {
+					tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree((data.getJiaQuan() / 1000) + "." + (data.getJiaQuan() % 1000))
+					);
+				}
 			}
+
+			setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
+			setPieChart(data.getDoorOpen()) ; //门开关角度
+			setDoorPowerImg(data.isNormalPower() ? 0 : 1) ; //电池欠压
+			setDoorAlarmImg(data.isDoorNormal() ? 0 : 1) ; //门关门故障
+
+			act.frgTool.f_1_1.displayWifiData(data);//显示第二页数据
+		}else if (data1 instanceof Data_F2) {
+			Data_F2 data = (Data_F2)data1;
+			//甲醛浓度
+			if (data.getJiaQuan() == 0) {
+				tv_jiaquan.setText("0.000") ;
+			}else {
+				if (data.getJiaQuan() > 100000) {
+					ToastUtils.show(act, "甲醛值超出范围");
+				}else {
+					tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree((data.getJiaQuan() / 1000) + "." + (data.getJiaQuan() % 1000))
+					);
+				}
+			}
+
+			setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
+			setPieChart(data.getDoorOpen()) ; //门开关角度
+			setDoorPowerImg(data.isNormalPower() ? 0 : 1) ; //电池欠压
+			setDoorAlarmImg(data.isDoorNormal() ? 0 : 1) ; //门关门故障
+
+			act.frgTool.f_1_1.displayWifiData2(data);//显示第二页数据
+		}else if (data1 instanceof Data_F3) {
+			Data_F3 data = (Data_F3)data1;
+			//甲醛浓度
+			if (data.getJiaQuan() == 0) {
+				tv_jiaquan.setText("0.000") ;
+			}else {
+				if (data.getJiaQuan() > 100000) {
+					ToastUtils.show(act, "甲醛值超出范围");
+				}else {
+					tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree((data.getJiaQuan() / 1000) + "." + (data.getJiaQuan() % 1000))
+					);
+				}
+			}
+
+			setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
+			setPieChart(data.getDoorOpen()) ; //门开关角度
+			setDoorPowerImg(data.isNormalPower() ? 0 : 1) ; //电池欠压
+			setDoorAlarmImg(data.isDoorNormal() ? 0 : 1) ; //门关门故障
+
+			act.frgTool.f_1_1.displayWifiData3(data);//显示第二页数据
 		}
 
-		setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
-		setPieChart(data.getDoorOpen()) ; //门开关角度
-		setDoorPowerImg(data.isNormalPower() ? 0 : 1) ; //电池欠压
-		setDoorAlarmImg(data.isDoorNormal() ? 0 : 1) ; //门关门故障
-
-		act.frgTool.f_1_1.displayWifiData(data);//显示第二页数据
 	}
 	/**
 	 * 导出设置数据

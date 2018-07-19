@@ -17,6 +17,9 @@ import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
+import com.blg.rtu.protocol.p206.F1.Data_F1;
+import com.blg.rtu.protocol.p206.F2.Data_F2;
+import com.blg.rtu.protocol.p206.F3.Data_F3;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
@@ -546,7 +549,19 @@ public class F_1_2 extends FrmParent {
 	 */
 	@Override
 	public void receiveRtuData(RtuData d){
-		//super.receiveRtuData(d) ;
+		setProgressVisible(0);
+		Object subD = d.subData ;
+		if(subD != null){
+			if(subD instanceof Data_F2){
+				Data_F2 data = (Data_F2) subD ;
+				act.frgTool.f_1_0.displayWifiData(data) ;
+				ToastUtils.show(act, "显示辅加功能1回传Wifi数据!");
+			}else if (subD instanceof Data_F3) {
+				Data_F3 data = (Data_F3) subD ;
+				act.frgTool.f_1_0.displayWifiData(data) ;
+				ToastUtils.show(act, "显示辅加功能2回传Wifi数据!");
+			}
+		}
 
 	}
 	/**
