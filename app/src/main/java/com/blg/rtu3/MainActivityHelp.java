@@ -9,9 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivityHelp {
 
 	private MainActivity mainAct;
@@ -87,12 +84,6 @@ public class MainActivityHelp {
 		tvUrl.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				List<String> list = new ArrayList<String>() ;
-				list.add("1号门");
-				list.add("2号门");
-				list.add("3号门");
-				list.add("4号门");
-				mainAct.frgTool.f_1_0.updateSpinnerValue(list);
 				Uri uri = Uri.parse("https://www.baidu.com/");
 		    	Intent intent = new Intent(Intent.ACTION_VIEW, uri); 
 		    	MainActivity.instance.startActivity(intent);

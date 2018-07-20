@@ -17,7 +17,6 @@ import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
-import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.protocol.p206.F2.Data_F2;
 import com.blg.rtu.protocol.p206.F3.Data_F3;
 import com.blg.rtu.util.SharepreferenceUtils;
@@ -37,9 +36,6 @@ import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,6 +102,7 @@ public class F_1_2 extends FrmParent {
         pb_stop2 = (ProgressBar) view.findViewById(R.id.pb_stop2);
 
 		tv_open1 = (TextView) view.findViewById(R.id.tv_open1) ;
+		tv_open1.setEnabled(false);
 		tv_open1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -133,6 +130,7 @@ public class F_1_2 extends FrmParent {
 
 
 		tv_close1 = (TextView) view.findViewById(R.id.tv_close1) ;
+		tv_close1.setEnabled(false);
 		tv_close1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -156,6 +154,7 @@ public class F_1_2 extends FrmParent {
 			}
 		});
 		tv_stop1 = (TextView) view.findViewById(R.id.tv_stop1) ;
+		tv_stop1.setEnabled(false);
 		tv_stop1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -181,6 +180,7 @@ public class F_1_2 extends FrmParent {
 		});
 
 		tv_open2 = (TextView) view.findViewById(R.id.tv_open2) ;
+		tv_open2.setEnabled(false);
 		tv_open2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -204,6 +204,7 @@ public class F_1_2 extends FrmParent {
 			}
 		});
 		tv_close2 = (TextView) view.findViewById(R.id.tv_close2) ;
+		tv_close2.setEnabled(false);
 		tv_close2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -227,6 +228,7 @@ public class F_1_2 extends FrmParent {
 			}
 		});
 		tv_stop2 = (TextView) view.findViewById(R.id.tv_stop2) ;
+		tv_stop2.setEnabled(false);
 		tv_stop2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

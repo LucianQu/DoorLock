@@ -62,6 +62,9 @@ public class F_1_1 extends FrmParent {
 	}
 
 	public void displayServiceData(DoorStatus doorStatus) {
+		if (!isAdded()) {
+			this.onAttach(act);
+		}
 		if (null != doorStatus) {
 			//锁状态
 			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 3) {
@@ -106,6 +109,9 @@ public class F_1_1 extends FrmParent {
 	}
 
 	public void displayWifiData(Data_F1 data) {
+		if (!isAdded()) {
+			this.onAttach(act);
+		}
 		if (null != data) {
 			//锁状态
 			if (data.isOpenLock()) {
@@ -131,6 +137,9 @@ public class F_1_1 extends FrmParent {
 	}
 
 	public void displayWifiData2(Data_F2 data) {
+		if (!isAdded()) {
+			this.onAttach(act);
+		}
 		if (null != data) {
 			//锁状态
 			if (data.isOpenLock()) {
@@ -156,6 +165,9 @@ public class F_1_1 extends FrmParent {
 	}
 
 	public void displayWifiData3(Data_F3 data) {
+		if (!isAdded()) {
+			this.onAttach(act);
+		}
 		if (null != data) {
 			//锁状态
 			if (data.isOpenLock()) {

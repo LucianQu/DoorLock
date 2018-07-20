@@ -259,13 +259,9 @@ public class MainActivity  extends Activity {
 			}
 			handler.removeCallbacks(queryF1Task);
 			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
-				frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
-				//frgTool.f_1_0.doorContralServer("0102030407", "F1", "0");
+                frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
 			}
-
-			//if (!frgTool.f_1_0.netServerErr) {
-				handler.postDelayed(queryF1Task, delayMillis);
-			//}
+			handler.postDelayed(queryF1Task, delayMillis);
 		}
 	};
 	
@@ -309,7 +305,7 @@ public class MainActivity  extends Activity {
 		//waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
 		//waitServerStartedAndToConnectNet("192.168.4.1", 333) ; //wifi连接
 		//waitServerStartedAndToConnectNet("10.10.100.254", 8899) ; //wifi连接
-		connectWifiAndServer() ;
+		//connectWifiAndServer() ;
 		mJPush = new JPushActivity(this) ;
 		mJPush.initJPush();//初始化极光推送
 		mJPush.registerMessageReceiver();//注册信息接收器
@@ -332,12 +328,12 @@ public class MainActivity  extends Activity {
 			updateConnectedType(2);
 			updateConnectedStatus(false);
 			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
-				//if (true) {
-				//frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID,"0","F1");
-				//frgTool.f_1_0.doorContralServer("0102030405","0","F1");
-				handler.postDelayed(queryF1Task, 1*1000) ;
+				frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
+				if (frgTool.f_1_0.doorNum >1) {
+					handler.postDelayed(queryF1Task, 1 * 1000);
+				}
 			}else {
-				ToastUtils.show(MainActivity.this, "没有可操作的门，无法请求服务连接!");
+				//ToastUtils.show(MainActivity.this, "没有可操作的门，无法请求服务连接!");
 			}
 		}
 	}
@@ -416,7 +412,15 @@ public class MainActivity  extends Activity {
 		if(mActivityStub != null){
 			unbindService(mConnection);
 		}
+
 		ServerProxyHandler.getInstance().stopServer() ;
+
+		handler.removeCallbacks(queryF1Task);
+		if (null != frgTool.f_1_0.httpGet) {
+			httpGet.cancel();
+			httpGet = null ;
+		}
+		instance = null ;
 	}
 
 	/**
