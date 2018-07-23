@@ -416,10 +416,6 @@ public class MainActivity  extends Activity {
 		ServerProxyHandler.getInstance().stopServer() ;
 
 		handler.removeCallbacks(queryF1Task);
-		if (null != frgTool.f_1_0.httpGet) {
-			httpGet.cancel();
-			httpGet = null ;
-		}
 		instance = null ;
 	}
 
