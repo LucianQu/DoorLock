@@ -329,7 +329,7 @@ public class MainActivity  extends Activity {
 			updateConnectedStatus(false);
 			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
 				frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
-				if (frgTool.f_1_0.doorNum >1) {
+				if (frgTool.f_1_0.doorNum >=1) {
 					handler.postDelayed(queryF1Task, 1 * 1000);
 				}
 			}else {

@@ -223,6 +223,7 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				if (Util.checkIsHasLearned(act)) {
+
 					setProgressVisible(3) ;
 					setBtnBackground(3,2);
 					if (SharepreferenceUtils.getIsWifi(act)) {
@@ -234,6 +235,14 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						}else {
+							if (currentCom.equals("1") || currentCom.equals("2")) {
+								receiveOther = false ;
+								receiveStop = false ;
+								handler.removeCallbacks(queryF1Task);
+								setBtnIsEnable(true);
+								act.delayMillis = seconds5 ;
+							}
+
 							currentCom = "3" ;
 							currentAfn = "F1" ;
 							doorContralServer(currentID, currentAfn, currentCom);
@@ -562,6 +571,9 @@ public class F_1_0 extends FrmParent {
 	private void putSpinnerValue1(){
 	/*	spinnerAdapter1.add(new SpinnerVO("0", "1号门")) ;*/
 		//spinnerAdapter1.add(new SpinnerVO("0", "0102030405")) ;
+		SharepreferenceUtils.saveHasLearn(act, true);
+		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
+		SharepreferenceUtils.savePassword(act,"0102-0102-0102-0102");
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 	}
 	private void putSpinnerValue2(){
@@ -719,7 +731,6 @@ public class F_1_0 extends FrmParent {
 		if (!isAdded()) {
 			this.onAttach(act);
 		}
-		currentDoorStatus = positon ;
 		if (positon== 1) {
 			receiveOther = true ;
 			tv_door_status.setText("开");
@@ -764,6 +775,12 @@ public class F_1_0 extends FrmParent {
 
 	private void setPieChart(int open){
 		int close = 0 ;
+		if (open == 0) {
+			currentDoorStatus = 2 ;
+		}else if (open >= 100) {
+			currentDoorStatus = 1 ;
+		}
+
 		if (open <= 180 && open >=0) {
 			close = 180 - open ;
 			data[0] = 135;
