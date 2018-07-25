@@ -174,7 +174,7 @@ public class F_1_0 extends FrmParent {
 						}
 					}
 				}else {
-					ToastUtils.show(act, "门已开，无法再次开门!");
+					ToastUtils.show(act, "门已开，操作无效!");
 				}
 			}
 		});
@@ -212,7 +212,7 @@ public class F_1_0 extends FrmParent {
 						}
 					}
 				}else {
-					ToastUtils.show(act, "门已关，无法再次关门!");
+					ToastUtils.show(act, "门已关，操作无效!");
 				}
 			}
 		});
@@ -223,31 +223,34 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				if (Util.checkIsHasLearned(act)) {
-
-					setProgressVisible(3) ;
-					setBtnBackground(3,2);
-					if (SharepreferenceUtils.getIsWifi(act)) {
-						if (null != httpGet) {
-							httpGet.cancel();
-						}
-						setCommand(3);
-					}else {
-						if (getCurrentIDIsempty()) {
-							ToastUtils.show(act, "没有可操作的门！");
-						}else {
-							if (currentCom.equals("1") || currentCom.equals("2")) {
-								receiveOther = false ;
-								receiveStop = false ;
-								handler.removeCallbacks(queryF1Task);
-								setBtnIsEnable(true);
-								act.delayMillis = seconds5 ;
+					if (currentDoorStatus != 3) {
+						setProgressVisible(3);
+						setBtnBackground(3, 2);
+						if (SharepreferenceUtils.getIsWifi(act)) {
+							if (null != httpGet) {
+								httpGet.cancel();
 							}
+							setCommand(3);
+						} else {
+							if (getCurrentIDIsempty()) {
+								ToastUtils.show(act, "没有可操作的门！");
+							} else {
+								if (currentCom.equals("1") || currentCom.equals("2")) {
+									receiveOther = false;
+									receiveStop = false;
+									handler.removeCallbacks(queryF1Task);
+									setBtnIsEnable(true);
+									act.delayMillis = seconds30;
+								}
 
-							currentCom = "3" ;
-							currentAfn = "F1" ;
-							doorContralServer(currentID, currentAfn, currentCom);
+								currentCom = "3";
+								currentAfn = "F1";
+								doorContralServer(currentID, currentAfn, currentCom);
+							}
 						}
 					}
+				}else {
+					ToastUtils.show(act, "门已停，操作无效!");
 				}
 				//handler.removeCallbacks(queryF1Task);
 			}
@@ -328,7 +331,7 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onSuccess(String result) {
 				setProgressVisible(0) ;
-				LogUtils.e("请求成功结束时间", Util.getCurrentTime());
+
 				JSONObject jsonResult = null;
 				if (!"".equals(result)) {
 					try {
@@ -634,6 +637,7 @@ public class F_1_0 extends FrmParent {
 
 
 	public void pintServiceData(DoorStatus doorStatus) {
+		LogUtils.e("请求成功结束时间", Util.getCurrentTime());
 		LogUtils.e("接收到服务器返回数据",
 				"\n甲醛浓度：" + doorStatus.getHcho()+
 						"\n门状态：" + doorStatus.getDoorState()+
@@ -740,6 +744,7 @@ public class F_1_0 extends FrmParent {
 			receiveOther = true ;
 			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_red_bg));
 		}else if (positon == 3) {
+			currentDoorStatus = 3 ;
 			receiveStop = true ;
 			successNum ++ ;
 			if (!SharepreferenceUtils.getIsWifi(act) &&
