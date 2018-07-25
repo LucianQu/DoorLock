@@ -280,6 +280,7 @@
 					android:gravity="center"
 					android:clickable="false"
 					android:focusable="false"
+					android:layout_marginTop="@dimen/base10dp"
 					android:focusableInTouchMode="false"
 					android:layout_height="wrap_content">
 					<lecho.lib.hellocharts.view.PieChartView
@@ -294,48 +295,16 @@
 					android:gravity="center"
 					android:focusable="false"
 					android:clickable="false"
-					android:layout_marginTop="-40dp"
+					android:layout_marginTop="-30dp"
 					android:layout_height="wrap_content">
 					<TextView
-						android:id="@+id/tv_openTitle"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentLeft="true"
-						android:layout_marginLeft="@dimen/base4dp"
-						android:textSize="@dimen/tx14sp"
-						android:text="门开度:"
-						android:layout_marginRight="8dp"
-						/>
-					<TextView
 						android:id="@+id/tv_openValue"
-						android:layout_toRightOf="@id/tv_openTitle"
+						android:layout_centerInParent="true"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:textSize="@dimen/tx14sp"
 						android:textColor="#FF4040"
 						android:text="0度"
-						/>
-					<TextView
-						android:id="@+id/tv_closeTitle"
-						android:layout_alignParentLeft="true"
-						android:layout_below="@+id/tv_openTitle"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:textSize="@dimen/tx14sp"
-						android:layout_marginLeft="@dimen/base4dp"
-						android:layout_marginRight="8dp"
-						android:text="门关度:"
-						/>
-					<TextView
-						android:id="@+id/tv_closeValue"
-						android:layout_below="@id/tv_openValue"
-						android:layout_toRightOf="@id/tv_closeTitle"
-						android:layout_width="wrap_content"
-						android:layout_height="match_parent"
-						android:layout_marginRight="10dp"
-						android:textColor="#CDC9C9"
-						android:textSize="@dimen/tx14sp"
-						android:text="180度"
 						/>
 				</RelativeLayout>
 			</LinearLayout>
