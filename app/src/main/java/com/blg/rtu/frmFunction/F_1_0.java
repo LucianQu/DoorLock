@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +103,9 @@ public class F_1_0 extends FrmParent {
 	private boolean receiveOther = false ;
 	private boolean receiveStop = false ;
 	private int currentDoorStatus = 0 ;
+	private boolean clickStop = true ;
+	private boolean netStatus = false ;
+	public boolean clickDeviceId = false ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -168,13 +173,13 @@ public class F_1_0 extends FrmParent {
 								reSendNum = 20;
 								successNum = 0;
 								doorContralServer(currentID, currentAfn, currentCom);
-								//doorContralServer("0102030409", currentAfn, currentCom);
+								handler.removeCallbacks(queryF1Task);
 								handler.postDelayed(queryF1Task, 500);
 							}
 						}
+					}else {
+						ToastUtils.show(act, "门已开，操作无效!");
 					}
-				}else {
-					ToastUtils.show(act, "门已开，操作无效!");
 				}
 			}
 		});
@@ -206,13 +211,13 @@ public class F_1_0 extends FrmParent {
 								successNum = 0;
 								act.delayMillis = seconds30;
 								doorContralServer(currentID, currentAfn, currentCom);
-								//doorContralServer("0102030409", currentAfn, currentCom);
+								handler.removeCallbacks(queryF1Task);
 								handler.postDelayed(queryF1Task, 500);
 							}
 						}
+					}else {
+						ToastUtils.show(act, "门已关，操作无效!");
 					}
-				}else {
-					ToastUtils.show(act, "门已关，操作无效!");
 				}
 			}
 		});
@@ -223,7 +228,7 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				if (Util.checkIsHasLearned(act)) {
-					if (currentDoorStatus != 3) {
+					if (clickStop) {
 						setProgressVisible(3);
 						setBtnBackground(3, 2);
 						if (SharepreferenceUtils.getIsWifi(act)) {
@@ -248,9 +253,9 @@ public class F_1_0 extends FrmParent {
 								doorContralServer(currentID, currentAfn, currentCom);
 							}
 						}
+					}else {
+						ToastUtils.show(act, "门已停，操作无效!");
 					}
-				}else {
-					ToastUtils.show(act, "门已停，操作无效!");
 				}
 				//handler.removeCallbacks(queryF1Task);
 			}
@@ -265,11 +270,26 @@ public class F_1_0 extends FrmParent {
 		setPieChartData();
 		initPieChart();
 
-
 		return view ;
 	}
 
-	private Handler handler = new Handler() ;
+	public void removeHandler() {
+		handler.removeCallbacks(queryF1Task);
+		handler = null ;
+	}
+
+	public MyHandler handler = new MyHandler(act) ;
+	public class MyHandler extends Handler {
+		private final WeakReference<MainActivity> mActivty;
+		private MyHandler(MainActivity mActivty) {
+			this.mActivty = new WeakReference<MainActivity>(mActivty);
+		}
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+		}
+	}
+
 	private Runnable queryF1Task = new Runnable() {
 		@Override
 		public void run() {
@@ -557,7 +577,6 @@ public class F_1_0 extends FrmParent {
 	public void updateSpinnerValue(String data) {
 		if (!"".equals(data)) {
 			spinnerAdapter1.clear();
-
 			String[] arr = data.split("-") ;
 			if (arr.length >= 1) {
 				doorNum = arr.length ;
@@ -567,7 +586,6 @@ public class F_1_0 extends FrmParent {
 				}
 			}
 		}else {
-
 		}
 	}
 
@@ -588,16 +606,22 @@ public class F_1_0 extends FrmParent {
 	public void setCurrentID(String s) {
 		this.currentID = s ;
 	}
-
+	private long num =0;
 	private class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			if (!SharepreferenceUtils.getIsWifi(act)) {
 				if (parent.getId() == spinner.getId()) {
+					num++ ;
+					LogUtils.e("点击item次数", num + "");
+					if (num > 1) {
+						clickDeviceId = true;
+					}
 					currentID = parent.getSelectedItem().toString();
 					act.frgTool.f_1_2.setCurrentPosition(position);
 					act.frgTool.f_1_2.setCurrentID(currentID);
 					act.updateConnectedStatus(false);
 					LogUtils.e("选择的门锁地址", currentID);
+					initDeviceConnect() ;
 				}
 			}else {
 				ToastUtils.show(act, "请注意：当前通信类型为WIFI");
@@ -606,11 +630,19 @@ public class F_1_0 extends FrmParent {
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
 	}
+
+	public void initDeviceConnect() {
+
+		setBtnBackground(0,0); //初始化按钮状态灰色，不使能
+		setDoorButtonImg(3);
+		setPieChart(0);
+		act.postQuery();
+	}
+
 	private class SpinnerSelectedListener2 implements AdapterView.OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			if(parent.getId() == spinner2.getId()){
 				if (position == 1) {
-					//setBtnIsEnable(false) ;
 					setBtnBackground(0, 0);
 					isFirst = true;
 					receiveNum = 0;
@@ -736,20 +768,22 @@ public class F_1_0 extends FrmParent {
 			this.onAttach(act);
 		}
 		if (positon== 1) {
+			clickStop = true ;
 			receiveOther = true ;
 			tv_door_status.setText("开");
 			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_green_bg));
 		}else if (positon == 2) {
+			clickStop = true ;
 			tv_door_status.setText("关");
 			receiveOther = true ;
 			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_red_bg));
 		}else if (positon == 3) {
-			currentDoorStatus = 3 ;
+			clickStop = false ;
 			receiveStop = true ;
 			successNum ++ ;
 			if (!SharepreferenceUtils.getIsWifi(act) &&
 					(currentCom.equals("2") || currentCom.equals("1"))) {
-				if (receiveStop = true && receiveOther) {
+				if (receiveStop  && receiveOther) {
 					receiveOther = false ;
 					receiveStop = false ;
 					handler.removeCallbacks(queryF1Task);

@@ -62,6 +62,7 @@ import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -207,6 +208,7 @@ public class MainActivity  extends Activity {
 	};
 
 
+
 	//接收从MapBroadcastReceiver发来的消息
 	public Handler mHandler = new Handler() {  
         @Override  
@@ -250,7 +252,7 @@ public class MainActivity  extends Activity {
             }  
         }  
     };
-	private Handler handler = new Handler() ;
+	public MyHandler handler = new MyHandler(this) ;
 	private Runnable queryF1Task = new Runnable() {
 		@Override
 		public void run() {
@@ -315,6 +317,14 @@ public class MainActivity  extends Activity {
 
 	}
 
+	public void postQuery() {
+        if (!frgTool.f_1_0.getCurrentIDIsempty()) {
+            if (frgTool.f_1_0.doorNum == 1 || frgTool.f_1_0.clickDeviceId) {
+                handler.postDelayed(queryF1Task, 50);
+            }
+        }
+	}
+
 	public void connectWifiAndServer() {
 		if (SharepreferenceUtils.getIsWifi(MainActivity.this)) {
 			updateConnectedType(1);
@@ -328,12 +338,9 @@ public class MainActivity  extends Activity {
 			updateConnectedType(2);
 			updateConnectedStatus(false);
 			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
-				frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
-				if (frgTool.f_1_0.doorNum >=1) {
-					handler.postDelayed(queryF1Task, 1 * 1000);
+				if (frgTool.f_1_0.doorNum == 1 || frgTool.f_1_0.clickDeviceId) {
+					handler.postDelayed(queryF1Task, 50);
 				}
-			}else {
-				//ToastUtils.show(MainActivity.this, "没有可操作的门，无法请求服务连接!");
 			}
 		}
 	}
@@ -414,9 +421,22 @@ public class MainActivity  extends Activity {
 		}
 
 		ServerProxyHandler.getInstance().stopServer() ;
-
+		frgTool.f_1_0.removeHandler();
 		handler.removeCallbacks(queryF1Task);
+		handler = null ;
 		instance = null ;
+		finish();
+	}
+
+	public class MyHandler extends Handler {
+		private final WeakReference<MainActivity> mActivty;
+		private MyHandler(MainActivity mActivty) {
+			this.mActivty = new WeakReference<MainActivity>(mActivty);
+		}
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+		}
 	}
 
 	/**
@@ -625,6 +645,9 @@ public class MainActivity  extends Activity {
 			tcpConnectStatus.setTextColor(Color.RED);
 		}else {
 			//网络已经断开
+			if (!SharepreferenceUtils.getIsWifi(mContext)) {
+				frgTool.f_1_0.initDeviceConnect() ;
+			}
 			tcpConnectStatus.setText(this.getResources().getString(R.string.noConnected));
 			tcpConnectStatus.setTextColor(Color.parseColor("#f0eff5"));
 		}
