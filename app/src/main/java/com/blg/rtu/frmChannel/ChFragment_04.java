@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,14 +17,18 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import com.blg.rtu.compound.FixHeightListView;
 import com.blg.rtu.frmChannel.helpCh4.ListRtuData;
 import com.blg.rtu.frmChannel.helpCh4.RtuDataListViewAdapter;
+import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.help.HelpSaveProtocolDataToFile;
 import com.blg.rtu.protocol.RtuData;
+import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.DateTime;
 import com.blg.rtu.util.ResourceUtils;
 import com.blg.rtu.util.StringValueForActivity;
+import com.blg.rtu.util.Util;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
+import com.blg.rtu3.utils.LogUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,6 +76,19 @@ public class ChFragment_04 extends Fragment {
 		rtuDatas = new ArrayList<ListRtuData>() ;
 		
 		rtuDatasListView  = (FixHeightListView)this.view.findViewById(R.id.chRtuDataListView) ;
+		rtuDatasListView.setOnTouchListener(new View.OnTouchListener() {
+
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+
+				if(event.getAction() == MotionEvent.ACTION_UP){
+					act.func_scrollView.requestDisallowInterceptTouchEvent(false);
+				}else{
+					act.func_scrollView.requestDisallowInterceptTouchEvent(true);
+				}
+				return false;
+			}
+		});
 		
 		setRtuDatasListViewHeight(ResourceUtils.getXmlDef(act, R.dimen.ch_rtuDataListViewHeight_big)) ;
         
@@ -145,25 +163,26 @@ public class ChFragment_04 extends Fragment {
 	
 	/**
 	 * 接收到RTU数据
-	 * @param data
+	 * @param
 	 */
-	public void setRtuData(RtuData data){
+	public void setRtuData(DoorStatus doorStatus, Data_F1 data_f1){
 		ListRtuData vo = new ListRtuData() ;
-		vo.direct = Constant.derictUp ;
-		//vo.direct = "命令" ;
-		vo.channel = Constant.channelType(data.channelType.intValue()) ;
-		vo.dt = DateTime.yyyy_MM_dd_HH_mm_ss() ;
-		vo.rtuId = data.rtuId ;
-		vo.code = data.dataCode ;
-		vo.hex = data.hex ;
-       
-		vo.clicked = false ;
-		
+		if (null != doorStatus) {
+			vo.direct = "服务器数据";
+			//vo.direct = "命令" ;
+			vo.channel = "";
+			vo.dt = DateTime.yyyy_MM_dd_HH_mm_ss();
+			vo.rtuId = act.frgTool.f_1_0.currentID;
+			vo.code = act.frgTool.f_1_0.currentCom;
+			vo.hex = getServiceData(doorStatus);
+			vo.clicked = false;
+		}
+
 		if(rtuDatas.size() > StringValueForActivity.rutResultMaxCount){
 			rtuDatas.remove(0) ;
 		}
 		rtuDatas.add(vo) ;
-        
+
 		rtuDatasListViewAdapter.notifyDataSetInvalidated(); //会重绘控件（还原到初始状态）	，notifyDataSetChanged()，重绘当前可见区域
     	//使listview停刷新出的最后一条数据
 		rtuDatasListView.setSelection(rtuDatas.size()-1) ;
@@ -171,6 +190,24 @@ public class ChFragment_04 extends Fragment {
 		//文件存储
 		File f = HelpSaveProtocolDataToFile.getFile(act, DateTime.yyyy_MM_dd()) ;
 		HelpSaveProtocolDataToFile.saveData(f, vo) ;
+	}
+
+	public String getServiceData(DoorStatus doorStatus) {
+		String result = "" ;
+		result =
+				"<甲醛浓度：" + doorStatus.getHcho()+
+						"> <门的状态：" + doorStatus.getDoorState()+
+						"> <门的角度：" + doorStatus.getAngle()+
+						"> \n<锁的标记：" + doorStatus.getLockMark()+
+						"> <锁的状态:" + doorStatus.getLockState()+
+						"> <锁的数组：" + doorStatus.getLockStates()+
+						"> \n<电源状态：" + doorStatus.getPowerMark()+
+						"> <报警状态：" + doorStatus.getWarnState()+
+						"> \n<报警数组：" + doorStatus.getWarnStates() +
+						"> <报警标志：" + doorStatus.getWarnMark()+">"
+
+		;
+		return result ;
 	}
 	
 	/**

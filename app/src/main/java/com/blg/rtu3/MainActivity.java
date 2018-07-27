@@ -49,18 +49,11 @@ import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SoundAlert;
 import com.blg.rtu.util.StringValueForActivity;
 import com.blg.rtu.util.ToastUtils;
-import com.blg.rtu.util.Util;
 import com.blg.rtu3.receiver.JPushActivity;
 import com.blg.rtu3.server.LocalServer;
 import com.blg.rtu3.utils.LogUtils;
-import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xutils.common.Callback;
-import org.xutils.ex.HttpException;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -143,9 +136,9 @@ public class MainActivity  extends Activity {
 
 	private AutoScrollTextView scrollTextView ;
 	private JPushActivity mJPush ;
-	public long delayMillis = 30 * 1000;
-	private long seconds30 = 30 * 1000 ;
-	private long seconds5 = 5 * 1000 ;
+	public final long seconds30 = 30000;
+	private final long seconds5 = 5000 ;
+	public int delay = 0 ;
 	private long minute10 = 10 * 60 * 1000 ;
 	private long minute5 = 5 * 60 * 1000 ;
 	private long minute2 = 2 * 60 * 1000 ;
@@ -263,9 +256,21 @@ public class MainActivity  extends Activity {
 			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
                 frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
 			}
-			handler.postDelayed(queryF1Task, delayMillis);
+			if (delay == 5) {
+				postDelay5s() ;
+			}else {
+				postDelay30s() ;
+			}
+
 		}
 	};
+
+	private void postDelay5s() {
+		handler.postDelayed(queryF1Task, 5000);
+	}
+	private void postDelay30s() {
+		handler.postDelayed(queryF1Task, 30000);
+	}
 	
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -320,7 +325,16 @@ public class MainActivity  extends Activity {
 	public void postQuery() {
         if (!frgTool.f_1_0.getCurrentIDIsempty()) {
             if (frgTool.f_1_0.doorNum == 1 || frgTool.f_1_0.clickDeviceId) {
-                handler.postDelayed(queryF1Task, 50);
+				if (!frgTool.f_1_0.getCurrentIDIsempty()) {
+					frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
+				}
+				//handler.removeCallbacks(queryF1Task);
+				if (delay == 5) {
+					postDelay5s() ;
+				}else {
+					postDelay30s() ;
+				}
+
             }
         }
 	}
@@ -339,7 +353,11 @@ public class MainActivity  extends Activity {
 			updateConnectedStatus(false);
 			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
 				if (frgTool.f_1_0.doorNum == 1 || frgTool.f_1_0.clickDeviceId) {
-					handler.postDelayed(queryF1Task, 50);
+					if (delay == 5) {
+						postDelay5s() ;
+					}else {
+						postDelay30s() ;
+					}
 				}
 			}
 		}
@@ -645,9 +663,9 @@ public class MainActivity  extends Activity {
 			tcpConnectStatus.setTextColor(Color.RED);
 		}else {
 			//网络已经断开
-			if (!SharepreferenceUtils.getIsWifi(mContext)) {
+			/*if (!SharepreferenceUtils.getIsWifi(mContext)) {
 				frgTool.f_1_0.initDeviceConnect() ;
-			}
+			}*/
 			tcpConnectStatus.setText(this.getResources().getString(R.string.noConnected));
 			tcpConnectStatus.setTextColor(Color.parseColor("#f0eff5"));
 		}

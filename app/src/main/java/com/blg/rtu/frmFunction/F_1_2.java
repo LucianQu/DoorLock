@@ -367,7 +367,7 @@ public class F_1_2 extends FrmParent {
 
 	private void doorContralServer(String dtuId, String code, String flag) {
 		LogUtils.e("请求开始时间", Util.getCurrentTime());
-		LogUtils.e("请求间隔：", (act.delayMillis /1000)+"秒");
+		LogUtils.e("请求间隔：", (act.delay )+"秒");
 		String url = "http://39.106.112.210:8090/door/door/state.act?" ;
 		//String url = "http://1bdf2aff.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
@@ -405,11 +405,11 @@ public class F_1_2 extends FrmParent {
 											reSendNum = 0;
 											if ("1".equals(currentCom)) {
 												if (null != doorStatus && doorStatus.getDoorState()== 1) {
-													//act.delayMillis = seconds5 ;
+													//act.second30 = seconds5 ;
 												}
 											}else if ("2".equals(currentCom)) {
 												if (null != doorStatus && doorStatus.getDoorState() == 2) {
-													//act.delayMillis = seconds5 ;
+													//act.second30 = seconds5 ;
 												}
 											}
 										}
@@ -421,10 +421,10 @@ public class F_1_2 extends FrmParent {
 									String msg = jsonResult.getString("error");
 									if (msg.equals("设备尚未上线，命令发送失败！")) {
 										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备未上线！");
-										//act.delayMillis = minute10 ; //设备未上线，10分钟后再试
+										//act.second30 = minute10 ; //设备未上线，10分钟后再试
 									} else if (msg.contains("超时")) {
 										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
-										//act.delayMillis = minute2; //设备回复超时，2分钟后再试
+										//act.second30 = minute2; //设备回复超时，2分钟后再试
 									}
 
 								}
@@ -443,7 +443,7 @@ public class F_1_2 extends FrmParent {
 				ToastUtils.show(act, "服务获取数据错误："+ex.getMessage());
 				if (ex.getMessage().contains("failed to connect to")) {
 					ToastUtils.show(act, "手机网络异常，请检查网络!");
-					//act.delayMillis = minute30 ; //服务异常，30分钟后再试
+					//act.second30 = minute30 ; //服务异常，30分钟后再试
 				}
 				LogUtils.e("onError", "请求失败");
 				setProgressVisible(0) ;
