@@ -25,14 +25,12 @@ import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.DateTime;
 import com.blg.rtu.util.ResourceUtils;
 import com.blg.rtu.util.StringValueForActivity;
-import com.blg.rtu.util.Util;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
-import com.blg.rtu3.utils.LogUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class ChFragment_04 extends Fragment {
 	/**
@@ -50,7 +48,7 @@ public class ChFragment_04 extends Fragment {
 	
 	private FixHeightListView rtuDatasListView ;
 	private RtuDataListViewAdapter rtuDatasListViewAdapter;
-	public List<ListRtuData> rtuDatas ;
+	public ArrayList<ListRtuData> rtuDatas ;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -165,16 +163,29 @@ public class ChFragment_04 extends Fragment {
 	 * 接收到RTU数据
 	 * @param
 	 */
-	public void setRtuData(DoorStatus doorStatus, Data_F1 data_f1){
+	public void setRtuData(DoorStatus doorStatus, String url,Data_F1 data_f1, int num){
 		ListRtuData vo = new ListRtuData() ;
+		String code = act.frgTool.f_1_0.currentCom ;
 		if (null != doorStatus) {
-			vo.direct = "服务器数据";
+			vo.direct = "接收服务器数据->";
 			//vo.direct = "命令" ;
-			vo.channel = "";
+			vo.channel = "序号:"+num;
 			vo.dt = DateTime.yyyy_MM_dd_HH_mm_ss();
 			vo.rtuId = act.frgTool.f_1_0.currentID;
-			vo.code = act.frgTool.f_1_0.currentCom;
+
+			vo.code = "命令类型:"+(code.equals("0") ? "查询" :(code.equals("1")? "开":
+					(code.equals("2")?"关":"停")));
 			vo.hex = getServiceData(doorStatus);
+			vo.clicked = false;
+		}else if (null != url) {
+			vo.direct = "APP请求服务器->";
+			//vo.direct = "命令" ;
+			vo.channel = "序号:"+num;
+			vo.dt = DateTime.yyyy_MM_dd_HH_mm_ss();
+			vo.rtuId = act.frgTool.f_1_0.currentID;
+			vo.code = "命令类型:"+(code.equals("0") ? "查询" :(code.equals("1")? "开":
+					(code.equals("2")?"关":"停")));
+			vo.hex = url;
 			vo.clicked = false;
 		}
 
@@ -183,6 +194,7 @@ public class ChFragment_04 extends Fragment {
 		}
 		rtuDatas.add(vo) ;
 
+		Collections.reverse(rtuDatas);
 		rtuDatasListViewAdapter.notifyDataSetInvalidated(); //会重绘控件（还原到初始状态）	，notifyDataSetChanged()，重绘当前可见区域
     	//使listview停刷新出的最后一条数据
 		rtuDatasListView.setSelection(rtuDatas.size()-1) ;
@@ -197,9 +209,9 @@ public class ChFragment_04 extends Fragment {
 		result =
 				"<甲醛浓度：" + doorStatus.getHcho()+
 						"> <门的状态：" + doorStatus.getDoorState()+
-						"> <门的角度：" + doorStatus.getAngle()+
-						"> \n<锁的标记：" + doorStatus.getLockMark()+
-						"> <锁的状态:" + doorStatus.getLockState()+
+						"> \n<门的角度：" + doorStatus.getAngle()+
+						"> <锁的标记：" + doorStatus.getLockMark()+
+						"> \n<锁的状态:" + doorStatus.getLockState()+
 						"> <锁的数组：" + doorStatus.getLockStates()+
 						"> \n<电源状态：" + doorStatus.getPowerMark()+
 						"> <报警状态：" + doorStatus.getWarnState()+

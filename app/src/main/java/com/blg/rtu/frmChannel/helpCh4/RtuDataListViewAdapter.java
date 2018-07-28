@@ -57,7 +57,7 @@ public class RtuDataListViewAdapter extends BaseAdapter {
         }
         
         ListRtuData vo = this.fragment.rtuDatas.get(position) ;
-        holder.idCodeChannelView.setText(vo.direct+ ":" + vo.rtuId + " / " + vo.code + " / " + vo.channel);
+        holder.idCodeChannelView.setText(vo.direct+ ":" + vo.rtuId + " / " + vo.code + "\n" + vo.channel);
         holder.dtView.setText(vo.dt);
         
         /*

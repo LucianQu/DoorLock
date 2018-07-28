@@ -94,7 +94,7 @@ public class F_1_0 extends FrmParent {
 	private long minute5 = 5 * 60 * 1000 ;
 	private long minute2 = 2 * 60 * 1000 ;
 	private long minute30 = 30 * 60 * 1000 ;
-	public String currentCom = "" ;
+	public String currentCom = "0" ;
 	private int reSendNum = 0 ;
 	private String currentAfn = "" ;
 	private int receiveNum = 0;
@@ -109,6 +109,10 @@ public class F_1_0 extends FrmParent {
 	private boolean netStatus = false ;
 	public boolean clickDeviceId = false ;
 	private ChFragment_04 fragment_04 ;
+	private boolean endRequestFlag = true ;
+	private boolean clickService = false ;
+	private int sendDataNum = 0 ;
+	private int receiveDataNum = 0 ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -177,9 +181,12 @@ public class F_1_0 extends FrmParent {
 								successNum = 0;
 								receiveStop = false ;
 								receiveOther = false ;
+								endRequestFlag = false ;
+
 								doorContralServer(currentID, currentAfn, currentCom);
-								handler.removeCallbacks(queryF1Task);
-								handler.postDelayed(queryF1Task, 500);
+								//handler.removeCallbacks(queryF1Task);
+								//handler.postDelayed(queryF1Task, 500);
+								handler.postDelayed(queryF1StopTask, 30000) ;
 							}
 						}
 					}else {
@@ -217,9 +224,12 @@ public class F_1_0 extends FrmParent {
 								receiveStop = false ;
 								receiveOther = false ;
 								act.delay = 30;
+								endRequestFlag = false ;
+
 								doorContralServer(currentID, currentAfn, currentCom);
-								handler.removeCallbacks(queryF1Task);
-								handler.postDelayed(queryF1Task, 500);
+								handler.postDelayed(queryF1StopTask, 30000) ;
+								//handler.removeCallbacks(queryF1Task);
+								//handler.postDelayed(queryF1Task, 500);
 							}
 						}
 					}else {
@@ -251,6 +261,9 @@ public class F_1_0 extends FrmParent {
 									receiveOther = false;
 									receiveStop = false;
 									reSendNum = -1 ;
+									setBtnIsEnable(true);
+									endRequestFlag = true ;
+
 								}
 								currentCom = "3";
 								currentAfn = "F1";
@@ -319,6 +332,28 @@ public class F_1_0 extends FrmParent {
 			}
 		}
 	};
+
+	private Runnable queryF1StopTask = new Runnable() {
+		@Override
+		public void run() {
+			if (!endRequestFlag) {
+				receiveOther = false;
+				receiveStop = false;
+				currentCom = "0";
+				setBtnIsEnable(true);
+				endRequestFlag = true;
+
+			}
+		}
+	};
+
+	private Runnable queryF1OnceTask = new Runnable() {
+		@Override
+		public void run() {
+			doorContralServer(currentID, currentAfn, "0");
+		}
+	};
+
 	public boolean getCurrentIDIsempty() {
 		if (spinnerAdapter1.isEmpty()) {
 			return true ;
@@ -348,12 +383,15 @@ public class F_1_0 extends FrmParent {
 	public void doorContralServer(final String dtuId, String code, String flag) {
 		LogUtils.e("请求开始时间", Util.getCurrentTime());
 		LogUtils.e("主循环间隔：", (act.delay)+ "秒");
-		String url = "http://39.106.112.210:8090/door/door/state.act?" ;
-		//String url = "http://1bdf2aff.ngrok.io/door/door/state.act?" ;
+		//String url = "http://39.106.112.210:8090/door/door/state.act?" ;
+		String url = "http://d573b440.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
+        if (fragment_04 != null) {
+            fragment_04.setRtuData(null, requestParams.toString(),null,++sendDataNum);
+        }
 		LogUtils.e("门控制服务", requestParams.toString());
 		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
@@ -385,21 +423,23 @@ public class F_1_0 extends FrmParent {
 										act.updateConnectedStatus(true);
 										displayServiceData(doorStatus);
 										if (fragment_04 != null) {
-											fragment_04.setRtuData(doorStatus, null);
+											fragment_04.setRtuData(doorStatus, null,null,++receiveDataNum);
 										}
 										pintServiceData(doorStatus);
-
+										if (!endRequestFlag) {
+											handler.post(queryF1OnceTask) ;
+										}
 									} else {
 										//ToastUtils.show(act, "服务获取数据为空！");
 									}
 								} else {
 									String msg = jsonResult.getString("error");
-									if (msg.equals("设备尚未上线，命令发送失败！")) {
-										//ToastUtils.show(act, "服务获取数据失败：" + "门锁设备未上线！");
+									if (msg.contains("设备尚未上线，命令发送失败！")) {
+										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备未上线！");
 										act.updateConnectedStatus(false);
 										//act.second30 = minute10 ; //设备未上线，10分钟后再试
 									} else if (msg.contains("超时")) {
-										//ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
+										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
 										//act.second30 = minute2; //设备回复超时，2分钟后再试
 									}
 								}
@@ -623,7 +663,7 @@ public class F_1_0 extends FrmParent {
 					act.frgTool.f_1_2.setCurrentID(currentID);
 					act.updateConnectedStatus(false);
 					LogUtils.e("选择的门锁地址", currentID);
-					act.delay = 5 ;
+					act.delay = 30 ;
 					initDeviceConnect() ;
 				}
 			}else {
@@ -703,12 +743,12 @@ public class F_1_0 extends FrmParent {
 			if (currentCom.equals("2")) {
 				if (doorStatus.getAngle() >= 105) {
 					LogUtils.e("恢复轮询间隔", "开门角度已到达最大");
-					act.delay = 5 ;
+					act.delay = 30 ;
 				}
 			}else if (currentCom.equals("1")) {
 				if (doorStatus.getAngle() == 0) {
-					LogUtils.e("恢复轮询间隔", "关门角度已到达180°");
-					act.delay = 5 ;
+					LogUtils.e("恢复轮询间隔", "关门角度已到达最小");
+					act.delay = 30 ;
 				}
 			}
 		}else {
@@ -788,8 +828,11 @@ public class F_1_0 extends FrmParent {
 				if (receiveStop  && receiveOther) {
 					receiveOther = false ;
 					receiveStop = false ;
-					handler.removeCallbacks(queryF1Task);
+					currentCom = "0" ;
+					//handler.removeCallbacks(queryF1Task);
 					setBtnIsEnable(true);
+					endRequestFlag = true ;
+
 				}
 			}
 			tv_door_status.setText("停");
@@ -816,9 +859,9 @@ public class F_1_0 extends FrmParent {
 
 	private void setPieChart(int open){
 		int close = 0 ;
-		if (open < 45) {
+		if (open < 10) {
 			currentDoorStatus = 2 ;
-		}else if (open >= 45) {
+		}else if (open >= 100) {
 			currentDoorStatus = 1 ;
 		}
 
