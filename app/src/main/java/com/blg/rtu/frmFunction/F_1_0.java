@@ -859,9 +859,9 @@ public class F_1_0 extends FrmParent {
 
 	private void setPieChart(int open){
 		int close = 0 ;
-		if (open < 10) {
+		if (open == 0) {
 			currentDoorStatus = 2 ;
-		}else if (open >= 100) {
+		}else if (open == 108) {
 			currentDoorStatus = 1 ;
 		}
 
