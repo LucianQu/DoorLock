@@ -148,7 +148,7 @@ public class MainActivity  extends Activity {
 	private DoorInfo doorInfo ;
 	private DoorStatus doorStatus ;
 
-
+	public boolean requestServeice = true ;
 
 	public void registerMessageReceiver() {
 		mMessageReceiver = new MessageReceiver();
@@ -225,20 +225,9 @@ public class MainActivity  extends Activity {
             }
             break;  
 
-            case Constant.msg_main_receiveSm: {/*  
-            	//接收到短信的消息
-             	Bundle b = msg.getData();
-    			String phoneSet = MainActivity.this.frgTool.fragment_ch01.getPhoneNumber() ;
-    			if(phoneSet != null && !phoneSet.equals("")){
-        			String phoneNumber = b.getString(Constant.msg_key_string1) ;
-        			if(phoneNumber.endsWith(phoneSet)){
-        				String smData = b.getString(Constant.msg_key_string2) ;
-        				if(smData != null && !smData.equals("")){
-        					ServerProxyHandler.getInstance().dealSmData(smData) ;
-        				}
-        			}
-    			}
-            */}
+            case Constant.msg_main_receiveSm: {
+
+			}
             break;  
             default:  
                 super.handleMessage(msg);  
@@ -254,7 +243,9 @@ public class MainActivity  extends Activity {
 			}
 			handler.removeCallbacks(queryF1Task);
 			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
-                frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
+				if (requestServeice) {
+					frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
+				}
 			}
 			if (delay == 5) {
 				postDelay5s() ;
