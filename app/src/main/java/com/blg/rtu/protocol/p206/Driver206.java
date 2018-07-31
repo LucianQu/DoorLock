@@ -126,6 +126,7 @@ public class Driver206 extends DriverRtu {
 			if(this.dataCode.equalsIgnoreCase(Code206.cd_F1)){
 				///应答 - 门控制
 				this.upData = new Answer_F1().parse(rtuId, b, ca, this.dataCode);
+				action.append(Action.commandReadRtuIdResultAction) ;
 				action.append(Action.commandResultAction) ;
 			}else
 			if(this.dataCode.equalsIgnoreCase(Code206.cd_F2)){
