@@ -173,7 +173,7 @@ public class F_1_0 extends FrmParent {
 					successNum = 0;
 					receiveStop = false ;
 					receiveOther = false ;
-
+					endRequestFlag = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						if (null != httpGet) {
 							httpGet.cancel();
@@ -183,7 +183,7 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						} else {
-							endRequestFlag = false ;
+
 							doorContralServer(currentID, currentAfn, currentCom);
 							handler.removeCallbacks(queryF1StopTask);
 							handler.postDelayed(queryF1StopTask, 120000) ;
@@ -212,6 +212,7 @@ public class F_1_0 extends FrmParent {
 					receiveStop = false ;
 					receiveOther = false ;
 					act.delay = 30;
+					endRequestFlag = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						if (null != httpGet) {
 							httpGet.cancel();
@@ -221,7 +222,7 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						} else {
-							endRequestFlag = false ;
+
 							doorContralServer(currentID, currentAfn, currentCom);
 							handler.removeCallbacks(queryF1StopTask);
 							handler.postDelayed(queryF1StopTask, 120000) ;
@@ -254,6 +255,7 @@ public class F_1_0 extends FrmParent {
 							if (null != httpGet) {
 								httpGet.cancel();
 							}
+							handler.removeCallbacks(queryWifiTask);
 							setCommand(3);
 						} else {
 							if (getCurrentIDIsempty()) {
@@ -939,6 +941,15 @@ public class F_1_0 extends FrmParent {
 	public void resetLabelImg(){
 	}
 
+	private Runnable queryWifiTask =  new Runnable() {
+		@Override
+		public void run() {
+			if (act.tcpConnected) {
+				setCommand(0);
+			}
+		}
+	};
+
 	/**
 	 * 收到数据
 	 * @param d
@@ -960,6 +971,10 @@ public class F_1_0 extends FrmParent {
 			displayWifiData(data) ;
 		}else {
 			ToastUtils.show(act, "F1接收数据为空");
+		}
+
+		if (!endRequestFlag) {
+			handler.postDelayed(queryWifiTask, 1000) ;
 		}
 	}
 
