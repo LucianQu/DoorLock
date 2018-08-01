@@ -218,6 +218,7 @@ public class F_01_010  extends FrmParent {
 					}
 					act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 					act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+					act.frgTool.f_1_0.setCommand(0);
 				} else {
 
 					if (!"".equals(deviceID)) {

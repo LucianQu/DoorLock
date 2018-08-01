@@ -651,6 +651,7 @@ public class F_1_0 extends FrmParent {
 					if (num > 1) {
 						clickDeviceId = true;
 					}
+					isFirst = true ;
 					currentID = parent.getSelectedItem().toString();
 					act.frgTool.f_1_2.setCurrentPosition(position);
 					act.frgTool.f_1_2.setCurrentID(currentID);
@@ -910,7 +911,7 @@ public class F_1_0 extends FrmParent {
 
 	}
 
-	private void setCommand(int command) {
+	protected void setCommand(int command) {
 		this.sendRtuCommand(new CommandCreator().cd_F_1(command,null), false);
 	}
 	
