@@ -165,7 +165,7 @@ public class F_01_010  extends FrmParent {
 	 */
 	@Override
 	public void receiveRtuData(RtuData d){
-		hideLoadCover();
+		//hideLoadCover();
 		//super.receiveRtuData(d) ;
 		try {
 			String deviceID = SharepreferenceUtils.getDeviceId(act) ;
@@ -218,12 +218,14 @@ public class F_01_010  extends FrmParent {
 					}
 					act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 					act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+					act.setDoorId(d.getRtuId());
 					act.frgTool.f_1_0.setCommand(0);
 				} else {
-
 					if (!"".equals(deviceID)) {
 						if (deviceID.contains(d.getRtuId())) {
 							SharepreferenceUtils.saveHasLearn(act, true);
+							act.setDoorId(d.getRtuId());
+							act.frgTool.f_1_0.setCommand(0);
 						} else {
 							SharepreferenceUtils.saveHasLearn(act, false);
 							ToastUtils.show(act, "该设备未学习，请先学习！");

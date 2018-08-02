@@ -18,8 +18,8 @@ public class StubServer extends ServiceAidl.Stub {
 	
 	/**
 	 * 构造方法
-	 * @param server
-	 * @param netManager
+	 * @param
+	 * @param
 	 */
 	private StubServer(){
 	}

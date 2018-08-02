@@ -25,7 +25,7 @@ public class ServerProxyHandler {
 	/**
 	 * 本方法创建单例，只有Activity创建例本地Server，Server把ServerStub桩的代理实例
 	 * 返回给Activity端，此时Activity创建本单例。
-	 * @param activityProxy
+	 * @param
 	 * @return
 	 */
 	public static ServerProxyHandler createSingle(ServiceAidl mServerProxy, MainActivity mAct){

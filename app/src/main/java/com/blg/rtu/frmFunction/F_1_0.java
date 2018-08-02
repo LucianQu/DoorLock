@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.blg.rtu.frmChannel.ChFragment_04;
-import com.blg.rtu.frmFunction.bean.DoorInfo;
 import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.CommandCreator;
@@ -84,36 +83,23 @@ public class F_1_0 extends FrmParent {
 	private ImageView imgDoorPower ;
 	private ImageView imgDoorAlarm ;
 
-	private DoorInfo doorInfo ;
-	private DoorStatus doorStatus ;
-	public String currentID = "" ;
-	public Callback.Cancelable httpGet ;
-	private long seconds30 = 30 * 1000 ;
-	private long seconds5 = 5 * 1000 ;
-	private long minute10 = 10 * 60 * 1000 ;
-	private long minute5 = 5 * 60 * 1000 ;
-	private long minute2 = 2 * 60 * 1000 ;
-	private long minute30 = 30 * 60 * 1000 ;
-	public String currentCom = "0" ;
-	private int reSendNum = 0 ;
-	private String currentAfn = "" ;
-	private int receiveNum = 0;
-	private boolean isFirst = true ;
-	public  int  doorNum = 0;
-	private DialogAlarm dialogAlarm ;
-	private int successNum = 0 ;
-	private boolean receiveOther = false ;
-	private boolean receiveStop = false ;
-	private int currentDoorStatus = 0 ;
-	private boolean clickStop = true ;
-	private boolean netStatus = false ;
-	public boolean clickDeviceId = false ;
+	private DoorStatus doorStatus ; //门状态
+	public String currentID = "" ; //当前门ID
+	public Callback.Cancelable httpGet ;  //网络请求
+	public String currentCom = "0" ; //当前命令
+	private int reSendNum = 0 ; //重发次数
+	private String currentAfn = "" ; //当前功能码
+	private boolean isFirst = true ; //是否初始请求
+	public  int  doorNum = 0; //APP存储门ID数量
+	private boolean clickStop = false ;
+	private boolean receiveOpenClose = false ;
+	public boolean clickDeviceId = false ; //判断是否手动点击设备ID
 	private ChFragment_04 fragment_04 ;
-	private boolean endRequestFlag = true ;
-	private boolean clickService = false ;
-	private int sendDataNum = 0 ;
-	private int receiveDataNum = 0 ;
-	private int receiveStopNum = 0 ;
+	private boolean endReqFlag = true ; //结束数据请求
+	private int sendServerReqNum = 0 ; //发送服务请求次数
+	private int receiveServerDataNum = 0 ; //APP打开后，接收服务数据次数
+	private int receiveWifiDataNum = 0 ; //APP打开后，接收wifi数据次数
+	private int receiveStopNum = 0 ; //接收门停止计数
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -134,7 +120,6 @@ public class F_1_0 extends FrmParent {
 			ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.f_1_00, container, false);
-
 		queue = Volley.newRequestQueue(getActivity());
 
 		spinner = (Spinner)view.findViewById(R.id.spinner_doorList);
@@ -170,10 +155,9 @@ public class F_1_0 extends FrmParent {
 					currentAfn = "F1";
 					act.delay = 30;
 					reSendNum = 20;
-					successNum = 0;
-					receiveStop = false ;
-					receiveOther = false ;
-					endRequestFlag = false ;
+
+					receiveOpenClose = false ;
+					endReqFlag = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						if (null != httpGet) {
 							httpGet.cancel();
@@ -208,11 +192,9 @@ public class F_1_0 extends FrmParent {
 					currentCom = "2";
 					currentAfn = "F1";
 					reSendNum = 20;
-					successNum = 0;
-					receiveStop = false ;
-					receiveOther = false ;
+					receiveOpenClose = false ;
 					act.delay = 30;
-					endRequestFlag = false ;
+					endReqFlag = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						if (null != httpGet) {
 							httpGet.cancel();
@@ -238,16 +220,15 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				if (Util.checkIsHasLearned(act)) {
-					if (clickStop) {
+					/*if (clickStop) {*/
 						receiveStopNum = 0 ;
 						setProgressVisible(3);
 						setBtnBackground(3, 2);
 						if (currentCom.equals("1") || currentCom.equals("2")) {
-							receiveOther = false;
-							receiveStop = false;
+							receiveOpenClose = false;
 							reSendNum = -1 ;
 							setBtnIsEnable(true);
-							endRequestFlag = true ;
+							endReqFlag = true ;
 						}
 						currentCom = "3";
 						currentAfn = "F1";
@@ -264,9 +245,9 @@ public class F_1_0 extends FrmParent {
 								doorContralServer(currentID, currentAfn, currentCom);
 							}
 						}
-					}else {
+					/*}else {
 						ToastUtils.show(act, "门已停，操作无效!");
-					}
+					}*/
 				}
 			}
 		});
@@ -287,7 +268,7 @@ public class F_1_0 extends FrmParent {
 	}
 
 	public void removeHandler() {
-		handler.removeCallbacks(queryF1Task);
+		handler.removeCallbacksAndMessages(null);
 		handler = null ;
 	}
 
@@ -329,13 +310,11 @@ public class F_1_0 extends FrmParent {
 	private Runnable queryF1StopTask = new Runnable() {
 		@Override
 		public void run() {
-			if (!endRequestFlag) {
-				receiveOther = false;
-				receiveStop = false;
+			if (!endReqFlag) {
+				receiveOpenClose = false;
 				currentCom = "0";
 				setBtnIsEnable(true);
-				endRequestFlag = true;
-
+				endReqFlag = true;
 			}
 		}
 	};
@@ -383,7 +362,7 @@ public class F_1_0 extends FrmParent {
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
         if (fragment_04 != null) {
-            fragment_04.setRtuData(null, requestParams.toString(),null,++sendDataNum);
+            fragment_04.setRtuData(null, requestParams.toString(),null,++sendServerReqNum);
         }
 		LogUtils.e("门控制服务", requestParams.toString());
 		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
@@ -410,16 +389,16 @@ public class F_1_0 extends FrmParent {
 										if (isFirst) {
 											isFirst = false ;
 											setBtnIsEnable(true);
-											setBtnBackground(4,1);
+											setBtnBackground(4,0);
 										}else {
 										}
 										act.updateConnectedStatus(true);
 										displayServiceData(doorStatus);
 										if (fragment_04 != null) {
-											fragment_04.setRtuData(doorStatus, null,null,++receiveDataNum);
+											fragment_04.setRtuData(doorStatus, null,null,++receiveServerDataNum);
 										}
 										pintServiceData(doorStatus);
-										if (!endRequestFlag) {
+										if (!endReqFlag) {
 											handler.post(queryF1OnceTask) ;
 										}
 									} else {
@@ -516,17 +495,17 @@ public class F_1_0 extends FrmParent {
 		}else if (position == 4) {
 			tv_open.setEnabled(true);
 			tv_close.setEnabled(true);
-			//tv_stop.setEnabled(true);
+			tv_stop.setEnabled(true);
 			tv_open.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
 			tv_close.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
-			//tv_stop.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			tv_stop.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
 		}else {
 			tv_open.setEnabled(false);
 			tv_close.setEnabled(false);
-			//tv_stop.setEnabled(false);
+			tv_stop.setEnabled(false);
 			tv_open.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
 			tv_close.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
-			//tv_stop.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			tv_stop.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
 		}
 	}
 
@@ -659,6 +638,7 @@ public class F_1_0 extends FrmParent {
 					LogUtils.e("选择的门锁地址", currentID);
 					act.delay = 30 ;
 					initDeviceConnect() ;
+					act.setDoorId(currentID);
 				}
 			}else {
 				ToastUtils.show(act, "请注意：当前通信类型为WIFI");
@@ -683,7 +663,6 @@ public class F_1_0 extends FrmParent {
 					act.requestServeice = true ;
 					setBtnBackground(0, 0);
 					isFirst = true;
-					receiveNum = 0;
 					SharepreferenceUtils.saveIsWifi(act, false);
 					if (getCurrentIDIsempty()) {
 						new DialogAlarm().showDialog(act, "门设备地址为空，请先学习！\n学习步骤：\n1、手机Wifi连接到门热点\n2、APP通信类型选择Wifi通信\n3、连接到Wifi后到<副页面3>进行门学习!");
@@ -797,30 +776,27 @@ public class F_1_0 extends FrmParent {
 		}
 		if (positon== 1) {
 			receiveStopNum = 0 ;
-			setBtnBackground(3, 1);
+			//setBtnBackground(3, 1);
 			clickStop = true ;
-			receiveOther = true ;
+			receiveOpenClose = true ;
 			tv_door_status.setText("开");
 			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_green_bg));
 		}else if (positon == 2) {
 			receiveStopNum = 0 ;
-			setBtnBackground(3, 1);
+			//setBtnBackground(3, 1);
 			clickStop = true ;
 			tv_door_status.setText("关");
-			receiveOther = true ;
+			receiveOpenClose = true ;
 			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_red_bg));
 		}else if (positon == 3) {
 			clickStop = false ;
-			receiveStop = true ;
-			setBtnBackground(3, 3);
-			successNum ++ ;
+			//setBtnBackground(3, 3);
 			receiveStopNum ++ ;
-			if (receiveStopNum == 3 || receiveOther || currentCom.equals("3")) {
-				receiveOther = false ;
-				receiveStop = false ;
+			if (receiveStopNum == 3 || receiveOpenClose || currentCom.equals("3")) {
+				receiveOpenClose = false ;
 				currentCom = "0" ;
 				setBtnIsEnable(true);
-				endRequestFlag = true ;
+				endReqFlag = true ;
 			}
 
 			tv_door_status.setText("停");
@@ -962,7 +938,6 @@ public class F_1_0 extends FrmParent {
 		setProgressVisible(0) ;
 		if (isFirst) {
 			isFirst = false ;
-			receiveNum = 0 ;
 			setBtnIsEnable(true) ;
 			setBtnBackground(4,0);
 		}
@@ -970,11 +945,14 @@ public class F_1_0 extends FrmParent {
 		Data_F1 data = (Data_F1)d.subData ;
 		if (data != null) {
 			displayWifiData(data) ;
+			if (fragment_04 != null) {
+				fragment_04.setRtuData(null, null,data,++receiveWifiDataNum);
+			}
 		}else {
 			ToastUtils.show(act, "F1接收数据为空");
 		}
 
-		if (!endRequestFlag) {
+		if (!endReqFlag) {
 			handler.postDelayed(queryWifiTask, 1000) ;
 		}
 	}

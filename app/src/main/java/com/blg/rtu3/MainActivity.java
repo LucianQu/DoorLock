@@ -64,7 +64,6 @@ import java.util.List;
 @SuppressLint("HandlerLeak")
 public class MainActivity  extends Activity { 
 	public static MainActivity instance = null ;
-//	private static final String TAG = MainActivity.class.getSimpleName() ;
 	public ChBusi_01_Operate chb;
 	private MessageReceiver mMessageReceiver;
 	public static final String MESSAGE_RECEIVED_ACTION = "com.blg.rtu3.MESSAGE_RECEIVED_ACTION";
@@ -81,6 +80,7 @@ public class MainActivity  extends Activity {
 	
 	public Boolean tcpConnected = false;
 	public TextView tcpConnectStatus;
+	public TextView connectDoorId;
 	public TextView tv_connectType;
 
 	public TextView switchFun ;
@@ -136,17 +136,7 @@ public class MainActivity  extends Activity {
 
 	private AutoScrollTextView scrollTextView ;
 	private JPushActivity mJPush ;
-	public final long seconds30 = 30000;
-	private final long seconds5 = 5000 ;
 	public int delay = 0 ;
-	private long minute10 = 10 * 60 * 1000 ;
-	private long minute5 = 5 * 60 * 1000 ;
-	private long minute2 = 2 * 60 * 1000 ;
-	private long minute30 = 30 * 60 * 1000 ;
-	public Callback.Cancelable httpGet ;
-	private Context mContext ;
-	private DoorInfo doorInfo ;
-	private DoorStatus doorStatus ;
 
 	public boolean requestServeice = true ;
 
@@ -156,7 +146,7 @@ public class MainActivity  extends Activity {
 		filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
 		filter.addAction(MESSAGE_RECEIVED_ACTION);
 		registerReceiver(mMessageReceiver, filter);
-		//JpushUtils.setTag("admin");//设置灌溉的管理员
+		//JpushUtils.setTag("admin");//
 	}
 
 	public class MessageReceiver extends BroadcastReceiver {
@@ -165,7 +155,6 @@ public class MainActivity  extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
 				String extras = intent.getStringExtra(KEY_EXTRAS);
-
 				if (extras != null) {
 					LogUtils.e("消息接收-extras", extras);
 					SharepreferenceUtils.saveMessage(MainActivity.this, extras);
@@ -174,15 +163,10 @@ public class MainActivity  extends Activity {
 				}else {
 					ToastUtils.show(MainActivity.this, "推送消息为空！");
 				}
-
-                //scrollTextView.startScroll();
 			}
 		}
 	}
 
-
-	//这是实现客户端与服务端通信的一个关键类。要想实现它，就必须重写两个回调方法：onServiceConnected()以及onServiceDisconnected()，
-    //而我们可以通过这两个回调方法得到服务端里面的IBinder对象，从而达到通信的目的
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			Log.e("Connect Service:","Start") ;
@@ -194,15 +178,11 @@ public class MainActivity  extends Activity {
 				Toast.makeText(MainActivity.this, "启动、绑定、连接后台服务时出错：" + e.getMessage(), Toast.LENGTH_SHORT).show();
 			}
 		}
-		 //Android系统会在与服务的连接意外中断时（例如当服务崩溃或被终止时）调用该方法。当客户端取消绑定时，系统“绝对不会”调用该方法。
 		public void onServiceDisconnected(ComponentName className) {
 			mServerProxyHandler.onServiceDisconnected(className) ;
 		}
 	};
 
-
-
-	//接收从MapBroadcastReceiver发来的消息
 	public Handler mHandler = new Handler() {  
         @Override  
         public void handleMessage(Message msg) {  
@@ -226,7 +206,6 @@ public class MainActivity  extends Activity {
             break;  
 
             case Constant.msg_main_receiveSm: {
-
 			}
             break;  
             default:  
@@ -266,51 +245,27 @@ public class MainActivity  extends Activity {
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mContext = MainActivity.this ;
-		//初始化string.xml文件中配置的数值型数据
 		StringValueForActivity.initOnlyOnce(this) ;
 		instance = this ;
-		//初始化小数据存储
 		Preferences.initInstance(this) ;
-		 
 		this.broadcastReceiver = new MainBroadcastReceiver(this) ;
 		this.broadcastReceiver.registerAndReceive() ;
-		
 		this.setContentView(R.layout.activity_main);
-		
-		//创建界面
 		this.createView();
-		
-		//声音
 		this.soundAlert = new SoundAlert(this) ;
-		
-        
-        //实例化fragment工具类对象
         this.frgTool = new FragmentTool(this) ;
-        
         this.mActivityStub = StubActivity.createSingle(this)  ;
-
-        //wifiOpenStatus = isWiFiActive();
         wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if(!wifiManager.isWifiEnabled()) {
         	wifiManager.setWifiEnabled(true);
         }
- 		//绑定后台服务，后台服务在接受第一个绑定时会启动自己
         this.bindService(new Intent(MainActivity.this, LocalServer.class), mConnection, Context.BIND_AUTO_CREATE);
-        //没有设置类名，通过明确的类名调用bindService(new Intent("forServiceAidl"), conn, Service.BIND_AUTO_CREATE);  
-        //<intent-filter><action android:name="forServiceAidl"></action></intent-filter>
-
-		//waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
-		//waitServerStartedAndToConnectNet("192.168.4.1", 333) ; //wifi连接
-		//waitServerStartedAndToConnectNet("10.10.100.254", 8899) ; //wifi连接
-		//connectWifiAndServer() ;
 		mJPush = new JPushActivity(this) ;
 		mJPush.initJPush();//初始化极光推送
 		mJPush.registerMessageReceiver();//注册信息接收器
 		mJPush.setTag("admin1,admin2");//为设备设置标签
 		mJPush.setAlias("doorlock");//为设备设置别名
 		registerMessageReceiver();
-
 	}
 
 	public void postQuery() {
@@ -319,13 +274,11 @@ public class MainActivity  extends Activity {
 				if (!frgTool.f_1_0.getCurrentIDIsempty()) {
 					frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
 				}
-				//handler.removeCallbacks(queryF1Task);
 				if (delay == 5) {
 					postDelay5s() ;
 				}else {
 					postDelay30s() ;
 				}
-
             }
         }
 	}
@@ -371,9 +324,7 @@ public class MainActivity  extends Activity {
 			}
 		}, 500) ;
 	}
-	public void setDeviceID(String id) {
-		tvProductID.setText(id);
-	}
+
 	/**
 	 * 后台服务已经启动，连接网络
 	 * @param url
@@ -431,7 +382,7 @@ public class MainActivity  extends Activity {
 
 		ServerProxyHandler.getInstance().stopServer() ;
 		frgTool.f_1_0.removeHandler();
-		handler.removeCallbacks(queryF1Task);
+		handler.removeCallbacksAndMessages(null);
 		handler = null ;
 		instance = null ;
 		finish();
@@ -460,7 +411,6 @@ public class MainActivity  extends Activity {
 		pageView_fourth = mInflater.inflate(R.layout.activity_main_noprotocol_page, null) ;
 		pageView_third = mInflater.inflate(R.layout.activity_main_channel_page, null) ;
 
-
 		rtuAssiName = (TextView) findViewById(R.id.rtuAssiName) ;
 		String message = SharepreferenceUtils.getMessage(MainActivity.this) ;
 		scrollTextView = (AutoScrollTextView) findViewById(R.id.ScrollNotice) ;
@@ -469,17 +419,7 @@ public class MainActivity  extends Activity {
 		}
 		scrollTextView.init(getWindowManager());
 		scrollTextView.startScroll();
-		//如果想改变跑马灯的文字内容或者文字效果，则在调用完setText方法之后，需要再调用一下init方法，重新进行初始化和相关参数的计算。
-		
-		/*int type = Preferences.getInstance().getInt(Constant.wifi_connect_type) ;
-		if(type == 0) {
-			rtuAssiName.setText("水表Ⅰ代") ;
-		}else if(type == 1) {
-			rtuAssiName.setText("水表Ⅱ代") ;
-		}else{
-			rtuAssiName.setText("中继器") ;
-		}*/
-		
+
 		listPages = new ArrayList<View>();
 		listPages.add(pageView_main);
 		listPages.add(pageView_second);
@@ -487,6 +427,7 @@ public class MainActivity  extends Activity {
 		listPages.add(pageView_fourth);
 
 		tcpConnectStatus = (TextView) findViewById(R.id.tcpConnectStatus1);
+		connectDoorId = (TextView) findViewById(R.id.tv_connectDoorId);
 		tv_connectType = (TextView) findViewById(R.id.tv_connectType);
 		tvProductID = (TextView) findViewById(R.id.productID);
 		tvProductID.setText(getSoftVersion(instance));
@@ -526,10 +467,6 @@ public class MainActivity  extends Activity {
 		//////////////////////////////////////////////////////////////
 		//功能子页
 	func_scrollView = (ScrollView) pageView_main.findViewById(R.id.f_func_scrollView) ;
-       
-			/*chLine_01 = (LinearLayout)pageView_third.findViewById(R.id.chLine_01) ;
-		chLine_02 = (LinearLayout)pageView_third.findViewById(R.id.chLine_02) ;
-		chLine_03 = (LinearLayout)pageView_third.findViewById(R.id.chLine_03) ;*/
 		chLine_04 = (LinearLayout) pageView_third.findViewById(R.id.chLine_04) ;
 		
 		chLine_04.setOnLongClickListener(new OnLongClickListener(){
@@ -539,10 +476,7 @@ public class MainActivity  extends Activity {
 				return false;
 			}
 		}) ;
-		
-		//npFragmentLinear_02 = (LinearLayout) pageView_fourth.findViewById(R.id.npFragmentLinear_02) ;
-		//npFragmentLinear_03 = (LinearLayout) pageView_fourth.findViewById(R.id.npFragmentLinear_03) ;
-       
+
         ////////////////////////////////////////////////////////
         //帮助类
         //实例化fragment回调类对象
@@ -559,20 +493,7 @@ public class MainActivity  extends Activity {
 	 * 最小面部分界面最大小化，其他部分界面隐藏
 	 */
 	public void pageView_channel_OnLongClick(){
-		//int vis = chLine_01.getVisibility() ;
-		//if(vis == View.VISIBLE){
-		/*	chLine_01.setVisibility(View.GONE) ;
-			chLine_02.setVisibility(View.GONE) ;
-			chLine_03.setVisibility(View.GONE) ;*/
-			
 			frgTool.fragment_ch04.setRtuDatasListViewHeight(ResourceUtils.getXmlDef(this, R.dimen.ch_rtuDataListViewHeight_big)) ;
-		//}else{
-		/*	chLine_01.setVisibility(View.VISIBLE) ;
-			chLine_02.setVisibility(View.VISIBLE) ;
-			chLine_03.setVisibility(View.VISIBLE) ;*/
-			
-			//frgTool.fragment_ch04.setRtuDatasListViewHeight(ResourceUtils.getXmlDef(this, R.dimen.ch_rtuDataListViewHeight_small)) ;
-		//}
 	}
 	
 	/**
@@ -581,6 +502,10 @@ public class MainActivity  extends Activity {
 	 */
 	public SoundAlert getSoundAlert() {
 		return soundAlert;
+	}
+
+	public void setDoorId(String id) {
+		connectDoorId.setText(id);
 	}
 	
 	/**
@@ -653,10 +578,6 @@ public class MainActivity  extends Activity {
 			tcpConnectStatus.setText(this.getResources().getString(R.string.connected));
 			tcpConnectStatus.setTextColor(Color.RED);
 		}else {
-			//网络已经断开
-			/*if (!SharepreferenceUtils.getIsWifi(mContext)) {
-				frgTool.f_1_0.initDeviceConnect() ;
-			}*/
 			tcpConnectStatus.setText(this.getResources().getString(R.string.noConnected));
 			tcpConnectStatus.setTextColor(Color.parseColor("#f0eff5"));
 		}
@@ -743,9 +664,6 @@ public class MainActivity  extends Activity {
 		
 	}
 
-
-	
-
 	/**
 	 *  页卡切换监听
 	 *  横隔栏结构如下
@@ -810,9 +728,7 @@ public class MainActivity  extends Activity {
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
 		}
-		
 	}
-	
 	public void defaultAnimation(int arg0) {
 		Animation animation = null ;
 		switch(arg0) {
@@ -851,7 +767,6 @@ public class MainActivity  extends Activity {
 		animation.setDuration(200) ;
 		scrollbar.startAnimation(animation) ;
 	}
-
 	//得到软件版本信息
 	public String getSoftVersion(Activity at){
 		PackageManager pm = at.getPackageManager();
@@ -864,6 +779,5 @@ public class MainActivity  extends Activity {
 		}
 		return "" ;
 	}
-
 
 }

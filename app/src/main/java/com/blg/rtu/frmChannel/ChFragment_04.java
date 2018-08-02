@@ -187,6 +187,16 @@ public class ChFragment_04 extends Fragment {
 					(code.equals("2")?"关":"停")));
 			vo.hex = url;
 			vo.clicked = false;
+		}else if (null != data_f1) {
+			vo.direct = "APP接收Wifi数据->";
+			//vo.direct = "命令" ;
+			vo.channel = "序号:"+num;
+			vo.dt = DateTime.yyyy_MM_dd_HH_mm_ss();
+			vo.rtuId = act.mServerProxyHandler.getRtuId();
+			vo.code = "命令类型:"+(code.equals("0") ? "查询" :(code.equals("1")? "开":
+					(code.equals("2")?"关":"停")));
+			vo.hex = getWifiData(data_f1);
+			vo.clicked = false;
 		}
 
 		if(rtuDatas.size() > StringValueForActivity.rutResultMaxCount){
@@ -217,6 +227,21 @@ public class ChFragment_04 extends Fragment {
 						"> <报警状态：" + doorStatus.getWarnState()+
 						"> \n<报警数组：" + doorStatus.getWarnStates() +
 						"> <报警标志：" + doorStatus.getWarnMark()+">"
+
+		;
+		return result ;
+	}
+	public String getWifiData(Data_F1 doorStatus) {
+		String result = "" ;
+		result =
+				"<甲醛浓度：" + doorStatus.getJiaQuan()+
+						"> <门的状态：" + doorStatus.getDoorOpen()+
+						"> \n<门的角度：" + doorStatus.getDoorOpen()+
+						"> <锁的标记：" + doorStatus.getLockFlag()+
+						"> \n<锁的状态:" + doorStatus.getLockStatus()+
+						"> <电源状态：" + doorStatus.getPowerStatus()+
+						"> \n<报警状态：" + doorStatus.getAlarmStaus()+
+						"> <报警标志：" + doorStatus.getAlarmFlag()+">"
 
 		;
 		return result ;
