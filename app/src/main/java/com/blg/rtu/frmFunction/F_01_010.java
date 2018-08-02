@@ -37,7 +37,8 @@ public class F_01_010  extends FrmParent {
 	private EditText item02 ;
 	private ImageView btnSet1 ;
 	private ImageView btnRead ;
-	
+
+	private boolean receiveWifiData = false ;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -159,6 +160,14 @@ public class F_01_010  extends FrmParent {
 	public void resetLabelImg(){
 		this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_gray(this.act), null); 
 	}
+
+	public boolean getRecieveWifiData() {
+		return receiveWifiData ;
+	}
+
+	public void setReceiveWifiData(boolean is) {
+		receiveWifiData = is ;
+	}
 	/**
 	 * 收到数据
 	 * @param d
@@ -167,6 +176,9 @@ public class F_01_010  extends FrmParent {
 	public void receiveRtuData(RtuData d){
 		//hideLoadCover();
 		//super.receiveRtuData(d) ;
+		receiveWifiData = true ;
+		act.cancelQuery50();
+		LogUtils.e("接收Wifi数据标志", receiveWifiData + "");
 		try {
 			String deviceID = SharepreferenceUtils.getDeviceId(act) ;
 			String password = SharepreferenceUtils.getPassword(act) ;

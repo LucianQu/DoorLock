@@ -235,6 +235,20 @@ public class MainActivity  extends Activity {
 		}
 	};
 
+	private Runnable query50Task = new Runnable() {
+		@Override
+		public void run() {
+			if (!frgTool.f_01_010.getRecieveWifiData()) {
+				frgTool.f_01_010.queryCommand();
+				handler.postDelayed(query50Task,1500) ;
+			}
+		}
+	};
+
+	public void cancelQuery50() {
+		handler.removeCallbacks(query50Task);
+	}
+
 	private void postDelay5s() {
 		handler.postDelayed(queryF1Task, 5000);
 	}
@@ -288,6 +302,7 @@ public class MainActivity  extends Activity {
 			updateConnectedType(1);
 			if (this.tcpConnected) {
 				updateConnectedStatus(true);
+				handler.postDelayed(query50Task, 1500);
 			}else {
 				updateConnectedStatus(false);
 				waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
@@ -324,6 +339,8 @@ public class MainActivity  extends Activity {
 			}
 		}, 500) ;
 	}
+
+
 
 	/**
 	 * 后台服务已经启动，连接网络
@@ -552,17 +569,21 @@ public class MainActivity  extends Activity {
 	 * @param isConnected
 	 */
 	public void setWifiConnectedStatus(boolean isConnected) {
-		if (SharepreferenceUtils.getIsWifi(MainActivity.this)) {
-			updateConnectedType(1) ;
-			this.tcpConnected = isConnected;
-			if (this.tcpConnected) {
-				//网络已经连接
-				updateConnectedStatus(true) ;
-			} else {
-				frgTool.f_1_0.setBtnIsEnable(false) ;
-				updateConnectedStatus(false) ;
-			}
-		}
+	    if (this.tcpConnected != isConnected) {
+            if (SharepreferenceUtils.getIsWifi(MainActivity.this)) {
+                updateConnectedType(1);
+                this.tcpConnected = isConnected;
+                if (this.tcpConnected) {
+                    //网络已经连接
+                    LogUtils.e("wifi连接通知", "已连接");
+                    updateConnectedStatus(true);
+                    handler.postDelayed(query50Task, 1500);
+                } else {
+                    frgTool.f_1_0.setBtnIsEnable(false);
+                    updateConnectedStatus(false);
+                }
+            }
+        }
 	}
 
 	public void updateConnectedType(int data) {
