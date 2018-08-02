@@ -811,12 +811,12 @@ public class F_1_0 extends FrmParent {
 		if (isEnable) {
 			tv_open.setEnabled(true);
 			tv_close.setEnabled(true);
-			//tv_stop.setEnabled(true);
+			tv_stop.setEnabled(true);
 			setBtnBackground(4,0);
 		}else {
 			tv_open.setEnabled(false);
 			tv_close.setEnabled(false);
-			//tv_stop.setEnabled(false);
+			tv_stop.setEnabled(false);
 			setBtnBackground(0,0);
 		}
 	}
@@ -938,7 +938,6 @@ public class F_1_0 extends FrmParent {
 		setProgressVisible(0) ;
 		if (isFirst) {
 			isFirst = false ;
-			setBtnIsEnable(true) ;
 			setBtnBackground(4,0);
 		}
 
