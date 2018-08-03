@@ -97,6 +97,7 @@ public class F_1_0 extends FrmParent {
 	private ChFragment_04 fragment_04 ;
 	private boolean endReqFlag = true ; //结束数据请求
 	private int sendServerReqNum = 0 ; //发送服务请求次数
+	private int sendWifiReqNum = 0 ; //发送服务请求次数
 	private int receiveServerDataNum = 0 ; //APP打开后，接收服务数据次数
 	private int receiveWifiDataNum = 0 ; //APP打开后，接收wifi数据次数
 	private int receiveStopNum = 0 ; //接收门停止计数
@@ -150,8 +151,7 @@ public class F_1_0 extends FrmParent {
 					receiveStopNum = 0 ;
 					setProgressVisible(1);
 					setBtnBackground(1, 2);
-					tv_close.setEnabled(false);
-					setBtnBackground(2, 3);
+					setBtnBackground(2, 0);
 					currentClick ="1" ;
 					currentCom = "1";
 					currentAfn = "F1";
@@ -169,7 +169,6 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						} else {
-
 							doorContralServer(currentID, currentAfn, currentCom);
 							handler.removeCallbacks(queryF1StopTask);
 							handler.postDelayed(queryF1StopTask, 120000) ;
@@ -179,7 +178,6 @@ public class F_1_0 extends FrmParent {
 			}
 		});
 		pb_open = (ProgressBar) view.findViewById(R.id.pb_open);
-
 		tv_door_status = (TextView) view.findViewById(R.id.tv_door_status) ;
 		tv_close = (TextView) view.findViewById(R.id.tv_close) ;
 		tv_close.setOnClickListener(new View.OnClickListener() {
@@ -189,9 +187,8 @@ public class F_1_0 extends FrmParent {
 					receiveStopNum = 0 ;
 					setProgressVisible(2);
 					currentClick ="2" ;
-					tv_open.setEnabled(false);
-					setBtnBackground(1, 3);
-					setBtnBackground(2, 2);
+					setBtnBackground(1, 0);
+					setBtnBackground(2, 2); //
 					currentCom = "2";
 					currentAfn = "F1";
 					reSendNum = 20;
@@ -228,11 +225,12 @@ public class F_1_0 extends FrmParent {
 						setProgressVisible(3);
 						currentClick ="3" ;
 						setBtnBackground(3, 2);
+						endReqFlag = true ;
 						if (currentCom.equals("1") || currentCom.equals("2")) {
 							receiveOpenClose = false;
 							reSendNum = -1 ;
-							setBtnIsEnable(true);
-							endReqFlag = true ;
+							setBtnBackground(1,1); //复位
+							setBtnBackground(2,1);//复位
 						}
 						currentCom = "3";
 						currentAfn = "F1";
@@ -242,7 +240,7 @@ public class F_1_0 extends FrmParent {
 							}
 							handler.removeCallbacks(queryWifiTask);
 							setCommand(3);
-							handler.postDelayed(stopTask, 500) ;
+							handler.postDelayed(stopTask, 10) ;
 						} else {
 							if (getCurrentIDIsempty()) {
 								ToastUtils.show(act, "没有可操作的门！");
@@ -374,7 +372,7 @@ public class F_1_0 extends FrmParent {
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
         if (fragment_04 != null) {
-            fragment_04.setRtuData(null, requestParams.toString(),null,++sendServerReqNum);
+            fragment_04.setRtuData(null, requestParams.toString(),null,null,++sendServerReqNum);
         }
 		LogUtils.e("门控制服务", requestParams.toString());
 		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
@@ -407,7 +405,7 @@ public class F_1_0 extends FrmParent {
 										act.updateConnectedStatus(true);
 										displayServiceData(doorStatus);
 										if (fragment_04 != null) {
-											fragment_04.setRtuData(doorStatus, null,null,++receiveServerDataNum);
+											fragment_04.setRtuData(doorStatus, null,null,null,++receiveServerDataNum);
 										}
 										pintServiceData(doorStatus);
 										if (!endReqFlag) {
@@ -835,7 +833,7 @@ public class F_1_0 extends FrmParent {
 	}
 
 	private void setPieChart(int open){
-		if (currentClick.equals("2")) {
+		/*if (currentClick.equals("2")) {
 			if (open < lastDoorDit) {
 				setDoorDit(open) ;
 			}
@@ -851,9 +849,8 @@ public class F_1_0 extends FrmParent {
 			if (open == lastDoorDit) {
 				setDoorDit(open) ;
 			}
-		}
-
-
+		}*/
+		setDoorDit(open) ;
 	}
 
 	private void setDoorDit(int open) {
@@ -924,6 +921,9 @@ public class F_1_0 extends FrmParent {
 	}
 
 	protected void setCommand(int command) {
+		if (fragment_04 != null) {
+			fragment_04.setRtuData(null, null,null,command+"",++receiveWifiDataNum);
+		}
 		this.sendRtuCommand(new CommandCreator().cd_F_1(command,null), false);
 	}
 	
@@ -981,7 +981,7 @@ public class F_1_0 extends FrmParent {
 		if (data != null) {
 			displayWifiData(data) ;
 			if (fragment_04 != null) {
-				fragment_04.setRtuData(null, null,data,++receiveWifiDataNum);
+				fragment_04.setRtuData(null, null,data,null,++receiveWifiDataNum);
 			}
 		}else {
 			ToastUtils.show(act, "F1接收数据为空");

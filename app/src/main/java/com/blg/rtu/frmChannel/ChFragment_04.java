@@ -163,7 +163,7 @@ public class ChFragment_04 extends Fragment {
 	 * 接收到RTU数据
 	 * @param
 	 */
-	public void setRtuData(DoorStatus doorStatus, String url,Data_F1 data_f1, int num){
+	public void setRtuData(DoorStatus doorStatus, String url,Data_F1 data_f1,String com, int num){
 		ListRtuData vo = new ListRtuData() ;
 		String code = act.frgTool.f_1_0.currentCom ;
 		if (null != doorStatus) {
@@ -196,6 +196,16 @@ public class ChFragment_04 extends Fragment {
 			vo.code = "命令类型:"+(code.equals("0") ? "查询" :(code.equals("1")? "开":
 					(code.equals("2")?"关":"停")));
 			vo.hex = getWifiData(data_f1);
+			vo.clicked = false;
+		}else if (null != com) {
+			vo.direct = "APP请求WIFI->";
+			//vo.direct = "命令" ;
+			vo.channel = "序号:"+num;
+			vo.dt = DateTime.yyyy_MM_dd_HH_mm_ss();
+			vo.rtuId = act.mServerProxyHandler.getRtuId();
+			vo.code = "命令类型:"+(com.equals("0") ? "查询" :(com.equals("1")? "开":
+					(com.equals("2")?"关":"停")));
+			vo.hex = com;
 			vo.clicked = false;
 		}
 
