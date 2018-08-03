@@ -774,7 +774,7 @@
     <!-- 收到数据是否自动打开相关内容   -->
     <string name="openWhenReceiveData">true</string>
     <!-- 下发命令时间间隔(毫秒)，防止连续发命令时，RTU处理不过来,经测试小于4000 RTU处理不过来，重发命令现象很多 -->
-    <string name="commandInterval">300</string>
+    <string name="commandInterval">1000</string>
     <!-- 下发命令，无结果时重发，重发的最大次数 -->
     <string name="commandSendMaxTimes">1</string>
     <!-- 无命令下发超时(见下noCommandIdle配置) 时，是否下发连接链中检测命令  -->
