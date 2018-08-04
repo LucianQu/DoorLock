@@ -105,6 +105,7 @@ public class F_1_0 extends FrmParent {
 	private int lastDoorDit = 0 ;
 	private boolean isClickButton = false ;
 	private int openCloseStop = 0 ;
+	private int stopNum = 0 ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -248,6 +249,7 @@ public class F_1_0 extends FrmParent {
 						setBtnBackground(3, 2);
 						setBtnBackground(1,1); //复位
 						setBtnBackground(2,1);//复位
+					    stopNum = 0 ;
 						endReqFlag = true ;
 						if (currentCom.equals("1") || currentCom.equals("2")) {
 							receiveOpenClose = false;
@@ -273,6 +275,7 @@ public class F_1_0 extends FrmParent {
 								ToastUtils.show(act, "没有可操作的门！");
 							} else {
 								doorContralServer(currentID, currentAfn, currentCom);
+								handler.postDelayed(onceReqServer, 100) ;
 							}
 						}
 					endReqFlag = false ;
@@ -366,6 +369,19 @@ public class F_1_0 extends FrmParent {
 		}
 	};
 
+	private Runnable onceReqServer = new Runnable() {
+		@Override
+		public void run() {
+			stopNum++ ;
+			doorContralServer(currentID, currentAfn, currentCom);
+			if (currentCom.equals("3") && !endReqFlag) {
+				if (stopNum < 6) {
+					handler.postDelayed(onceReqServer, 100);
+				}
+			}
+		}
+	};
+
 	public boolean getCurrentIDIsempty() {
 		if (spinnerAdapter1.isEmpty()) {
 			return true ;
@@ -409,7 +425,9 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onSuccess(String result) {
 				setProgressVisible(0) ;
-
+				if (currentCom.equals("3")) {
+					handler.removeCallbacks(onceReqServer);
+				}
 				JSONObject jsonResult = null;
 				if (!"".equals(result)) {
 					try {
