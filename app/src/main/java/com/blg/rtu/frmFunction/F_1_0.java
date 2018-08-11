@@ -228,7 +228,7 @@ public class F_1_0 extends FrmParent {
 
 							doorContralServer(currentID, currentAfn, currentCom);
 							handler.removeCallbacks(queryF1StopTask);
-							handler.postDelayed(queryF1StopTask, 15000) ;
+							handler.postDelayed(queryF1StopTask, 30000) ;
 						}
 					}
 					endReqFlag = false ;
