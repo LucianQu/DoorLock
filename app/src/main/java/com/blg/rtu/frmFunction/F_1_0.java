@@ -59,7 +59,7 @@ import lecho.lib.hellocharts.view.PieChartView;
 
 public class F_1_0 extends FrmParent {
 
-	private Spinner spinner;
+	private ReSpinner spinner;
 	private Spinner spinner2;
 	private ArrayAdapter<SpinnerVO> spinnerAdapter1;
 	private ArrayAdapter<SpinnerVO> spinnerAdapter2;
@@ -106,6 +106,7 @@ public class F_1_0 extends FrmParent {
 	private boolean isClickButton = false ;
 	private int openCloseStop = 0 ;
 	private int stopNum = 0 ;
+	private boolean onceComReceiveTrue  = false;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -128,7 +129,7 @@ public class F_1_0 extends FrmParent {
 		View view = inflater.inflate(R.layout.f_1_00, container, false);
 		queue = Volley.newRequestQueue(getActivity());
 
-		spinner = (Spinner)view.findViewById(R.id.spinner_doorList);
+		spinner = (ReSpinner)view.findViewById(R.id.spinner_doorList);
 		spinnerAdapter1 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
 		this.putSpinnerValue1();
 		spinnerAdapter1.setDropDownViewResource(R.layout.spinner_item);
@@ -175,14 +176,14 @@ public class F_1_0 extends FrmParent {
 						handler.removeCallbacks(stopTask);
 						handler.postDelayed(twoOpenWifiData, 500) ;
 						handler.removeCallbacks(queryIsReceiveWifiData);
-						handler.postDelayed(queryIsReceiveWifiData, 8000) ;
+						handler.postDelayed(queryIsReceiveWifiData, 15000) ;
 					} else {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						} else {
 							doorContralServer(currentID, currentAfn, currentCom);
 							handler.removeCallbacks(queryF1StopTask);
-							handler.postDelayed(queryF1StopTask, 8000) ;
+							handler.postDelayed(queryF1StopTask, 30000) ;
 						}
 					}
 					endReqFlag = false ;
@@ -219,7 +220,7 @@ public class F_1_0 extends FrmParent {
 						handler.removeCallbacks(stopTask);
 						handler.postDelayed(twoCloseWifiData, 500) ;
 						handler.removeCallbacks(queryIsReceiveWifiData);
-						handler.postDelayed(queryIsReceiveWifiData, 12000) ;
+						handler.postDelayed(queryIsReceiveWifiData, 15000) ;
 					} else {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
@@ -269,7 +270,7 @@ public class F_1_0 extends FrmParent {
 							handler.removeCallbacks(stopTask);
 							handler.postDelayed(stopTask, 500) ;
                             handler.removeCallbacks(queryIsReceiveWifiData);
-							handler.postDelayed(queryIsReceiveWifiData, 12000) ;
+							handler.postDelayed(queryIsReceiveWifiData, 15000) ;
 						} else {
 							if (getCurrentIDIsempty()) {
 								ToastUtils.show(act, "没有可操作的门！");
@@ -302,6 +303,8 @@ public class F_1_0 extends FrmParent {
 		handler.removeCallbacksAndMessages(null);
 		handler = null ;
 	}
+
+
 
 	public MyHandler handler = new MyHandler(act) ;
 	public class MyHandler extends Handler {
@@ -361,13 +364,36 @@ public class F_1_0 extends FrmParent {
 			}
 		}
 	};
+	private void onceComCheckIsReceive() {
+		onceComReceiveTrue = false ;
+		handler.removeCallbacks(queryF1OnceTask);
+		handler.postDelayed(queryF1OnceTask, 3000) ;
+	}
 
 	private Runnable queryF1OnceTask = new Runnable() {
 		@Override
 		public void run() {
-			doorContralServer(currentID, currentAfn, "0");
+			if (!onceComReceiveTrue) {
+				if (SharepreferenceUtils.getIsWifi(act)) {
+					setCommand(0);
+				}else {
+					doorContralServer(currentID, currentAfn, "0");
+				}
+				onceComCheckIsReceive() ;
+			}else {
+				handler.removeCallbacks(queryF1OnceTask);
+			}
 		}
 	};
+
+	private void queryF1Once() {
+		if (SharepreferenceUtils.getIsWifi(act)) {
+			setCommand(0);
+		}else {
+			doorContralServer(currentID, currentAfn, "0");
+		}
+		onceComCheckIsReceive() ;
+	}
 
 	private Runnable onceReqServer = new Runnable() {
 		@Override
@@ -375,8 +401,10 @@ public class F_1_0 extends FrmParent {
 			stopNum++ ;
 			doorContralServer(currentID, currentAfn, currentCom);
 			if (currentCom.equals("3") && !endReqFlag) {
-				if (stopNum < 6) {
+				if (stopNum < 4) {
 					handler.postDelayed(onceReqServer, 100);
+				}else {
+					handler.removeCallbacks(onceReqServer);
 				}
 			}
 		}
@@ -424,6 +452,7 @@ public class F_1_0 extends FrmParent {
 		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
+				onceComReceiveTrue = true ;
 				setProgressVisible(0) ;
 				if (currentCom.equals("3")) {
 					handler.removeCallbacks(onceReqServer);
@@ -457,7 +486,7 @@ public class F_1_0 extends FrmParent {
 										}
 										pintServiceData(doorStatus);
 										if (!endReqFlag) {
-											handler.post(queryF1OnceTask) ;
+											queryF1Once();
 										}
 									} else {
 										//ToastUtils.show(act, "服务获取数据为空！");
@@ -485,6 +514,7 @@ public class F_1_0 extends FrmParent {
 			}
 			@Override
 			public void onError(Throwable ex, boolean isOnCallback) {
+				onceComReceiveTrue = true ;
 				setProgressVisible(0) ;
 				if (ex.getMessage().contains("failed to connect to")) {
 					act.updateConnectedStatus(false);
@@ -696,7 +726,7 @@ public class F_1_0 extends FrmParent {
 					act.frgTool.f_1_2.setCurrentID(currentID);
 					act.updateConnectedStatus(false);
 					LogUtils.e("选择的门锁地址", currentID);
-					act.delay = 30 ;
+					act.delay = 5 ;
 					initDeviceConnect() ;
 					act.setDoorId(currentID);
 				}
@@ -863,6 +893,7 @@ public class F_1_0 extends FrmParent {
 				currentCom = "0" ;
 				setBtnIsEnable(true);
 				endReqFlag = true ;
+				act.delay = 5;
 			}
 
 			tv_door_status.setText("停");
@@ -1067,6 +1098,7 @@ public class F_1_0 extends FrmParent {
 	 */
 	@Override
 	public void receiveRtuData(RtuData d){
+		onceComReceiveTrue = true ;
 		//super.receiveRtuData(d) ;
 		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null);
 		setProgressVisible(0) ;
@@ -1087,7 +1119,7 @@ public class F_1_0 extends FrmParent {
 		}
 
 		if (!endReqFlag) {
-			setCommand(0);
+			queryF1Once();
 		}
 	}
 
