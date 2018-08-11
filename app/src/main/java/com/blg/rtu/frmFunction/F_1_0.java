@@ -724,9 +724,9 @@ public class F_1_0 extends FrmParent {
 					currentID = parent.getSelectedItem().toString();
 					act.frgTool.f_1_2.setCurrentPosition(position);
 					act.frgTool.f_1_2.setCurrentID(currentID);
+					act.delay = 5 ;
 					act.updateConnectedStatus(false);
 					LogUtils.e("选择的门锁地址", currentID);
-					act.delay = 5 ;
 					initDeviceConnect() ;
 					act.setDoorId(currentID);
 				}

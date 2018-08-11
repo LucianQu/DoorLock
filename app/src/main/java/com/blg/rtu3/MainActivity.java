@@ -283,6 +283,7 @@ public class MainActivity  extends Activity {
 	}
 
 	public void postQuery() {
+		handler.removeCallbacks(queryF1Task);
         if (!frgTool.f_1_0.getCurrentIDIsempty()) {
             if (frgTool.f_1_0.doorNum == 1 || frgTool.f_1_0.clickDeviceId) {
 				if (!frgTool.f_1_0.getCurrentIDIsempty()) {
