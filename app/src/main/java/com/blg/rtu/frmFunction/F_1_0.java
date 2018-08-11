@@ -401,7 +401,7 @@ public class F_1_0 extends FrmParent {
 			stopNum++ ;
 			doorContralServer(currentID, currentAfn, currentCom);
 			if (currentCom.equals("3") && !endReqFlag) {
-				if (stopNum < 4) {
+				if (stopNum < 3) {
 					handler.postDelayed(onceReqServer, 100);
 				}else {
 					handler.removeCallbacks(onceReqServer);
