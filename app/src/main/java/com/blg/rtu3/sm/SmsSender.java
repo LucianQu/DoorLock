@@ -17,7 +17,7 @@ public class SmsSender {
 		 SmsManager smsManager = SmsManager.getDefault();
 	     PendingIntent sentIntent = PendingIntent.getBroadcast(act, 0, new Intent(), 0);
 	     smsManager.sendTextMessage(mobile, null, content, sentIntent, null);
-	     act.getSoundAlert().playSend() ;
+	     //act.getSoundAlert().playSend() ;
 	 }
 
 }

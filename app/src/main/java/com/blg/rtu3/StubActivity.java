@@ -102,7 +102,7 @@ public class StubActivity extends ActivityAidl.Stub{
 					}
 				}
 				//mAct.frgTool.fragment_ch04.setRtuData(data) ;
-				mAct.getSoundAlert().playMessage() ;
+				//mAct.getSoundAlert().playMessage() ;
 			}
 		});
 	}

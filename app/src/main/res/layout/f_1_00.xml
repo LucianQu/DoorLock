@@ -377,11 +377,11 @@
 					/>
 			</LinearLayout>
 		</LinearLayout>
-		<fragment android:id="@+id/chFragment_04"
+		<!--<fragment android:id="@+id/chFragment_04"
 			android:name="com.blg.rtu.frmChannel.ChFragment_04"
 			android:layout_width="match_parent"
 			android:layout_height="360dp"
-			android:layout_gravity="center_vertical"/>
+			android:layout_gravity="center_vertical"/>-->
 	</LinearLayout>
 
 

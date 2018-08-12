@@ -2,7 +2,6 @@ package com.blg.rtu.frmFunction;
 
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -104,9 +103,12 @@ public class F_1_0 extends FrmParent {
 	private String currentClick = "" ;
 	private int lastDoorDit = 0 ;
 	private boolean isClickButton = false ;
+	public boolean isQuerySeverEnable = true ;
 	private int openCloseStop = 0 ;
 	private int stopNum = 0 ;
 	private boolean onceComReceiveTrue  = false;
+	private boolean deviceNetStatus = false ;
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -142,6 +144,20 @@ public class F_1_0 extends FrmParent {
 		this.putSpinnerValue2();
 		spinner2.setAdapter(spinnerAdapter2);
 		spinner2.setOnItemSelectedListener(new SpinnerSelectedListener2());
+		spinner2.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				ToastUtils.show(act, "长按选择");
+				return false;
+			}
+		});
+		spinner2.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				ToastUtils.show(act, "长按");
+				return false;
+			}
+		});
 
 		tv_jiaquan = (TextView) view.findViewById(R.id.tv_jiaquan) ;
 		tv_jiaquan.setText("---");
@@ -181,6 +197,8 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						} else {
+							isQuerySeverEnable = false ;
+							act.cancelQueryf1();
 							doorContralServer(currentID, currentAfn, currentCom);
 							handler.removeCallbacks(queryF1StopTask);
 							handler.postDelayed(queryF1StopTask, 30000) ;
@@ -225,7 +243,8 @@ public class F_1_0 extends FrmParent {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						} else {
-
+							isQuerySeverEnable = false ;
+							act.cancelQueryf1();
 							doorContralServer(currentID, currentAfn, currentCom);
 							handler.removeCallbacks(queryF1StopTask);
 							handler.postDelayed(queryF1StopTask, 30000) ;
@@ -293,8 +312,8 @@ public class F_1_0 extends FrmParent {
 		setPieChartData();
 		initPieChart();
 
-		FragmentManager fm = act.getFragmentManager();
-		fragment_04 = (ChFragment_04)fm.findFragmentById(R.id.chFragment_04) ;
+		/*FragmentManager fm = act.getFragmentManager();
+		fragment_04 = (ChFragment_04)fm.findFragmentById(R.id.chFragment_04) ;*/
 
 		return view ;
 	}
@@ -349,7 +368,28 @@ public class F_1_0 extends FrmParent {
 				currentCom = "0";
 				setBtnIsEnable(true);
 				endReqFlag = true;
+				isQuerySeverEnable = true ;
 			}
+		}
+	};
+
+	private Runnable queryDeviceOnlineTask = new Runnable() {
+		@Override
+		public void run() {
+			if (SharepreferenceUtils.getIsWifi(act)) {
+				handler.removeCallbacks(queryDeviceOnlineTask);
+			}else {
+				if (!getCurrentIDIsempty()) {
+					if (isQuerySeverEnable) {
+						queryServerStatus(currentID);
+						doorContralServer(currentID, "F1", "0");
+						handler.postDelayed(queryDeviceOnlineTask, 2000) ;
+					}else {
+						handler.removeCallbacks(queryDeviceOnlineTask);
+					}
+				}
+			}
+
 		}
 	};
 
@@ -367,7 +407,12 @@ public class F_1_0 extends FrmParent {
 	private void onceComCheckIsReceive() {
 		onceComReceiveTrue = false ;
 		handler.removeCallbacks(queryF1OnceTask);
-		handler.postDelayed(queryF1OnceTask, 3000) ;
+		if (SharepreferenceUtils.getIsWifi(act)) {
+			handler.postDelayed(queryF1OnceTask, 4000) ;
+		}else {
+			handler.postDelayed(queryF1OnceTask, 3000) ;
+		}
+
 	}
 
 	private Runnable queryF1OnceTask = new Runnable() {
@@ -401,7 +446,7 @@ public class F_1_0 extends FrmParent {
 			stopNum++ ;
 			doorContralServer(currentID, currentAfn, currentCom);
 			if (currentCom.equals("3") && !endReqFlag) {
-				if (stopNum < 3) {
+				if (stopNum < 2) {
 					handler.postDelayed(onceReqServer, 100);
 				}else {
 					handler.removeCallbacks(onceReqServer);
@@ -445,9 +490,9 @@ public class F_1_0 extends FrmParent {
 		requestParams.addBodyParameter("dtuId", dtuId);
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
-        if (fragment_04 != null) {
+      /*  if (fragment_04 != null) {
             fragment_04.setRtuData(null, requestParams.toString(),null,null,++sendServerReqNum);
-        }
+        }*/
 		LogUtils.e("门控制服务", requestParams.toString());
 		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
@@ -481,9 +526,9 @@ public class F_1_0 extends FrmParent {
 										}
 										act.updateConnectedStatus(true);
 										displayServiceData(doorStatus);
-										if (fragment_04 != null) {
+										/*if (fragment_04 != null) {
 											fragment_04.setRtuData(doorStatus, null,null,null,++receiveServerDataNum);
-										}
+										}*/
 										pintServiceData(doorStatus);
 										if (!endReqFlag) {
 											queryF1Once();
@@ -539,6 +584,51 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onFinished() {
 				setProgressVisible(0) ;
+			}
+		});
+	}
+
+	public void queryServerStatus(String dtuId) {
+		String url = "http://47.107.34.32:8090/door/door/online.act" ;
+		RequestParams requestParams = new RequestParams(url);
+		requestParams.addBodyParameter("dtuId", dtuId);
+		LogUtils.e("查询当前门是否在线", requestParams.toString());
+		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
+			@Override
+			public void onSuccess(String result) {
+				if (result.equals("1")) {
+					act.requestServeice = true;
+					if (!deviceNetStatus) {
+						if (SharepreferenceUtils.getIsWifi(act)) {
+							deviceNetStatus = true;
+							setBtnIsEnable(true);
+							setBtnBackground(4, 0);
+							act.updateConnectedStatus(true);
+						}
+					}
+				}else {
+					act.requestServeice = false ;
+					if (deviceNetStatus) {
+						if (SharepreferenceUtils.getIsWifi(act)) {
+							deviceNetStatus = false;
+							setBtnIsEnable(false);
+							setBtnBackground(0, 0);
+							act.updateConnectedStatus(false);
+						}
+					}
+				}
+			}
+			@Override
+			public void onError(Throwable ex, boolean isOnCallback) {
+
+			}
+
+			@Override
+			public void onCancelled(CancelledException cex) {
+			}
+
+			@Override
+			public void onFinished() {
 			}
 		});
 	}
@@ -719,16 +809,19 @@ public class F_1_0 extends FrmParent {
 					LogUtils.e("点击item次数", num + "");
 					if (num > 1) {
 						clickDeviceId = true;
+						if (!SharepreferenceUtils.getIsWifi(act) && act.requestServeice) {
+							handler.postDelayed(queryDeviceOnlineTask, 3000) ;
+						}
+						isFirst = true ;
+						currentID = parent.getSelectedItem().toString();
+						act.frgTool.f_1_2.setCurrentPosition(position);
+						act.frgTool.f_1_2.setCurrentID(currentID);
+						act.delay = 5 ;
+						act.updateConnectedStatus(false);
+						LogUtils.e("选择的门锁地址", currentID);
+						initDeviceConnect() ;
+						act.setDoorId(currentID);
 					}
-					isFirst = true ;
-					currentID = parent.getSelectedItem().toString();
-					act.frgTool.f_1_2.setCurrentPosition(position);
-					act.frgTool.f_1_2.setCurrentID(currentID);
-					act.delay = 5 ;
-					act.updateConnectedStatus(false);
-					LogUtils.e("选择的门锁地址", currentID);
-					initDeviceConnect() ;
-					act.setDoorId(currentID);
 				}
 			}else {
 				ToastUtils.show(act, "请注意：当前通信类型为WIFI");
@@ -760,7 +853,7 @@ public class F_1_0 extends FrmParent {
 						act.connectWifiAndServer();
 					}
 					spinner.setEnabled(true);
-
+					isQuerySeverEnable = true ;
 				}else if (position == 2){
 					act.requestServeice = false ;
 					setBtnBackground(0,0);
@@ -770,6 +863,7 @@ public class F_1_0 extends FrmParent {
 					SharepreferenceUtils.saveIsWifi(act, true);
 					spinner.setEnabled(false);
 					act.connectWifiAndServer() ;
+					isQuerySeverEnable = false ;
 				}
 			}
 		}
@@ -894,6 +988,7 @@ public class F_1_0 extends FrmParent {
 				setBtnIsEnable(true);
 				endReqFlag = true ;
 				act.delay = 5;
+				isQuerySeverEnable = true ;
 			}
 
 			tv_door_status.setText("停");
@@ -1006,10 +1101,10 @@ public class F_1_0 extends FrmParent {
 
 	}
 
-	protected void setCommand(int command) {
-		if (fragment_04 != null) {
+	public void setCommand(int command) {
+		/*if (fragment_04 != null) {
 			fragment_04.setRtuData(null, null,null,command+"",++receiveWifiDataNum);
-		}
+		}*/
 		this.sendRtuCommand(new CommandCreator().cd_F_1(command,null), false);
 	}
 	
@@ -1111,15 +1206,15 @@ public class F_1_0 extends FrmParent {
 		Data_F1 data = (Data_F1)d.subData ;
 		if (data != null) {
 			displayWifiData(data) ;
-			if (fragment_04 != null) {
+			/*if (fragment_04 != null) {
 				fragment_04.setRtuData(null, null,data,null,++receiveWifiDataNum);
-			}
+			}*/
 		}else {
 			ToastUtils.show(act, "F1接收数据为空");
 		}
 
 		if (!endReqFlag) {
-			queryF1Once();
+			queryF1Once() ;
 		}
 	}
 

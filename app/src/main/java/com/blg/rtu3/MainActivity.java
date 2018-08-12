@@ -40,8 +40,6 @@ import android.widget.Toast;
 
 import com.blg.rtu.aidl.ServiceAidl;
 import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Operate;
-import com.blg.rtu.frmFunction.bean.DoorInfo;
-import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.ResourceUtils;
@@ -52,8 +50,6 @@ import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu3.receiver.JPushActivity;
 import com.blg.rtu3.server.LocalServer;
 import com.blg.rtu3.utils.LogUtils;
-
-import org.xutils.common.Callback;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -222,8 +218,12 @@ public class MainActivity  extends Activity {
 			}
 			handler.removeCallbacks(queryF1Task);
 			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
-				if (requestServeice) {
-					frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
+				if (requestServeice && frgTool.f_1_0.isQuerySeverEnable) {
+					//frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
+				}else {
+					if (tcpConnected) {
+						frgTool.f_1_0.setCommand(0);
+					}
 				}
 			}
 			if (delay == 5) {
@@ -248,9 +248,12 @@ public class MainActivity  extends Activity {
 	public void cancelQuery50() {
 		handler.removeCallbacks(query50Task);
 	}
+	public void cancelQueryf1() {
+		handler.removeCallbacks(queryF1Task);
+	}
 
 	private void postDelay5s() {
-		handler.postDelayed(queryF1Task, 5000);
+		handler.postDelayed(queryF1Task, 2000);
 	}
 	private void postDelay30s() {
 		handler.postDelayed(queryF1Task, 30000);
