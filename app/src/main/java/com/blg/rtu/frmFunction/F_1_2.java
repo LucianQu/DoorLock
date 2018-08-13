@@ -324,7 +324,7 @@ public class F_1_2 extends FrmParent {
 			spinnerAdapter1.clear();
 			String[] arr = data.split("-") ;
 			if (arr.length >= 1) {
-				for (int i = 0; i < arr.length; i++) {
+				for (int i = arr.length -1; i >= 0; i--) {
 					spinnerAdapter1.add(new SpinnerVO(i + "", arr[i]));
 					spinnerAdapter1.notifyDataSetChanged();
 				}
@@ -340,7 +340,7 @@ public class F_1_2 extends FrmParent {
 		spinnerAdapter1.notifyDataSetChanged();
 	}
 
-	private void putSpinnerValue1(){
+	public void putSpinnerValue1(){
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 	}
 

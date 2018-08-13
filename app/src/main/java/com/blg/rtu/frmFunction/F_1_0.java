@@ -149,6 +149,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				popWindow.showPopupWindow(tv_doorList);
 			}
 		});
+		tv_doorList.setEnabled(false);
 		/*spinner = (ReSpinner)view.findViewById(R.id.spinner_doorList);
 		spinnerAdapter1 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
 		this.putSpinnerValue1();
@@ -369,9 +370,22 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 
 	@Override
 	public void longClick(int position) {
-		ToastUtils.show(act, "长按" + position);
+		//ToastUtils.show(act, "长按" + position);
 		if (this.position == position) {
-		    tv_doorList.setText("---");
+			act.setDoorId("---");
+			isFirst = true ;
+			clickDeviceId = true;
+		    tv_doorList.setHint("请选择门地址");
+			currentID = "" ;
+			this.position = 0 ;
+			receiveOpenClose = false;
+			currentCom = "0";
+			setBtnIsEnable(false);
+			endReqFlag = true;
+			isQuerySeverEnable = true ;
+			handler.removeCallbacksAndMessages(null);
+			act.updateConnectedStatus(false);
+
         }
 
 
@@ -394,6 +408,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					if (j != postion1) {
 						ids = listId[0];
 						pws = listPassword[0];
+					}else {
+						ToastUtils.show(act, "删除门地址：" + listId[postion1]);
 					}
                 } else {
                     if (j != postion1) {
@@ -404,7 +420,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 							ids = ids + "-" + listId[j];
 							pws = pws + "-" + listPassword[j];
 						}
-                    }
+                    }else {
+						ToastUtils.show(act, "删除门地址：" + listId[postion1]);
+					}
                 }
             }
             LogUtils.e("设备列表", ids);
@@ -415,6 +433,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
             SharepreferenceUtils.saveDeviceId(act, "");
             SharepreferenceUtils.savePassword(act, "");
         }
+		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+        act.frgTool.f_1_2.putSpinnerValue1();
 	}
 
 	public void removeHandler() {
@@ -567,7 +587,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}else {
 			if (getCurrentPosition() != -1) {
 				//currentID = spinnerAdapter1.getItem(getCurrentPosition()).getName() ;
-				currentID = doorList.get(position) ;
+				//currentID = doorList.get(position) ;
 			}
 			return false ;
 		}
@@ -582,8 +602,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	public void setCurrentPosition(int position) {
-		if (!spinnerAdapter1.isEmpty()) {
-			spinner.setSelection(position);
+		if (doorList.size() != 0) {
+			this.position = position ;
+			tv_doorList.setText(doorList.get(position));
 		}
 	}
 
@@ -956,6 +977,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				/*fragment_04.setRtuData(new DoorStatus(),null);*/
 				if (position == 1) {
 					wifiServer = 1 ;
+					setDoorDit(0);
+					tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
 					act.requestServeice = true ;
 					setBtnBackground(0, 0);
 					isFirst = true;
