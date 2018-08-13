@@ -56,7 +56,7 @@ import lecho.lib.hellocharts.view.PieChartView;
 
 
 
-public class F_1_0 extends FrmParent {
+public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 
 	private ReSpinner spinner;
 	private Spinner spinner2;
@@ -104,11 +104,16 @@ public class F_1_0 extends FrmParent {
 	private int lastDoorDit = 0 ;
 	private boolean isClickButton = false ;
 	public boolean isQuerySeverEnable = true ;
+	public int wifiServer = 0 ;
 	private int openCloseStop = 0 ;
 	private int stopNum = 0 ;
 	private boolean onceComReceiveTrue  = false;
 	private boolean deviceNetStatus = false ;
 
+	private TextView tv_doorList ;
+	private AddPopWindow popWindow;
+	private List<String> doorList = new ArrayList<String>() ;
+	private int position = 0 ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -131,12 +136,39 @@ public class F_1_0 extends FrmParent {
 		View view = inflater.inflate(R.layout.f_1_00, container, false);
 		queue = Volley.newRequestQueue(getActivity());
 
-		spinner = (ReSpinner)view.findViewById(R.id.spinner_doorList);
+		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
+		popWindow = new AddPopWindow(getActivity(), doorList);
+		popWindow.setChoice(this);
+		SharepreferenceUtils.saveHasLearn(act, true);
+		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
+		SharepreferenceUtils.savePassword(act,"0102-0102-0102-0102");
+		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+		tv_doorList.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				popWindow.showPopupWindow(tv_doorList);
+			}
+		});
+		/*spinner = (ReSpinner)view.findViewById(R.id.spinner_doorList);
 		spinnerAdapter1 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
 		this.putSpinnerValue1();
 		spinnerAdapter1.setDropDownViewResource(R.layout.spinner_item);
 		spinner.setAdapter(spinnerAdapter1);
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
+		spinner.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				ToastUtils.show(act, "长按选择");
+				return false;
+			}
+		});
+		spinner.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				ToastUtils.show(act, "长按");
+				return false;
+			}
+		});*/
 
 		spinner2 = (Spinner)view.findViewById(R.id.spinner_communication);
 		spinnerAdapter2 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
@@ -144,20 +176,6 @@ public class F_1_0 extends FrmParent {
 		this.putSpinnerValue2();
 		spinner2.setAdapter(spinnerAdapter2);
 		spinner2.setOnItemSelectedListener(new SpinnerSelectedListener2());
-		spinner2.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				ToastUtils.show(act, "长按选择");
-				return false;
-			}
-		});
-		spinner2.setOnLongClickListener(new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-				ToastUtils.show(act, "长按");
-				return false;
-			}
-		});
 
 		tv_jiaquan = (TextView) view.findViewById(R.id.tv_jiaquan) ;
 		tv_jiaquan.setText("---");
@@ -318,12 +336,91 @@ public class F_1_0 extends FrmParent {
 		return view ;
 	}
 
+	@Override
+	public void senddata(String msg) {
+		ToastUtils.show(act, msg);
+		position = Integer.parseInt(msg) ;
+		if (!SharepreferenceUtils.getIsWifi(act) && wifiServer == 1) {
+			if (doorList.size() > 0) {
+				num++ ;
+				LogUtils.e("点击item次数", num + "");
+				if (num > 0) {
+					clickDeviceId = true;
+					if (!SharepreferenceUtils.getIsWifi(act) && act.requestServeice) {
+						handler.removeCallbacks(queryDeviceOnlineTask);
+						handler.postDelayed(queryDeviceOnlineTask, 3000) ;
+					}
+					isFirst = true ;
+					currentID = doorList.get(position);
+					act.frgTool.f_1_2.setCurrentPosition(position);
+					act.frgTool.f_1_2.setCurrentID(currentID);
+					act.delay = 5 ;
+					act.updateConnectedStatus(false);
+					LogUtils.e("选择的门锁地址", currentID);
+                    tv_doorList.setText(currentID);
+					initDeviceConnect() ;
+					act.setDoorId(currentID);
+				}
+			}
+		}else {
+			ToastUtils.show(act, "请注意：当前通信类型为WIFI");
+		}
+	}
+
+	@Override
+	public void longClick(int position) {
+		ToastUtils.show(act, "长按" + position);
+		if (this.position == position) {
+		    tv_doorList.setText("---");
+        }
+
+
+        String deviceID = SharepreferenceUtils.getDeviceId(act) ;
+        String password = SharepreferenceUtils.getPassword(act) ;
+        LogUtils.e("设备列表", deviceID);
+        LogUtils.e("密码列表", password);
+        String[] listId = deviceID.split("-");
+        String[] listPassword = password.split("-");
+
+        doorList.remove(position) ;
+
+        int postion1 = listId.length -position -1 ;
+        LogUtils.e("position", postion1 + "");
+        if (doorList.size() > 0) {
+            String ids = "";
+            String pws = "";
+            for (int j = 0; j < listId.length; j++) {
+                if (j == 0) {
+					if (j != postion1) {
+						ids = listId[0];
+						pws = listPassword[0];
+					}
+                } else {
+                    if (j != postion1) {
+                    	if (ids.equals("")) {
+							ids = listId[j];
+							pws = listPassword[j];
+						}else {
+							ids = ids + "-" + listId[j];
+							pws = pws + "-" + listPassword[j];
+						}
+                    }
+                }
+            }
+            LogUtils.e("设备列表", ids);
+            LogUtils.e("密码列表", pws);
+            SharepreferenceUtils.saveDeviceId(act, ids);
+            SharepreferenceUtils.savePassword(act, pws);
+        }else {
+            SharepreferenceUtils.saveDeviceId(act, "");
+            SharepreferenceUtils.savePassword(act, "");
+        }
+	}
+
 	public void removeHandler() {
 		handler.removeCallbacksAndMessages(null);
 		handler = null ;
 	}
-
-
 
 	public MyHandler handler = new MyHandler(act) ;
 	public class MyHandler extends Handler {
@@ -369,6 +466,8 @@ public class F_1_0 extends FrmParent {
 				setBtnIsEnable(true);
 				endReqFlag = true;
 				isQuerySeverEnable = true ;
+				handler.removeCallbacks(queryDeviceOnlineTask);
+				handler.postDelayed(queryDeviceOnlineTask, 2000) ;
 			}
 		}
 	};
@@ -431,11 +530,18 @@ public class F_1_0 extends FrmParent {
 		}
 	};
 
+	private Runnable onceServerReq = new Runnable() {
+		@Override
+		public void run() {
+			doorContralServer(currentID, currentAfn, "0");
+		}
+	};
+
 	private void queryF1Once() {
 		if (SharepreferenceUtils.getIsWifi(act)) {
 			setCommand(0);
 		}else {
-			doorContralServer(currentID, currentAfn, "0");
+			handler.postDelayed(onceServerReq, 1000) ;
 		}
 		onceComCheckIsReceive() ;
 	}
@@ -456,21 +562,22 @@ public class F_1_0 extends FrmParent {
 	};
 
 	public boolean getCurrentIDIsempty() {
-		if (spinnerAdapter1.isEmpty()) {
+		if (doorList.size() == 0) {
 			return true ;
 		}else {
 			if (getCurrentPosition() != -1) {
-				currentID = spinnerAdapter1.getItem(getCurrentPosition()).getName() ;
+				//currentID = spinnerAdapter1.getItem(getCurrentPosition()).getName() ;
+				currentID = doorList.get(position) ;
 			}
 			return false ;
 		}
 	}
 
 	public int getCurrentPosition() {
-		if (spinnerAdapter1.isEmpty()) {
+		if (doorList.size() == 0) {
 			return -1 ;
 		}else {
-			return spinner.getSelectedItemPosition() ;
+			return position ;
 		}
 	}
 
@@ -483,8 +590,8 @@ public class F_1_0 extends FrmParent {
 
 	public void doorContralServer(final String dtuId, String code, String flag) {
 		LogUtils.e("请求开始时间", Util.getCurrentTime());
-		LogUtils.e("主循环间隔：", (act.delay)+ "秒");
-		String url = "http://39.106.112.210:8090/door/door/state.act?" ;
+		//LogUtils.e("主循环间隔：", (act.delay)+ "秒");
+		String url = "http://47.107.34.32:8090/door/door/state.act" ;
 		//String url = "http://d573b440.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
@@ -597,6 +704,7 @@ public class F_1_0 extends FrmParent {
 			@Override
 			public void onSuccess(String result) {
 				if (result.equals("1")) {
+					LogUtils.e("----->接收到服务器返回数据", "-----> 在线" );
 					act.requestServeice = true;
 					if (!deviceNetStatus) {
 						if (SharepreferenceUtils.getIsWifi(act)) {
@@ -607,6 +715,7 @@ public class F_1_0 extends FrmParent {
 						}
 					}
 				}else {
+					LogUtils.e("----->接收到服务器返回数据", "-----> 不在线" );
 					act.requestServeice = false ;
 					if (deviceNetStatus) {
 						if (SharepreferenceUtils.getIsWifi(act)) {
@@ -772,13 +881,15 @@ public class F_1_0 extends FrmParent {
 	}
 	public void updateSpinnerValue(String data) {
 		if (!"".equals(data)) {
-			spinnerAdapter1.clear();
+			//spinnerAdapter1.clear();
 			String[] arr = data.split("-") ;
+			doorList.clear();
 			if (arr.length >= 1) {
 				doorNum = arr.length ;
 				for (int i = 0; i < arr.length; i++) {
-					spinnerAdapter1.add(new SpinnerVO(i + "", arr[arr.length -i-1]));
-					spinnerAdapter1.notifyDataSetChanged();
+					//spinnerAdapter1.add(new SpinnerVO(i + "", arr[arr.length -i-1]));
+					//spinnerAdapter1.notifyDataSetChanged();
+					doorList.add(arr[arr.length -i-1]) ;
 				}
 			}
 		}else {
@@ -810,6 +921,7 @@ public class F_1_0 extends FrmParent {
 					if (num > 1) {
 						clickDeviceId = true;
 						if (!SharepreferenceUtils.getIsWifi(act) && act.requestServeice) {
+							handler.removeCallbacks(queryDeviceOnlineTask);
 							handler.postDelayed(queryDeviceOnlineTask, 3000) ;
 						}
 						isFirst = true ;
@@ -843,6 +955,7 @@ public class F_1_0 extends FrmParent {
 			if(parent.getId() == spinner2.getId()){
 				/*fragment_04.setRtuData(new DoorStatus(),null);*/
 				if (position == 1) {
+					wifiServer = 1 ;
 					act.requestServeice = true ;
 					setBtnBackground(0, 0);
 					isFirst = true;
@@ -852,16 +965,22 @@ public class F_1_0 extends FrmParent {
 					}else {
 						act.connectWifiAndServer();
 					}
-					spinner.setEnabled(true);
+					tv_doorList.setEnabled(true);
+					//spinner.setEnabled(true);
 					isQuerySeverEnable = true ;
+					if (num > 1) {
+						handler.removeCallbacks(queryDeviceOnlineTask);
+						handler.postDelayed(queryDeviceOnlineTask, 2000) ;
+					}
 				}else if (position == 2){
+					wifiServer = 2 ;
 					act.requestServeice = false ;
 					setBtnBackground(0,0);
 					setBtnIsEnable(false) ;
 					isFirst = true ;
 					act.frgTool.f_01_010.setReceiveWifiData(false);
 					SharepreferenceUtils.saveIsWifi(act, true);
-					spinner.setEnabled(false);
+					tv_doorList.setEnabled(false);
 					act.connectWifiAndServer() ;
 					isQuerySeverEnable = false ;
 				}
@@ -989,6 +1108,8 @@ public class F_1_0 extends FrmParent {
 				endReqFlag = true ;
 				act.delay = 5;
 				isQuerySeverEnable = true ;
+				handler.removeCallbacks(queryDeviceOnlineTask);
+				handler.postDelayed(queryDeviceOnlineTask, 2000) ;
 			}
 
 			tv_door_status.setText("停");

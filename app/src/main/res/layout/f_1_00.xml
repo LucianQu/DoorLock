@@ -68,7 +68,16 @@
 			android:layout_marginTop="6dp"
 			android:gravity="left|center_vertical"
 			android:layout_height="wrap_content">
-			<com.blg.rtu.frmFunction.ReSpinner
+			<TextView
+				android:id="@+id/tv_doorList"
+				android:layout_width="150dp"
+				android:layout_height="30dp"
+				android:gravity="center"
+				android:layout_marginLeft="26dp"
+				android:background="@drawable/border0"
+				android:text="---"
+				/>
+			<!--<com.blg.rtu.frmFunction.ReSpinner
 				android:id="@+id/spinner_doorList"
 				android:layout_width="150dp"
 				android:layout_gravity="center_vertical"
@@ -80,7 +89,7 @@
 				android:layout_width="12dp"
 				android:layout_height="12dp"
 				android:layout_marginLeft="-20dp"
-				android:src="@mipmap/ic_down_more_gray"/>
+				android:src="@mipmap/ic_down_more_gray"/>-->
 		</LinearLayout>
 	</LinearLayout>
 	<!--甲醛检测-->
