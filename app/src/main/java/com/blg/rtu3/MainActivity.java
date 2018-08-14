@@ -290,7 +290,7 @@ public class MainActivity  extends Activity {
         if (!frgTool.f_1_0.getCurrentIDIsempty()) {
             if (frgTool.f_1_0.doorNum == 1 || frgTool.f_1_0.clickDeviceId) {
 				if (!frgTool.f_1_0.getCurrentIDIsempty()) {
-					frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0");
+					frgTool.f_1_0.doorContralServer(frgTool.f_1_0.currentID, "F1", "0","0");
 				}
 				if (delay == 5) {
 					postDelay5s() ;

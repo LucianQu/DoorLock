@@ -218,7 +218,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						} else {
 							isQuerySeverEnable = false ;
 							act.cancelQueryf1();
-							doorContralServer(currentID, currentAfn, currentCom);
+							doorContralServer(currentID, currentAfn, currentCom,"1");
 							handler.removeCallbacks(queryF1StopTask);
 							handler.postDelayed(queryF1StopTask, 30000) ;
 						}
@@ -264,7 +264,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						} else {
 							isQuerySeverEnable = false ;
 							act.cancelQueryf1();
-							doorContralServer(currentID, currentAfn, currentCom);
+							doorContralServer(currentID, currentAfn, currentCom,"1");
 							handler.removeCallbacks(queryF1StopTask);
 							handler.postDelayed(queryF1StopTask, 30000) ;
 						}
@@ -313,7 +313,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 							if (getCurrentIDIsempty()) {
 								ToastUtils.show(act, "没有可操作的门！");
 							} else {
-								doorContralServer(currentID, currentAfn, currentCom);
+								doorContralServer(currentID, currentAfn, currentCom,"1");
 								handler.postDelayed(onceReqServer, 100) ;
 							}
 						}
@@ -460,7 +460,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			if (reSendNum > 0) {
 				reSendNum-- ;
 				if (!getCurrentIDIsempty()) {
-					doorContralServer(currentID, currentAfn, "0");
+					doorContralServer(currentID, currentAfn, "0","1");
 				}
 				handler.postDelayed(queryF1Task, 1000);
 			}else {
@@ -501,7 +501,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				if (!getCurrentIDIsempty()) {
 					if (isQuerySeverEnable) {
 						queryServerStatus(currentID);
-						doorContralServer(currentID, "F1", "0");
+						doorContralServer(currentID, "F1", "0","0");
 						handler.postDelayed(queryDeviceOnlineTask, 2000) ;
 					}else {
 						handler.removeCallbacks(queryDeviceOnlineTask);
@@ -541,7 +541,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				if (SharepreferenceUtils.getIsWifi(act)) {
 					setCommand(0);
 				}else {
-					doorContralServer(currentID, currentAfn, "0");
+					doorContralServer(currentID, currentAfn, "0","1");
 				}
 				onceComCheckIsReceive() ;
 			}else {
@@ -553,7 +553,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private Runnable onceServerReq = new Runnable() {
 		@Override
 		public void run() {
-			doorContralServer(currentID, currentAfn, "0");
+			doorContralServer(currentID, currentAfn, "0", "1");
 		}
 	};
 
@@ -561,7 +561,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		if (SharepreferenceUtils.getIsWifi(act)) {
 			setCommand(0);
 		}else {
-			handler.postDelayed(onceServerReq, 1000) ;
+			handler.postDelayed(onceServerReq, 500) ;
 		}
 		onceComCheckIsReceive() ;
 	}
@@ -570,7 +570,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		@Override
 		public void run() {
 			stopNum++ ;
-			doorContralServer(currentID, currentAfn, currentCom);
+			doorContralServer(currentID, currentAfn, currentCom,"1");
 			if (currentCom.equals("3") && !endReqFlag) {
 				if (stopNum < 2) {
 					handler.postDelayed(onceReqServer, 100);
@@ -609,13 +609,14 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 
-	public void doorContralServer(final String dtuId, String code, String flag) {
+	public void doorContralServer(final String dtuId, String code, String flag, String tp) {
 		LogUtils.e("请求开始时间", Util.getCurrentTime());
 		//LogUtils.e("主循环间隔：", (act.delay)+ "秒");
 		String url = "http://47.107.34.32:8090/door/door/state.act" ;
 		//String url = "http://d573b440.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
+		requestParams.addBodyParameter("tp", tp);
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
       /*  if (fragment_04 != null) {
