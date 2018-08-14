@@ -37,6 +37,10 @@ import com.blg.rtu3.R;
 import com.blg.rtu3.utils.DataTranslateUtils;
 import com.blg.rtu3.utils.LogUtils;
 import com.google.gson.Gson;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +50,7 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -313,11 +318,13 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 							if (getCurrentIDIsempty()) {
 								ToastUtils.show(act, "没有可操作的门！");
 							} else {
+								handler.removeCallbacksAndMessages(null);
 								doorContralServer(currentID, currentAfn, currentCom,"1");
-								handler.postDelayed(onceReqServer, 100) ;
+								//handler.postDelayed(onceReqServer, 100) ;
+                                handler.removeCallbacks(queryF1StopTask);
+                                handler.postDelayed(queryF1StopTask, 10000) ;
 							}
 						}
-					endReqFlag = false ;
 				}
 			}
 		});
@@ -480,7 +487,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private Runnable queryF1StopTask = new Runnable() {
 		@Override
 		public void run() {
-			if (!endReqFlag) {
+			if (!endReqFlag || (endReqFlag && currentCom.equals("3"))) {
 				receiveOpenClose = false;
 				currentCom = "0";
 				setBtnIsEnable(true);
@@ -608,12 +615,121 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 	}
 
+	public   void doorContralServer(final String dtuId, String code, String flag, String tp){//请求参数个数不确定，可变长参数,可变长参数放在最后一个
+		try {
 
-	public void doorContralServer(final String dtuId, String code, String flag, String tp) {
-		LogUtils.e("请求开始时间", Util.getCurrentTime());
-		//LogUtils.e("主循环间隔：", (act.delay)+ "秒");
+			String url = "http://47.107.34.32:8090/door/door/state.act?";
+			final com.lidroid.xutils.http.RequestParams params = new com.lidroid.xutils.http.RequestParams();
+			params.addBodyParameter("dtuId",dtuId);
+			params.addBodyParameter("tp",tp);
+			params.addBodyParameter("code",code);
+			params.addBodyParameter("flag",flag);
+			final HttpUtils http = new HttpUtils();
+			http.configCurrentHttpCacheExpiry(1000 * 5);
+			LogUtils.e("-->门控制服务", url +"dtuId="+ dtuId+"&code=" +code+"&tp="+tp+"&flag="+flag);
+			LogUtils.e("--->请求开始时间", Util.getCurrentTime());
+			http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
+				@Override
+				public void onStart() {
+					//LogUtils.e("---->服务请求","开始---->"+Util.getCurrentTime());
+				}
+
+				@Override
+				public void onLoading(long total, long current,
+									  boolean isUploading) {
+					//LogUtils.e("----->服务请求","加载"+Util.getCurrentTime());
+				}
+				@Override
+				public void onSuccess(ResponseInfo arg0) {
+					LogUtils.e("服务请求","成功"+Util.getCurrentTime());
+					onceComReceiveTrue = true ;
+					setProgressVisible(0) ;
+					if (currentCom.equals("3")) {
+						handler.removeCallbacks(onceReqServer);
+					}
+
+					JSONObject jsonResult = null;
+					try {
+						jsonResult = new JSONObject(arg0.result.toString());
+						String returnDtuId = jsonResult.getString("dtuId");
+						if (null == returnDtuId || "null".equals(returnDtuId) || "".equals(returnDtuId)) {
+							//ToastUtils.show(act, "产品ID为空，数据未知!");
+						} else {
+							if (dtuId.equals(returnDtuId)) {
+								String code = jsonResult.getString("succ");
+								if (code.equals("1")) {
+									Gson gson = new Gson();
+									String data = jsonResult.getString("rltState");
+									doorStatus = gson.fromJson(data, DoorStatus.class);
+									if (null != doorStatus) {
+										if (isFirst) {
+											isFirst = false ;
+											setBtnIsEnable(true);
+											setBtnBackground(4,0);
+										}else {
+										}
+										act.updateConnectedStatus(true);
+										displayServiceData(doorStatus);
+										/*if (fragment_04 != null) {
+											fragment_04.setRtuData(doorStatus, null,null,null,++receiveServerDataNum);
+										}*/
+										pintServiceData(doorStatus);
+										if (!endReqFlag) {
+											queryF1Once();
+										}
+									} else {
+										//ToastUtils.show(act, "服务获取数据为空！");
+									}
+								} else {
+									String msg = jsonResult.getString("error");
+									if (msg.contains("设备尚未上线，命令发送失败！")) {
+										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备未上线！");
+										act.updateConnectedStatus(false);
+										//act.second30 = minute10 ; //设备未上线，10分钟后再试
+									} else if (msg.contains("超时")) {
+										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
+										//act.second30 = minute2; //设备回复超时，2分钟后再试
+									}
+								}
+							} else {
+								//ToastUtils.show(act, "服务获取数据返回地址与请求地址不一致!");
+							}
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+				@Override
+				public void onFailure(com.lidroid.xutils.exception.HttpException arg0, String arg1) {
+					onceComReceiveTrue = true ;
+					setProgressVisible(0) ;
+					if (arg0.getMessage().contains("failed to connect to")) {
+						act.updateConnectedStatus(false);
+					}
+					LogUtils.e("onError", "请求失败"+arg0.getMessage());
+				}
+			});
+		} catch (Exception e) {
+			String msg = null;
+			if (e instanceof InvocationTargetException) {
+				Throwable targetEx = ((InvocationTargetException) e)
+						.getTargetException();
+				if (targetEx != null) {
+					msg = targetEx.getMessage();
+					LogUtils.e("onError", "请求失败"+msg) ;
+				}
+			} else {
+				msg = e.getMessage();
+				LogUtils.e("onError", "请求失败"+msg) ;
+			}
+			setProgressVisible(0) ;
+			e.printStackTrace();
+		}
+	}
+
+
+	public void doorContralServer1(final String dtuId, String code, String flag, String tp) {
 		String url = "http://47.107.34.32:8090/door/door/state.act" ;
-		//String url = "http://d573b440.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
 		requestParams.addBodyParameter("tp", tp);
@@ -623,7 +739,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
             fragment_04.setRtuData(null, requestParams.toString(),null,null,++sendServerReqNum);
         }*/
 		LogUtils.e("门控制服务", requestParams.toString());
-		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
+		LogUtils.e("请求开始时间", Util.getCurrentTime());
+		httpGet = x.http().post(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
 				onceComReceiveTrue = true ;
@@ -721,7 +838,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		String url = "http://47.107.34.32:8090/door/door/online.act" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
-		LogUtils.e("查询当前门是否在线", requestParams.toString());
+		LogUtils.e("---->查询当前门是否在线", requestParams.toString());
+		LogUtils.e("---->请求开始时间", Util.getCurrentTime());
 		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
@@ -729,7 +847,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					LogUtils.e("----->接收到服务器返回数据", "-----> 在线" );
 					act.requestServeice = true;
 					if (!deviceNetStatus) {
-						if (SharepreferenceUtils.getIsWifi(act)) {
+						if (!SharepreferenceUtils.getIsWifi(act)) {
 							deviceNetStatus = true;
 							setBtnIsEnable(true);
 							setBtnBackground(4, 0);
@@ -740,7 +858,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					LogUtils.e("----->接收到服务器返回数据", "-----> 不在线" );
 					act.requestServeice = false ;
 					if (deviceNetStatus) {
-						if (SharepreferenceUtils.getIsWifi(act)) {
+						if (!SharepreferenceUtils.getIsWifi(act)) {
 							deviceNetStatus = false;
 							setBtnIsEnable(false);
 							setBtnBackground(0, 0);
