@@ -615,7 +615,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 	}
 
-	public   void doorContralServer(final String dtuId, String code, String flag, String tp){//请求参数个数不确定，可变长参数,可变长参数放在最后一个
+	public   void doorContralServer(final String dtuId, final String code, final String flag, String tp){//请求参数个数不确定，可变长参数,可变长参数放在最后一个
 		try {
 
 			String url = "http://47.107.34.32:8090/door/door/state.act?";
@@ -628,10 +628,14 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			http.configCurrentHttpCacheExpiry(1000 * 5);
 			LogUtils.e("-->门控制服务", url +"dtuId="+ dtuId+"&code=" +code+"&tp="+tp+"&flag="+flag);
 			LogUtils.e("--->请求开始时间", Util.getCurrentTime());
+
 			http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
 				@Override
 				public void onStart() {
 					//LogUtils.e("---->服务请求","开始---->"+Util.getCurrentTime());
+					if (!flag.equals("0")) {
+						ToastUtils.show(act, Util.getCurrentTime());
+					}
 				}
 
 				@Override

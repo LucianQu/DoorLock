@@ -31,7 +31,7 @@ public class ToastUtils {
     }
 
     public static void show(Context context, CharSequence text) {
-        show(context, text, Toast.LENGTH_LONG);
+        show(context, text, Toast.LENGTH_SHORT);
     }
 
     public static void showLong(Context context, CharSequence text) {
