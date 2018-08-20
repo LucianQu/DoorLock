@@ -548,7 +548,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				if (SharepreferenceUtils.getIsWifi(act)) {
 					setCommand(0);
 				}else {
-					doorContralServer(currentID, currentAfn, "0","1");
+					doorContralServer(currentID, currentAfn, currentCom,"1");
 				}
 				onceComCheckIsReceive() ;
 			}else {
@@ -560,7 +560,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private Runnable onceServerReq = new Runnable() {
 		@Override
 		public void run() {
-			doorContralServer(currentID, currentAfn, "0", "1");
+			doorContralServer(currentID, currentAfn, currentCom, "1");
 		}
 	};
 
@@ -634,7 +634,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				public void onStart() {
 					//LogUtils.e("---->服务请求","开始---->"+Util.getCurrentTime());
 					if (!flag.equals("0")) {
-						ToastUtils.show(act, Util.getCurrentTime());
+						//ToastUtils.show(act, Util.getCurrentTime());
 					}
 				}
 
