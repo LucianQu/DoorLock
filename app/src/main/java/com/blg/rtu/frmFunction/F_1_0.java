@@ -319,6 +319,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 								ToastUtils.show(act, "没有可操作的门！");
 							} else {
 								handler.removeCallbacksAndMessages(null);
+								endReqFlag = false ;
 								doorContralServer(currentID, currentAfn, currentCom,"1");
 								//handler.postDelayed(onceReqServer, 100) ;
                                 handler.removeCallbacks(queryF1StopTask);
@@ -487,7 +488,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private Runnable queryF1StopTask = new Runnable() {
 		@Override
 		public void run() {
-			if (!endReqFlag || (endReqFlag && currentCom.equals("3"))) {
+			if (!endReqFlag ) {
 				receiveOpenClose = false;
 				currentCom = "0";
 				setBtnIsEnable(true);
@@ -1254,6 +1255,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				endReqFlag = true ;
 				act.delay = 5;
 				isQuerySeverEnable = true ;
+				handler.removeCallbacks(queryF1StopTask);
 				handler.removeCallbacks(queryDeviceOnlineTask);
 				handler.postDelayed(queryDeviceOnlineTask, 2000) ;
 			}

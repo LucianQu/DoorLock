@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.blg.rtu3"
     android:versionCode="1"
-    android:versionName="1.00.27">
+    android:versionName="1.00.28">
 
     <!--极光推送-->
     <permission
