@@ -619,7 +619,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	public   void doorContralServer(final String dtuId, final String code, final String flag, String tp){//请求参数个数不确定，可变长参数,可变长参数放在最后一个
 		try {
 
-			String url = "http://47.107.34.32:8090/door/door/state.act?";
+			String url = act.mIpPort + "/door/door/state.act?";
 			final com.lidroid.xutils.http.RequestParams params = new com.lidroid.xutils.http.RequestParams();
 			params.addBodyParameter("dtuId",dtuId);
 			params.addBodyParameter("tp",tp);
@@ -840,7 +840,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	public void queryServerStatus(String dtuId) {
-		String url = "http://47.107.34.32:8090/door/door/online.act" ;
+		String url =act.mIpPort +  "/door/door/online.act" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
 		LogUtils.e("---->查询当前门是否在线", requestParams.toString());

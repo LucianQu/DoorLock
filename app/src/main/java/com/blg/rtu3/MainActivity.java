@@ -135,6 +135,7 @@ public class MainActivity  extends Activity {
 	public int delay = 0 ;
 
 	public boolean requestServeice = true ;
+	public String mIpPort = "http://47.107.34.32:8090" ;
 
 	public void registerMessageReceiver() {
 		mMessageReceiver = new MessageReceiver();
@@ -153,9 +154,20 @@ public class MainActivity  extends Activity {
 				String extras = intent.getStringExtra(KEY_EXTRAS);
 				if (extras != null) {
 					LogUtils.e("消息接收-extras", extras);
-					SharepreferenceUtils.saveMessage(MainActivity.this, extras);
-					scrollTextView.setText(extras);
-					scrollTextView.init(getWindowManager());
+					if (extras.contains("http") && extras.contains(".") && extras.contains(":")) {
+						if (mIpPort.equals(extras)) {
+							ToastUtils.show(MainActivity.this, "远程接收服务地址,相同,无需更改!");
+						}else {
+							mIpPort = extras ;
+							SharepreferenceUtils.saveIpPort(MainActivity.this,extras);
+							ToastUtils.show(MainActivity.this, "远程接收服务地址,地址已更改!");
+						}
+
+					}else {
+						SharepreferenceUtils.saveMessage(MainActivity.this, extras);
+						scrollTextView.setText(extras);
+						scrollTextView.init(getWindowManager());
+					}
 				}else {
 					ToastUtils.show(MainActivity.this, "推送消息为空！");
 				}
@@ -270,6 +282,9 @@ public class MainActivity  extends Activity {
 		this.setContentView(R.layout.activity_main);
 		this.createView();
 		this.soundAlert = new SoundAlert(this) ;
+		mIpPort = SharepreferenceUtils.getIpPort(this) ;
+		LogUtils.e("当前服务IP端口", mIpPort);
+
         this.frgTool = new FragmentTool(this) ;
         this.mActivityStub = StubActivity.createSingle(this)  ;
         wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);

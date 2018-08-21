@@ -130,6 +130,19 @@ public class SharepreferenceUtils {
         return device_password;
     }
 
+    public static void saveIpPort(Context context, String is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_ip_port", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("ip_port", is);
+        editor.commit();
+    }
+
+    public static String getIpPort(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_ip_port", 0);
+        String device_password = preferences.getString("ip_port", "http://47.107.34.32:8090");
+        return device_password;
+    }
+
     public static void saveComPassword(Context context, String is) {
         SharedPreferences preferences = context.getSharedPreferences("preference_password_com", 0);
         SharedPreferences.Editor editor = preferences.edit();

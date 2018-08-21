@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.util.AppUtils;
+import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.DialogConfirm;
 import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
@@ -32,6 +33,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class F_1_3 extends FrmParent {
 
@@ -41,6 +44,10 @@ public class F_1_3 extends FrmParent {
 	private EditText npInput ;
 	private ImageView sendBtn ;
 	private ImageView clearBtn ;
+
+	private TextView ipPortSend ;
+	private EditText ipInput ;
+	private EditText portInput ;
 
 	private TextView tvLearn ;
 	private boolean isLearning = false;
@@ -79,6 +86,34 @@ public class F_1_3 extends FrmParent {
 		});
 
 		npInput = (EditText)view.findViewById(R.id.npInput) ;
+
+		ipInput = (EditText)view.findViewById(R.id.edt_ip) ;
+		portInput = (EditText)view.findViewById(R.id.edt_port) ;
+		ipPortSend = (TextView) view.findViewById(R.id.tv_ip_port_send) ;
+		ipPortSend.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+                if (checkBeforeSet()) {
+                    new DialogConfirm().showDialog(act,
+                            act.getResources().getString(R.string.txtConfirmSend1) ,
+                            new DialogConfirm.CallBackInterface(){
+                                @Override
+                                public void dialogCallBack(Object o) {
+                                    if((Boolean)o){
+                                        String ip_Value = ipInput.getText().toString() ;
+                                        String port = portInput.getText().toString() ;
+                                        String message = "http://"+ip_Value+":"+port;
+                                        postMessage1(message) ;
+                                        //ToastUtils.show(act, "已发送");
+                                    }else{
+                                        //ToastUtils.show(act, "已取消");
+                                    }
+                                }
+                            }) ;
+                }
+			}
+		});
+
 		sendBtn = (ImageView)view.findViewById(R.id.npSend) ;
 		clearBtn = (ImageView)view.findViewById(R.id.npClear) ;
 		sendBtn.setOnClickListener(new View.OnClickListener(){
@@ -98,6 +133,56 @@ public class F_1_3 extends FrmParent {
 
 		return view ;
 	}
+
+    private boolean checkBeforeSet() {
+        boolean corrent = false ;
+        String ip_Value = ipInput.getText().toString() ;
+        if (ip_Value.length() < 7 || "".equals(ip_Value)) {
+            new DialogAlarm().showDialog(act, "IP地址格式错误，请重新输入");
+            return corrent ;
+        }
+        String port = portInput.getText().toString() ;
+        if ("".equals(port)) {
+            new DialogAlarm().showDialog(act, "端口号为空，请重新输入");
+            return corrent ;
+        }
+        if (Integer.parseInt(port) > 65535) {
+            new DialogAlarm().showDialog(act, "端口号范围0-65535，请重新输入");
+            return corrent ;
+        }
+        /**
+         * 判断IP格式和范围
+         */
+        String rexp = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
+        Pattern pat = Pattern.compile(rexp);
+        Matcher mat = pat.matcher(ip_Value);
+        boolean ipAddress = mat.find();
+
+        if (ipAddress){
+            String ips[] = ip_Value.split("\\.");
+            if(ips.length==4){
+                try{
+                    for(String ip : ips){
+                        if(Integer.parseInt(ip)<0||Integer.parseInt(ip)>255){
+                            new DialogAlarm().showDialog(act, "IP地址范围错误，请重新输入");
+                            return false;
+                        }
+                    }
+                }catch (Exception e){
+                    new DialogAlarm().showDialog(act, "IP地址解析异常，请重新输入");
+                    return false;
+                }
+                corrent = true ;
+                return corrent;
+            }else{
+                new DialogAlarm().showDialog(act, "IP地址格式错误，请重新输入");
+                return false;
+            }
+        }else {
+            new DialogAlarm().showDialog(act, "IP地址格式/范围错误，请重新输入");
+        }
+        return corrent ;
+    }
 
 	private void sendNoProtocolData(){
 		//if(StringValueForActivity.noProtocolSendNeedConfirm){
@@ -139,7 +224,7 @@ public class F_1_3 extends FrmParent {
 
 	private  void postMessage1(String mess){//请求参数个数不确定，可变长参数,可变长参数放在最后一个
 		try {
-			String url = "http://47.107.34.32:8090/door/door/pushAdver.act";
+			String url =act.mIpPort +  "/door/door/pushAdver.act";
 			RequestParams params = new RequestParams();
 			params.addBodyParameter("mess",mess);
 			final HttpUtils http = new HttpUtils();
@@ -163,9 +248,9 @@ public class F_1_3 extends FrmParent {
 						jsonResult = new JSONObject(arg0.result.toString());
 						String code = jsonResult.getString("succ");
 						if (code.equals("1")) {
-							ToastUtils.show(act, "消息发送成功!");
+							ToastUtils.show(act, "发送成功!");
 						}else {
-							ToastUtils.show(act, "消息发送失败!");
+							ToastUtils.show(act, "发送失败!");
 						}
 
 					} catch (JSONException e) {

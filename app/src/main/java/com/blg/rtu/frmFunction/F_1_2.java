@@ -368,7 +368,7 @@ public class F_1_2 extends FrmParent {
 	private void doorContralServer(String dtuId, String code, String flag) {
 		LogUtils.e("请求开始时间", Util.getCurrentTime());
 		LogUtils.e("请求间隔：", (act.delay )+"秒");
-		String url = "http://39.106.112.210:8090/door/door/state.act?" ;
+		String url = act.mIpPort + "/door/door/state.act?" ;
 		//String url = "http://1bdf2aff.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
