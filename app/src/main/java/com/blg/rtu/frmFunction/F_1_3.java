@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
+import com.blg.rtu.protocol.p206.cd10_50.Data_10_50;
 import com.blg.rtu.protocol.p206.cdCA_DA.Data_CA_DA;
 import com.blg.rtu.util.AppUtils;
 import com.blg.rtu.util.DialogAlarm;
@@ -88,7 +89,7 @@ public class F_1_3 extends FrmParent {
 				isLearning = true ;
 				ToastUtils.show(act,"门学习");
 				act.frgTool.f_01_010.queryCommand();
-
+				//addId() ;
 			}
 		});
 
@@ -157,6 +158,16 @@ public class F_1_3 extends FrmParent {
 
 		return view ;
 	}
+
+/*	int i = 1 ;
+	private void addId(){
+		RtuData rtuData = new RtuData();
+		rtuData.rtuId = "102030400"+ (i++) ;
+		Data_10_50 data_10_50 = new Data_10_50() ;
+		data_10_50.setPassWord("0102");
+		rtuData.subData = data_10_50 ;
+		act.frgTool.f_01_010.receiveRtuData(rtuData);
+	}*/
 
     private boolean checkBeforeSet() {
         boolean corrent = false ;
