@@ -144,9 +144,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
-		SharepreferenceUtils.saveHasLearn(act, true);
-		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
-		SharepreferenceUtils.savePassword(act,"0102-0102-0102-0102");
+		/*SharepreferenceUtils.saveHasLearn(act, true);
+		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409-0102030409");
+		SharepreferenceUtils.savePassword(act,"0102-0102-0102-0102-0102");*/
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		tv_doorList.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -1037,8 +1037,12 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					doorList.add(arr[arr.length -i-1]) ;
 				}
 			}
+			popWindow = new AddPopWindow(getActivity(), doorList);
+			popWindow.setChoice(this);
+
 		}else {
 		}
+
 	}
 
 	private void putSpinnerValue1(){

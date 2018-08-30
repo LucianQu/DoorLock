@@ -204,7 +204,6 @@ public class F_01_010  extends FrmParent {
 									position = i;
 								}
 							}
-
 							if (position != -1) {
 								String ids = "";
 								String pws = "";
