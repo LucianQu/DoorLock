@@ -14,9 +14,12 @@ import android.widget.Toast;
 
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
+import com.blg.rtu.protocol.p206.CommandCreator;
+import com.blg.rtu.protocol.p206.cdCA_DA.Data_CA_DA;
 import com.blg.rtu.util.AppUtils;
 import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.DialogConfirm;
+import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
@@ -48,6 +51,10 @@ public class F_1_3 extends FrmParent {
 	private TextView ipPortSend ;
 	private EditText ipInput ;
 	private EditText portInput ;
+
+	private TextView wifiNameSend ;
+	private EditText wifiName ;
+	private EditText wifiPassword ;
 
 	private TextView tvLearn ;
 	private boolean isLearning = false;
@@ -86,6 +93,23 @@ public class F_1_3 extends FrmParent {
 		});
 
 		npInput = (EditText)view.findViewById(R.id.npInput) ;
+		wifiName = (EditText)view.findViewById(R.id.edt_name) ;
+		wifiPassword = (EditText)view.findViewById(R.id.edt_password) ;
+		wifiNameSend = (TextView) view.findViewById(R.id.tv_name_password) ;
+		wifiNameSend.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (SharepreferenceUtils.getIsWifi(act)) {
+					if (act.tcpConnected) {
+						setCommand();
+					}else {
+						ToastUtils.show(act, "Wifi未连接设备，无法设置");
+					}
+				}else {
+					ToastUtils.show(act, "当前非Wifi连接，无法设置");
+				}
+			}
+		});
 
 		ipInput = (EditText)view.findViewById(R.id.edt_ip) ;
 		portInput = (EditText)view.findViewById(R.id.edt_port) ;
@@ -324,7 +348,7 @@ public class F_1_3 extends FrmParent {
 	@Override
 	protected void queryCommand(){
 		//CoreThread.getInstance().newRtuId(F_01_100.getInstance().getRtuSelectedItem().replaceAll(" ", ""));
-		//this.sendRtuCommand(new CommandCreator().cd_EF(null), false) ;
+		//this.sendRtuCommand(new CommandCreator().cd_DA(null), false) ;
 	}
 	
 	/**
@@ -332,7 +356,15 @@ public class F_1_3 extends FrmParent {
 	 */
 	@Override
 	protected void setCommand(){
+		String name = wifiName.getText().toString() ;
+		String user = wifiPassword.getText().toString() ;
+		if (!name.equals("") && !user.equals("")) {
+			this.sendRtuCommand(new CommandCreator().cd_DA(name, user, "", null), false);
+		}else {
+			ToastUtils.show(act,"数据为空，请补全!");
+		}
 	}
+
 	
 	/**
 	 * 查询或设置命令发送前检查出问题后的回调
@@ -372,7 +404,11 @@ public class F_1_3 extends FrmParent {
 	@Override
 	public void receiveRtuData(RtuData d){
 		//super.receiveRtuData(d) ;
-
+		Data_CA_DA sd = (Data_CA_DA)d.subData ;
+		wifiName.setText(sd.getName()) ;
+		wifiPassword.setText(sd.getUser()) ;
+		ToastUtils.show(act, "修改成功，请重新连接Wifi热点");
+		act.frgTool.f_1_0.afterChangeWifiNameSuccess();
 	}
 	/**
 	 * 导出设置数据

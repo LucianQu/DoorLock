@@ -5,6 +5,8 @@ import android.util.Log;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.common.ControlProtocol;
 import com.blg.rtu.protocol.p206.common.ProtocolSupport;
+import com.blg.rtu.protocol.p206.common.RtuIdProtocol;
+import com.blg.rtu.protocol.p206.util.Constant;
 import com.blg.rtu.util.ByteUtil;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.ToastUtils;
@@ -39,12 +41,13 @@ public class Answer_10_50 extends ProtocolSupport{
 		Data_10_50 subD = new Data_10_50() ;
 		d.setSubData(subD) ;
 		try {
-			//String password = ByteUtil.BCD2String(b, index, index+1) ;
 			String password = ByteUtil.bytes2Hex(new byte[]{b[index++],b[index++]}, false) ;
 			SharepreferenceUtils.saveComPassword(MainActivity.instance,password);
 			LogUtils.e("保存通信密码", password);
 			subD.setPassWord(password);
 		}catch (Exception e) {
 		}
+		/*String[] ss = new RtuIdProtocol().parseRtuId_1(b, index , (index + Constant.Bits_RTU_ID - 1)) ;
+		subD.setPassWord(ss[0]) ;*/
 	}
 }

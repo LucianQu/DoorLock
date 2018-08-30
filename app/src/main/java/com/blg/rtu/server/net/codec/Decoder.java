@@ -179,7 +179,7 @@ public class Decoder extends CumulativeProtocolDecoder {
 		if (len <= 0 || len > maxDataLength) {
 			throw new BufferDataException("严重错误，在进行断包与粘包检查时，数据帧的长度(" + len	+ ")不在合法范围。");
 		}
-
+		len += StringValueForServer.protocolPackageLenNoInclud ;
 		if (remain == len) {
 			return new Integer[] { 0, len };
 		} else if (remain > len) {

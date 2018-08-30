@@ -6,47 +6,31 @@
     android:layout_gravity="center_vertical"
     android:orientation="vertical"
     android:background="#f0eff5">
-  	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="0dp" 
-	    android:layout_weight="1">
-		<fragment
-			android:id="@+id/f_1_03"
-			android:name="com.blg.rtu.frmFunction.F_1_3"
+	<ScrollView
+		android:id="@+id/f_func_scrollView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginTop="0.1dp"
+		android:layout_marginBottom="0.1dp"
+		android:scrollbars="none"
+		android:fadingEdge="vertical">
+		<LinearLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"/>
- 	</LinearLayout>
- 		
-
-  <!--	<LinearLayout
-  	    android:id="@+id/npFragmentLinear_02"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" 
-	    android:layout_marginTop="-10dp"
-	    android:visibility="visible">
-		<fragment android:id="@+id/npFragment_02"
-			 android:name="com.blg.rtu.frmNoProtocol.NpFragment_02"
-			 android:layout_width="match_parent"
-			 android:layout_height="60dp" 
-			 android:layout_gravity="center_vertical"/>
- 	</LinearLayout>
-
-  	<LinearLayout 
-  	    android:id="@+id/npFragmentLinear_03"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" 
-	    android:layout_marginTop="-10dp"
-	    android:visibility="gone">
-  		<fragment android:id="@+id/npFragment_03"
-			 android:name="com.blg.rtu.frmNoProtocol.NpFragment_03"
-			 android:layout_width="match_parent"
-			 android:layout_height="60dp" 
-			 android:layout_gravity="center_vertical" />
- 	</LinearLayout>-->
-  				
-	<TextView android:id="@+id/npWelcome"
-		android:textColor="#9c9ca0" 
-		style="@style/welcome"/>
- 		
- 							
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:layout_weight="1">
+				<fragment
+					android:id="@+id/f_1_03"
+					android:name="com.blg.rtu.frmFunction.F_1_3"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"/>
+			</LinearLayout>
+			<TextView android:id="@+id/npWelcome"
+				android:textColor="#9c9ca0"
+				style="@style/welcome"/>
+		</LinearLayout>
+	</ScrollView>
 </LinearLayout>

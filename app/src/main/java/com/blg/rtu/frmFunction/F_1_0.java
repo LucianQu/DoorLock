@@ -1137,6 +1137,19 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 	}
 
+	public void afterChangeWifiNameSuccess() {
+		setBtnBackground(0,0);
+		setBtnIsEnable(false) ;
+		act.frgTool.f_01_010.setReceiveWifiData(false);
+		act.tcpConnected = false ;
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				act.connectWifiAndServer() ;
+			}
+		}, 2000) ;
+	}
+
 	public void pintServiceData(DoorStatus doorStatus) {
 		LogUtils.e("请求成功结束时间", Util.getCurrentTime());
 		LogUtils.e("接收到服务器返回数据",

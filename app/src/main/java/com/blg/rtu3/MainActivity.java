@@ -325,6 +325,7 @@ public class MainActivity  extends Activity {
 			}else {
 				updateConnectedStatus(false);
 				waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
+				//waitServerStartedAndToConnectNet("10.10.100.254", 8899) ; //有人模块
 			}
 		}else {
 			updateConnectedType(2);

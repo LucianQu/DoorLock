@@ -6,6 +6,7 @@ import com.blg.rtu.protocol.p206.F2.Param_F2;
 import com.blg.rtu.protocol.p206.F3.Param_F3;
 import com.blg.rtu.protocol.p206.cd02.Param_02;
 import com.blg.rtu.protocol.p206.cd10_50.Param_10;
+import com.blg.rtu.protocol.p206.cdCA_DA.Param_DA;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.StringValueForServer;
 import com.blg.rtu3.MainActivity;
@@ -69,6 +70,18 @@ public class CommandCreator {
 		RtuCommand com = new RtuCommand() ;
 		com.setRtuId(rtuId);
 		com.setCommandCode(Code206.cd_F4) ;
+		return com ;
+	}
+
+	public RtuCommand cd_DA(String name, String user, String password, String rtuId){
+		RtuCommand com = new RtuCommand() ;
+		com.setCommandCode(Code206.cd_DA) ;
+		com.setRtuId(rtuId);
+		Param_DA p = new Param_DA() ;
+		p.setName_1to32(name) ;
+		p.setUser_1to32(user) ;
+		p.setPassword_1to32(password) ;
+		com.getParams().put(Param_DA.KEY, p);
 		return com ;
 	}
 	

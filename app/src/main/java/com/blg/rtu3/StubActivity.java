@@ -99,6 +99,9 @@ public class StubActivity extends ActivityAidl.Stub{
 						//附加功能开关2
 						mAct.frgTool.f_1_0.receiveRtuData(data);
 						mAct.frgTool.f_1_1.receiveRtuData(data);
+					}else if(data.dataCode.equals(Code206.cd_CA) || data.dataCode.equals(Code206.cd_DA)){
+						//设置或查询GPRS接入点
+						mAct.frgTool.f_1_3.receiveRtuData(data) ;
 					}
 				}
 				//mAct.frgTool.fragment_ch04.setRtuData(data) ;

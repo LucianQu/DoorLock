@@ -18,6 +18,8 @@ import com.blg.rtu.protocol.p206.cd02.Write_02;
 import com.blg.rtu.protocol.p206.cd10_50.Answer_10_50;
 import com.blg.rtu.protocol.p206.cd10_50.Read_50;
 import com.blg.rtu.protocol.p206.cd10_50.Write_10;
+import com.blg.rtu.protocol.p206.cdCA_DA.Answer_CA_DA;
+import com.blg.rtu.protocol.p206.cdCA_DA.Write_DA;
 import com.blg.rtu.protocol.p206.common.CodeProtocol;
 import com.blg.rtu.protocol.p206.common.ControlProtocol;
 import com.blg.rtu.protocol.p206.common.HeadProtocol;
@@ -118,7 +120,6 @@ public class Driver206 extends DriverRtu {
 			if(this.dataCode.equalsIgnoreCase(Code206.cd_50)){
 				//应答 - 查询遥测终端、中继站地址
 				this.upData = new Answer_10_50().parse(rtuId, b, ca, dataCode) ;
-				//this.upData = new Answer_74().parse(rtuId, b, ca, dataCode) ;
 				action.append(Action.commandReadRtuIdResultAction) ;
 				action.append(Action.commandResultAction) ;
 				
@@ -138,9 +139,14 @@ public class Driver206 extends DriverRtu {
 				//应答 - 设置仪表系数
 				this.upData = new Answer_F3().parse(rtuId, b, ca, this.dataCode);
 				action.append(Action.commandResultAction) ;
+			}else
+			if(this.dataCode.equalsIgnoreCase(Code206.cd_DA)) {
+				//应答 - 设置GPRS接入点
+				this.upData = new Answer_CA_DA().parse(rtuId, b, ca, this.dataCode);
+				action.append(Action.commandResultAction);
 			}
-			
-			if(this.upData != null){
+
+				if(this.upData != null){
 				//得到从上报数据中分析出来的RTU ID
 				//this.rtuId = this.upData.getRtuId() ;
 				
@@ -230,6 +236,11 @@ public class Driver206 extends DriverRtu {
 			if(this.commandCode.equalsIgnoreCase(Code206.cd_F3)){
 				//附加功能：门设置
 				this.downData = new Write_F3().create(this.commandCode, Constant.Down_ControlFunCode_0, this.rtuId , params, password) ;
+				activ = Action.remoteCommandAction ;
+			}else
+			if(this.commandCode.equalsIgnoreCase(Code206.cd_DA)){
+				//设置GPRS接入点
+				this.downData = new Write_DA().create(this.commandCode, Constant.Down_ControlFunCode_0, this.rtuId , params, password) ;
 				activ = Action.remoteCommandAction ;
 			}else
 			{
