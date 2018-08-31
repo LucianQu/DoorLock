@@ -53,6 +53,7 @@ public class F_1_3 extends FrmParent {
 	private ImageView clearBtn ;
 
 	private TextView ipPortSend ;
+	private TextView ipPortReset ;
 	private EditText ipInput ;
 	private EditText portInput ;
 
@@ -120,6 +121,27 @@ public class F_1_3 extends FrmParent {
 
 		ipInput = (EditText)view.findViewById(R.id.edt_ip) ;
 		portInput = (EditText)view.findViewById(R.id.edt_port) ;
+
+		ipPortReset = (TextView) view.findViewById(R.id.tv_ip_port_reset) ;
+		ipPortReset.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new DialogConfirm().showDialog(act,
+						act.getResources().getString(R.string.txtConfirmreset) ,
+						new DialogConfirm.CallBackInterface(){
+							@Override
+							public void dialogCallBack(Object o) {
+								if((Boolean)o){
+									act.mIpPort = "http://47.107.34.32:8090" ;
+									SharepreferenceUtils.saveIpPort(act,act.mIpPort);
+									ToastUtils.show(act, "通信服务地址已恢复!");
+								}else{
+
+								}
+							}
+						}) ;
+			}
+		});
 		ipPortSend = (TextView) view.findViewById(R.id.tv_ip_port_send) ;
 		ipPortSend.setOnClickListener(new View.OnClickListener() {
 			@Override

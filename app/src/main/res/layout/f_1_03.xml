@@ -225,6 +225,22 @@
 					android:textSize="@dimen/tx16sp"
 					/>
 			</LinearLayout>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:orientation="horizontal"
+				android:layout_marginTop="6dp"
+				android:gravity="center"
+				android:layout_height="wrap_content">
+				<TextView
+					android:id="@+id/tv_ip_port_reset"
+					android:layout_width="80dp"
+					android:layout_height="30dp"
+					android:gravity="center"
+					android:background="@color/background_gray"
+					android:text="恢复出厂"
+					android:textSize="14sp"
+					/>
+			</LinearLayout>
 		</LinearLayout>
 		<LinearLayout
 			android:layout_width="match_parent"
