@@ -13,6 +13,9 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +44,7 @@ import android.widget.Toast;
 import com.blg.rtu.aidl.ServiceAidl;
 import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Operate;
 import com.blg.rtu.util.Constant;
+import com.blg.rtu.util.MyTimeTask;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.ResourceUtils;
 import com.blg.rtu.util.SharepreferenceUtils;
@@ -54,7 +58,7 @@ import com.blg.rtu3.utils.LogUtils;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.TimerTask;
 
 
 @SuppressLint("HandlerLeak")
@@ -136,6 +140,7 @@ public class MainActivity  extends Activity {
 
 	public boolean requestServeice = true ;
 	public String mIpPort = "http://47.107.34.32:8090" ;
+	private MyTimeTask task ;
 
 	public void registerMessageReceiver() {
 		mMessageReceiver = new MessageReceiver();
@@ -190,6 +195,69 @@ public class MainActivity  extends Activity {
 			mServerProxyHandler.onServiceDisconnected(className) ;
 		}
 	};
+
+	private static boolean isWifi() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) instance
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo info= connectivityManager.getActiveNetworkInfo();
+		if (info!= null
+				&& info.getType() == ConnectivityManager.TYPE_WIFI) {
+			return true;
+		}
+		return false;
+	}
+
+
+	private String getWifiIp(){
+		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		int ipAddress = wifiInfo.getIpAddress();
+		int port = wifiInfo.getNetworkId() ;
+		if(ipAddress==0)return "";
+		return ((ipAddress & 0xff)+"."+(ipAddress>>8 & 0xff)+"."
+				+(ipAddress>>16 & 0xff)+"."+(ipAddress>>24 & 0xff));
+	}
+
+	// 得到MAC地址
+	public String getMacAddress() {
+		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		return (wifiInfo == null) ? "NULL" : wifiInfo.getMacAddress();
+	}
+
+	// 得到接入点的BSSID
+	public String getBSSID() {
+		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		return (wifiInfo == null) ? "NULL" : wifiInfo.getBSSID();
+	}
+
+	public String getSSID() {
+		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		return (wifiInfo == null) ? "NULL" : wifiInfo.getSSID();
+	}
+
+	// 得到IP地址
+	public int getIPAddress() {
+		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		return (wifiInfo == null) ? 0 : wifiInfo.getIpAddress();
+	}
+
+	// 得到连接的ID
+	public int getNetworkId() {
+		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		return (wifiInfo == null) ? 0 : wifiInfo.getNetworkId();
+	}
+
+	// 得到WifiInfo的所有信息包
+	public String getWifiInfo() {
+		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		return (wifiInfo == null) ? "NULL" : wifiInfo.toString();
+	}
 
 	public Handler mHandler = new Handler() {  
         @Override  
@@ -298,7 +366,32 @@ public class MainActivity  extends Activity {
 		mJPush.setTag("admin1,admin2");//为设备设置标签
 		mJPush.setAlias("doorlock");//为设备设置别名
 		registerMessageReceiver();
+		setTimer() ;
+		//ToastUtils.show(instance, "网络是否为Wifi"+isWifi()+"");
 	}
+
+	private void setTimer(){
+		task =new MyTimeTask(3000, new TimerTask() {
+			@Override
+			public void run() {
+				if (isWifi()) {
+					if (!SharepreferenceUtils.getIsWifi(instance)) {
+						if (getWifiIp().contains("192.168.4")) ; {
+
+						}
+					}
+					Log.e("获取WIFI IP", "---> :" + getWifiIp() +"\n" +getSSID()+ "\n" +getBSSID() +"\n"
+					+getIPAddress() + "\n" +getNetworkId() + "\n" +getWifiInfo());
+				}
+			}
+		});
+		task.start();
+	}
+
+	private void stopTimer(){
+		task.stop();
+	}
+
 
 	public void postQuery() {
 		handler.removeCallbacks(queryF1Task);
@@ -422,6 +515,7 @@ public class MainActivity  extends Activity {
 		handler.removeCallbacksAndMessages(null);
 		handler = null ;
 		instance = null ;
+		stopTimer();
 		finish();
 	}
 
