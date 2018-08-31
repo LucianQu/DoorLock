@@ -2,6 +2,8 @@ package com.blg.rtu.frmFunction;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +59,9 @@ public class F_1_3 extends FrmParent {
 	private TextView wifiNameSend ;
 	private EditText wifiName ;
 	private EditText wifiPassword ;
+	private LinearLayout llSeting ;
+	private LinearLayout llAdminSeting ;
+	private LinearLayout llContent ;
 
 	private TextView tvLearn ;
 	private boolean isLearning = false;
@@ -154,6 +160,45 @@ public class F_1_3 extends FrmParent {
 				clearNoProtocolData() ;
 			}
 		}) ;
+
+		llSeting = (LinearLayout) view.findViewById(R.id.ll_net_setting) ;
+		/*llAdminSeting = (LinearLayout) view.findViewById(R.id.ll_admin_setting) ;
+		llAdminSeting.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				final EditText et = new EditText(getActivity());
+				new AlertDialog.Builder(getActivity()).setTitle("请输入密码")
+						.setIcon(android.R.drawable.ic_dialog_info)
+						.setView(et)
+						.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								String input = et.getText().toString();
+								if (input.equals("")) {
+									Toast.makeText(getActivity(), "密码为空！" + input, Toast.LENGTH_LONG).show();
+								}
+								else {
+
+								}
+							}
+						})
+						.setNegativeButton("取消", null)
+						.show();
+
+			}
+		});*/
+		llContent = (LinearLayout) view.findViewById(R.id.ll_net_content) ;
+		llSeting.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int visibill = llContent.getVisibility() ;
+				if (visibill == View.VISIBLE) {
+					llContent.setVisibility(View.GONE);
+				}else {
+					llContent.setVisibility(View.VISIBLE);
+				}
+			}
+		});
 
 
 		return view ;
