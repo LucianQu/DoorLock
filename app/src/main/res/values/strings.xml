@@ -661,7 +661,7 @@
 	<string name="txtConfirmSendOpenCommand">确定下发启动命令</string>
 	<string name="txtConfirmSendCloseCommand">确定下发关闭命令</string>
 	<string name="txtConfirmSend">确定发送吗?</string>
-    <string name="txtConfirmSend1">如果更改的服务地址错误，\n所有APP将无法连接到服务，\n确定发送吗?</string>
+    <string name="txtConfirmSend1">确定要修改WIFI的IP地址/端口号吗?</string>
     <string name="txtConfirmreset">通信服务地址确实要恢复出厂吗?</string>
 	<string name="txtConfirmClear">确定清空吗?</string>
 	<string name="txtConfirm">确定</string>

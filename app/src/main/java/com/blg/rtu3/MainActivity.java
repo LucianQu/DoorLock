@@ -380,8 +380,8 @@ public class MainActivity  extends Activity {
 
 						}
 					}
-					Log.e("获取WIFI IP", "---> :" + getWifiIp() +"\n" +getSSID()+ "\n" +getBSSID() +"\n"
-					+getIPAddress() + "\n" +getNetworkId() + "\n" +getWifiInfo());
+					/*Log.e("获取WIFI IP", "---> :" + getWifiIp() +"\n" +getSSID()+ "\n" +getBSSID() +"\n"
+					+getIPAddress() + "\n" +getNetworkId() + "\n" +getWifiInfo());*/
 				}
 			}
 		});
@@ -417,7 +417,8 @@ public class MainActivity  extends Activity {
 				handler.postDelayed(query50Task, 1500);
 			}else {
 				updateConnectedStatus(false);
-				waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
+				waitServerStartedAndToConnectNet(SharepreferenceUtils.getWifiIp(instance),
+						SharepreferenceUtils.getWifiPort(instance)) ; //wifi连接
 				//waitServerStartedAndToConnectNet("10.10.100.254", 8899) ; //有人模块
 			}
 		}else {

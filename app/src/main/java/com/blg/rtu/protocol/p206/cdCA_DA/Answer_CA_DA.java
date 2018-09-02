@@ -5,7 +5,6 @@ import android.util.Log;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.common.ControlProtocol;
 import com.blg.rtu.protocol.p206.common.ProtocolSupport;
-import com.blg.rtu.util.ByteUtil;
 
 public class Answer_CA_DA extends ProtocolSupport {
 
@@ -31,24 +30,21 @@ public class Answer_CA_DA extends ProtocolSupport {
 	private RtuData doParse(byte[] b, int index, RtuData d, ControlProtocol cp) throws Exception {
 		Data_CA_DA subD = new Data_CA_DA() ;
 		d.setSubData(subD) ;
-		
+
+		subD.setType(b[index++]);
 		// 分析数据域
 		byte[] bname = new byte[32] ;
 		byte[] uname = new byte[32] ;
-		byte[] pname = new byte[32] ;
+
 		for(int i = 0 ; i < 32 ; i++){
 			bname[i] = b[index++] ;
 		}
 		for(int i = 0 ; i < 32 ; i++){
 			uname[i] = b[index++] ;
 		}
-		for(int i = 0 ; i < 32 ; i++){
-			pname[i] = b[index++] ;
-		}
-			
+
 		subD.setName((new String(bname)).trim()) ;
 		subD.setUser((new String(uname)).trim()) ;
-		subD.setPassword((new String(pname)).trim()) ;
 	/*	subD.setName(ByteUtil.bytesToHexString(bname)) ;
 		subD.setUser(ByteUtil.bytesToHexString(uname)) ;
 		subD.setPassword(ByteUtil.bytesToHexString(pname)) ;*/

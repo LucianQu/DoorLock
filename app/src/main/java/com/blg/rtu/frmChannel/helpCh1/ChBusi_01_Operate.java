@@ -247,7 +247,7 @@ public class ChBusi_01_Operate {
 
 		Preferences.getInstance().putInt(Constant.wifi_connect_type, 0) ;
 		//waitServerStartedAndToConnectNet("10.10.100.254", 8899) ; //有人模块
-		waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //有人模块
+		//waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //有人模块
 		//waitServerStartedAndToConnectNet("192.168.4.1", 333) ; //有人模块
 
 	}

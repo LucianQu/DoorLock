@@ -13,14 +13,24 @@ public class Param_DA implements Serializable{
 	private String name_1to32 ;
 	private String user_1to32 ;
 	private String password_1to32 ;
+	private int type ;
 
 	public String toString(){
 		String s = "\n" ;
 		s += "GPRS接入点：" + ":" +
+				" 类型：" + (this.type == 0?"名称密码": "IP地址端口号") +
 				" 名称：" + (this.name_1to32==null?"": name_1to32) +
 				" 用户：" + (this.user_1to32==null?"": user_1to32) +
 				" 密码：" + (this.password_1to32==null?"": password_1to32) ;
 		return s ;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public String getName_1to32() {

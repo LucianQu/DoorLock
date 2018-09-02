@@ -143,6 +143,31 @@ public class SharepreferenceUtils {
         return device_password;
     }
 
+    public static void saveWifiIp(Context context, String is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_wifi_ip", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("wifi_ip", is);
+        editor.commit();
+    }
+
+    public static String getWifiIp(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_wifi_ip", 0);
+        String device_password = preferences.getString("wifi_ip", "192.168.4.1");
+        return device_password;
+    }
+    public static void saveWifiPort(Context context, int is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_wifi_port", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("wifi_port", is);
+        editor.commit();
+    }
+
+    public static int getWifiPort(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_wifi_port", 0);
+        int port = preferences.getInt("wifi_port", 60009);
+        return port;
+    }
+
     public static void saveComPassword(Context context, String is) {
         SharedPreferences preferences = context.getSharedPreferences("preference_password_com", 0);
         SharedPreferences.Editor editor = preferences.edit();

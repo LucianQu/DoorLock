@@ -2,8 +2,6 @@ package com.blg.rtu.frmFunction;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +16,6 @@ import android.widget.Toast;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
-import com.blg.rtu.protocol.p206.cd10_50.Data_10_50;
 import com.blg.rtu.protocol.p206.cdCA_DA.Data_CA_DA;
 import com.blg.rtu.util.AppUtils;
 import com.blg.rtu.util.DialogAlarm;
@@ -66,6 +63,9 @@ public class F_1_3 extends FrmParent {
 
 	private TextView tvLearn ;
 	private boolean isLearning = false;
+	private int type = 0 ;
+	private String cacheIp = "192.168.4.1" ;
+	private int cachePort = 60009 ;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -109,6 +109,7 @@ public class F_1_3 extends FrmParent {
 			public void onClick(View v) {
 				if (SharepreferenceUtils.getIsWifi(act)) {
 					if (act.tcpConnected) {
+						type = 0 ;
 						setCommand();
 					}else {
 						ToastUtils.show(act, "Wifi未连接设备，无法设置");
@@ -132,9 +133,8 @@ public class F_1_3 extends FrmParent {
 							@Override
 							public void dialogCallBack(Object o) {
 								if((Boolean)o){
-									act.mIpPort = "http://47.107.34.32:8090" ;
-									SharepreferenceUtils.saveIpPort(act,act.mIpPort);
-									ToastUtils.show(act, "通信服务地址已恢复!");
+									SharepreferenceUtils.saveWifiIp(act, "192.168.4.1");
+									SharepreferenceUtils.saveWifiPort(act, 60009);
 								}else{
 
 								}
@@ -153,11 +153,8 @@ public class F_1_3 extends FrmParent {
                                 @Override
                                 public void dialogCallBack(Object o) {
                                     if((Boolean)o){
-                                        String ip_Value = ipInput.getText().toString() ;
-                                        String port = portInput.getText().toString() ;
-                                        String message = "http://"+ip_Value+":"+port;
-                                        postMessage1(message) ;
-                                        //ToastUtils.show(act, "已发送");
+                                       type = 1;
+                                       setCommand();
                                     }else{
                                         //ToastUtils.show(act, "已取消");
                                     }
@@ -434,10 +431,19 @@ public class F_1_3 extends FrmParent {
 	 */
 	@Override
 	protected void setCommand(){
-		String name = wifiName.getText().toString() ;
-		String user = wifiPassword.getText().toString() ;
+		String name = "" ;
+		String user = "" ;
+		if (type == 0) {
+			name = wifiName.getText().toString();
+			user = wifiPassword.getText().toString();
+		}else {
+			name = ipInput.getText().toString() ;
+			user = portInput.getText().toString() ;
+			cacheIp = name ;
+			cachePort = Integer.parseInt(user) ;
+		}
 		if (!name.equals("") && !user.equals("")) {
-			this.sendRtuCommand(new CommandCreator().cd_DA(name, user, "", null), false);
+			this.sendRtuCommand(new CommandCreator().cd_DA(type,name, user, "", null), false);
 		}else {
 			ToastUtils.show(act,"数据为空，请补全!");
 		}
@@ -483,10 +489,19 @@ public class F_1_3 extends FrmParent {
 	public void receiveRtuData(RtuData d){
 		//super.receiveRtuData(d) ;
 		Data_CA_DA sd = (Data_CA_DA)d.subData ;
-		wifiName.setText(sd.getName()) ;
-		wifiPassword.setText(sd.getUser()) ;
-		ToastUtils.show(act, "修改成功，请重新连接Wifi热点");
-		act.frgTool.f_1_0.afterChangeWifiNameSuccess();
+		if (sd.getType() == 0) {
+			wifiName.setText(sd.getName());
+			wifiPassword.setText(sd.getUser());
+			ToastUtils.show(act, "修改Wifi名称密码成功，请重新连接Wifi热点");
+			act.frgTool.f_1_0.afterChangeWifiNameSuccess();
+		}else {
+			ipInput.setText(sd.getName());
+			portInput.setText(sd.getUser());
+			ToastUtils.show(act, "修改Wifi端口号IP地址成功，请重新连接Wifi热点");
+			SharepreferenceUtils.saveWifiIp(act, cacheIp);
+			SharepreferenceUtils.saveWifiPort(act, cachePort);
+			act.frgTool.f_1_0.afterChangeWifiNameSuccess();
+		}
 	}
 	/**
 	 * 导出设置数据

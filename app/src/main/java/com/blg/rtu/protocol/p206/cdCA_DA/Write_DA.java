@@ -2,7 +2,6 @@ package com.blg.rtu.protocol.p206.cdCA_DA;
 
 import com.blg.rtu.protocol.p206.common.ProtocolSupport;
 import com.blg.rtu.protocol.p206.util.Constant;
-import com.blg.rtu.util.ByteUtil;
 
 import java.util.HashMap;
 
@@ -15,7 +14,7 @@ public class Write_DA extends ProtocolSupport {
 									+ Constant.Bits_Time
 									+ Constant.Bits_CRC
 									+ Constant.Bits_Tail
-									+ 96 ;//数据域长度
+									+ 65 ;//数据域长度
 	/**
 	 * 构造RTU 命令
 	 * @param code 功能码
@@ -39,14 +38,11 @@ public class Write_DA extends ProtocolSupport {
 
 		String name = param.getName_1to32() ;
 		String user = param.getUser_1to32() ;
-		//String pass = param.getPassword_1to32() ;
+		int type = param.getType() ;
 		
 		byte[] bname = name.getBytes() ;
 		byte[] buser = user.getBytes() ;
-		//byte[] bpass = pass.getBytes() ;
-		/*byte[] bname = ByteUtil.hex2Bytes(name) ;
-		byte[] buser = ByteUtil.hex2Bytes(user) ;
-		byte[] bpass = ByteUtil.hex2Bytes(pass) ;*/
+		b[fromSite++] = (byte)type;
 
 		if(null != bname) {
 			for (int i = 0; (i < bname.length && i < 32); i++) {
@@ -59,16 +55,8 @@ public class Write_DA extends ProtocolSupport {
 				b[fromSite + i] = buser[i];
 			}
 		}
-		/*if(null != bpass) {
-			fromSite += 32;
-			for (int i = 0; (i < bpass.length && i < 32); i++) {
-				b[fromSite + i] = bpass[i];
-			}
-		}*/
-		fromSite += 32 ;
-		
+
 		this.createDownDataTail(b, password) ;
-		
 		return b;
 	}
 
