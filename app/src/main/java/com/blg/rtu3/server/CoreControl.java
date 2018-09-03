@@ -166,7 +166,7 @@ public class CoreControl {
 			if(data == null || data.length == 0){
 				Log.e(tag, "构造命令时产生的下发字节数组为空！") ;
 			}else{
-				LogUtils.e("下发数据", ByteUtil.bytes2Hex(data,true));
+				//LogUtils.e("下发数据", ByteUtil.bytes2Hex(data,true));
 				NetManager.getInstance().sendData(driver.getCommandCode(), data, driver.getRtuId(), sendOnlyOnce, showInActivity) ;
 			}
 		}

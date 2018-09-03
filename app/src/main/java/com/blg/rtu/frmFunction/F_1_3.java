@@ -93,9 +93,14 @@ public class F_1_3 extends FrmParent {
 		tvLearn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				isLearning = true ;
-				ToastUtils.show(act,"门学习");
-				act.frgTool.f_01_010.queryCommand();
+				if (act.tcpConnected) {
+					isLearning = true;
+					ToastUtils.show(act, "门学习");
+					act.frgTool.f_1_0.stopTimer();
+					act.frgTool.f_01_010.queryCommand();
+				}else {
+					ToastUtils.show(act, "未联网，无法学习!");
+				}
 				//addId() ;
 			}
 		});

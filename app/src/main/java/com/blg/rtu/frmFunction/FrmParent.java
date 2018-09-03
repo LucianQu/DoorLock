@@ -15,11 +15,13 @@ import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.DateTime;
 import com.blg.rtu.util.DialogConfirm;
 import com.blg.rtu.util.StringValueForActivity;
+import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.ServerProxyHandler;
 import com.blg.rtu3.sm.SmsSender;
+import com.blg.rtu3.utils.LogUtils;
 
 public abstract class FrmParent extends Fragment {
 	
@@ -251,7 +253,7 @@ public abstract class FrmParent extends Fragment {
 				}else{
 					String rtuId = act.mServerProxyHandler.getRtuId() ;
 					if(rtuId == null){
-						hideLoadCover() ;
+						//hideLoadCover() ;
 						Toast.makeText(act, "后台服务还未得到终端地址，当前不能发送命令！", Toast.LENGTH_SHORT).show() ;
 					}else{
 						com.setRtuId(rtuId) ;
@@ -260,8 +262,10 @@ public abstract class FrmParent extends Fragment {
 					}
 				}
 			}else{
-				hideLoadCover() ;
-				Toast.makeText(act, "网络未连接，不能发送命令！", Toast.LENGTH_SHORT).show() ;
+				//hideLoadCover() ;
+				//Toast.makeText(act, "网络未连接，不能发送命令！", Toast.LENGTH_SHORT).show() ;
+				ToastUtils.show(act,"网络未连接，不能发送命令！");
+				LogUtils.e("Lucian--->网络未连接", "无法发送命令!");
 			}
 		}else
 		if(ch == Constant.channelSm){
@@ -353,7 +357,7 @@ public abstract class FrmParent extends Fragment {
 	/**
 	 * 不成功，屏幕未显示区域不能正确滚动到，不再应用
 	 * 滚动到指定位置，
-	 * @param d
+	 * @param
 	 */
 	public void scrollTo(View v){
 		int[] location = new int[2];  

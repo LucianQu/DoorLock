@@ -26,6 +26,7 @@ import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.protocol.p206.F2.Data_F2;
 import com.blg.rtu.protocol.p206.F3.Data_F3;
+import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.MyTimeTask;
 import com.blg.rtu.util.SharepreferenceUtils;
@@ -135,19 +136,23 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		super.onCreate(savedInstanceState);
 		cntFrmOpened = false ;
 		loading = false ;
-		setTimer() ;
+		//setTimer() ;
 	}
 	private void setTimer(){
 		task =new MyTimeTask(2000, new TimerTask() {
 			@Override
 			public void run() {
+				LogUtils.e("Lucian--->timer", "查询类型--->" + (SharepreferenceUtils.getIsWifi(act)? "WIFI":"服务"));
 				if (!SharepreferenceUtils.getIsWifi(act)) {
 					if (!getCurrentIDIsempty()) {
 						if (isQuerySeverEnable) {
 							queryServerStatus(currentID);
 							doorContralServer(currentID, "F1", "0","0");
-						}else {
 						}
+					}
+				}else {
+					if (act.tcpConnected) {
+						setCommand(0);
 					}
 				}
 			}
@@ -155,12 +160,25 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	public void stopTimer(){
-		taskStatus = false ;
-		task.stop();
+		LogUtils.e("Lucian--->","停止定时器");
+		if (taskStatus) {
+			taskStatus = false;
+			task.stop();
+		}
 	}
 	public void startTimer(){
-		taskStatus = true ;
-		task.start();
+		if (!taskStatus) {
+            LogUtils.e("Lucian--->","开始定时器");
+			setTimer() ;
+			taskStatus = true;
+			task.start();
+		}else {
+			stopTimer() ;
+            LogUtils.e("Lucian--->","开始定时器");
+			setTimer() ;
+			taskStatus = true;
+			task.start();
+		}
 	}
 
 	@Override
@@ -174,9 +192,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
-		/*SharepreferenceUtils.saveHasLearn(act, true);
-		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409-0102030409");
-		SharepreferenceUtils.savePassword(act,"0102-0102-0102-0102-0102");*/
+		SharepreferenceUtils.saveHasLearn(act, true);
+		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
+		SharepreferenceUtils.savePassword(act,"0102-0102-0102-0102");
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		tv_doorList.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -228,37 +246,35 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					setBtnBackground(1, 2);
 					setBtnBackground(2, 0);
 					setBtnBackground(3, 1);
-					currentClick ="1" ;
+					//currentClick ="1" ;
 					currentCom = "1";
 					currentAfn = "F1";
-					act.delay = 30;
-					reSendNum = 20;
-
+					//act.delay = 30;
+					//reSendNum = 20;
 					receiveOpenClose = false ;
 					endReqFlag = true ;
+					openCloseStop = 0 ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						if (null != httpGet) {
 							httpGet.cancel();
 						}
 						setCommand(1);
-						handler.removeCallbacks(twoOpenWifiData);
-						handler.removeCallbacks(twoCloseWifiData);
-						handler.removeCallbacks(stopTask);
-						handler.postDelayed(twoOpenWifiData, 500) ;
-						handler.removeCallbacks(queryIsReceiveWifiData);
-						handler.postDelayed(queryIsReceiveWifiData, 15000) ;
+						//handler.removeCallbacks(twoOpenWifiData);
+						handler.removeCallbacks(resendWifiData);
+						handler.postDelayed(resendWifiData, 500) ;
+						//handler.removeCallbacks(stopTask);
+						handler.removeCallbacks(wifiTimeOverResetStatus);
+						handler.postDelayed(wifiTimeOverResetStatus, 15000) ;
 					} else {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						} else {
 							isQuerySeverEnable = false ;
-							act.cancelQueryf1();
-							if (taskStatus) {
-								stopTimer();
-							}
+							//act.cancelQueryf1();
+							stopTimer();
 							doorContralServer(currentID, currentAfn, currentCom,"1");
-							handler.removeCallbacks(queryF1StopTask);
-							handler.postDelayed(queryF1StopTask, 30000) ;
+							handler.removeCallbacks(serverTimeoverResetStatus);
+							handler.postDelayed(serverTimeoverResetStatus, 30000) ;
 						}
 					}
 					endReqFlag = false ;
@@ -275,39 +291,38 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					isClickButton = true ;
 					receiveStopNum = 0 ;
 					setProgressVisible(2);
-					currentClick ="2" ;
+					//currentClick ="2" ;
 					setBtnBackground(1, 0);
 					setBtnBackground(2, 2); //
 					setBtnBackground(3, 1);
 					currentCom = "2";
 					currentAfn = "F1";
-					reSendNum = 20;
+					//reSendNum = 20;
 					receiveOpenClose = false ;
-					act.delay = 30;
+					//act.delay = 30;
 					endReqFlag = true ;
+					openCloseStop = 0 ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						if (null != httpGet) {
 							httpGet.cancel();
 						}
 						setCommand(2);
-						handler.removeCallbacks(twoOpenWifiData);
-						handler.removeCallbacks(twoCloseWifiData);
-						handler.removeCallbacks(stopTask);
-						handler.postDelayed(twoCloseWifiData, 500) ;
-						handler.removeCallbacks(queryIsReceiveWifiData);
-						handler.postDelayed(queryIsReceiveWifiData, 15000) ;
+						//handler.removeCallbacks(twoOpenWifiData);
+						//handler.removeCallbacks(twoCloseWifiData);
+						handler.removeCallbacks(resendWifiData);
+						handler.postDelayed(resendWifiData, 500) ;
+						handler.removeCallbacks(wifiTimeOverResetStatus);
+						handler.postDelayed(wifiTimeOverResetStatus, 15000) ;
 					} else {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
 						} else {
 							isQuerySeverEnable = false ;
-							act.cancelQueryf1();
-							if (taskStatus) {
-								stopTimer();
-							}
+							//act.cancelQueryf1();
+							stopTimer();
 							doorContralServer(currentID, currentAfn, currentCom,"1");
-							handler.removeCallbacks(queryF1StopTask);
-							handler.postDelayed(queryF1StopTask, 30000) ;
+							handler.removeCallbacks(serverTimeoverResetStatus);
+							handler.postDelayed(serverTimeoverResetStatus, 30000) ;
 						}
 					}
 					endReqFlag = false ;
@@ -325,7 +340,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						isClickButton = true ;
 						receiveStopNum = 0 ;
 						setProgressVisible(3);
-						currentClick ="3" ;
+						//currentClick ="3" ;
 						setBtnBackground(3, 2);
 						setBtnBackground(1,1); //复位
 						setBtnBackground(2,1);//复位
@@ -333,36 +348,34 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						endReqFlag = true ;
 						if (currentCom.equals("1") || currentCom.equals("2")) {
 							receiveOpenClose = false;
-							reSendNum = -1 ;
-
+							//reSendNum = -1 ;
 						}
 						currentCom = "3";
 						currentAfn = "F1";
+						openCloseStop = 0 ;
 						if (SharepreferenceUtils.getIsWifi(act)) {
 							if (null != httpGet) {
 								httpGet.cancel();
 							}
-							handler.removeCallbacks(queryWifiTask);
+							//handler.removeCallbacks(queryWifiTask);
 							setCommand(3);
-							handler.removeCallbacks(twoOpenWifiData);
-							handler.removeCallbacks(twoCloseWifiData);
-							handler.removeCallbacks(stopTask);
-							handler.postDelayed(stopTask, 500) ;
-                            handler.removeCallbacks(queryIsReceiveWifiData);
-							handler.postDelayed(queryIsReceiveWifiData, 15000) ;
+							//handler.removeCallbacks(twoOpenWifiData);
+							//handler.removeCallbacks(twoCloseWifiData);
+							handler.removeCallbacks(resendWifiData);
+							handler.postDelayed(resendWifiData, 500) ;
+                            handler.removeCallbacks(wifiTimeOverResetStatus);
+							handler.postDelayed(wifiTimeOverResetStatus, 15000) ;
 						} else {
 							if (getCurrentIDIsempty()) {
 								ToastUtils.show(act, "没有可操作的门！");
 							} else {
 								handler.removeCallbacksAndMessages(null);
 								endReqFlag = false ;
-								if (taskStatus) {
-									stopTimer();
-								}
+								stopTimer();
 								doorContralServer(currentID, currentAfn, currentCom,"1");
 								//handler.postDelayed(onceReqServer, 100) ;
-                                handler.removeCallbacks(queryF1StopTask);
-                                handler.postDelayed(queryF1StopTask, 10000) ;
+                                handler.removeCallbacks(serverTimeoverResetStatus);
+                                handler.postDelayed(serverTimeoverResetStatus, 10000) ;
 							}
 						}
 				}
@@ -386,7 +399,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 
 	@Override
 	public void senddata(String msg) {
-		ToastUtils.show(act, msg);
+		//ToastUtils.show(act, msg);
 		position = Integer.parseInt(msg) ;
 		if (!SharepreferenceUtils.getIsWifi(act) && wifiServer == 1) {
 			if (doorList.size() > 0) {
@@ -397,9 +410,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					if (!SharepreferenceUtils.getIsWifi(act) && act.requestServeice) {
 						/*handler.removeCallbacks(queryDeviceOnlineTask);
 						handler.postDelayed(queryDeviceOnlineTask, 3000) */;
-						if (!taskStatus) {
-							startTimer();
-						}
+						startTimer();
 					}
 					isFirst = true ;
 					currentID = doorList.get(position);
@@ -437,7 +448,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			act.updateConnectedStatus(false);
 
         }
-
 
         String deviceID = SharepreferenceUtils.getDeviceId(act) ;
         String password = SharepreferenceUtils.getPassword(act) ;
@@ -504,7 +514,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 	}
 
-	private Runnable queryF1Task = new Runnable() {
+	/*private Runnable queryF1Task = new Runnable() {
 		@Override
 		public void run() {
 			if (reSendNum > 0) {
@@ -525,9 +535,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 
 			}
 		}
-	};
+	};*/
 
-	private Runnable queryF1StopTask = new Runnable() {
+	private Runnable serverTimeoverResetStatus = new Runnable() {
 		@Override
 		public void run() {
 			if (!endReqFlag ) {
@@ -538,14 +548,12 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				isQuerySeverEnable = true ;
 				/*handler.removeCallbacks(queryDeviceOnlineTask);
 				handler.postDelayed(queryDeviceOnlineTask, 2000) ;*/
-				if (!taskStatus) {
-					startTimer();
-				}
+				startTimer();
 			}
 		}
 	};
 
-	private Runnable queryDeviceOnlineTask = new Runnable() {
+/*	private Runnable queryDeviceOnlineTask = new Runnable() {
 		@Override
 		public void run() {
 			if (SharepreferenceUtils.getIsWifi(act)) {
@@ -563,9 +571,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 
 		}
-	};
+	};*/
 
-	private Runnable stopTask = new Runnable() {
+/*	private Runnable stopTask = new Runnable() {
 		@Override
 		public void run() {
 			if (openCloseStop != 3 && currentCom.equals("3")) {
@@ -575,7 +583,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				handler.removeCallbacks(stopTask);
 			}
 		}
-	};
+	};*/
 	private void onceComCheckIsReceive() {
 		onceComReceiveTrue = false ;
 		handler.removeCallbacks(queryF1OnceTask);
@@ -716,6 +724,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 											isFirst = false ;
 											setBtnIsEnable(true);
 											setBtnBackground(4,0);
+											startTimer();
 										}else {
 										}
 										act.updateConnectedStatus(true);
@@ -778,16 +787,16 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 
-	public void doorContralServer1(final String dtuId, String code, String flag, String tp) {
+	/*public void doorContralServer1(final String dtuId, String code, String flag, String tp) {
 		String url = "http://47.107.34.32:8090/door/door/state.act" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
 		requestParams.addBodyParameter("tp", tp);
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
-      /*  if (fragment_04 != null) {
+      *//*  if (fragment_04 != null) {
             fragment_04.setRtuData(null, requestParams.toString(),null,null,++sendServerReqNum);
-        }*/
+        }*//*
 		LogUtils.e("门控制服务", requestParams.toString());
 		LogUtils.e("请求开始时间", Util.getCurrentTime());
 		httpGet = x.http().post(requestParams, new Callback.CommonCallback<String>() {
@@ -822,9 +831,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 										}
 										act.updateConnectedStatus(true);
 										displayServiceData(doorStatus);
-										/*if (fragment_04 != null) {
+										*//*if (fragment_04 != null) {
 											fragment_04.setRtuData(doorStatus, null,null,null,++receiveServerDataNum);
-										}*/
+										}*//*
 										pintServiceData(doorStatus);
 										if (!endReqFlag) {
 											queryF1Once();
@@ -882,7 +891,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				setProgressVisible(0) ;
 			}
 		});
-	}
+	}*/
 
 	public void queryServerStatus(String dtuId) {
 		String url =act.mIpPort +  "/door/door/online.act" ;
@@ -1061,14 +1070,14 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 
 	}
 
-	public void updateSpinnerValue(List<String> list) {
+	/*public void updateSpinnerValue(List<String> list) {
 		int i = 0 ;
 		spinnerAdapter1.clear();
 		for (String str : list) {
 			spinnerAdapter1.add(new SpinnerVO(i++ + "", str));
 		}
 		spinnerAdapter1.notifyDataSetChanged();
-	}
+	}*/
 	public void updateSpinnerValue(String data) {
 		if (!"".equals(data)) {
 			//spinnerAdapter1.clear();
@@ -1090,12 +1099,12 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 
 	}
 
-	private void putSpinnerValue1(){
+/*	private void putSpinnerValue1(){
 		SharepreferenceUtils.saveHasLearn(act, true);
 		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
 		SharepreferenceUtils.savePassword(act,"0102-0102-0102-0102");
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
-	}
+	}*/
 	private void putSpinnerValue2(){
 		spinnerAdapter2.add(new SpinnerVO("0", "请选择")) ;
 		spinnerAdapter2.add(new SpinnerVO("1", "服务通信")) ;
@@ -1106,7 +1115,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		this.currentID = s ;
 	}
 	private long num =0;
-	private class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
+	/*private class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			if (!SharepreferenceUtils.getIsWifi(act)) {
 				if (parent.getId() == spinner.getId()) {
@@ -1115,11 +1124,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					if (num > 1) {
 						clickDeviceId = true;
 						if (!SharepreferenceUtils.getIsWifi(act) && act.requestServeice) {
-							/*handler.removeCallbacks(queryDeviceOnlineTask);
-							handler.postDelayed(queryDeviceOnlineTask, 3000) ;*/
-							if (!taskStatus) {
-								startTimer();
-							}
+							*//*handler.removeCallbacks(queryDeviceOnlineTask);
+							handler.postDelayed(queryDeviceOnlineTask, 3000) ;*//*
+							startTimer();
 						}
 						isFirst = true ;
 						currentID = parent.getSelectedItem().toString();
@@ -1138,24 +1145,30 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
-	}
+	}*/
 
 	public void initDeviceConnect() {
 		setBtnBackground(0,0); //初始化按钮状态灰色，不使能
 		setDoorButtonImg(3);
 		setPieChart(0);
-		act.postQuery();
+		//act.postQuery();
 	}
 
 	private class SpinnerSelectedListener2 implements AdapterView.OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			if(parent.getId() == spinner2.getId()){
 				/*fragment_04.setRtuData(new DoorStatus(),null);*/
-				if (position == 1) {
+				if (position == 1) {//服务器
+					stopTimer();
 					wifiServer = 1 ;
 					setDoorDit(0);
+					act.cancelQuery50();
 					tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
 					act.requestServeice = true ;
+					if (act.tcpConnected) {
+						NetManager.getInstance().toggleConnectRemote(false);
+						act.tcpConnected = false;
+					}
 					setBtnBackground(0, 0);
 					isFirst = true;
 					SharepreferenceUtils.saveIsWifi(act, false);
@@ -1171,15 +1184,19 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					if (num > 1) {
 						/*handler.removeCallbacks(queryDeviceOnlineTask);
 						handler.postDelayed(queryDeviceOnlineTask, 2000) ;*/
-						if (!taskStatus) {
-							startTimer();
-						}
 					}
-				}else if (position == 2){
+				}else if (position == 2){//wifi
+					stopTimer();
+					if (act.tcpConnected) {
+						act.tcpConnected = false ;
+						NetManager.getInstance().toggleConnectRemote(false);
+					}
 					LogUtils.e("门地址为空","重新选择wifi通道");
 					wifiServer = 2 ;
 					act.requestServeice = false ;
+
 					setBtnBackground(0,0);
+					act.setDoorId("---");
 					setBtnIsEnable(false) ;
 					isFirst = true ;
 					act.frgTool.f_01_010.setReceiveWifiData(false);
@@ -1325,12 +1342,10 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				endReqFlag = true ;
 				act.delay = 5;
 				isQuerySeverEnable = true ;
-				handler.removeCallbacks(queryF1StopTask);
+				handler.removeCallbacks(serverTimeoverResetStatus);
 				/*handler.removeCallbacks(queryDeviceOnlineTask);
 				handler.postDelayed(queryDeviceOnlineTask, 2000) ;*/
-				if (!taskStatus) {
-					startTimer();
-				}
+				startTimer();
 			}
 
 			tv_door_status.setText("停");
@@ -1356,23 +1371,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	private void setPieChart(int open){
-		/*if (currentClick.equals("2")) {
-			if (open < lastDoorDit) {
-				setDoorDit(open) ;
-			}
-		}else if (currentClick.equals("1")) {
-			if (open > lastDoorDit) {
-				setDoorDit(open) ;
-			}
-		}else if (currentClick.equals("3")){
-			if (open == lastDoorDit) {
-				setDoorDit(open) ;
-			}
-		}else {
-			if (open == lastDoorDit) {
-				setDoorDit(open) ;
-			}
-		}*/
 		setDoorDit(open) ;
 	}
 
@@ -1400,13 +1398,11 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	private boolean checkIsNull(Object obj) {
-
 		if (obj == null ||"".equals(obj)  || "-1".equals(obj.toString())) {
 			return true ;
 		}else {
 			return  false ;
 		}
-
 	}
 
 	/**
@@ -1485,7 +1481,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 		}
 	};
-	private Runnable queryIsReceiveWifiData =  new Runnable() {
+	private Runnable wifiTimeOverResetStatus =  new Runnable() {
 		@Override
 		public void run() {
 			if (!endReqFlag) {
@@ -1501,12 +1497,11 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
                     ToastUtils.show(act,"设备回复超时，请再次操作!");
                 }
 				//setCommand(0);
-
 			}
 		}
 	};
 
-	private Runnable twoOpenWifiData =  new Runnable() {
+/*	private Runnable twoOpenWifiData =  new Runnable() {
 		@Override
 		public void run() {
 			if ((openCloseStop != 1 && currentCom.equals("1"))) {
@@ -1516,15 +1511,21 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				handler.removeCallbacks(twoOpenWifiData);
 			}
 		}
-	};
-	private Runnable twoCloseWifiData =  new Runnable() {
+	};*/
+	private Runnable resendWifiData =  new Runnable() {
 		@Override
 		public void run() {
 			if ((openCloseStop != 2 && currentCom.equals("2"))) {
 				setCommand(2);
-				handler.postDelayed(twoCloseWifiData, 1000) ;
+				handler.postDelayed(resendWifiData, 1000) ;
+			}else if ((openCloseStop != 1 && currentCom.equals("1"))) {
+				setCommand(1);
+				handler.postDelayed(resendWifiData, 1000) ;
+			}else if (openCloseStop != 3 && currentCom.equals("3")) {
+				setCommand(3);
+				handler.postDelayed(resendWifiData, 500) ;
 			}else {
-				handler.removeCallbacks(twoCloseWifiData);
+				handler.removeCallbacks(resendWifiData);
 			}
 		}
 	};
@@ -1536,30 +1537,22 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	@Override
 	public void receiveRtuData(RtuData d){
 		onceComReceiveTrue = true ;
-		//super.receiveRtuData(d) ;
-		//this.title.setCompoundDrawables(ImageUtil.getTitlLeftImg_item001(this.act), null, ImageUtil.getTitlRightImg_green(this.act), null);
 		setProgressVisible(0) ;
 		isClickButton = false ;
 		if (isFirst) {
 			isFirst = false ;
 			setBtnBackground(4,0);
 		}
-
 		Data_F1 data = (Data_F1)d.subData ;
 		if (data != null) {
 			displayWifiData(data) ;
-			/*if (fragment_04 != null) {
-				fragment_04.setRtuData(null, null,data,null,++receiveWifiDataNum);
-			}*/
 		}else {
 			ToastUtils.show(act, "F1接收数据为空");
 		}
-
 		if (!endReqFlag) {
 			queryF1Once() ;
 		}
 	}
-
 	public void displayWifiData(Object data1) {
 		if (data1 instanceof Data_F1) {
 			Data_F1 data = (Data_F1)data1;
@@ -1574,7 +1567,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					);
 				}
 			}
-
 			setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
 			setPieChart(data.getDoorOpen()) ; //门开关角度
 			setDoorPowerImg(data.isNormalPower() ? 0 : 1) ; //电池欠压
@@ -1594,7 +1586,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					);
 				}
 			}
-
 			setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
 			setPieChart(data.getDoorOpen()) ; //门开关角度
 			setDoorPowerImg(data.isNormalPower() ? 0 : 1) ; //电池欠压
@@ -1641,9 +1632,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (taskStatus) {
-			stopTimer();
-		}
+		if (task != null) {
+            task.stop();
+        }
 	}
 
 	@Override

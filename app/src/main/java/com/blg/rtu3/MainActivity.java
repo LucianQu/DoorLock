@@ -43,6 +43,7 @@ import android.widget.Toast;
 
 import com.blg.rtu.aidl.ServiceAidl;
 import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Operate;
+import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.MyTimeTask;
 import com.blg.rtu.util.Preferences;
@@ -79,6 +80,7 @@ public class MainActivity  extends Activity {
 	private View pageView_third;// Tab第3页
 	
 	public Boolean tcpConnected = false;
+	public Boolean serverConnected = false;
 	public TextView tcpConnectStatus;
 	public TextView connectDoorId;
 	public TextView tv_connectType;
@@ -141,6 +143,7 @@ public class MainActivity  extends Activity {
 	public boolean requestServeice = true ;
 	public String mIpPort = "http://47.107.34.32:8090" ;
 	private MyTimeTask task ;
+	private boolean taskStatus = false ;
 
 	public void registerMessageReceiver() {
 		mMessageReceiver = new MessageReceiver();
@@ -218,47 +221,6 @@ public class MainActivity  extends Activity {
 				+(ipAddress>>16 & 0xff)+"."+(ipAddress>>24 & 0xff));
 	}
 
-	// 得到MAC地址
-	public String getMacAddress() {
-		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		return (wifiInfo == null) ? "NULL" : wifiInfo.getMacAddress();
-	}
-
-	// 得到接入点的BSSID
-	public String getBSSID() {
-		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		return (wifiInfo == null) ? "NULL" : wifiInfo.getBSSID();
-	}
-
-	public String getSSID() {
-		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		return (wifiInfo == null) ? "NULL" : wifiInfo.getSSID();
-	}
-
-	// 得到IP地址
-	public int getIPAddress() {
-		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		return (wifiInfo == null) ? 0 : wifiInfo.getIpAddress();
-	}
-
-	// 得到连接的ID
-	public int getNetworkId() {
-		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		return (wifiInfo == null) ? 0 : wifiInfo.getNetworkId();
-	}
-
-	// 得到WifiInfo的所有信息包
-	public String getWifiInfo() {
-		WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		return (wifiInfo == null) ? "NULL" : wifiInfo.toString();
-	}
-
 	public Handler mHandler = new Handler() {  
         @Override  
         public void handleMessage(Message msg) {  
@@ -290,7 +252,7 @@ public class MainActivity  extends Activity {
         }  
     };
 	public MyHandler handler = new MyHandler(this) ;
-	private Runnable queryF1Task = new Runnable() {
+	/*private Runnable queryF1Task = new Runnable() {
 		@Override
 		public void run() {
 			if (null != frgTool.f_1_0.httpGet) {
@@ -313,14 +275,18 @@ public class MainActivity  extends Activity {
 			}
 
 		}
-	};
+	};*/
 
 	private Runnable query50Task = new Runnable() {
 		@Override
 		public void run() {
 			if (!frgTool.f_01_010.getRecieveWifiData()) {
-				frgTool.f_01_010.queryCommand();
-				handler.postDelayed(query50Task,1500) ;
+				if (SharepreferenceUtils.getIsWifi(instance) && tcpConnected) {
+					frgTool.f_01_010.queryCommand();
+					handler.postDelayed(query50Task, 2000);
+				}else {
+					handler.removeCallbacks(query50Task);
+				}
 			}
 		}
 	};
@@ -328,16 +294,16 @@ public class MainActivity  extends Activity {
 	public void cancelQuery50() {
 		handler.removeCallbacks(query50Task);
 	}
-	public void cancelQueryf1() {
+	/*public void cancelQueryf1() {
 		handler.removeCallbacks(queryF1Task);
-	}
+	}*/
 
-	private void postDelay5s() {
+/*	private void postDelay5s() {
 		handler.postDelayed(queryF1Task, 2000);
 	}
 	private void postDelay30s() {
 		handler.postDelayed(queryF1Task, 30000);
-	}
+	}*/
 	
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -380,20 +346,28 @@ public class MainActivity  extends Activity {
 
 						}
 					}
-					/*Log.e("获取WIFI IP", "---> :" + getWifiIp() +"\n" +getSSID()+ "\n" +getBSSID() +"\n"
-					+getIPAddress() + "\n" +getNetworkId() + "\n" +getWifiInfo());*/
 				}
 			}
 		});
-		task.start();
+		StartTimer() ;
 	}
 
 	private void stopTimer(){
-		task.stop();
+    	if (taskStatus) {
+    		taskStatus = false ;
+			task.stop();
+		}
+	}
+
+	private void StartTimer(){
+		if (!taskStatus) {
+			taskStatus = true ;
+			task.start();
+		}
 	}
 
 
-	public void postQuery() {
+/*	public void postQuery() {
 		handler.removeCallbacks(queryF1Task);
         if (!frgTool.f_1_0.getCurrentIDIsempty()) {
             if (frgTool.f_1_0.doorNum == 1 || frgTool.f_1_0.clickDeviceId) {
@@ -407,30 +381,28 @@ public class MainActivity  extends Activity {
 				}
             }
         }
-	}
+	}*/
 
 	public void connectWifiAndServer() {
 		if (SharepreferenceUtils.getIsWifi(MainActivity.this)) {
 			updateConnectedType(1);
 			if (this.tcpConnected) {
 				updateConnectedStatus(true);
-				handler.postDelayed(query50Task, 1500);
+				handler.removeCallbacks(query50Task);
+				handler.postDelayed(query50Task, 2000);
 			}else {
 				updateConnectedStatus(false);
-				waitServerStartedAndToConnectNet(SharepreferenceUtils.getWifiIp(instance),
-						SharepreferenceUtils.getWifiPort(instance)) ; //wifi连接
-				//waitServerStartedAndToConnectNet("10.10.100.254", 8899) ; //有人模块
+				LogUtils.e("Lucian--->wifi连接","--->开始连接");
+				/*waitServerStartedAndToConnectNet(SharepreferenceUtils.getWifiIp(instance),
+						SharepreferenceUtils.getWifiPort(instance)) ; //wifi连接*/
+				waitServerStartedAndToConnectNet("10.10.100.254", 8899) ; //有人模块
 			}
 		}else {
 			updateConnectedType(2);
 			updateConnectedStatus(false);
 			if (!frgTool.f_1_0.getCurrentIDIsempty()) {
 				if (frgTool.f_1_0.doorNum == 1 || frgTool.f_1_0.clickDeviceId) {
-					if (delay == 5) {
-						postDelay5s() ;
-					}else {
-						postDelay30s() ;
-					}
+					frgTool.f_1_0.startTimer();
 				}
 			}
 		}
@@ -516,7 +488,9 @@ public class MainActivity  extends Activity {
 		handler.removeCallbacksAndMessages(null);
 		handler = null ;
 		instance = null ;
-		stopTimer();
+		if (task != null) {
+			task.stop();
+		}
 		finish();
 	}
 
@@ -692,7 +666,8 @@ public class MainActivity  extends Activity {
                     //网络已经连接
                     LogUtils.e("wifi连接通知", "已连接");
                     updateConnectedStatus(true);
-                    handler.postDelayed(query50Task, 1500);
+					handler.removeCallbacks(query50Task);
+                    handler.postDelayed(query50Task, 2000);
                 } else {
                     frgTool.f_1_0.setBtnIsEnable(false);
                     updateConnectedStatus(false);

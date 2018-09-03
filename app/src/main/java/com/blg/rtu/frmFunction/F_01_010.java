@@ -251,6 +251,7 @@ public class F_01_010  extends FrmParent {
 		}
 		LogUtils.e("设备列表", SharepreferenceUtils.getDeviceId(act));
 		LogUtils.e("密码列表", SharepreferenceUtils.getPassword(act));
+		act.frgTool.f_1_0.startTimer();
 	}
 
 	/**

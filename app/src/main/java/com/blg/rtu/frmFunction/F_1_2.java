@@ -4,6 +4,8 @@ package com.blg.rtu.frmFunction;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.F2.Data_F2;
 import com.blg.rtu.protocol.p206.F3.Data_F3;
+import com.blg.rtu.util.MyTimeTask;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
@@ -36,8 +39,10 @@ import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 public class F_1_2 extends FrmParent {
 
@@ -65,6 +70,8 @@ public class F_1_2 extends FrmParent {
 	private int reSendNum = 0 ;
 	private String currentAfn = "" ;
 	private String mDtuId ;
+	private MyTimeTask taskWifiQueryTimer;
+	private boolean taskWifiTimerStatus = false ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -77,7 +84,92 @@ public class F_1_2 extends FrmParent {
 		super.onCreate(savedInstanceState);
 		cntFrmOpened = false ;
 		loading = false ;
+		setTimer() ;
 	}
+
+	private void setTimer(){
+		taskWifiQueryTimer =new MyTimeTask(1000, new TimerTask() {
+			@Override
+			public void run() {
+				if (SharepreferenceUtils.getIsWifi(act)) {
+					if (currentAfn.equals("F2") && currentCom.equals("1")) {
+						setCommand(1,1) ;
+					}else if (currentAfn.equals("F2") && currentCom.equals("2")) {
+						setCommand(1,2) ;
+					}else if (currentAfn.equals("F2") && currentCom.equals("3")) {
+						setCommand(1,3) ;
+					}else if (currentAfn.equals("F3") && currentCom.equals("1")) {
+						setCommand(2,1) ;
+					}else if (currentAfn.equals("F3") && currentCom.equals("2")) {
+						setCommand(2,2) ;
+					}else if (currentAfn.equals("F3") && currentCom.equals("3")) {
+						setCommand(2,2) ;
+					}
+				}
+			}
+		});
+	}
+
+	public void stopWifiFunTimer(){
+		if (taskWifiTimerStatus) {
+			taskWifiTimerStatus = false;
+			taskWifiQueryTimer.stop();
+		}
+	}
+	public void startWifiFunTimer(){
+		if (!taskWifiTimerStatus) {
+			taskWifiTimerStatus = true;
+			taskWifiQueryTimer.start();
+		}
+	}
+
+	public F_1_2.MyHandler handler = new F_1_2.MyHandler(act) ;
+	public class MyHandler extends Handler {
+		private final WeakReference<MainActivity> mActivty;
+		private MyHandler(MainActivity mActivty) {
+			this.mActivty = new WeakReference<MainActivity>(mActivty);
+		}
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+		}
+	}
+	private boolean endReqFlag = true ; //结束数据请求
+	private Runnable wifiTimeOverResetStatus =  new Runnable() {
+		@Override
+		public void run() {
+			if (!endReqFlag) {
+				if (currentAfn.equals("F2") && currentCom.equals("1")) {
+					ToastUtils.show(act,"设备未回复超时，请再次操作!");
+					setBtnBackground(1,1);
+				}else if (currentAfn.equals("F2") && currentCom.equals("2")) {
+					ToastUtils.show(act,"设备未回复超时，请再次操作!");
+					setBtnBackground(2,1);
+				}else if (currentAfn.equals("F2") && currentCom.equals("3")) {
+					setBtnBackground(3,1);
+					ToastUtils.show(act,"设备回复超时，请再次操作!");
+				}else if (currentAfn.equals("F3") && currentCom.equals("1")) {
+					ToastUtils.show(act,"设备未回复超时，请再次操作!");
+					setBtnBackground(4,1);
+				}else if (currentAfn.equals("F3") && currentCom.equals("2")) {
+					ToastUtils.show(act,"设备未回复超时，请再次操作!");
+					setBtnBackground(5,1);
+				}else if (currentAfn.equals("F3") && currentCom.equals("3")) {
+					setBtnBackground(6,1);
+					ToastUtils.show(act,"设备回复超时，请再次操作!");
+				}
+			}
+		}
+	};
+
+	private Runnable serverTimeOverResetStatus = new Runnable() {
+		@Override
+		public void run() {
+			if (!endReqFlag ) {
+
+			}
+		}
+	};
 
 	@Override
 	public View onCreateView(
@@ -108,16 +200,17 @@ public class F_1_2 extends FrmParent {
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击开门1");
                 if (Util.checkIsHasLearned(act)) {
-                //if (true) {
-                    setProgressVisible(1);
+					currentCom = "1" ;
+					currentAfn = "F2" ;
+					setOpenCloseStatus(1, 1) ;
                     if (SharepreferenceUtils.getIsWifi(act)) {
-                        setCommand(1,1) ;
+                        startWifiFunTimer();
+						handler.removeCallbacks(wifiTimeOverResetStatus);
+						handler.postDelayed(wifiTimeOverResetStatus, 15000) ;
                     }else {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-							currentCom = "1" ;
-							currentAfn = "F2" ;
 							reSendNum = 2 ;
 							doorContralServer(currentID, currentAfn, currentCom);
 							//act.frgTool.f_1_0.doorContralServer("0102030405", "F2", "1");
@@ -136,16 +229,16 @@ public class F_1_2 extends FrmParent {
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击关门1");
                 if (Util.checkIsHasLearned(act)) {
-					//if (true) {
-                    setProgressVisible(2);
+					currentCom = "2" ;
+					currentAfn = "F2" ;
+					setOpenCloseStatus(1, 2) ;
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(1,2) ;
                     }else {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-							currentCom = "2" ;
-							currentAfn = "F2" ;
+
 							reSendNum = 2 ;
 							doorContralServer(currentID, currentAfn, currentCom);
                         }
@@ -160,8 +253,9 @@ public class F_1_2 extends FrmParent {
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击停止1");
 				if (Util.checkIsHasLearned(act)) {
-					// if (true) {
-                    setProgressVisible(3);
+					currentCom = "3" ;
+					currentAfn = "F2" ;
+					setOpenCloseStatus(1, 3) ;
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(1,3);
                     }else {
@@ -169,8 +263,7 @@ public class F_1_2 extends FrmParent {
 							//if (false) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-							currentCom = "3" ;
-							currentAfn = "F2" ;
+
 							reSendNum = 2 ;
 							doorContralServer(currentID, currentAfn, currentCom);
                         }
@@ -186,16 +279,16 @@ public class F_1_2 extends FrmParent {
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击开门2");
                 if (Util.checkIsHasLearned(act)) {
-					//if (true) {
-                    setProgressVisible(4);
+					currentCom = "1" ;
+					currentAfn = "F3" ;
+					setOpenCloseStatus(2, 1) ;
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(2,1);
                     }else {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-							currentCom = "1" ;
-							currentAfn = "F3" ;
+
 							reSendNum = 2 ;
 							doorContralServer(currentID, currentAfn, currentCom);
                         }
@@ -210,16 +303,16 @@ public class F_1_2 extends FrmParent {
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击关门2");
                 if (Util.checkIsHasLearned(act)) {
-					//if (true) {
-                    setProgressVisible(5);
+					currentCom = "2" ;
+					currentAfn = "F3" ;
+					setOpenCloseStatus(2, 2) ;
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(2,2);
                     }else {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-							currentCom = "2" ;
-							currentAfn = "F3" ;
+
 							reSendNum = 2 ;
 							doorContralServer(currentID, currentAfn, currentCom);
                         }
@@ -234,16 +327,16 @@ public class F_1_2 extends FrmParent {
 			public void onClick(View v) {
 				ToastUtils.show(act, "点击停止2");
                 if (Util.checkIsHasLearned(act)) {
-					//if (true) {
-                    setProgressVisible(6);
+					currentCom = "3" ;
+					currentAfn = "F3" ;
+					setOpenCloseStatus(2, 3) ;
                     if (SharepreferenceUtils.getIsWifi(act)) {
                         setCommand(2,3);
                     }else {
                         if (getCurrentIDIsempty()) {
                             ToastUtils.show(act, "没有可操作的门！");
                         }else {
-							currentCom = "3" ;
-							currentAfn = "F3" ;
+
 							reSendNum = 2 ;
 							doorContralServer(currentID, currentAfn, currentCom);
                         }
@@ -317,6 +410,135 @@ public class F_1_2 extends FrmParent {
             pb_stop2.setVisibility(View.INVISIBLE);
         }
     }
+
+    private void setOpenCloseStatus(int position, int status) {
+		if (position == 1 && status == 1) {
+			setProgressVisible(1);
+			setBtnBackground(1, 2); //红
+			setBtnBackground(2, 0);//灰
+			setBtnBackground(3, 1); //绿
+		}else if (position == 1 && status == 2) {
+			setProgressVisible(2);
+			setBtnBackground(1, 0);
+			setBtnBackground(2, 2);
+			setBtnBackground(3, 1);
+		}else if (position == 1 && status == 3) {
+			setProgressVisible(3);
+			setBtnBackground(1, 1);
+			setBtnBackground(2, 1);
+			setBtnBackground(3, 2);
+		}else if (position == 2 && status == 1) {
+			setProgressVisible(4);
+			setBtnBackground(4, 2); //红
+			setBtnBackground(5, 0);//灰
+			setBtnBackground(6, 1); //绿
+		}else if (position == 2 && status == 2) {
+			setProgressVisible(5);
+			setBtnBackground(4, 0);
+			setBtnBackground(5, 2);
+			setBtnBackground(6, 1);
+		}else if (position == 2 && status == 3) {
+			setProgressVisible(6);
+			setBtnBackground(4, 1);
+			setBtnBackground(5, 1);
+			setBtnBackground(6, 2);
+		}
+	}
+
+	private void setBtnBackground(int position, int status) {
+		if (!isAdded()) {
+			this.onAttach(act);
+		}
+		if (position == 1) {
+			if (status == 1) {
+				tv_open1.setEnabled(true);
+				tv_open1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			}else if (status == 2) {
+				tv_open1.setEnabled(false);
+				tv_open1.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
+			}else {
+				tv_open1.setEnabled(false);
+				tv_open1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			}
+		}else if (position == 2) {
+			if (status == 1) {
+				tv_close1.setEnabled(true);
+				tv_close1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			}else if (status == 2) {
+				tv_close1.setEnabled(false);
+				tv_close1.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
+			}else {
+				tv_close1.setEnabled(false);
+				tv_close1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			}
+		}else if (position == 3) {
+			if (status == 1) {
+				tv_stop1.setEnabled(true);
+				tv_stop1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			}else if (status == 2) {
+				tv_stop1.setEnabled(false);
+				tv_stop1.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
+			}else {
+				tv_stop1.setEnabled(false);
+				tv_stop1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			}
+		}else if (position == 7) {
+			setProgressVisible(0) ;
+			tv_open1.setEnabled(true);
+			tv_close1.setEnabled(true);
+			tv_stop1.setEnabled(true);
+			tv_open1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			tv_close1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			tv_stop1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+		}else if (position == 4) {
+			if (status == 1) {
+				tv_open2.setEnabled(true);
+				tv_open2.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			}else if (status == 2) {
+				tv_open2.setEnabled(false);
+				tv_open2.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
+			}else {
+				tv_open2.setEnabled(false);
+				tv_open2.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			}
+		}else if (position == 5) {
+			if (status == 1) {
+				tv_close2.setEnabled(true);
+				tv_close2.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			}else if (status == 2) {
+				tv_close2.setEnabled(false);
+				tv_close2.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
+			}else {
+				tv_close2.setEnabled(false);
+				tv_close2.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			}
+		}else if (position == 6) {
+			if (status == 1) {
+				tv_stop2.setEnabled(true);
+				tv_stop2.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			}else if (status == 2) {
+				tv_stop2.setEnabled(false);
+				tv_stop2.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
+			}else {
+				tv_stop2.setEnabled(false);
+				tv_stop2.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			}
+		}else {
+			setProgressVisible(0) ;
+			tv_open1.setEnabled(false);
+			tv_close1.setEnabled(false);
+			tv_stop1.setEnabled(false);
+			tv_open2.setEnabled(false);
+			tv_close2.setEnabled(false);
+			tv_stop2.setEnabled(false);
+			tv_open1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			tv_close1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			tv_stop1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			tv_open2.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			tv_close2.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			tv_stop2.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+		}
+	}
 
 
 	public void updateSpinnerValue(String data) {
