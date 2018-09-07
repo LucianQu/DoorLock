@@ -93,7 +93,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	public Callback.Cancelable httpGet ;  //网络请求
 	public String currentCom = "0" ; //当前命令
 	private String currentAfn = "" ; //当前功能码
-	private boolean isFirst = true ; //是否初始请求
+	public boolean isFirst = true ; //是否初始请求
 	public  int  doorNum = 0; //APP存储门ID数量
 	private boolean receiveOpenClose = false ;
 	public boolean clickDeviceId = false ; //判断是否手动点击设备ID

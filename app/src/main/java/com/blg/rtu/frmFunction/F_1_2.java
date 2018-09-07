@@ -84,7 +84,7 @@ public class F_1_2 extends FrmParent {
 		super.onCreate(savedInstanceState);
 		cntFrmOpened = false ;
 		loading = false ;
-		setTimer() ;
+		//setTimer() ;
 	}
 
 	private void setTimer(){
@@ -204,7 +204,7 @@ public class F_1_2 extends FrmParent {
 					currentAfn = "F2" ;
 					setOpenCloseStatus(1, 1) ;
                     if (SharepreferenceUtils.getIsWifi(act)) {
-                        startWifiFunTimer();
+						setCommand(1,1) ;
 						handler.removeCallbacks(wifiTimeOverResetStatus);
 						handler.postDelayed(wifiTimeOverResetStatus, 15000) ;
                     }else {

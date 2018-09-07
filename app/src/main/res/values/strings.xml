@@ -755,7 +755,7 @@
     
     <!-- 间隔一段时间(毫秒)后，再次上线，认为是在同一个RTU上，不再发自动命令 -->
     <string name="intervalStillAtOneRtu">180000</string>
-    
+    <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <!-- 下发命令数据十六进制是否显示于数据窗口中 -->
     <string name="showCommandDataHex">true</string>
     <!-- 当查询命令时，是否显示确认窗口 -->

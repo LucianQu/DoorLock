@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +54,7 @@ public class F_1_3 extends FrmParent {
 	private ImageView clearBtn ;
 
 	private TextView ipPortSend ;
-	//private TextView ipPortReset ;
+	private TextView ipPortReset ;
 	private EditText ipInput ;
 	private EditText portInput ;
 
@@ -63,6 +64,8 @@ public class F_1_3 extends FrmParent {
 	private LinearLayout llSeting ;
 	private LinearLayout llAdminSeting ;
 	private LinearLayout llContent ;
+	private ProgressBar pb_ip_port ;
+	private ProgressBar pb_name_password ;
 
 	private TextView tvLearn ;
 	private boolean isLearning = false;
@@ -112,20 +115,29 @@ public class F_1_3 extends FrmParent {
 	private Runnable timeoverRunable = new Runnable() {
 		@Override
 		public void run() {
-			if (!onceComReceiveTrue && maxNum < 6) {
+			if (!onceComReceiveTrue && maxNum < 3) {
 				maxNum++ ;
+
 				if (SharepreferenceUtils.getIsWifi(act)) {
-					if (clickFlag == 1) {
-						act.frgTool.f_01_010.queryCommand();
-					}else if (clickFlag == 2) {
-						setCommand();
-					}else if (clickFlag == 3) {
-						setCommand();
+					if (act.tcpConnected) {
+						if (clickFlag == 1) {
+							act.frgTool.f_01_010.queryCommand();
+						} else if (clickFlag == 2) {
+							setCommand();
+						} else if (clickFlag == 3) {
+							setCommand();
+						}
 					}
 				}
 				timeOverCheckTask() ;
 			}else {
-				maxNum = 6 ;
+				if (pb_name_password.getVisibility() == View.VISIBLE) {
+					pb_name_password.setVisibility(View.GONE);
+				}
+				if (pb_ip_port.getVisibility() == View.VISIBLE) {
+					pb_ip_port.setVisibility(View.GONE);
+				}
+				maxNum = 3 ;
 				clickFlag = -1 ;
 				handler.removeCallbacks(timeoverRunable);
 			}
@@ -167,6 +179,7 @@ public class F_1_3 extends FrmParent {
 		wifiName = (EditText)view.findViewById(R.id.edt_name) ;
 		wifiPassword = (EditText)view.findViewById(R.id.edt_password) ;
 		wifiNameSend = (TextView) view.findViewById(R.id.tv_name_password) ;
+		pb_name_password = (ProgressBar) view.findViewById(R.id.pb_wifiNamePassword) ;
 		wifiNameSend.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -175,6 +188,7 @@ public class F_1_3 extends FrmParent {
 						clickFlag = 2 ;
 						type = 0 ;
 						act.frgTool.f_1_0.stopTimer();
+						pb_name_password.setVisibility(View.VISIBLE);
 						setCommand();
 						maxNum = 0 ;
 						timeOverCheckTask() ;
@@ -189,27 +203,34 @@ public class F_1_3 extends FrmParent {
 
 		ipInput = (EditText)view.findViewById(R.id.edt_ip) ;
 		portInput = (EditText)view.findViewById(R.id.edt_port) ;
-
-		/*ipPortReset = (TextView) view.findViewById(R.id.tv_ip_port_reset) ;
+		ipPortReset = (TextView) view.findViewById(R.id.tv_ip_port_reset) ;
 		ipPortReset.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new DialogConfirm().showDialog(act,
-						act.getResources().getString(R.string.txtConfirmreset) ,
-						new DialogConfirm.CallBackInterface(){
-							@Override
-							public void dialogCallBack(Object o) {
-								if((Boolean)o){
-									SharepreferenceUtils.saveWifiIp(act, "192.168.4.1");
-									SharepreferenceUtils.saveWifiPort(act, 60009);
-								}else{
+				if (SharepreferenceUtils.getIsWifi(act)) {
+					if (act.tcpConnected) {
+						new DialogConfirm().showDialog(act,
+								act.getResources().getString(R.string.txtConfirmreset),
+								new DialogConfirm.CallBackInterface() {
+									@Override
+									public void dialogCallBack(Object o) {
+										if ((Boolean) o) {
+											sendRtuCommand(new CommandCreator().cd_DA(1, "47.107.34.32", "8401", "", null), false);
+										} else {
 
-								}
-							}
-						}) ;
+										}
+									}
+								});
+					}else {
+						ToastUtils.show(act, "Wifi未连接设备，无法设置");
+					}
+				}else {
+					ToastUtils.show(act, "当前非Wifi连接，无法设置");
+				}
 			}
-		});*/
+		});
 		ipPortSend = (TextView) view.findViewById(R.id.tv_ip_port_send) ;
+		pb_ip_port = (ProgressBar) view.findViewById(R.id.pb_ip_port) ;
 		ipPortSend.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -224,6 +245,7 @@ public class F_1_3 extends FrmParent {
 											clickFlag = 3;
 											type = 1;
 											maxNum = 0;
+											pb_ip_port.setVisibility(View.VISIBLE);
 											setCommand();
 											timeOverCheckTask();
 										} else {
@@ -557,14 +579,18 @@ public class F_1_3 extends FrmParent {
 		if (sd.getType() == 0) {
 			wifiName.setText(sd.getName());
 			wifiPassword.setText(sd.getUser());
+			if (pb_name_password.getVisibility() == View.VISIBLE) {
+				pb_name_password.setVisibility(View.GONE);
+			}
 			ToastUtils.show(act, "修改设备连接WIFI名称和密码成功");
 			//act.frgTool.f_1_0.afterChangeWifiNameSuccess();
 		}else {
 			ipInput.setText(sd.getName());
 			portInput.setText(sd.getUser());
 			ToastUtils.show(act, "修改设备连接服务地址成功");
-			//SharepreferenceUtils.saveWifiIp(act, cacheIp);
-			//SharepreferenceUtils.saveWifiPort(act, cachePort);
+			if (pb_ip_port.getVisibility() == View.VISIBLE) {
+				pb_ip_port.setVisibility(View.GONE);
+			}
 			act.frgTool.f_1_0.afterChangeWifiNameSuccess();
 		}
 		act.frgTool.f_1_0.startTimer();

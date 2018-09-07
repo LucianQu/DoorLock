@@ -663,6 +663,7 @@ public class MainActivity  extends Activity {
                 this.tcpConnected = isConnected;
                 if (this.tcpConnected) {
                     //网络已经连接
+					frgTool.f_1_0.isFirst = true ;
                     LogUtils.e("wifi连接通知", "已连接");
                     updateConnectedStatus(true);
 					handler.removeCallbacks(query50Task);

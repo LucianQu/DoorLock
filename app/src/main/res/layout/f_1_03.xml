@@ -163,58 +163,78 @@
 				/>
 			<LinearLayout
 				android:layout_width="match_parent"
-				android:orientation="horizontal"
+				android:orientation="vertical"
 				android:layout_marginTop="6dp"
 				android:layout_marginLeft="8dp"
 				android:gravity="center_vertical"
 				android:layout_height="wrap_content">
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:gravity="center"
-					android:text="IP地址"
-					/>
-				<EditText
-					android:id="@+id/edt_ip"
-					android:layout_width="140dp"
-					android:layout_marginLeft="@dimen/base10dp"
-					android:layout_height="match_parent"
-					android:gravity="center_vertical|left"
-					android:hint="000.000.000.000 "
-					android:textColorHint = "#8f8e94"
-					android:inputType="numberDecimal"
-					android:digits="0123456789."
-					android:background="@drawable/border1"
-					android:text=""
-					android:textSize="@dimen/text16"
-					android:textColor="@color/black"/>
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_marginLeft="@dimen/base20dp"
-					android:gravity="center"
-					android:text="端口号"
-					/>
-				<EditText
-					android:id="@+id/edt_port"
-					android:layout_width="60dp"
-					android:layout_marginLeft="@dimen/base6dp"
-					android:layout_height="match_parent"
-					android:gravity="center_vertical|left"
-					android:hint="00000 "
-					android:textColorHint = "#8f8e94"
-					android:inputType="number"
-					android:background="@drawable/border1"
-					android:text=""
-					android:textSize="@dimen/text16"
-					android:textColor="@color/black"/>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:orientation="horizontal"
+					android:layout_marginLeft="@dimen/base16dp"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:gravity="center"
+						android:text="IP地址"
+						/>
+					<EditText
+						android:id="@+id/edt_ip"
+						android:layout_width="160dp"
+						android:layout_marginLeft="@dimen/base10dp"
+						android:layout_height="match_parent"
+						android:gravity="center_vertical|left"
+						android:hint="000.000.000.000 "
+						android:textColorHint = "#8f8e94"
+						android:inputType="numberDecimal"
+						android:digits="0123456789."
+						android:background="@drawable/border1"
+						android:text=""
+						android:textSize="@dimen/text16"
+						android:textColor="@color/black"/>
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/base4dp"
+                    android:layout_marginLeft="@dimen/base16dp"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:gravity="center"
+						android:text="端口号"
+						/>
+					<EditText
+						android:id="@+id/edt_port"
+						android:layout_width="160dp"
+						android:layout_marginLeft="@dimen/base10dp"
+						android:layout_height="match_parent"
+						android:gravity="center_vertical|left"
+						android:hint="00000 "
+						android:textColorHint = "#8f8e94"
+						android:inputType="number"
+						android:background="@drawable/border1"
+						android:text=""
+						android:textSize="@dimen/text16"
+						android:textColor="@color/black"/>
+				</LinearLayout>
+
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="match_parent"
-				android:orientation="horizontal"
+				android:orientation="vertical"
 				android:layout_marginTop="6dp"
 				android:gravity="center"
 				android:layout_height="wrap_content">
+				<ProgressBar
+					android:id="@+id/pb_ip_port"
+					android:visibility="visible"
+					style="?android:attr/progressBarStyleSmall"
+					android:layout_gravity="center"
+					android:layout_width="30dp"
+					android:layout_height="30dp" />
 				<TextView
 					android:id="@+id/tv_ip_port_send"
 					android:layout_width="70dp"
@@ -225,7 +245,7 @@
 					android:textSize="@dimen/tx16sp"
 					/>
 			</LinearLayout>
-			<!--<LinearLayout
+			<LinearLayout
 				android:layout_width="match_parent"
 				android:orientation="horizontal"
 				android:layout_marginTop="6dp"
@@ -240,7 +260,7 @@
 					android:text="恢复出厂"
 					android:textSize="14sp"
 					/>
-			</LinearLayout>-->
+			</LinearLayout>
 		</LinearLayout>
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -261,57 +281,75 @@
 				/>
 			<LinearLayout
 				android:layout_width="match_parent"
-				android:orientation="horizontal"
+				android:orientation="vertical"
 				android:layout_marginTop="6dp"
 				android:layout_marginLeft="8dp"
 				android:gravity="center_vertical"
 				android:layout_height="wrap_content">
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:gravity="center"
-					android:text="Wifi名称"
-					/>
-				<EditText
-					android:id="@+id/edt_name"
-					android:layout_width="100dp"
-					android:layout_marginLeft="@dimen/base10dp"
-					android:layout_height="match_parent"
-					android:gravity="center_vertical|left"
-					android:hint="名称"
-					android:textColorHint = "#8f8e94"
-					android:background="@drawable/border1"
-					android:text=""
-					android:textSize="@dimen/text16"
-					android:textColor="@color/black"/>
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_marginLeft="@dimen/base20dp"
-					android:gravity="center"
-					android:text="Wifi密码"
-					/>
-				<EditText
-					android:id="@+id/edt_password"
-					android:layout_width="80dp"
-					android:layout_marginLeft="@dimen/base6dp"
-					android:layout_marginRight="@dimen/base2dp"
-					android:layout_height="match_parent"
-					android:gravity="center_vertical|left"
-					android:hint="密码"
-					android:textColorHint = "#8f8e94"
-					android:inputType="number"
-					android:background="@drawable/border1"
-					android:text=""
-					android:textSize="@dimen/text16"
-					android:textColor="@color/black"/>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/base16dp"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:gravity="center"
+						android:text="Wifi名称"
+						/>
+					<EditText
+						android:id="@+id/edt_name"
+						android:layout_width="160dp"
+						android:layout_marginLeft="@dimen/base10dp"
+						android:layout_height="match_parent"
+						android:gravity="center_vertical|left"
+						android:hint="名称"
+						android:textColorHint = "#8f8e94"
+						android:background="@drawable/border1"
+						android:text=""
+						android:textSize="@dimen/text16"
+						android:textColor="@color/black"/>
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/base16dp"
+					android:layout_marginTop="@dimen/base4dp"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:gravity="center"
+						android:text="Wifi密码"
+						/>
+					<EditText
+						android:id="@+id/edt_password"
+						android:layout_width="160dp"
+						android:layout_marginLeft="@dimen/base10dp"
+						android:layout_marginRight="@dimen/base2dp"
+						android:layout_height="match_parent"
+						android:gravity="center_vertical|left"
+						android:hint="密码"
+						android:textColorHint = "#8f8e94"
+						android:background="@drawable/border1"
+						android:text=""
+						android:textSize="@dimen/text16"
+						android:textColor="@color/black"/>
+				</LinearLayout>
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="match_parent"
-				android:orientation="horizontal"
+				android:orientation="vertical"
 				android:layout_marginTop="6dp"
 				android:gravity="center"
 				android:layout_height="wrap_content">
+				<ProgressBar
+					android:id="@+id/pb_wifiNamePassword"
+					android:visibility="visible"
+					style="?android:attr/progressBarStyleSmall"
+					android:layout_gravity="center"
+					android:layout_width="30dp"
+					android:layout_height="30dp" />
 				<TextView
 					android:id="@+id/tv_name_password"
 					android:layout_width="70dp"
