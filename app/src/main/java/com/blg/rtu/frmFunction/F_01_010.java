@@ -190,6 +190,7 @@ public class F_01_010  extends FrmParent {
 				item01.setText(d.getRtuId() + "");
 				item02.setText(sd.getPassWord());
 				if (act.frgTool.f_1_3.learningClick()) {
+					act.frgTool.f_1_3.onceComReceiveTrue = true ;
 					SharepreferenceUtils.saveHasLearn(act, true);
 					act.frgTool.f_1_3.setLearningClickStatus(false);
 					if (!"".equals(deviceID)) {

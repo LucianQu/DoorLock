@@ -4,6 +4,8 @@ package com.blg.rtu.frmFunction;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,7 @@ import com.lidroid.xutils.http.client.HttpRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,7 +53,7 @@ public class F_1_3 extends FrmParent {
 	private ImageView clearBtn ;
 
 	private TextView ipPortSend ;
-	private TextView ipPortReset ;
+	//private TextView ipPortReset ;
 	private EditText ipInput ;
 	private EditText portInput ;
 
@@ -67,6 +70,9 @@ public class F_1_3 extends FrmParent {
 	private String cacheIp = "192.168.4.1" ;
 	private int cachePort = 60009 ;
 
+	public boolean onceComReceiveTrue = false ;
+	private int clickFlag = -1 ;
+	private int maxNum = 6 ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -81,6 +87,51 @@ public class F_1_3 extends FrmParent {
 		loading = false ;
 	}
 
+	public F_1_3.MyHandler handler = new F_1_3.MyHandler(act) ;
+	public class MyHandler extends Handler {
+		private final WeakReference<MainActivity> mActivty;
+		private MyHandler(MainActivity mActivty) {
+			this.mActivty = new WeakReference<MainActivity>(mActivty);
+		}
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+		}
+	}
+
+	private void timeOverCheckTask() {
+		onceComReceiveTrue = false ;
+		handler.removeCallbacks(timeoverRunable);
+		if (SharepreferenceUtils.getIsWifi(act)) {
+			handler.postDelayed(timeoverRunable, 1500) ;
+		}else {
+		}
+
+	}
+
+	private Runnable timeoverRunable = new Runnable() {
+		@Override
+		public void run() {
+			if (!onceComReceiveTrue && maxNum < 6) {
+				maxNum++ ;
+				if (SharepreferenceUtils.getIsWifi(act)) {
+					if (clickFlag == 1) {
+						act.frgTool.f_01_010.queryCommand();
+					}else if (clickFlag == 2) {
+						setCommand();
+					}else if (clickFlag == 3) {
+						setCommand();
+					}
+				}
+				timeOverCheckTask() ;
+			}else {
+				maxNum = 6 ;
+				clickFlag = -1 ;
+				handler.removeCallbacks(timeoverRunable);
+			}
+		}
+	};
+
 	@Override
 	public View onCreateView(
 			LayoutInflater inflater, 
@@ -93,13 +144,20 @@ public class F_1_3 extends FrmParent {
 		tvLearn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (act.tcpConnected) {
-					isLearning = true;
-					ToastUtils.show(act, "门学习");
-					act.frgTool.f_1_0.stopTimer();
-					act.frgTool.f_01_010.queryCommand();
+				if (SharepreferenceUtils.getIsWifi(act)) {
+					if (act.tcpConnected) {
+						clickFlag = 1;
+						isLearning = true;
+						ToastUtils.show(act, "门学习");
+						act.frgTool.f_1_0.stopTimer();
+						act.frgTool.f_01_010.queryCommand();
+						maxNum = 0;
+						timeOverCheckTask();
+					} else {
+						ToastUtils.show(act, "未联网，无法学习!");
+					}
 				}else {
-					ToastUtils.show(act, "未联网，无法学习!");
+					ToastUtils.show(act, "当前非Wifi连接，无法设置");
 				}
 				//addId() ;
 			}
@@ -114,8 +172,12 @@ public class F_1_3 extends FrmParent {
 			public void onClick(View v) {
 				if (SharepreferenceUtils.getIsWifi(act)) {
 					if (act.tcpConnected) {
+						clickFlag = 2 ;
 						type = 0 ;
+						act.frgTool.f_1_0.stopTimer();
 						setCommand();
+						maxNum = 0 ;
+						timeOverCheckTask() ;
 					}else {
 						ToastUtils.show(act, "Wifi未连接设备，无法设置");
 					}
@@ -128,7 +190,7 @@ public class F_1_3 extends FrmParent {
 		ipInput = (EditText)view.findViewById(R.id.edt_ip) ;
 		portInput = (EditText)view.findViewById(R.id.edt_port) ;
 
-		ipPortReset = (TextView) view.findViewById(R.id.tv_ip_port_reset) ;
+		/*ipPortReset = (TextView) view.findViewById(R.id.tv_ip_port_reset) ;
 		ipPortReset.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -146,26 +208,33 @@ public class F_1_3 extends FrmParent {
 							}
 						}) ;
 			}
-		});
+		});*/
 		ipPortSend = (TextView) view.findViewById(R.id.tv_ip_port_send) ;
 		ipPortSend.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-                if (checkBeforeSet()) {
-                    new DialogConfirm().showDialog(act,
-                            act.getResources().getString(R.string.txtConfirmSend1) ,
-                            new DialogConfirm.CallBackInterface(){
-                                @Override
-                                public void dialogCallBack(Object o) {
-                                    if((Boolean)o){
-                                       type = 1;
-                                       setCommand();
-                                    }else{
-                                        //ToastUtils.show(act, "已取消");
-                                    }
-                                }
-                            }) ;
-                }
+				if (SharepreferenceUtils.getIsWifi(act)) {
+					if (checkBeforeSet()) {
+						new DialogConfirm().showDialog(act,
+								act.getResources().getString(R.string.txtConfirmSend1),
+								new DialogConfirm.CallBackInterface() {
+									@Override
+									public void dialogCallBack(Object o) {
+										if ((Boolean) o) {
+											clickFlag = 3;
+											type = 1;
+											maxNum = 0;
+											setCommand();
+											timeOverCheckTask();
+										} else {
+											//ToastUtils.show(act, "已取消");
+										}
+									}
+								});
+					}
+				}else {
+					ToastUtils.show(act, "当前非Wifi连接，无法设置");
+				}
 			}
 		});
 
@@ -228,15 +297,6 @@ public class F_1_3 extends FrmParent {
 		return view ;
 	}
 
-/*	int i = 1 ;
-	private void addId(){
-		RtuData rtuData = new RtuData();
-		rtuData.rtuId = "102030400"+ (i++) ;
-		Data_10_50 data_10_50 = new Data_10_50() ;
-		data_10_50.setPassWord("0102");
-		rtuData.subData = data_10_50 ;
-		act.frgTool.f_01_010.receiveRtuData(rtuData);
-	}*/
 
     private boolean checkBeforeSet() {
         boolean corrent = false ;
@@ -492,21 +552,22 @@ public class F_1_3 extends FrmParent {
 	 */
 	@Override
 	public void receiveRtuData(RtuData d){
-		//super.receiveRtuData(d) ;
+		onceComReceiveTrue = true ;
 		Data_CA_DA sd = (Data_CA_DA)d.subData ;
 		if (sd.getType() == 0) {
 			wifiName.setText(sd.getName());
 			wifiPassword.setText(sd.getUser());
-			ToastUtils.show(act, "修改Wifi名称密码成功，请重新连接Wifi热点");
-			act.frgTool.f_1_0.afterChangeWifiNameSuccess();
+			ToastUtils.show(act, "修改设备连接WIFI名称和密码成功");
+			//act.frgTool.f_1_0.afterChangeWifiNameSuccess();
 		}else {
 			ipInput.setText(sd.getName());
 			portInput.setText(sd.getUser());
-			ToastUtils.show(act, "修改Wifi端口号IP地址成功，请重新连接Wifi热点");
-			SharepreferenceUtils.saveWifiIp(act, cacheIp);
-			SharepreferenceUtils.saveWifiPort(act, cachePort);
+			ToastUtils.show(act, "修改设备连接服务地址成功");
+			//SharepreferenceUtils.saveWifiIp(act, cacheIp);
+			//SharepreferenceUtils.saveWifiPort(act, cachePort);
 			act.frgTool.f_1_0.afterChangeWifiNameSuccess();
 		}
+		act.frgTool.f_1_0.startTimer();
 	}
 	/**
 	 * 导出设置数据
