@@ -230,7 +230,7 @@
 				android:layout_height="wrap_content">
 				<ProgressBar
 					android:id="@+id/pb_ip_port"
-					android:visibility="visible"
+					android:visibility="gone"
 					style="?android:attr/progressBarStyleSmall"
 					android:layout_gravity="center"
 					android:layout_width="30dp"
@@ -345,7 +345,7 @@
 				android:layout_height="wrap_content">
 				<ProgressBar
 					android:id="@+id/pb_wifiNamePassword"
-					android:visibility="visible"
+					android:visibility="gone"
 					style="?android:attr/progressBarStyleSmall"
 					android:layout_gravity="center"
 					android:layout_width="30dp"
