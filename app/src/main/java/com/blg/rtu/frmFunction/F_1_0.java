@@ -145,7 +145,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 		});
 	}
-
 	public void stopTimer(){
 		LogUtils.e("Lucian--->","停止定时器");
 		if (taskStatus) {
@@ -167,15 +166,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			task.start();
 		}
 	}
-
 	@Override
-	public View onCreateView(
-			LayoutInflater inflater, 
-			ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.f_1_00, container, false);
-		//queue = Volley.newRequestQueue(getActivity());
-
 		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
@@ -190,27 +183,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 		});
 		tv_doorList.setEnabled(false);
-		/*spinner = (ReSpinner)view.findViewById(R.id.spinner_doorList);
-		spinnerAdapter1 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
-		this.putSpinnerValue1();
-		spinnerAdapter1.setDropDownViewResource(R.layout.spinner_item);
-		spinner.setAdapter(spinnerAdapter1);
-		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
-		spinner.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				ToastUtils.show(act, "长按选择");
-				return false;
-			}
-		});
-		spinner.setOnLongClickListener(new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-				ToastUtils.show(act, "长按");
-				return false;
-			}
-		});*/
-
 		spinner2 = (Spinner)view.findViewById(R.id.spinner_communication);
 		spinnerAdapter2 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
 		spinnerAdapter2.setDropDownViewResource(R.layout.spinner_item);
@@ -291,7 +263,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 		});
 		pb_close = (ProgressBar) view.findViewById(R.id.pb_close);
-
 		tv_stop = (TextView) view.findViewById(R.id.tv_stop) ;
 		tv_stop.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -330,18 +301,14 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		pb_stop= (ProgressBar) view.findViewById(R.id.pb_stop);
 		pieChart = (PieChartView) view.findViewById(R.id.pie_chart);
 		pieChart.setOnValueTouchListener(selectListener);//设置点击事件监听
-
 		imgDoorPower = (ImageView) view.findViewById(R.id.img_door_power) ;
 		imgDoorAlarm = (ImageView) view.findViewById(R.id.img_door_alarm) ;
-
 		setPieChartData();
 		initPieChart();
 		return view ;
 	}
-
 	@Override
 	public void senddata(String msg) {
-		//ToastUtils.show(act, msg);
 		position = Integer.parseInt(msg) ;
 		if (!SharepreferenceUtils.getIsWifi(act) && wifiServer == 1) {
 			if (doorList.size() > 0) {
@@ -368,10 +335,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			ToastUtils.show(act, "请注意：当前通信类型为WIFI");
 		}
 	}
-
 	@Override
 	public void longClick(int position) {
-		//ToastUtils.show(act, "长按" + position);
 		if (this.position == position) {
 			act.setDoorId("---");
 			isFirst = true ;
@@ -387,7 +352,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			handler.removeCallbacksAndMessages(null);
 			act.updateConnectedStatus(false);
         }
-
         String deviceID = SharepreferenceUtils.getDeviceId(act) ;
         String password = SharepreferenceUtils.getPassword(act) ;
         LogUtils.e("设备列表", deviceID);
@@ -433,12 +397,10 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
         act.frgTool.f_1_2.putSpinnerValue1();
 	}
-
 	public void removeHandler() {
 		handler.removeCallbacksAndMessages(null);
 		handler = null ;
 	}
-
 	public MyHandler handler = new MyHandler(act) ;
 	public class MyHandler extends Handler {
 		private final WeakReference<MainActivity> mActivty;
@@ -450,33 +412,17 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			super.handleMessage(msg);
 		}
 	}
-
 	private Runnable operatorTimeOverResetStatus =  new Runnable() {
 		@Override
 		public void run() {
-			if (SharepreferenceUtils.getIsWifi(act)) {
-				if (!endReqFlag) {
-					if (currentCom.equals("1")) {
-						ToastUtils.show(act, "设备未回复超时，请再次操作!");
-						setBtnBackground(1, 1);
-					} else if (currentCom.equals("2")) {
-						ToastUtils.show(act, "设备未回复超时，请再次操作!");
-						setBtnBackground(2, 1);
-					} else if (currentCom.equals("3")) {
-						setBtnBackground(3, 1);
-						ToastUtils.show(act, "设备回复超时，请再次操作!");
-					}
-				}else {
-					if (!endReqFlag ) {
-						receiveOpenClose = false;
-						currentCom = "0";
-						setBtnIsEnable(true);
-						endReqFlag = true;
-						isQuerySeverEnable = true ;
-					}
-				}
-				startTimer();//超时开始普通查询
-			}
+			ToastUtils.show(act, "设备回复超时，请再次操作!");
+			setProgressVisible(0) ;
+			receiveOpenClose = false;
+			currentCom = "0";
+			setBtnIsEnable(true);
+			endReqFlag = true;
+			isQuerySeverEnable = true ;
+			startTimer();//超时开始普通查询
 		}
 	};
 
@@ -677,23 +623,23 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					LogUtils.e("----->接收到服务器返回数据", "-----> 在线" );
 					act.requestServeice = true;
 					if (!deviceNetStatus) {
-						if (!SharepreferenceUtils.getIsWifi(act)) {
-							deviceNetStatus = true;
-							setBtnIsEnable(true);
-							setBtnBackground(4, 0);
-							act.updateConnectedStatus(true);
-						}
+						deviceNetStatus = true;
+						setBtnIsEnable(true);
+						setBtnBackground(4, 0);
+						act.updateConnectedStatus(true);
 					}
 				}else {
 					LogUtils.e("----->接收到服务器返回数据", "-----> 不在线" );
 					act.requestServeice = false ;
 					if (deviceNetStatus) {
-						if (!SharepreferenceUtils.getIsWifi(act)) {
 							deviceNetStatus = false;
 							setBtnIsEnable(false);
+							setDoorDit(0);
+							tv_door_status.setText("停");
+							tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
+							tv_jiaquan.setText("---");
 							setBtnBackground(0, 0);
 							act.updateConnectedStatus(false);
-						}
 					}
 				}
 			}
