@@ -5,13 +5,7 @@ import android.util.Log;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.common.ControlProtocol;
 import com.blg.rtu.protocol.p206.common.ProtocolSupport;
-import com.blg.rtu.protocol.p206.common.RtuIdProtocol;
-import com.blg.rtu.protocol.p206.util.Constant;
 import com.blg.rtu.util.ByteUtil;
-import com.blg.rtu.util.SharepreferenceUtils;
-import com.blg.rtu.util.ToastUtils;
-import com.blg.rtu3.MainActivity;
-import com.blg.rtu3.utils.LogUtils;
 
 //设置、查询遥测终端地址，中继站地址
 
@@ -42,8 +36,8 @@ public class Answer_10_50 extends ProtocolSupport{
 		d.setSubData(subD) ;
 		try {
 			String password = ByteUtil.bytes2Hex(new byte[]{b[index++],b[index++]}, false) ;
-			SharepreferenceUtils.saveComPassword(MainActivity.instance,password);
-			LogUtils.e("保存通信密码", password);
+			/*SharepreferenceUtils.saveComPassword(MainActivity.instance,password);
+			LogUtils.e("保存通信密码", password);*/
 			subD.setPassWord(password);
 		}catch (Exception e) {
 		}

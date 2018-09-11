@@ -17,9 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.blg.rtu.frmChannel.ChFragment_04;
 import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.CommandCreator;
@@ -47,7 +44,6 @@ import com.lidroid.xutils.http.client.HttpRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
-import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -90,6 +86,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 
 	private DoorStatus doorStatus ; //门状态
 	public String currentID = "" ; //当前门ID
+	public String currentPassword = "" ; //当前门ID
 	public Callback.Cancelable httpGet ;  //网络请求
 	public String currentCom = "0" ; //当前命令
 	private String currentAfn = "" ; //当前功能码
@@ -108,6 +105,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private TextView tv_doorList ;
 	private AddPopWindow popWindow;
 	private List<String> doorList = new ArrayList<String>() ;
+	private List<String> passwordList = new ArrayList<String>() ;
 	private int position = 0 ;
 	private MyTimeTask task ;
 	private boolean taskStatus = false ;
@@ -316,11 +314,12 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				LogUtils.e("点击item次数", num + "");
 				if (num > 0) {
 					clickDeviceId = true;
-					if (!SharepreferenceUtils.getIsWifi(act) && act.requestServeice) {
+					if (!SharepreferenceUtils.getIsWifi(act) ) {
 						startTimer();
 					}
 					isFirst = true ;
 					currentID = doorList.get(position);
+					currentPassword = passwordList.get(position) ;
 					act.frgTool.f_1_2.setCurrentPosition(position);
 					act.frgTool.f_1_2.setCurrentID(currentID);
 					act.delay = 5 ;
@@ -328,6 +327,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					LogUtils.e("选择的门锁地址", currentID);
                     tv_doorList.setText(currentID);
 					initDeviceConnect() ;
+					//deviceNetStatus = false ;
 					act.setDoorId(currentID);
 				}
 			}
@@ -343,6 +343,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			clickDeviceId = true;
 		    tv_doorList.setHint("请选择门地址");
 			currentID = "" ;
+			currentPassword = "0000" ;
 			this.position = 0 ;
 			receiveOpenClose = false;
 			currentCom = "0";
@@ -351,6 +352,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			isQuerySeverEnable = true ;
 			handler.removeCallbacksAndMessages(null);
 			act.updateConnectedStatus(false);
+			stopTimer();
         }
         String deviceID = SharepreferenceUtils.getDeviceId(act) ;
         String password = SharepreferenceUtils.getPassword(act) ;
@@ -494,6 +496,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	public void setCurrentPosition(int position) {
 		if (doorList.size() != 0) {
 			this.position = position ;
+			currentPassword = passwordList.get(position) ;
 			tv_doorList.setText(doorList.get(position));
 		}
 	}
@@ -507,9 +510,11 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			params.addBodyParameter("tp",tp);
 			params.addBodyParameter("code",code);
 			params.addBodyParameter("flag",flag);
+			params.addBodyParameter("password",currentPassword);
 			final HttpUtils http = new HttpUtils();
 			http.configCurrentHttpCacheExpiry(1000 * 5);
-			LogUtils.e("-->门控制服务", url +"dtuId="+ dtuId+"&code=" +code+"&tp="+tp+"&flag="+flag);
+			LogUtils.e("-->门控制服务", url +"dtuId="+
+                    dtuId+"&code=" +code+"&tp="+tp+"&flag="+flag+"&password="+currentPassword);
 			LogUtils.e("--->请求开始时间", Util.getCurrentTime());
 
 			http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
@@ -540,7 +545,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						if (null == returnDtuId || "null".equals(returnDtuId) || "".equals(returnDtuId)) {
 							//ToastUtils.show(act, "产品ID为空，数据未知!");
 						} else {
-							if (dtuId.equals(returnDtuId)) {
+							if (currentID.equals(returnDtuId)) {
 								String code = jsonResult.getString("succ");
 								if (code.equals("1")) {
 									Gson gson = new Gson();
@@ -549,16 +554,18 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 									if (null != doorStatus) {
 										if (isFirst) {
 											isFirst = false ;
-											setBtnIsEnable(true);
+										/*	setBtnIsEnable(true);
 											setBtnBackground(4,0);
-											startTimer();
+											startTimer();*/
 										}else {
 										}
-										act.updateConnectedStatus(true);
-										displayServiceData(doorStatus);
-										pintServiceData(doorStatus);
-										if (!endReqFlag) {
-											queryF1Once();
+										if (deviceNetStatus) {
+											act.updateConnectedStatus(true);
+											displayServiceData(doorStatus);
+											pintServiceData(doorStatus);
+											if (!endReqFlag) {
+												queryF1Once();
+											}
 										}
 									} else {
 										//ToastUtils.show(act, "服务获取数据为空！");
@@ -623,6 +630,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					LogUtils.e("----->接收到服务器返回数据", "-----> 在线" );
 					act.requestServeice = true;
 					if (!deviceNetStatus) {
+						startTimer();
 						deviceNetStatus = true;
 						setBtnIsEnable(true);
 						setBtnBackground(4, 0);
@@ -797,7 +805,14 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 			popWindow = new AddPopWindow(getActivity(), doorList);
 			popWindow.setChoice(this);
-
+            String passwordStr = SharepreferenceUtils.getPassword(act) ;
+            String[] arrPw = passwordStr.split("-") ;
+            passwordList.clear();
+            if (arrPw.length >= 1) {
+                for (int i = 0; i < arrPw.length; i++) {
+                    passwordList.add(arrPw[arrPw.length -i-1]) ;
+                }
+            }
 		}else {
 		}
 
@@ -817,6 +832,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		setBtnBackground(0,0); //初始化按钮状态灰色，不使能
 		setDoorButtonImg(3);
 		setPieChart(0);
+		tv_jiaquan.setText("---");
 	}
 
 	private class SpinnerSelectedListener2 implements AdapterView.OnItemSelectedListener {

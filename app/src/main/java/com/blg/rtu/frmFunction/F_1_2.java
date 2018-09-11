@@ -596,6 +596,7 @@ public class F_1_2 extends FrmParent {
 		requestParams.addBodyParameter("dtuId", dtuId);
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
+		requestParams.addBodyParameter("password",act.frgTool.f_1_0.currentPassword);
 		LogUtils.e("门控制服务", requestParams.toString());
 		x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override

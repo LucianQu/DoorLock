@@ -201,11 +201,11 @@ public class F_01_010  extends FrmParent {
 							int position = -1;
 							for (int i = 0; i < listId.length; i++) {
 								if (d.getRtuId().equals(listId[i])) {
-									listPassword[i] = sd.getPassWord() + "";
+									SharepreferenceUtils.saveComPassword(act,listPassword[i]);
 									position = i;
 								}
 							}
-							if (position != -1) {
+							/*if (position != -1) {
 								String ids = "";
 								String pws = "";
 								for (int j = 0; j < listId.length; j++) {
@@ -219,8 +219,9 @@ public class F_01_010  extends FrmParent {
 								}
 								SharepreferenceUtils.saveDeviceId(act, ids);
 								SharepreferenceUtils.savePassword(act, pws);
-							}
+							}*/
 						} else {
+							SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
 							SharepreferenceUtils.saveDeviceId(act, deviceID + "-" + d.getRtuId());
 							SharepreferenceUtils.savePassword(act, password + "-" + sd.getPassWord());
 						}
@@ -236,6 +237,14 @@ public class F_01_010  extends FrmParent {
 					if (!"".equals(deviceID)) {
 						if (deviceID.contains(d.getRtuId())) {
 							SharepreferenceUtils.saveHasLearn(act, true);
+							String[] listId = deviceID.split("-");
+							String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
+							for (int i = 0; i < listId.length; i++) {
+								if (d.getRtuId().equals(listId[i])) {
+									SharepreferenceUtils.saveComPassword(act,listPassword[i]);
+								}
+							}
+
 							act.setDoorId(d.getRtuId());
 							act.frgTool.f_1_0.setCommand(0);
 						} else {
