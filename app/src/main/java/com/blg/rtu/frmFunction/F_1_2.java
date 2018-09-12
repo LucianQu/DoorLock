@@ -618,36 +618,19 @@ public class F_1_2 extends FrmParent {
 									String data = jsonResult.getString("rltState");
 									doorStatus = gson.fromJson(data, DoorStatus.class);
 									if (null != doorStatus) {
-										act.updateConnectedStatus(true);
-										act.frgTool.f_1_0.displayServiceData(doorStatus);
-										act.frgTool.f_1_0.pintServiceData(doorStatus);
-										if (reSendNum >0 && ("1".equals(currentCom) || "2".equals(currentCom))) {
-											reSendNum -- ;
-											doorContralServer(currentID, currentAfn, "0");
-										}else {
-											reSendNum = 0;
-											if ("1".equals(currentCom)) {
-												if (null != doorStatus && doorStatus.getDoorState()== 1) {
-													//act.second30 = seconds5 ;
-												}
-											}else if ("2".equals(currentCom)) {
-												if (null != doorStatus && doorStatus.getDoorState() == 2) {
-													//act.second30 = seconds5 ;
-												}
-											}
-										}
-										//ToastUtils.show(act, "服务获取数据成功");
+										//act.updateConnectedStatus(true);
+										//act.frgTool.f_1_0.displayServiceData(doorStatus);
+										//act.frgTool.f_1_0.pintServiceData(doorStatus);
+										ToastUtils.show(act, "附加功能-获取服务数据成功");
 									} else {
-										ToastUtils.show(act, "服务获取数据为空！");
+										ToastUtils.show(act, "附加功能-获取服务数据为空");
 									}
 								} else {
 									String msg = jsonResult.getString("error");
 									if (msg.equals("设备尚未上线，命令发送失败！")) {
-										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备未上线！");
-										//act.second30 = minute10 ; //设备未上线，10分钟后再试
+										ToastUtils.show(act, "附加功能-" + "设备未上线！");
 									} else if (msg.contains("超时")) {
-										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
-										//act.second30 = minute2; //设备回复超时，2分钟后再试
+										ToastUtils.show(act, "附加功能-" + "设备回复数据超时！");
 									}
 
 								}
@@ -663,24 +646,7 @@ public class F_1_2 extends FrmParent {
 			}
 			@Override
 			public void onError(Throwable ex, boolean isOnCallback) {
-				ToastUtils.show(act, "服务获取数据错误："+ex.getMessage());
-				if (ex.getMessage().contains("failed to connect to")) {
-					ToastUtils.show(act, "手机网络异常，请检查网络!");
-					//act.second30 = minute30 ; //服务异常，30分钟后再试
-				}
-				LogUtils.e("onError", "请求失败");
 				setProgressVisible(0) ;
-
-				if (ex instanceof HttpException) { // 网络错误
-					HttpException httpEx = (HttpException) ex;
-					int responseCode = httpEx.getCode();
-					String responseMsg = httpEx.getMessage();
-					String errorResult = httpEx.getResult();
-					// ...
-				} else { // 其他错误
-					// ...
-				}
-
 			}
 
 			@Override
