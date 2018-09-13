@@ -25,6 +25,7 @@ import com.blg.rtu.protocol.p206.F2.Data_F2;
 import com.blg.rtu.protocol.p206.F3.Data_F3;
 import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.DialogAlarm;
+import com.blg.rtu.util.DialogConfirm;
 import com.blg.rtu.util.MyTimeTask;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
@@ -106,9 +107,11 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private AddPopWindow popWindow;
 	private List<String> doorList = new ArrayList<String>() ;
 	private List<String> passwordList = new ArrayList<String>() ;
-	private int position = 0 ;
+	private int positionId = 0 ;
 	private MyTimeTask task ;
 	private boolean taskStatus = false ;
+	private DialogConfirm dialogConfirm ;
+	private boolean isShowing = false ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -131,8 +134,10 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				if (!SharepreferenceUtils.getIsWifi(act)) {
 					if (!getCurrentIDIsempty()) {
 						if (isQuerySeverEnable) {
-							queryServerStatus(currentID);
-							doorContralServer(currentID, "F1", "0","0");
+							if (!"".equals(currentID)) {
+								queryServerStatus(currentID);
+								doorContralServer(currentID, "F1", "0", "0");
+							}
 						}
 					}
 				}else {
@@ -170,9 +175,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
-		SharepreferenceUtils.saveHasLearn(act, true);
+		/*SharepreferenceUtils.saveHasLearn(act, true);
 		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
-		SharepreferenceUtils.savePassword(act,"0102-0102-0102-0102");
+		SharepreferenceUtils.savePassword(act,"0102-0102-0102-0102");*/
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		tv_doorList.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -307,7 +312,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 	@Override
 	public void senddata(String msg) {
-		position = Integer.parseInt(msg) ;
+		positionId = Integer.parseInt(msg) ;
 		if (!SharepreferenceUtils.getIsWifi(act) && wifiServer == 1) {
 			if (doorList.size() > 0) {
 				num++ ;
@@ -318,9 +323,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						startTimer();
 					}
 					isFirst = true ;
-					currentID = doorList.get(position);
-					currentPassword = passwordList.get(position) ;
-					act.frgTool.f_1_2.setCurrentPosition(position);
+					currentID = doorList.get(positionId);
+					currentPassword = passwordList.get(positionId) ;
+					act.frgTool.f_1_2.setCurrentPosition(positionId);
 					act.frgTool.f_1_2.setCurrentID(currentID);
 					act.delay = 5 ;
 					act.updateConnectedStatus(false);
@@ -336,68 +341,88 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 	}
 	@Override
-	public void longClick(int position) {
-		if (this.position == position) {
-			act.setDoorId("---");
-			isFirst = true ;
-			clickDeviceId = true;
-		    tv_doorList.setHint("请选择门地址");
-			currentID = "" ;
-			currentPassword = "0000" ;
-			this.position = 0 ;
-			receiveOpenClose = false;
-			currentCom = "0";
-			setBtnIsEnable(false);
-			endReqFlag = true;
-			isQuerySeverEnable = true ;
-			handler.removeCallbacksAndMessages(null);
-			act.updateConnectedStatus(false);
-			stopTimer();
-        }
-        String deviceID = SharepreferenceUtils.getDeviceId(act) ;
-        String password = SharepreferenceUtils.getPassword(act) ;
-        LogUtils.e("设备列表", deviceID);
-        LogUtils.e("密码列表", password);
-        String[] listId = deviceID.split("-");
-        String[] listPassword = password.split("-");
-        doorList.remove(position) ;
-        int postion1 = listId.length -position -1 ;
-        LogUtils.e("position", postion1 + "");
-        if (doorList.size() > 0) {
-            String ids = "";
-            String pws = "";
-            for (int j = 0; j < listId.length; j++) {
-                if (j == 0) {
-					if (j != postion1) {
-						ids = listId[0];
-						pws = listPassword[0];
-					}else {
-						ToastUtils.show(act, "删除门地址：" + listId[postion1]);
-					}
-                } else {
-                    if (j != postion1) {
-                    	if (ids.equals("")) {
-							ids = listId[j];
-							pws = listPassword[j];
-						}else {
-							ids = ids + "-" + listId[j];
-							pws = pws + "-" + listPassword[j];
+	public void longClick(final int position) {
+		new DialogConfirm().showDialog(act,
+				act.getResources().getString(R.string.deleteId) ,
+				new DialogConfirm.CallBackInterface(){
+					@Override
+					public void dialogCallBack(Object o) {
+						if((Boolean)o){
+							if (positionId == position) {
+								initStatus() ;
+							}
+							String deviceID = SharepreferenceUtils.getDeviceId(act) ;
+							String password = SharepreferenceUtils.getPassword(act) ;
+							LogUtils.e("设备列表", deviceID);
+							LogUtils.e("密码列表", password);
+							String[] listId = deviceID.split("-");
+							String[] listPassword = password.split("-");
+							doorList.remove(position) ;
+							int postion1 = listId.length -position -1 ;
+							LogUtils.e("position", postion1 + "");
+							if (doorList.size() > 0) {
+								String ids = "";
+								String pws = "";
+								for (int j = 0; j < listId.length; j++) {
+									if (j == 0) {
+										if (j != postion1) {
+											ids = listId[0];
+											pws = listPassword[0];
+										}else {
+											ToastUtils.show(act, "删除门地址：" + listId[postion1]);
+										}
+									} else {
+										if (j != postion1) {
+											if (ids.equals("")) {
+												ids = listId[j];
+												pws = listPassword[j];
+											}else {
+												ids = ids + "-" + listId[j];
+												pws = pws + "-" + listPassword[j];
+											}
+										}else {
+											ToastUtils.show(act, "删除门地址：" + listId[postion1]);
+										}
+									}
+								}
+								LogUtils.e("设备列表", ids);
+								LogUtils.e("密码列表", pws);
+								SharepreferenceUtils.saveDeviceId(act, ids);
+								SharepreferenceUtils.savePassword(act, pws);
+							}else {
+								SharepreferenceUtils.saveDeviceId(act, "");
+								SharepreferenceUtils.savePassword(act, "");
+							}
+							updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+							act.frgTool.f_1_2.putSpinnerValue1();
+						}else{
 						}
-                    }else {
-						ToastUtils.show(act, "删除门地址：" + listId[postion1]);
 					}
-                }
-            }
-            LogUtils.e("设备列表", ids);
-            LogUtils.e("密码列表", pws);
-            SharepreferenceUtils.saveDeviceId(act, ids);
-            SharepreferenceUtils.savePassword(act, pws);
-        }else {
-            SharepreferenceUtils.saveDeviceId(act, "");
-            SharepreferenceUtils.savePassword(act, "");
-        }
-		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
-        act.frgTool.f_1_2.putSpinnerValue1();
+				}) ;
+	}
+
+	private void initStatus() {
+		act.setDoorId("---");
+		isFirst = true ;
+		clickDeviceId = true;
+		tv_doorList.setHint("请选择门地址");
+		currentID = "" ;
+		currentPassword = "0000" ;
+		positionId = 0 ;
+		receiveOpenClose = false;
+		currentCom = "0";
+		setBtnIsEnable(false);
+		endReqFlag = true;
+		isQuerySeverEnable = true ;
+		handler.removeCallbacksAndMessages(null);
+		act.updateConnectedStatus(false);
+
+		setDoorDit(0);
+		tv_door_status.setText("停");
+		tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
+		tv_jiaquan.setText("---");
+		setBtnBackground(0, 0);
+		stopTimer();
 	}
 	public void removeHandler() {
 		handler.removeCallbacksAndMessages(null);
@@ -489,13 +514,13 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		if (doorList.size() == 0) {
 			return -1 ;
 		}else {
-			return position ;
+			return positionId ;
 		}
 	}
 
 	public void setCurrentPosition(int position) {
 		if (doorList.size() != 0) {
-			this.position = position ;
+			this.positionId = position ;
 			currentPassword = passwordList.get(position) ;
 			tv_doorList.setText(doorList.get(position));
 		}
@@ -579,6 +604,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 									} else if (msg.contains("超时")) {
 										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
 										//act.second30 = minute2; //设备回复超时，2分钟后再试
+									}else if (msg.contains("重新学习")){
+										initStatus() ;
+										showAlarm() ;
 									}
 								}
 							} else {
@@ -614,6 +642,40 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 			setProgressVisible(0) ;
 			e.printStackTrace();
+		}
+	}
+
+	private void showAlarm() {
+		if (!isShowing) {
+			isShowing = true ;
+			if (null == dialogConfirm) {
+				dialogConfirm = new DialogConfirm() ;
+				dialogConfirm.showDialog(act,
+						act.getResources().getString(R.string.passwordError),
+						new DialogConfirm.CallBackInterface() {
+							@Override
+							public void dialogCallBack(Object o) {
+								if ((Boolean) o) {
+									isShowing = false ;
+								} else {
+									isShowing = false ;
+								}
+							}
+						});
+			}else {
+				dialogConfirm.showDialog(act,
+						act.getResources().getString(R.string.passwordError),
+						new DialogConfirm.CallBackInterface() {
+							@Override
+							public void dialogCallBack(Object o) {
+								if ((Boolean) o) {
+									isShowing = false ;
+								} else {
+									isShowing = false ;
+								}
+							}
+						});
+			}
 		}
 	}
 
