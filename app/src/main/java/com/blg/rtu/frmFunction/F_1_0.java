@@ -89,6 +89,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	public String currentID = "" ; //当前门ID
 	public String currentPassword = "" ; //当前门ID
 	public Callback.Cancelable httpGet ;  //网络请求
+	public Callback.Cancelable httpGet1 ;  //网络请求
 	public String currentCom = "0" ; //当前命令
 	private String currentAfn = "" ; //当前功能码
 	public boolean isFirst = true ; //是否初始请求
@@ -177,7 +178,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		popWindow.setChoice(this);
 		/*SharepreferenceUtils.saveHasLearn(act, true);
 		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
-		SharepreferenceUtils.savePassword(act,"0102-0102-0102-0102");*/
+		SharepreferenceUtils.savePassword(act,"2a23-0102-0102-0102");*/
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		tv_doorList.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -402,11 +403,13 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	private void initStatus() {
+		currentID = "" ;
+		stopTimer();
 		act.setDoorId("---");
 		isFirst = true ;
-		clickDeviceId = true;
+		clickDeviceId = false;
 		tv_doorList.setHint("请选择门地址");
-		currentID = "" ;
+        deviceNetStatus = false ;
 		currentPassword = "0000" ;
 		positionId = 0 ;
 		receiveOpenClose = false;
@@ -422,7 +425,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
 		tv_jiaquan.setText("---");
 		setBtnBackground(0, 0);
-		stopTimer();
+
 	}
 	public void removeHandler() {
 		handler.removeCallbacksAndMessages(null);
@@ -605,6 +608,10 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
 										//act.second30 = minute2; //设备回复超时，2分钟后再试
 									}else if (msg.contains("重新学习")){
+										if (httpGet != null) {
+											httpGet.cancel();
+										}
+										tv_doorList.setText("请选择门地址");
 										initStatus() ;
 										showAlarm() ;
 									}
@@ -902,17 +909,14 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			if(parent.getId() == spinner2.getId()){
 				/*fragment_04.setRtuData(new DoorStatus(),null);*/
 				if (position == 1) {//服务器
-					stopTimer();
+					tv_doorList.setText("请选择门地址");
 					wifiServer = 1 ;
-					setDoorDit(0);
-					act.cancelQuery50();
-					tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
+					initStatus();
 					act.requestServeice = true ;
 					if (act.tcpConnected) {
 						NetManager.getInstance().toggleConnectRemote(false);
 						act.tcpConnected = false;
 					}
-					setBtnBackground(0, 0);
 					isFirst = true;
 					SharepreferenceUtils.saveIsWifi(act, false);
 					if (getCurrentIDIsempty()) {
@@ -924,7 +928,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					tv_doorList.setEnabled(true);
 					isQuerySeverEnable = true ;
 				}else if (position == 2){//wifi
-					stopTimer();
+					initStatus();
 					if (act.tcpConnected) {
 						act.tcpConnected = false ;
 						NetManager.getInstance().toggleConnectRemote(false);
@@ -932,15 +936,37 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					LogUtils.e("门地址为空","重新选择wifi通道");
 					wifiServer = 2 ;
 					act.requestServeice = false ;
-					setBtnBackground(0,0);
-					act.setDoorId("---");
-					setBtnIsEnable(false) ;
 					isFirst = true ;
 					act.frgTool.f_01_010.setReceiveWifiData(false);
 					SharepreferenceUtils.saveIsWifi(act, true);
 					tv_doorList.setEnabled(false);
 					act.connectWifiAndServer() ;
 					isQuerySeverEnable = false ;
+				}else {
+					initStatus();
+					if (SharepreferenceUtils.getIsWifi(act)) {
+						wifiServer = 0 ;
+						initStatus();
+						if (act.tcpConnected) {
+							NetManager.getInstance().toggleConnectRemote(false);
+							act.tcpConnected = false;
+						}
+						tv_doorList.setEnabled(false);
+						isQuerySeverEnable = false ;
+					}else {
+						tv_doorList.setText("请选择门地址");
+						initStatus();
+						if (act.tcpConnected) {
+							act.tcpConnected = false ;
+							NetManager.getInstance().toggleConnectRemote(false);
+						}
+						wifiServer = 0 ;
+						act.requestServeice = false ;
+						act.frgTool.f_01_010.setReceiveWifiData(false);
+						act.requestServeice = false ;
+						tv_doorList.setEnabled(false);
+						isQuerySeverEnable = false ;
+					}
 				}
 			}
 		}
