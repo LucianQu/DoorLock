@@ -51,6 +51,7 @@ import org.xutils.x;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -113,6 +114,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private boolean taskStatus = false ;
 	private DialogConfirm dialogConfirm ;
 	private boolean isShowing = false ;
+	private boolean enableOnlinequery = true ;
+	private HashMap<String , String> passErrorHashMap = new HashMap<String, String>() ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -176,9 +179,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
-		/*SharepreferenceUtils.saveHasLearn(act, true);
+		SharepreferenceUtils.saveHasLearn(act, true);
 		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
-		SharepreferenceUtils.savePassword(act,"2a23-0102-0102-0102");*/
+		SharepreferenceUtils.savePassword(act,"2a23-5348-0102-0102");
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		tv_doorList.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -315,6 +318,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	public void senddata(String msg) {
 		positionId = Integer.parseInt(msg) ;
 		if (!SharepreferenceUtils.getIsWifi(act) && wifiServer == 1) {
+			deviceNetStatus = false ;
 			if (doorList.size() > 0) {
 				num++ ;
 				LogUtils.e("点击item次数", num + "");
@@ -351,6 +355,11 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						if((Boolean)o){
 							if (positionId == position) {
 								initStatus() ;
+							}
+							if (!passErrorHashMap.isEmpty()) {
+								if (passErrorHashMap.containsKey(doorList.get(position))) {
+									passErrorHashMap.remove(doorList.get(position)) ;
+								}
 							}
 							String deviceID = SharepreferenceUtils.getDeviceId(act) ;
 							String password = SharepreferenceUtils.getPassword(act) ;
@@ -608,6 +617,11 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
 										//act.second30 = minute2; //设备回复超时，2分钟后再试
 									}else if (msg.contains("重新学习")){
+										LogUtils.e("重新学习", returnDtuId);
+										if (!passErrorHashMap.containsKey(returnDtuId)) {
+											LogUtils.e("放入键值对", returnDtuId);
+											passErrorHashMap.put(returnDtuId,"1") ;
+										}
 										if (httpGet != null) {
 											httpGet.cancel();
 										}
@@ -686,7 +700,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 	}
 
-	public void queryServerStatus(String dtuId) {
+	public void queryServerStatus(final String dtuId) {
 		String url =act.mIpPort +  "/door/door/online.act" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
@@ -698,7 +712,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				if (result.equals("1")) {
 					LogUtils.e("----->接收到服务器返回数据", "-----> 在线" );
 					act.requestServeice = true;
-					if (!deviceNetStatus) {
+					if (!deviceNetStatus && !passErrorHashMap.containsKey(dtuId)) {
+						LogUtils.e("是否包含ID", dtuId + !passErrorHashMap.containsKey(dtuId));
 						startTimer();
 						deviceNetStatus = true;
 						setBtnIsEnable(true);
