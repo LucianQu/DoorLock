@@ -1114,7 +1114,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}else if (positon == 3) {
 			receiveStopNum ++ ;
 			openCloseStop = 3 ;
-			if (receiveStopNum == 3 || receiveOpenClose || currentCom.equals("3") ||
+			if (receiveStopNum >= 3 || receiveOpenClose || currentCom.equals("3") ||
 					(currentCom.equals("1") && SharepreferenceUtils.getIsWifi(act)
 					|| (currentCom.equals("2") && SharepreferenceUtils.getIsWifi(act)))) {
 				receiveOpenClose = false ;
