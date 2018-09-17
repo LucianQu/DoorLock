@@ -7,7 +7,7 @@ import com.blg.rtu.protocol.p206.common.ControlProtocol;
 import com.blg.rtu.protocol.p206.common.ProtocolSupport;
 import com.blg.rtu.util.ByteUtil;
 
-public class Answer_F1 extends ProtocolSupport{
+public class  Answer_F1 extends ProtocolSupport{
 
 	private static String tag = Answer_F1.class.getName() ;
 
@@ -32,7 +32,9 @@ public class Answer_F1 extends ProtocolSupport{
 		d.setSubData(subD) ;
 
 		subD.setJiaQuan(ByteUtil.bytes2Int_an(new byte[]{b[index++],b[index++],b[index++],0},0));
-		subD.setDoorStatus(b[index++]& 0xff);
+		int flag = b[index++]& 0xff ;
+		subD.setDoorStatus(flag & 0x0f);
+		subD.setControlFlag((flag & 0xf0) >> 4);
 		subD.setDoorOpen(b[index++] & 0xff);
 		subD.setLockFlag(b[index++]& 0xff);
 		subD.setLockStatus(b[index++]& 0xff);

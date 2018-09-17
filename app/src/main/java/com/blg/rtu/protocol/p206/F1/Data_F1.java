@@ -29,6 +29,7 @@ public class Data_F1 {
 	private boolean isDoorNormal ; //门正常
 	private boolean isNormalCurrent ; //正常电流
 	private boolean isNormalPower; // 正常电压
+	private int controlFlag ;
 
 	public String toString(){
 		String s = "\n" ;
@@ -41,6 +42,7 @@ public class Data_F1 {
 					" 电源标记：" + powerFlag+ "\n" +
 					" 电源状态：" + powerStatus + "\n" +
 					" 报警标记：" + alarmFlag+ "\n" +
+					" 包控制标志：" + controlFlag+ "\n" +
 					" 报警状态：" + alarmStaus+ "\n"
 					;
 		return s ;
@@ -60,6 +62,14 @@ public class Data_F1 {
 
 	public void setLockInitPosition(boolean lockInitPosition) {
 		isLockInitPosition = lockInitPosition;
+	}
+
+	public int getControlFlag() {
+		return controlFlag;
+	}
+
+	public void setControlFlag(int controlFlag) {
+		this.controlFlag = controlFlag;
 	}
 
 	public boolean isOpenLock() {

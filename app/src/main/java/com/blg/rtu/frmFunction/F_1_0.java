@@ -146,6 +146,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					}
 				}else {
 					if (act.tcpConnected) {
+						currentCom = "0" ;
 						setCommand(0);
 					}
 				}
@@ -1261,13 +1262,15 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			setBtnBackground(4,0);
 		}
 		Data_F1 data = (Data_F1)d.subData ;
-		if (data != null) {
-			displayWifiData(data) ;
-		}else {
-			ToastUtils.show(act, "F1接收数据为空");
-		}
-		if (!endReqFlag) {
-			queryF1Once() ;
+		if (currentCom.equals(data.getControlFlag()+"")) {
+			if (data != null) {
+				displayWifiData(data);
+			} else {
+				ToastUtils.show(act, "F1接收数据为空");
+			}
+			if (!endReqFlag) {
+				queryF1Once();
+			}
 		}
 	}
 	public void displayWifiData(Object data1) {
