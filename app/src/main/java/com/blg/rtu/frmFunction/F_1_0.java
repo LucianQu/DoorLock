@@ -492,6 +492,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 							setCommand(1);
 						} else if (currentCom.equals("3")) {
 							setCommand(3);
+						}else {
+							setCommand(0);
 						}
 					}
 				}else {
@@ -513,6 +515,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 
 	private void queryF1Once() {
 		if (SharepreferenceUtils.getIsWifi(act)) {
+			currentCom = "0" ;
 			setCommand(0);
 		}else {
 			handler.postDelayed(onceServerReq, 500) ;
