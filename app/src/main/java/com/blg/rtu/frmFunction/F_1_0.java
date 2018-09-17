@@ -179,9 +179,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
-		SharepreferenceUtils.saveHasLearn(act, true);
+		/*SharepreferenceUtils.saveHasLearn(act, true);
 		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
-		SharepreferenceUtils.savePassword(act,"2a23-5348-0102-0102");
+		SharepreferenceUtils.savePassword(act,"2a23-5348-0102-0102");*/
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		tv_doorList.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -217,6 +217,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					currentAfn = "F1";
 					receiveOpenClose = false ;
 					openCloseStop = 0 ;
+					onceComReceiveTrue = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						setCommand(1);
 					} else {
@@ -252,6 +253,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					receiveOpenClose = false ;
 					endReqFlag = true ;
 					openCloseStop = 0 ;
+					onceComReceiveTrue = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						setCommand(2);
 					} else {
@@ -288,6 +290,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					currentCom = "3";
 					currentAfn = "F1";
 					openCloseStop = 0 ;
+					onceComReceiveTrue = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						setCommand(3);
 					} else {
@@ -481,12 +484,14 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		public void run() {
 			if (!onceComReceiveTrue) {
 				if (SharepreferenceUtils.getIsWifi(act)) {
-					if ((openCloseStop != 2 && currentCom.equals("2"))) {
-						setCommand(2);
-					}else if ((openCloseStop != 1 && currentCom.equals("1"))) {
-						setCommand(1);
-					}else if (openCloseStop != 3 && currentCom.equals("3")) {
-						setCommand(3);
+					if (act.tcpConnected) {
+						if ((currentCom.equals("2"))) {
+							setCommand(2);
+						} else if ((currentCom.equals("1"))) {
+							setCommand(1);
+						} else if (currentCom.equals("3")) {
+							setCommand(3);
+						}
 					}
 				}else {
 					doorContralServer(currentID, currentAfn, currentCom,"1");
