@@ -393,6 +393,8 @@ public class MainActivity  extends Activity {
 			}else {
 				updateConnectedStatus(false);
 				LogUtils.e("Lucian--->wifi连接","--->开始连接");
+				frgTool.f_1_3.setLearningClickStatus(false);
+				SharepreferenceUtils.saveHasLearn(instance, false);
 				waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
 				//waitServerStartedAndToConnectNet("10.10.100.254", 8899) ; //有人模块
 			}
@@ -490,6 +492,7 @@ public class MainActivity  extends Activity {
 		if (task != null) {
 			task.stop();
 		}
+		SharepreferenceUtils.saveHasLearn(instance, false);
 		finish();
 	}
 
@@ -669,6 +672,7 @@ public class MainActivity  extends Activity {
 					handler.removeCallbacks(query50Task);
                     handler.postDelayed(query50Task, 2000);
                 } else {
+					SharepreferenceUtils.saveHasLearn(instance, false);
                     frgTool.f_1_0.setBtnIsEnable(false);
                     updateConnectedStatus(false);
                 }

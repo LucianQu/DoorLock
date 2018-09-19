@@ -189,22 +189,60 @@ public class F_01_010  extends FrmParent {
 			if (null != d && null != sd) {
 				item01.setText(d.getRtuId() + "");
 				item02.setText(sd.getPassWord());
-				if (act.frgTool.f_1_3.learningClick()) {
-					act.frgTool.f_1_3.onceComReceiveTrue = true ;
-					SharepreferenceUtils.saveHasLearn(act, true);
-					act.frgTool.f_1_3.setLearningClickStatus(false);
-					if (!"".equals(deviceID)) {
-						String[] listId = deviceID.split("-");
-						String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
-						if (deviceID.contains(d.getRtuId())) {
-							ToastUtils.show(act, "设备已经学习过，不在学习!");
-							int position = -1;
+
+				if (!"".equals(deviceID)) {
+					if (deviceID.contains(d.getRtuId())) {
+						if (!SharepreferenceUtils.getHasLearn(act)) {
+							SharepreferenceUtils.saveHasLearn(act, true);
+							String[] listId = deviceID.split("-");
+							String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
 							for (int i = 0; i < listId.length; i++) {
 								if (d.getRtuId().equals(listId[i])) {
-									SharepreferenceUtils.saveComPassword(act,listPassword[i]);
-									position = i;
+									SharepreferenceUtils.saveComPassword(act, listPassword[i]);
 								}
 							}
+							act.setDoorId(d.getRtuId());
+							act.frgTool.f_1_0.setCommand(0);
+						}else {
+							ToastUtils.show(act, "设备已经学习过，不在学习!");
+						}
+					} else {//连接设备未学习，存储过ID
+						learningClick(d,sd,deviceID,password) ;
+						//ToastUtils.show(act, "该设备未学习，请先学习！");
+					}
+				} else {//连接设备未学习，未存储过ID
+					learningClick(d,sd,deviceID,password) ;
+					//ToastUtils.show(act, "该设备未学习，请先学习！");
+				}
+
+			}
+		}catch (Exception e) {
+			ToastUtils.show(act, e.getMessage());
+		}
+		LogUtils.e("设备列表", SharepreferenceUtils.getDeviceId(act));
+		LogUtils.e("密码列表", SharepreferenceUtils.getPassword(act));
+		act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+		act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+		act.frgTool.f_1_0.startTimer();
+	}
+
+	private void learningClick(RtuData d,Data_10_50 sd,String deviceID, String password) {
+		if (act.frgTool.f_1_3.learningClick()) {
+			act.frgTool.f_1_3.onceComReceiveTrue = true ;
+			SharepreferenceUtils.saveHasLearn(act, true);
+			act.frgTool.f_1_3.setLearningClickStatus(false);
+			if (!"".equals(deviceID)) {
+				String[] listId = deviceID.split("-");
+				String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
+				if (deviceID.contains(d.getRtuId())) {
+					ToastUtils.show(act, "设备已经学习过，不在学习!");
+					int position = -1;
+					for (int i = 0; i < listId.length; i++) {
+						if (d.getRtuId().equals(listId[i])) {
+							SharepreferenceUtils.saveComPassword(act,listPassword[i]);
+							position = i;
+						}
+					}
 							/*if (position != -1) {
 								String ids = "";
 								String pws = "";
@@ -220,48 +258,21 @@ public class F_01_010  extends FrmParent {
 								SharepreferenceUtils.saveDeviceId(act, ids);
 								SharepreferenceUtils.savePassword(act, pws);
 							}*/
-						} else {
-							SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
-							SharepreferenceUtils.saveDeviceId(act, deviceID + "-" + d.getRtuId());
-							SharepreferenceUtils.savePassword(act, password + "-" + sd.getPassWord());
-						}
-					} else {
-						SharepreferenceUtils.saveDeviceId(act, d.getRtuId());
-						SharepreferenceUtils.savePassword(act, sd.getPassWord());
-					}
-					act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
-					act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
-					act.setDoorId(d.getRtuId());
-					act.frgTool.f_1_0.setCommand(0);
 				} else {
-					if (!"".equals(deviceID)) {
-						if (deviceID.contains(d.getRtuId())) {
-							SharepreferenceUtils.saveHasLearn(act, true);
-							String[] listId = deviceID.split("-");
-							String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
-							for (int i = 0; i < listId.length; i++) {
-								if (d.getRtuId().equals(listId[i])) {
-									SharepreferenceUtils.saveComPassword(act,listPassword[i]);
-								}
-							}
-
-							act.setDoorId(d.getRtuId());
-							act.frgTool.f_1_0.setCommand(0);
-						} else {
-							SharepreferenceUtils.saveHasLearn(act, false);
-							ToastUtils.show(act, "该设备未学习，请先学习！");
-						}
-					} else {
-						ToastUtils.show(act, "该设备未学习，请先学习！");
-					}
+					SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
+					SharepreferenceUtils.saveDeviceId(act, deviceID + "-" + d.getRtuId());
+					SharepreferenceUtils.savePassword(act, password + "-" + sd.getPassWord());
 				}
+			} else {
+				SharepreferenceUtils.saveDeviceId(act, d.getRtuId());
+				SharepreferenceUtils.savePassword(act, sd.getPassWord());
 			}
-		}catch (Exception e) {
-			ToastUtils.show(act, e.getMessage());
+			act.setDoorId(d.getRtuId());
+			act.frgTool.f_1_0.setCommand(0);
+		} else {
+			SharepreferenceUtils.saveHasLearn(act, false);
+			ToastUtils.show(act, "该设备未学习，请先学习！");
 		}
-		LogUtils.e("设备列表", SharepreferenceUtils.getDeviceId(act));
-		LogUtils.e("密码列表", SharepreferenceUtils.getPassword(act));
-		act.frgTool.f_1_0.startTimer();
 	}
 
 	/**
