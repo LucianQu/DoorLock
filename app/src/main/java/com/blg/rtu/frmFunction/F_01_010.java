@@ -264,12 +264,14 @@ public class F_01_010  extends FrmParent {
 					SharepreferenceUtils.savePassword(act, password + "-" + sd.getPassWord());
 				}
 			} else {
+				SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
 				SharepreferenceUtils.saveDeviceId(act, d.getRtuId());
 				SharepreferenceUtils.savePassword(act, sd.getPassWord());
 			}
 			act.setDoorId(d.getRtuId());
 			act.frgTool.f_1_0.setCommand(0);
 		} else {
+			SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
 			SharepreferenceUtils.saveHasLearn(act, false);
 			ToastUtils.show(act, "该设备未学习，请先学习！");
 		}
