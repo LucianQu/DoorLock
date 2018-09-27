@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.os.Environment;
 import android.util.Log;
 
-import com.blg.rtu.frmChannel.helpCh4.ListRtuData;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 
@@ -42,30 +41,6 @@ public class HelpSaveProtocolDataToFile {
 				file.delete() ;
 			}
 		}catch(Exception e){} 
-	}
-	
-	//存储数据
-	public static void saveData(File file, ListRtuData vo){
-		if(file == null){
-			return  ;
-		}
-		PrintWriter pw = null ;
-		try{
-			pw = new PrintWriter(new FileWriter(file, true));    
-			pw.println(vo.direct+ ":" + vo.rtuId + " / " + vo.code + " / " + vo.channel);
-			pw.println(vo.dt);
-			pw.println(vo.hex);
-			pw.println("===========================================================");
-			pw.flush() ;
-		}catch(Exception e){
-			Log.e(tag , "文件存储数据出错！") ;
-		}finally{
-			if(pw != null){
-				try{
-					pw.close() ;
-				}catch(Exception e){}
-			}
-		}
 	}
 
 }

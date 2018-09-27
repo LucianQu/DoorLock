@@ -2,18 +2,13 @@ package com.blg.rtu3;
 
 import android.app.FragmentManager;
 
-import com.blg.rtu.frmChannel.ChFragment_01;
-import com.blg.rtu.frmChannel.ChFragment_02;
-import com.blg.rtu.frmChannel.ChFragment_03;
-import com.blg.rtu.frmChannel.ChFragment_04;
-import com.blg.rtu.frmChannel.ChFragment_05;
+
 import com.blg.rtu.frmFunction.F_01_010;
 import com.blg.rtu.frmFunction.F_1_0;
 import com.blg.rtu.frmFunction.F_1_1;
 import com.blg.rtu.frmFunction.F_1_2;
 import com.blg.rtu.frmFunction.F_1_3;
 import com.blg.rtu.frmFunction.FrmParent;
-import com.blg.rtu.frmNoProtocol.NpFragment_01;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,29 +16,14 @@ import java.util.List;
 public class FragmentTool {
 
 	private MainActivity mainAct ;
-		
-	public NpFragment_01 fragment_np01 ;
-
-	
-	public ChFragment_01 fragment_ch01 ;
-	public ChFragment_02 fragment_ch02 ;
-	public ChFragment_03 fragment_ch03 ;
-	public ChFragment_04 fragment_ch04 ;
-	public ChFragment_05 fragment_ch05 ;
 
 	private static List<FrmParent> frms = new ArrayList<FrmParent>() ;;
 	public F_1_0 f_1_0 ;
 	public F_1_1 f_1_1 ;
 	public F_1_2 f_1_2 ;
 	public F_1_3 f_1_3 ;
-
-
-
-
 	public F_01_010 f_01_010 ;
 
-
-	
 	public FragmentTool(MainActivity mainAct){
 		this.mainAct = mainAct ;
 		

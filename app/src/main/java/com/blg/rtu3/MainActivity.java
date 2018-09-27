@@ -42,7 +42,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blg.rtu.aidl.ServiceAidl;
-import com.blg.rtu.frmChannel.helpCh1.ChBusi_01_Operate;
 import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.MyTimeTask;
@@ -65,7 +64,7 @@ import java.util.TimerTask;
 @SuppressLint("HandlerLeak")
 public class MainActivity  extends Activity { 
 	public static MainActivity instance = null ;
-	public ChBusi_01_Operate chb;
+
 	private MessageReceiver mMessageReceiver;
 	public static final String MESSAGE_RECEIVED_ACTION = "com.blg.rtu3.MESSAGE_RECEIVED_ACTION";
 	public static final String KEY_MESSAGE = "message";
@@ -110,10 +109,7 @@ public class MainActivity  extends Activity {
 	
 	//fragment工具类对象
 	public FragmentTool frgTool ;
-	
-	//fragment回调类对象
-	private FragmentCallback frgCallback; 
-	
+
 	//mainActivity的帮助类对象，以设置不属于fragment的界面元素的事件监听器
 	private MainActivityHelp mainHelp ;
 	
@@ -587,8 +583,6 @@ public class MainActivity  extends Activity {
 
         ////////////////////////////////////////////////////////
         //帮助类
-        //实例化fragment回调类对象
-        this.frgCallback = new FragmentCallback(this) ;
         //实例化主界面设置帮助类对象
         this.mainHelp = new MainActivityHelp(this, pageView_fourth, pageView_second, pageView_main, pageView_third) ;
         //this.mainHelp = new MainActivityHelp(this, pageView_fourth, pageView_second, pageView_main) ;
@@ -601,7 +595,7 @@ public class MainActivity  extends Activity {
 	 * 最小面部分界面最大小化，其他部分界面隐藏
 	 */
 	public void pageView_channel_OnLongClick(){
-			frgTool.fragment_ch04.setRtuDatasListViewHeight(ResourceUtils.getXmlDef(this, R.dimen.ch_rtuDataListViewHeight_big)) ;
+
 	}
 	
 	/**
@@ -636,9 +630,7 @@ public class MainActivity  extends Activity {
 	 * 得到fragment的回调工具类对象
 	 * @return
 	 */
-	public FragmentCallback getFrgCallback() {
-		return frgCallback;
-	}
+
 	
 	/**
 	 * 得到Activity的桩

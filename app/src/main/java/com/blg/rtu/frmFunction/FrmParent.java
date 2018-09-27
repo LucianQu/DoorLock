@@ -20,7 +20,6 @@ import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.ServerProxyHandler;
-import com.blg.rtu3.sm.SmsSender;
 import com.blg.rtu3.utils.LogUtils;
 
 public abstract class FrmParent extends Fragment {
@@ -269,44 +268,6 @@ public abstract class FrmParent extends Fragment {
 			}
 		}else
 		if(ch == Constant.channelSm){
-			//短信通道
-			String rtuId = act.mServerProxyHandler.getRtuId() ;
-			if(rtuId == null){
-				hideLoadCover() ;
-				Toast.makeText(act, "当前未得到终端地址，请首先发送查询终端地址的命令！", Toast.LENGTH_SHORT).show() ;
-			}else{
-				if(!isBroastCommand){
-					com.setRtuId(rtuId) ;
-				}
-				String phoneNum = act.frgTool.fragment_ch01.getPhoneNumber() ;
-				if(phoneNum == null || phoneNum.trim().equals("") || phoneNum.trim().length() != 11){
-					hideLoadCover() ;
-					Toast.makeText(act, "出错，SIM卡号码不正确！", Toast.LENGTH_SHORT).show() ;
-				}else{
-					Long phoneLg = Long.valueOf(phoneNum) ;
-					if(phoneLg < Constant.MinPhone){
-						hideLoadCover() ;
-						Toast.makeText(act, "出错，SIM卡号码不正确！", Toast.LENGTH_SHORT).show() ;
-					}else{
-						String sm = null ;
-						try {
-							sm = ServerProxyHandler.getInstance().createSmCommandBySm(com);
-						} catch (RemoteException e) {
-							sm = null ;
-							e.printStackTrace();
-						}finally{
-							if(sm != null && !sm.equals("")){
-								SmsSender.sendSMS(act, phoneNum, sm) ;
-								this.commandSended() ;
-								Toast.makeText(act, "命令以短信方式已经发送！", Toast.LENGTH_SHORT).show() ;
-							}else{
-								hideLoadCover() ;
-								Toast.makeText(act, "出错，构造短信命令数据失败！", Toast.LENGTH_SHORT).show() ;
-							}
-						}
-					}
-				}
-			}
 		}
 	}
 	
