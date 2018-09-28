@@ -16,7 +16,6 @@ import com.blg.rtu.util.DateTime;
 import com.blg.rtu.util.DialogConfirm;
 import com.blg.rtu.util.StringValueForActivity;
 import com.blg.rtu.util.ToastUtils;
-import com.blg.rtu.vo2xml.Vo2Xml;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.ServerProxyHandler;
@@ -284,15 +283,7 @@ public abstract class FrmParent extends Fragment {
 		this.resultDt.setText(DateTime.dd_HH_mm_ss()) ;
 	}
 	
-	/**
-	 * 导出设置数据
-	 */
-	public abstract void outSetData(Vo2Xml vo) ;
-	/**
-	 * 导入设置数据
-	 */
-	public abstract void inSetData(Vo2Xml vo) ;
-	
+
 	
 	/**
 	 * 自动查询，针对需要设置查询条件的

@@ -483,12 +483,13 @@ public class MainActivity  extends Activity {
 		ServerProxyHandler.getInstance().stopServer() ;
 		frgTool.f_1_0.removeHandler();
 		handler.removeCallbacksAndMessages(null);
+		SharepreferenceUtils.saveHasLearn(instance, false);
 		handler = null ;
 		instance = null ;
 		if (task != null) {
 			task.stop();
 		}
-		SharepreferenceUtils.saveHasLearn(instance, false);
+
 		finish();
 	}
 

@@ -23,7 +23,7 @@ import com.blg.rtu.util.ImageUtil;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.ToastUtils;
-import com.blg.rtu.vo2xml.Vo2Xml;
+
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.utils.LogUtils;
@@ -277,22 +277,7 @@ public class F_01_010  extends FrmParent {
 		}
 	}
 
-	/**
-	 * 导出设置数据
-	 */
-	@Override
-	public void outSetData(Vo2Xml vo){
-		vo.setV_01_010_clientId(item01.getText().toString()) ;
-		vo.setV_01_010_regionNum(item02.getText().toString()) ;
-	}
-	/**
-	 * 导入设置数据
-	 */
-	@Override
-	public void inSetData(Vo2Xml vo){
-		item01.setText(vo.getV_01_010_clientId()) ;
-		item02.setText(vo.getV_01_010_regionNum()) ;
-	}
+
 
 	@Override
 	public void onDestroy() {

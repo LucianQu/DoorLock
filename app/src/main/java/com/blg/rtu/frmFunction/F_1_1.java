@@ -16,7 +16,7 @@ import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.protocol.p206.F2.Data_F2;
 import com.blg.rtu.protocol.p206.F3.Data_F3;
-import com.blg.rtu.vo2xml.Vo2Xml;
+
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 
@@ -267,15 +267,7 @@ public class F_1_1 extends FrmParent {
 	/**
 	 * 导出设置数据
 	 */
-	@Override
-	public void outSetData(Vo2Xml vo){
-	}
-	/**
-	 * 导入设置数据
-	 */
-	@Override
-	public void inSetData(Vo2Xml vo){
-	}
+
 
 	
 	@Override

@@ -25,7 +25,7 @@ import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.DialogConfirm;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.ToastUtils;
-import com.blg.rtu.vo2xml.Vo2Xml;
+
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.utils.LogUtils;
@@ -595,18 +595,7 @@ public class F_1_3 extends FrmParent {
 		}
 		act.frgTool.f_1_0.startTimer();
 	}
-	/**
-	 * 导出设置数据
-	 */
-	@Override
-	public void outSetData(Vo2Xml vo){
-	}
-	/**
-	 * 导入设置数据
-	 */
-	@Override
-	public void inSetData(Vo2Xml vo){
-	}
+
 
 	
 	@Override

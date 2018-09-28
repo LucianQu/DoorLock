@@ -26,7 +26,7 @@ import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.util.Util;
-import com.blg.rtu.vo2xml.Vo2Xml;
+
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.utils.LogUtils;
@@ -755,18 +755,7 @@ public class F_1_2 extends FrmParent {
 		}
 
 	}
-	/**
-	 * 导出设置数据
-	 */
-	@Override
-	public void outSetData(Vo2Xml vo){
-	}
-	/**
-	 * 导入设置数据
-	 */
-	@Override
-	public void inSetData(Vo2Xml vo){
-	}
+
 
 	
 	@Override
