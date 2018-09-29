@@ -156,7 +156,7 @@ public class AppUtils {
 					// 所以采用getExtraInfo获取接入点名字进行判断
 
 					String netMode = mobNetInfoActivity.getExtraInfo();
-					LogUtils.i("", "==================netmode:" + netMode);
+					LogUtils.i("", "Lucian-->==================netmode:" + netMode);
 					if (netMode != null) {
 						// 通过apn名称判断是否是联通和移动wap
 						netMode = netMode.toLowerCase();

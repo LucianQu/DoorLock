@@ -134,7 +134,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		task =new MyTimeTask(2000, new TimerTask() {
 			@Override
 			public void run() {
-				LogUtils.e("Lucian--->timer", "查询类型--->" + (SharepreferenceUtils.getIsWifi(act)? "WIFI":"服务"));
+				//LogUtils.e("Lucian--->timer", "查询类型--->" + (SharepreferenceUtils.getIsWifi(act)? "WIFI":"服务"));
 				if (!SharepreferenceUtils.getIsWifi(act)) {
 					if (!getCurrentIDIsempty()) {
 						if (isQuerySeverEnable) {
@@ -321,11 +321,12 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	@Override
 	public void senddata(String msg) {
 		positionId = Integer.parseInt(msg) ;
+		LogUtils.e("Lucian-->当前选择Position", positionId+"");
 		if (!SharepreferenceUtils.getIsWifi(act) && wifiServer == 1) {
 			deviceNetStatus = false ;
 			if (doorList.size() > 0) {
 				num++ ;
-				LogUtils.e("点击item次数", num + "");
+				LogUtils.e("Lucian-->点击item次数", num + "");
 				if (num > 0) {
 					clickDeviceId = true;
 					if (!SharepreferenceUtils.getIsWifi(act) ) {
@@ -338,7 +339,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					act.frgTool.f_1_2.setCurrentID(currentID);
 					act.delay = 5 ;
 					act.updateConnectedStatus(false);
-					LogUtils.e("选择的门锁地址", currentID);
+					LogUtils.e("Lucian-->选择的门锁地址", currentID);
+					LogUtils.e("Lucian-->选择的门锁密码", currentPassword);
                     tv_doorList.setText(currentID);
 					initDeviceConnect() ;
 					//deviceNetStatus = false ;
@@ -358,22 +360,25 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					public void dialogCallBack(Object o) {
 						if((Boolean)o){
 							if (positionId == position) {
+								LogUtils.e("Lucian-->移除的ID为当前选择Position", position+"");
 								initStatus() ;
 							}
 							if (!passErrorHashMap.isEmpty()) {
 								if (passErrorHashMap.containsKey(doorList.get(position))) {
 									passErrorHashMap.remove(doorList.get(position)) ;
+									LogUtils.e("Lucian-->移除密码列表中的设备ID", doorList.get(position));
 								}
 							}
 							String deviceID = SharepreferenceUtils.getDeviceId(act) ;
 							String password = SharepreferenceUtils.getPassword(act) ;
-							LogUtils.e("设备列表", deviceID);
-							LogUtils.e("密码列表", password);
+							LogUtils.e("Lucian-->设备列表", deviceID);
+							LogUtils.e("Lucian-->密码列表", password);
 							String[] listId = deviceID.split("-");
 							String[] listPassword = password.split("-");
 							doorList.remove(position) ;
+
 							int postion1 = listId.length -position -1 ;
-							LogUtils.e("position", postion1 + "");
+							LogUtils.e("Lucian-->position", postion1 + "");
 							if (doorList.size() > 0) {
 								String ids = "";
 								String pws = "";
@@ -383,6 +388,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 											ids = listId[0];
 											pws = listPassword[0];
 										}else {
+											LogUtils.e("Lucian-->移除设备ID", listId[postion1]);
+											LogUtils.e("Lucian-->移除设备密码", listPassword[postion1]);
 											ToastUtils.show(act, "删除门地址：" + listId[postion1]);
 										}
 									} else {
@@ -395,12 +402,14 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 												pws = pws + "-" + listPassword[j];
 											}
 										}else {
+											LogUtils.e("Lucian-->移除设备ID", listId[postion1]);
+											LogUtils.e("Lucian-->移除设备密码", listPassword[postion1]);
 											ToastUtils.show(act, "删除门地址：" + listId[postion1]);
 										}
 									}
 								}
-								LogUtils.e("设备列表", ids);
-								LogUtils.e("密码列表", pws);
+								LogUtils.e("Lucian-->设备列表", ids);
+								LogUtils.e("Lucian-->密码列表", pws);
 								SharepreferenceUtils.saveDeviceId(act, ids);
 								SharepreferenceUtils.savePassword(act, pws);
 							}else {
@@ -421,6 +430,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		act.setDoorId("---");
 		isFirst = true ;
 		clickDeviceId = false;
+		tv_doorList.setText("");
 		tv_doorList.setHint("请选择门地址");
         deviceNetStatus = false ;
 		currentPassword = "0000" ;
@@ -559,9 +569,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			params.addBodyParameter("password",currentPassword);
 			final HttpUtils http = new HttpUtils();
 			http.configCurrentHttpCacheExpiry(1000 * 5);
-			LogUtils.e("-->门控制服务", url +"dtuId="+
-                    dtuId+"&code=" +code+"&tp="+tp+"&flag="+flag+"&password="+currentPassword);
-			LogUtils.e("--->请求开始时间", Util.getCurrentTime());
+			//LogUtils.e("Lucian-->-->门控制服务", url +"dtuId="+
+                    //dtuId+"&code=" +code+"&tp="+tp+"&flag="+flag+"&password="+currentPassword);
+			//LogUtils.e("Lucian-->--->请求开始时间", Util.getCurrentTime());
 
 			http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
 				@Override
@@ -579,7 +589,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				}
 				@Override
 				public void onSuccess(ResponseInfo arg0) {
-					LogUtils.e("服务请求","成功"+Util.getCurrentTime());
+					//LogUtils.e("Lucian-->服务请求","成功"+Util.getCurrentTime());
 					onceComReceiveTrue = true ;
 					setProgressVisible(0) ;
 
@@ -626,15 +636,16 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
 										//act.second30 = minute2; //设备回复超时，2分钟后再试
 									}else if (msg.contains("重新学习")){
-										LogUtils.e("重新学习", returnDtuId);
+										LogUtils.e("Lucian-->重新学习", returnDtuId);
 										if (!passErrorHashMap.containsKey(returnDtuId)) {
-											LogUtils.e("放入键值对", returnDtuId);
+											LogUtils.e("Lucian-->放入键值对", returnDtuId);
 											passErrorHashMap.put(returnDtuId,"1") ;
 										}
 										if (httpGet != null) {
 											httpGet.cancel();
 										}
-										tv_doorList.setText("请选择门地址");
+										tv_doorList.setText("");
+										tv_doorList.setHint("请选择门地址");
 										initStatus() ;
 										showAlarm() ;
 									}
@@ -654,7 +665,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					if (arg0.getMessage().contains("failed to connect to")) {
 						act.updateConnectedStatus(false);
 					}
-					LogUtils.e("onError", "请求失败"+arg0.getMessage());
+					LogUtils.e("Lucian-->onError", "请求失败"+arg0.getMessage());
 				}
 			});
 		} catch (Exception e) {
@@ -664,11 +675,11 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						.getTargetException();
 				if (targetEx != null) {
 					msg = targetEx.getMessage();
-					LogUtils.e("onError", "请求失败"+msg) ;
+					LogUtils.e("Lucian-->onError", "请求失败"+msg) ;
 				}
 			} else {
 				msg = e.getMessage();
-				LogUtils.e("onError", "请求失败"+msg) ;
+				LogUtils.e("Lucian-->onError", "请求失败"+msg) ;
 			}
 			setProgressVisible(0) ;
 			e.printStackTrace();
@@ -713,16 +724,16 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		String url =act.mIpPort +  "/door/door/online.act" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
-		LogUtils.e("---->查询当前门是否在线", requestParams.toString());
-		LogUtils.e("---->请求开始时间", Util.getCurrentTime());
+		//LogUtils.e("Lucian-->---->查询当前门是否在线", requestParams.toString());
+		//LogUtils.e("Lucian-->---->请求开始时间", Util.getCurrentTime());
 		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
 				if (result.equals("1")) {
-					LogUtils.e("----->接收到服务器返回数据", "-----> 在线" );
+					//LogUtils.e("Lucian-->----->接收到服务器返回数据", "-----> 在线" );
 					act.requestServeice = true;
 					if (!deviceNetStatus && !passErrorHashMap.containsKey(dtuId)) {
-						LogUtils.e("是否包含ID", dtuId + !passErrorHashMap.containsKey(dtuId));
+						//LogUtils.e("Lucian-->是否包含ID", dtuId + !passErrorHashMap.containsKey(dtuId));
 						startTimer();
 						deviceNetStatus = true;
 						setBtnIsEnable(true);
@@ -730,7 +741,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						act.updateConnectedStatus(true);
 					}
 				}else {
-					LogUtils.e("----->接收到服务器返回数据", "-----> 不在线" );
+					//LogUtils.e("Lucian-->----->接收到服务器返回数据", "-----> 不在线" );
 					act.requestServeice = false ;
 					if (deviceNetStatus) {
 							deviceNetStatus = false;
@@ -923,7 +934,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private long num =0;
 	public void initDeviceConnect() {
 		setBtnBackground(0,0); //初始化按钮状态灰色，不使能
-		setDoorButtonImg(3);
+		//setDoorButtonImg(3);
+		tv_door_status.setText("停");
+		tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
 		setPieChart(0);
 		tv_jiaquan.setText("---");
 	}
@@ -933,7 +946,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			if(parent.getId() == spinner2.getId()){
 				/*fragment_04.setRtuData(new DoorStatus(),null);*/
 				if (position == 1) {//服务器
-					tv_doorList.setText("请选择门地址");
+					tv_doorList.setText("");
+					tv_doorList.setHint("请选择门地址");
 					wifiServer = 1 ;
 					initStatus();
 					act.requestServeice = true ;
@@ -957,7 +971,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						act.tcpConnected = false ;
 						NetManager.getInstance().toggleConnectRemote(false);
 					}
-					LogUtils.e("门地址为空","重新选择wifi通道");
+					LogUtils.e("Lucian-->门地址为空","重新选择wifi通道");
 					wifiServer = 2 ;
 					act.requestServeice = false ;
 					isFirst = true ;
@@ -978,7 +992,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						tv_doorList.setEnabled(false);
 						isQuerySeverEnable = false ;
 					}else {
-						tv_doorList.setText("请选择门地址");
+						tv_doorList.setText("");
+						tv_doorList.setHint("请选择门地址");
 						initStatus();
 						if (act.tcpConnected) {
 							act.tcpConnected = false ;
@@ -1012,8 +1027,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	public void pintServiceData(DoorStatus doorStatus) {
-		LogUtils.e("请求成功结束时间", Util.getCurrentTime());
-		LogUtils.e("接收到服务器返回数据",
+		LogUtils.e("Lucian-->请求成功结束时间", Util.getCurrentTime());
+		LogUtils.e("Lucian-->接收到服务器返回数据",
 				"\n甲醛浓度：" + doorStatus.getHcho()+
 						"\n门状态：" + doorStatus.getDoorState()+
 						"\n门角度：" + doorStatus.getAngle()+

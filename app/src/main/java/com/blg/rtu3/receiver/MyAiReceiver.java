@@ -106,7 +106,7 @@ public class MyAiReceiver extends BroadcastReceiver {
 	private void processCustomMessage(Context context, Bundle bundle) {
 
 			String EXTRA_ALERT = bundle.getString(JPushInterface.EXTRA_ALERT);
-		LogUtils.e("EXTRA_ALERT",EXTRA_ALERT);
+			LogUtils.e("Lucian-->EXTRA_ALERT",EXTRA_ALERT);
 			Intent msgIntent = new Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
 			msgIntent.putExtra(MainActivity.KEY_EXTRAS, EXTRA_ALERT);
 			context.sendBroadcast(msgIntent);

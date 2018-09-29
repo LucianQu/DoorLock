@@ -19,7 +19,9 @@ import android.widget.Toast;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
+import com.blg.rtu.protocol.p206.cd10_50.Data_10_50;
 import com.blg.rtu.protocol.p206.cdCA_DA.Data_CA_DA;
+import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.AppUtils;
 import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.DialogConfirm;
@@ -61,6 +63,12 @@ public class F_1_3 extends FrmParent {
 	private TextView wifiNameSend ;
 	private EditText wifiName ;
 	private EditText wifiPassword ;
+
+    private TextView wifiReDianSend ;
+    private EditText wifiRDoldPw ;
+    private EditText wifiRDnewPw ;
+    private ProgressBar pbReDian ;
+
 	private LinearLayout llSeting ;
 	private LinearLayout llAdminSeting ;
 	private LinearLayout llContent ;
@@ -117,7 +125,6 @@ public class F_1_3 extends FrmParent {
 		public void run() {
 			if (!onceComReceiveTrue && maxNum < 3) {
 				maxNum++ ;
-
 				if (SharepreferenceUtils.getIsWifi(act)) {
 					if (act.tcpConnected) {
 						if (clickFlag == 1) {
@@ -126,7 +133,9 @@ public class F_1_3 extends FrmParent {
 							setCommand();
 						} else if (clickFlag == 3) {
 							setCommand();
-						}
+						} else if (clickFlag == 4) {
+                            setCommand();
+                        }
 					}
 				}
 				timeOverCheckTask() ;
@@ -137,12 +146,27 @@ public class F_1_3 extends FrmParent {
 				if (pb_ip_port.getVisibility() == View.VISIBLE) {
 					pb_ip_port.setVisibility(View.GONE);
 				}
+                if (pbReDian.getVisibility() == View.VISIBLE) {
+                    pbReDian.setVisibility(View.GONE);
+                }
 				maxNum = 3 ;
 				clickFlag = -1 ;
 				handler.removeCallbacks(timeoverRunable);
 			}
 		}
 	};
+
+	private void test() {
+		isLearning = true;
+		RtuData rtuData = new RtuData() ;
+		Data_10_50 subD = new Data_10_50() ;
+		rtuData.setSubData(subD) ;
+		int num = (int) ((Math.random() * 9 + 1) * 100000) ;
+		subD.setPassWord(""+num);
+
+		rtuData.setRtuId("1000"+num);
+		act.frgTool.f_01_010.receiveRtuData(rtuData);
+	}
 
 	@Override
 	public View onCreateView(
@@ -157,6 +181,7 @@ public class F_1_3 extends FrmParent {
 			@Override
 			public void onClick(View v) {
 				if (SharepreferenceUtils.getIsWifi(act)) {
+					//test() ;
 					if (act.tcpConnected) {
 						clickFlag = 1;
 						isLearning = true;
@@ -200,6 +225,41 @@ public class F_1_3 extends FrmParent {
 				}
 			}
 		});
+		wifiRDoldPw = (EditText) view.findViewById(R.id.edt_old_password) ;
+		wifiRDnewPw = (EditText) view.findViewById(R.id.edt_new_password) ;
+		pbReDian = (ProgressBar) view.findViewById(R.id.pb_wifiCreatePassword) ;
+		wifiReDianSend = (TextView) view.findViewById(R.id.tv_wifiCreate_password) ;
+		wifiReDianSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SharepreferenceUtils.getIsWifi(act)) {
+                    if (act.tcpConnected) {
+                        new DialogConfirm().showDialog(act,
+                                act.getResources().getString(R.string.txtConfirmModiy),
+                                new DialogConfirm.CallBackInterface() {
+                                    @Override
+                                    public void dialogCallBack(Object o) {
+                                        if ((Boolean) o) {
+                                            clickFlag = 4 ;
+                                            type = 2 ;
+                                            act.frgTool.f_1_0.stopTimer();
+                                            pbReDian.setVisibility(View.VISIBLE);
+                                            setCommand();
+                                            maxNum = 0 ;
+                                            timeOverCheckTask() ;
+                                        } else {
+                                        }
+                                    }
+                                });
+
+                    }else {
+                        ToastUtils.show(act, "Wifi未连接设备，无法修改");
+                    }
+                }else {
+                    ToastUtils.show(act, "当前非Wifi连接，无法修改");
+                }
+            }
+        });
 
 		ipInput = (EditText)view.findViewById(R.id.edt_ip) ;
 		portInput = (EditText)view.findViewById(R.id.edt_port) ;
@@ -418,17 +478,17 @@ public class F_1_3 extends FrmParent {
 			http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
 				@Override
 				public void onStart() {
-					LogUtils.e("广播推送","开始");
+					LogUtils.e("Lucian-->广播推送","开始");
 				}
 
 				@Override
 				public void onLoading(long total, long current,
 									  boolean isUploading) {
-					LogUtils.e("广播推送","加载");
+					LogUtils.e("Lucian-->广播推送","加载");
 				}
 				@Override
 				public void onSuccess(ResponseInfo arg0) {
-					LogUtils.e("广播推送","成功");
+					LogUtils.e("Lucian-->广播推送","成功");
 					JSONObject jsonResult = null;
 					try {
 						jsonResult = new JSONObject(arg0.result.toString());
@@ -523,12 +583,15 @@ public class F_1_3 extends FrmParent {
 		if (type == 0) {
 			name = wifiName.getText().toString();
 			user = wifiPassword.getText().toString();
-		}else {
+		}else if (type == 1){
 			name = ipInput.getText().toString() ;
 			user = portInput.getText().toString() ;
 			cacheIp = name ;
 			cachePort = Integer.parseInt(user) ;
-		}
+		}else if (type == 2) {
+            name = wifiRDoldPw.getText().toString();
+            user = wifiRDnewPw.getText().toString();
+        }
 		if (!name.equals("") && !user.equals("")) {
 			this.sendRtuCommand(new CommandCreator().cd_DA(type,name, user, "", null), false);
 		}else {
@@ -584,7 +647,7 @@ public class F_1_3 extends FrmParent {
 			}
 			ToastUtils.show(act, "修改设备连接WIFI名称和密码成功");
 			//act.frgTool.f_1_0.afterChangeWifiNameSuccess();
-		}else {
+		}else if (sd.getType() == 1){
 			ipInput.setText(sd.getName());
 			portInput.setText(sd.getUser());
 			ToastUtils.show(act, "修改设备连接服务地址成功");
@@ -592,12 +655,20 @@ public class F_1_3 extends FrmParent {
 				pb_ip_port.setVisibility(View.GONE);
 			}
 			act.frgTool.f_1_0.afterChangeWifiNameSuccess();
-		}
+		}else if (sd.getType() == 2){
+            wifiRDoldPw.setText(sd.getName());
+            wifiRDnewPw.setText(sd.getUser());
+            ToastUtils.show(act, "修改设备创建的wifi热点密码成功");
+            if (pbReDian.getVisibility() == View.VISIBLE) {
+                pbReDian.setVisibility(View.GONE);
+            }
+            NetManager.getInstance().toggleConnectRemote(false);
+            act.tcpConnected = false ;
+            act.frgTool.f_1_0.afterChangeWifiNameSuccess();
+        }
 		act.frgTool.f_1_0.startTimer();
 	}
 
-
-	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

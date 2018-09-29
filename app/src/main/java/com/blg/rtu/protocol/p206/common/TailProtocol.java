@@ -13,7 +13,7 @@ public class TailProtocol {
 		int totalLen = Constant.Bits_Head + dataLen + Constant.Bits_CRC + Constant.Bits_Tail ;
 		if(b[totalLen - 1] != Constant.TAIL){
 			//throw new Exception("RTU数据尾字节不是16H") ;
-			LogUtils.e("结尾检测","数据非16");
+			LogUtils.e("Lucian-->结尾检测","数据非16");
 		}
 		if(isCheckCRC){
 			new CRCProtocol().checkCrc(b, Constant.Site_Control, totalLen - 3, totalLen - 2) ;

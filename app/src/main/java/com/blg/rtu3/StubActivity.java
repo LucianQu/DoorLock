@@ -170,7 +170,7 @@ public class StubActivity extends ActivityAidl.Stub{
 				@Override
 				public void run() {
 					if(code.equals(Code206.cd_50)){
-						LogUtils.e("StubActivity后台服务启动，自动查询CD_50","开始查询");
+						LogUtils.e("Lucian-->StubActivity后台服务启动，自动查询CD_50","开始查询");
 						mAct.frgTool.f_01_010.queryCommand();
 					}else{
 						//未实现的

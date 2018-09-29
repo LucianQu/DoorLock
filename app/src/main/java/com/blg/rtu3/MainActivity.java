@@ -157,7 +157,7 @@ public class MainActivity  extends Activity {
 			if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
 				String extras = intent.getStringExtra(KEY_EXTRAS);
 				if (extras != null) {
-					LogUtils.e("消息接收-extras", extras);
+					LogUtils.e("Lucian-->消息接收-extras", extras);
 					if (extras.contains("http") && extras.contains(".") && extras.contains(":")) {
 						if (mIpPort.equals(extras)) {
 							ToastUtils.show(MainActivity.this, "远程接收服务地址,相同,无需更改!");
@@ -313,7 +313,7 @@ public class MainActivity  extends Activity {
 		this.createView();
 		this.soundAlert = new SoundAlert(this) ;
 		mIpPort = SharepreferenceUtils.getIpPort(this) ;
-		LogUtils.e("当前服务IP端口", mIpPort);
+		LogUtils.e("Lucian-->当前服务IP端口", mIpPort);
 
         this.frgTool = new FragmentTool(this) ;
         this.mActivityStub = StubActivity.createSingle(this)  ;
@@ -660,7 +660,7 @@ public class MainActivity  extends Activity {
                 if (this.tcpConnected) {
                     //网络已经连接
 					frgTool.f_1_0.isFirst = true ;
-                    LogUtils.e("wifi连接通知", "已连接");
+                    LogUtils.e("Lucian-->wifi连接通知", "已连接");
                     updateConnectedStatus(true);
 					handler.removeCallbacks(query50Task);
                     handler.postDelayed(query50Task, 2000);

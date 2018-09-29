@@ -588,8 +588,8 @@ public class F_1_2 extends FrmParent {
 	}
 
 	private void doorContralServer(String dtuId, String code, String flag) {
-		LogUtils.e("请求开始时间", Util.getCurrentTime());
-		LogUtils.e("请求间隔：", (act.delay )+"秒");
+		LogUtils.e("Lucian-->请求开始时间", Util.getCurrentTime());
+		LogUtils.e("Lucian-->请求间隔：", (act.delay )+"秒");
 		String url = act.mIpPort + "/door/door/state.act?" ;
 		//String url = "http://1bdf2aff.ngrok.io/door/door/state.act?" ;
 		RequestParams requestParams = new RequestParams(url);
@@ -597,11 +597,11 @@ public class F_1_2 extends FrmParent {
 		requestParams.addBodyParameter("code", code);
 		requestParams.addBodyParameter("flag", flag);
 		requestParams.addBodyParameter("password",act.frgTool.f_1_0.currentPassword);
-		LogUtils.e("门控制服务", requestParams.toString());
+		LogUtils.e("Lucian-->门控制服务", requestParams.toString());
 		x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
-				LogUtils.e("请求成功结束时间", Util.getCurrentTime());
+				LogUtils.e("Lucian-->请求成功结束时间", Util.getCurrentTime());
 				setProgressVisible(0) ;
 				JSONObject jsonResult = null;
 				if (!"".equals(result)) {

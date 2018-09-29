@@ -70,7 +70,7 @@ public class AuxProtocol {
 			b[index++] = 0;
 			b[index++] = 0;
 		}
-		LogUtils.e("创建下发指令密码",b[index - 2] + "" + b[index - 1]);
+		LogUtils.e("Lucian-->创建下发指令密码",b[index - 2] + "" + b[index - 1]);
 
 		/*if(passwordHex != null){
 			byte[] bs = ByteUtil.hex2Bytes(passwordHex) ;

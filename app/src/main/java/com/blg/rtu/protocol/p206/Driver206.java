@@ -52,7 +52,7 @@ public class Driver206 extends DriverRtu {
 		String dataHex = null ;
 		try {
 			dataHex = ByteUtil.bytes2Hex(b, false) ;
-			LogUtils.e("接收数据分析：", "Hex 格式：" +dataHex);
+			LogUtils.e("Lucian-->接收数据分析：", "Hex 格式：" +dataHex);
 			// 检查数据头合法性
 			int dataLen = new HeadProtocol().checkHeadAndGetDataLen(b) ;
 			// 检查数据尾合法性
@@ -70,7 +70,7 @@ public class Driver206 extends DriverRtu {
 			//index = 4  index + Constant.Bits_RTU_ID - 1 = 8
 			String[] strs = new RtuIdProtocol().parseRtuId_2(b, index, index + Constant.Bits_RTU_ID - 1) ;
 			this.rtuId = strs[0] ;
-			LogUtils.e("接收数据分析：", "BCD RTU ID:" + rtuId);
+			LogUtils.e("Lucian-->接收数据分析：", "BCD RTU ID:" + rtuId);
 			this.rtuId_hex = strs[1] ;
 			
 			//得到数据中的功能码 index = 9

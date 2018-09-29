@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -178,39 +179,41 @@ public class F_01_010  extends FrmParent {
 		//super.receiveRtuData(d) ;
 		receiveWifiData = true ;
 		act.cancelQuery50();
-		LogUtils.e("接收Wifi数据标志", receiveWifiData + "");
+		LogUtils.e("Lucian-->接收Wifi数据标志", receiveWifiData + "");
 		try {
 			String deviceID = SharepreferenceUtils.getDeviceId(act) ;
 			String password = SharepreferenceUtils.getPassword(act) ;
-			LogUtils.e("设备列表", deviceID);
-			LogUtils.e("密码列表", password);
+			LogUtils.e("Lucian-->已存储设备列表", deviceID);
+			LogUtils.e("Lucian-->已存储密码列表", password);
 			Data_10_50 sd = (Data_10_50)d.subData ;
-			LogUtils.e("50H", sd.toString());
+			LogUtils.e("Lucian-->50H", sd.toString());
 			if (null != d && null != sd) {
 				item01.setText(d.getRtuId() + "");
 				item02.setText(sd.getPassWord());
 
 				if (!"".equals(deviceID)) {
 					if (deviceID.contains(d.getRtuId())) {
-						if (!SharepreferenceUtils.getHasLearn(act)) {
-							SharepreferenceUtils.saveHasLearn(act, true);
-							String[] listId = deviceID.split("-");
-							String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
-							for (int i = 0; i < listId.length; i++) {
-								if (d.getRtuId().equals(listId[i])) {
-									SharepreferenceUtils.saveComPassword(act, listPassword[i]);
-								}
+						LogUtils.e("Lucian-->存储ID不为空","包含该ID");
+						SharepreferenceUtils.saveHasLearn(act, true);
+						LogUtils.e("Lucian-->存储ID不为空","包含该ID，获取密码");
+						String[] listId = deviceID.split("-");
+						String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
+						for (int i = 0; i < listId.length; i++) {
+							if (d.getRtuId().equals(listId[i])) {
+								SharepreferenceUtils.saveComPassword(act, listPassword[i]);
+								LogUtils.e("Lucian-->点击学习按钮","已经学习过，获取地址密码 " +listPassword[i]);
 							}
-							act.setDoorId(d.getRtuId());
-							act.frgTool.f_1_0.setCommand(0);
-						}else {
-							ToastUtils.show(act, "设备已经学习过，不在学习!");
 						}
+						act.setDoorId(d.getRtuId());
+						act.frgTool.f_1_0.setCommand(0);
+
 					} else {//连接设备未学习，存储过ID
+						LogUtils.e("Lucian-->存储ID不为空","但没有存储该ID");
 						learningClick(d,sd,deviceID,password) ;
 						//ToastUtils.show(act, "该设备未学习，请先学习！");
 					}
 				} else {//连接设备未学习，未存储过ID
+					LogUtils.e("Lucian-->存储ID为空","第一次学习");
 					learningClick(d,sd,deviceID,password) ;
 					//ToastUtils.show(act, "该设备未学习，请先学习！");
 				}
@@ -219,8 +222,8 @@ public class F_01_010  extends FrmParent {
 		}catch (Exception e) {
 			ToastUtils.show(act, e.getMessage());
 		}
-		LogUtils.e("设备列表", SharepreferenceUtils.getDeviceId(act));
-		LogUtils.e("密码列表", SharepreferenceUtils.getPassword(act));
+		LogUtils.e("Lucian-->最新设备列表", SharepreferenceUtils.getDeviceId(act));
+		LogUtils.e("Lucian-->最新密码列表", SharepreferenceUtils.getPassword(act));
 		act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		act.frgTool.f_1_0.startTimer();
@@ -228,6 +231,7 @@ public class F_01_010  extends FrmParent {
 
 	private void learningClick(RtuData d,Data_10_50 sd,String deviceID, String password) {
 		if (act.frgTool.f_1_3.learningClick()) {
+			LogUtils.e("Lucian-->点击学习按钮","开始学习");
 			act.frgTool.f_1_3.onceComReceiveTrue = true ;
 			SharepreferenceUtils.saveHasLearn(act, true);
 			act.frgTool.f_1_3.setLearningClickStatus(false);
@@ -235,11 +239,13 @@ public class F_01_010  extends FrmParent {
 				String[] listId = deviceID.split("-");
 				String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
 				if (deviceID.contains(d.getRtuId())) {
+					LogUtils.e("Lucian-->点击学习按钮","非第一次学习，包含该ID，已经学习过，不在学习");
 					ToastUtils.show(act, "设备已经学习过，不在学习!");
 					int position = -1;
 					for (int i = 0; i < listId.length; i++) {
 						if (d.getRtuId().equals(listId[i])) {
 							SharepreferenceUtils.saveComPassword(act,listPassword[i]);
+							LogUtils.e("Lucian-->点击学习按钮","已经学习过，获取地址密码 " +listPassword[i]);
 							position = i;
 						}
 					}
@@ -259,11 +265,13 @@ public class F_01_010  extends FrmParent {
 								SharepreferenceUtils.savePassword(act, pws);
 							}*/
 				} else {
+					LogUtils.e("Lucian-->点击学习按钮","非第一次学习，不包含该ID，学习成功"+" 地址" +  d.getRtuId()+" 密码" +  sd.getPassWord());
 					SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
 					SharepreferenceUtils.saveDeviceId(act, deviceID + "-" + d.getRtuId());
 					SharepreferenceUtils.savePassword(act, password + "-" + sd.getPassWord());
 				}
 			} else {
+				LogUtils.e("Lucian-->点击学习按钮","第一次学习，学习成功"+" 地址" +  d.getRtuId()+" 密码" +  sd.getPassWord());
 				SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
 				SharepreferenceUtils.saveDeviceId(act, d.getRtuId());
 				SharepreferenceUtils.savePassword(act, sd.getPassWord());
@@ -271,6 +279,7 @@ public class F_01_010  extends FrmParent {
 			act.setDoorId(d.getRtuId());
 			act.frgTool.f_1_0.setCommand(0);
 		} else {
+			LogUtils.e("Lucian-->未点击学习按钮","请先点击");
 			SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
 			SharepreferenceUtils.saveHasLearn(act, false);
 			ToastUtils.show(act, "该设备未学习，请先学习！");

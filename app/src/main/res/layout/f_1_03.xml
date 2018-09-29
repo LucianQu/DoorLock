@@ -157,7 +157,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="16dp"
 				android:text="设备连接服务设置"
-				android:textSize="@dimen/tx18sp"
+				android:textSize="@dimen/tx16sp"
 				android:textColor="#262626"
 				android:textStyle="bold"
 				/>
@@ -191,7 +191,7 @@
 						android:digits="0123456789."
 						android:background="@drawable/border1"
 						android:text=""
-						android:textSize="@dimen/text16"
+						android:textSize="@dimen/text14"
 						android:textColor="@color/black"/>
 				</LinearLayout>
 				<LinearLayout
@@ -217,7 +217,7 @@
 						android:inputType="number"
 						android:background="@drawable/border1"
 						android:text=""
-						android:textSize="@dimen/text16"
+						android:textSize="@dimen/text14"
 						android:textColor="@color/black"/>
 				</LinearLayout>
 
@@ -275,7 +275,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="16dp"
 				android:text="设备连接WIFI设置"
-				android:textSize="@dimen/tx18sp"
+				android:textSize="@dimen/tx16sp"
 				android:textColor="#262626"
 				android:textStyle="bold"
 				/>
@@ -307,7 +307,7 @@
 						android:textColorHint = "#8f8e94"
 						android:background="@drawable/border1"
 						android:text=""
-						android:textSize="@dimen/text16"
+						android:textSize="@dimen/text14"
 						android:textColor="@color/black"/>
 				</LinearLayout>
 				<LinearLayout
@@ -333,7 +333,7 @@
 						android:textColorHint = "#8f8e94"
 						android:background="@drawable/border1"
 						android:text=""
-						android:textSize="@dimen/text16"
+						android:textSize="@dimen/text14"
 						android:textColor="@color/black"/>
 				</LinearLayout>
 			</LinearLayout>
@@ -361,25 +361,104 @@
 					/>
 			</LinearLayout>
 		</LinearLayout>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:orientation="vertical"
+			android:layout_marginTop="0.1dp"
+			android:layout_marginLeft="2dp"
+			android:layout_marginRight="2dp"
+			android:background="@drawable/border"
+			android:layout_height="wrap_content">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:text="设备创建WIFI的热点密码修改"
+				android:textSize="@dimen/tx16sp"
+				android:textColor="#262626"
+				android:textStyle="bold"
+				/>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:orientation="vertical"
+				android:layout_marginTop="6dp"
+				android:layout_marginLeft="8dp"
+				android:gravity="center_vertical"
+				android:layout_height="wrap_content">
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:orientation="horizontal"
+					android:layout_marginLeft="@dimen/base16dp"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:gravity="center"
+						android:text="旧密码"
+						/>
+					<EditText
+						android:id="@+id/edt_old_password"
+						android:layout_width="160dp"
+						android:layout_marginLeft="@dimen/base10dp"
+						android:layout_height="match_parent"
+						android:gravity="center_vertical|left"
+						android:hint="请输入"
+						android:textColorHint = "#8f8e94"
+						android:background="@drawable/border1"
+						android:text=""
+						android:textSize="@dimen/text14"
+						android:textColor="@color/black"/>
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:orientation="horizontal"
+					android:layout_marginLeft="@dimen/base16dp"
+					android:layout_marginTop="@dimen/base4dp"
+					android:layout_height="wrap_content">
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:gravity="center"
+						android:text="新密码"
+						/>
+					<EditText
+						android:id="@+id/edt_new_password"
+						android:layout_width="160dp"
+						android:layout_marginLeft="@dimen/base10dp"
+						android:layout_marginRight="@dimen/base2dp"
+						android:layout_height="match_parent"
+						android:gravity="center_vertical|left"
+						android:hint="请输入"
+						android:textColorHint = "#8f8e94"
+						android:background="@drawable/border1"
+						android:text=""
+						android:textSize="@dimen/text14"
+						android:textColor="@color/black"/>
+				</LinearLayout>
+			</LinearLayout>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:orientation="vertical"
+				android:layout_marginTop="6dp"
+				android:gravity="center"
+				android:layout_height="wrap_content">
+				<ProgressBar
+					android:id="@+id/pb_wifiCreatePassword"
+					android:visibility="gone"
+					style="?android:attr/progressBarStyleSmall"
+					android:layout_gravity="center"
+					android:layout_width="30dp"
+					android:layout_height="30dp" />
+				<TextView
+					android:id="@+id/tv_wifiCreate_password"
+					android:layout_width="70dp"
+					android:layout_height="40dp"
+					android:gravity="center"
+					android:background="@drawable/learn_click"
+					android:text="确定"
+					android:textSize="@dimen/tx16sp"
+					/>
+			</LinearLayout>
+		</LinearLayout>
 	</LinearLayout>
-	<!--<LinearLayout
-		android:id="@+id/ll_admin_setting"
-		android:layout_width="match_parent"
-		android:orientation="vertical"
-		android:layout_marginTop="2dp"
-		android:layout_marginLeft="6dp"
-		android:layout_marginRight="6dp"
-		android:gravity="center_vertical"
-		android:background="@drawable/border"
-		android:layout_height="50dp">
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="16dp"
-			android:text="管理员设置"
-			android:textSize="@dimen/tx18sp"
-			android:textColor="#262626"
-			android:textStyle="bold"
-			/>
-	</LinearLayout>-->
 </LinearLayout>

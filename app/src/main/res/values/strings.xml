@@ -664,6 +664,7 @@
 	<string name="passwordError">请注意，设备密码已更新，需要删除门ID后，重新连接WIFI学习！</string>
     <string name="txtConfirmSend1">确定要修改WIFI的IP地址/端口号吗?</string>
     <string name="txtConfirmreset">通信服务地址确实要恢复出厂吗?</string>
+    <string name="txtConfirmModiy">确定修改连接设备创建的Wifi热点密码吗，修改成功后，手机需要重新连接Wifi热点?</string>
 	<string name="txtConfirmClear">确定清空吗?</string>
 	<string name="deleteId">确定删除门ID吗，请注意，删除门ID后需要通过连接WIFI，重新学习！</string>
 	<string name="txtConfirm">确定</string>
