@@ -145,7 +145,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						}
 					}
 				}else {
-					if (act.tcpConnected) {
+					if (act.tcpConnected && SharepreferenceUtils.getHasLearn(act)) {
 						currentCom = "0" ;
 						setCommand(0);
 					}
@@ -219,6 +219,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					receiveOpenClose = false ;
 					openCloseStop = 0 ;
 					onceComReceiveTrue = false ;
+					endReqFlag = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						setCommand(1);
 					} else {
@@ -229,7 +230,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 							doorContralServer(currentID, currentAfn, currentCom,"1");
 						}
 					}
-					endReqFlag = false ;
+
 					onceComCheckIsReceive() ;
 					handler.removeCallbacks(operatorTimeOverResetStatus);
 					handler.postDelayed(operatorTimeOverResetStatus, 30000) ;
@@ -252,7 +253,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					currentCom = "2";
 					currentAfn = "F1";
 					receiveOpenClose = false ;
-					endReqFlag = true ;
+					endReqFlag = false ;
 					openCloseStop = 0 ;
 					onceComReceiveTrue = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
@@ -265,7 +266,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 							doorContralServer(currentID, currentAfn, currentCom,"1");
 						}
 					}
-					endReqFlag = false ;
+
 					onceComCheckIsReceive() ;
 					handler.removeCallbacks(operatorTimeOverResetStatus);
 					handler.postDelayed(operatorTimeOverResetStatus, 30000) ;
@@ -292,6 +293,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					currentAfn = "F1";
 					openCloseStop = 0 ;
 					onceComReceiveTrue = false ;
+					endReqFlag = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						setCommand(3);
 					} else {
@@ -302,7 +304,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 							doorContralServer(currentID, currentAfn, currentCom,"1");
 						}
 					}
-					endReqFlag = false ;
+
 					onceComCheckIsReceive() ;
 					handler.removeCallbacks(operatorTimeOverResetStatus);
 					handler.postDelayed(operatorTimeOverResetStatus, 10000) ;
@@ -494,19 +496,28 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		@Override
 		public void run() {
 			if (!onceComReceiveTrue) {
+
 				if (SharepreferenceUtils.getIsWifi(act)) {
 					if (act.tcpConnected) {
 						if ((currentCom.equals("2"))) {
+							ToastUtils.show(act, "命令超时重发");
+							LogUtils.e("超时","命令超时重发");
 							setCommand(2);
 						} else if ((currentCom.equals("1"))) {
+							ToastUtils.show(act, "命令超时重发");
+							LogUtils.e("超时","命令超时重发");
 							setCommand(1);
 						} else if (currentCom.equals("3")) {
+							ToastUtils.show(act, "命令超时重发");
+							LogUtils.e("超时","命令超时重发");
 							setCommand(3);
 						}else {
 							setCommand(0);
 						}
 					}
 				}else {
+					ToastUtils.show(act, "命令超时重发");
+					LogUtils.e("超时","命令超时重发");
 					doorContralServer(currentID, currentAfn, currentCom,"1");
 				}
 				onceComCheckIsReceive() ;
@@ -1136,10 +1147,14 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				currentCom = "0" ;
 				setBtnIsEnable(true);
 				endReqFlag = true ;
+				LogUtils.e("收到停止命令","复位");
 				act.delay = 5;
 				isQuerySeverEnable = true ;
 				handler.removeCallbacks(operatorTimeOverResetStatus);
 				startTimer();
+				if (currentCom.equals("1")&& currentCom.equals("2")&&currentCom.equals("3")) {
+					ToastUtils.show(act, "控制命令执行完毕!");
+				}
 			}
 			tv_door_status.setText("停");
 			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
@@ -1286,8 +1301,19 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			} else {
 				ToastUtils.show(act, "F1接收数据为空");
 			}
+
 			if (!endReqFlag) {
 				queryF1Once();
+			}else {
+				if (currentCom.equals("1")&& currentCom.equals("2")&&currentCom.equals("3")) {
+					ToastUtils.show(act, "停止连续发送");
+				}
+			}
+		}else {
+			if (currentCom.equals("1")&& currentCom.equals("2")&&currentCom.equals("3")) {
+				ToastUtils.show(act, "发送命令" + currentCom +
+						"和接收到的命令" + data.getControlFlag() +
+						"  不一致，停止发送");
 			}
 		}
 	}
