@@ -221,7 +221,12 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					onceComReceiveTrue = false ;
 					endReqFlag = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
-						setCommand(1);
+						handler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								setCommand(1);
+							}
+						},700) ;
 					} else {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
@@ -257,7 +262,12 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					openCloseStop = 0 ;
 					onceComReceiveTrue = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
-						setCommand(2);
+						handler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								setCommand(2);
+							}
+						},700) ;
 					} else {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
@@ -295,7 +305,12 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					onceComReceiveTrue = false ;
 					endReqFlag = false ;
 					if (SharepreferenceUtils.getIsWifi(act)) {
-						setCommand(3);
+						handler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								setCommand(3);
+							}
+						},700) ;
 					} else {
 						if (getCurrentIDIsempty()) {
 							ToastUtils.show(act, "没有可操作的门！");
@@ -337,6 +352,15 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					isFirst = true ;
 					currentID = doorList.get(positionId);
 					currentPassword = passwordList.get(positionId) ;
+					SharepreferenceUtils.savePassword(act, currentPassword);
+					String deviceID = SharepreferenceUtils.getDeviceId(act) ;
+					String password = SharepreferenceUtils.getPassword(act) ;
+					if (deviceID.contains(currentID)) {
+						SharepreferenceUtils.saveHasLearn(act,true);
+					}else {
+						SharepreferenceUtils.saveHasLearn(act,false);
+						ToastUtils.show(act,"该设备未学习，请先学习!");
+					}
 					act.frgTool.f_1_2.setCurrentPosition(positionId);
 					act.frgTool.f_1_2.setCurrentID(currentID);
 					act.delay = 5 ;
@@ -347,6 +371,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					initDeviceConnect() ;
 					//deviceNetStatus = false ;
 					act.setDoorId(currentID);
+
 				}
 			}
 		}else {
@@ -485,7 +510,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		onceComReceiveTrue = false ;
 		handler.removeCallbacks(queryF1OnceTask);
 		if (SharepreferenceUtils.getIsWifi(act)) {
-			handler.postDelayed(queryF1OnceTask, 1500) ;
+			handler.postDelayed(queryF1OnceTask, 2500) ;
 		}else {
 			handler.postDelayed(queryF1OnceTask, 2500) ;
 		}
@@ -1144,17 +1169,18 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					(currentCom.equals("1") && SharepreferenceUtils.getIsWifi(act)
 					|| (currentCom.equals("2") && SharepreferenceUtils.getIsWifi(act)))) {
 				receiveOpenClose = false ;
-				currentCom = "0" ;
+				if (currentCom.equals("1")&& currentCom.equals("2")&&currentCom.equals("3")) {
+					ToastUtils.show(act, "控制命令执行完毕!");
+				}
 				setBtnIsEnable(true);
 				endReqFlag = true ;
 				LogUtils.e("收到停止命令","复位");
 				act.delay = 5;
 				isQuerySeverEnable = true ;
 				handler.removeCallbacks(operatorTimeOverResetStatus);
+				currentCom = "0" ;
 				startTimer();
-				if (currentCom.equals("1")&& currentCom.equals("2")&&currentCom.equals("3")) {
-					ToastUtils.show(act, "控制命令执行完毕!");
-				}
+
 			}
 			tv_door_status.setText("停");
 			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
