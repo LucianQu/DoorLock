@@ -20,7 +20,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="@dimen/tx18sp"
 			android:text="锁状态"
-			android:textSize="@dimen/text16"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>
@@ -145,7 +145,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="@dimen/tx18sp"
 			android:text="锁电源"
-			android:textSize="@dimen/text16"
+			android:textSize="@dimen/tx18sp"
 			android:textColor="#262626"
 			android:textStyle="bold"
 			/>

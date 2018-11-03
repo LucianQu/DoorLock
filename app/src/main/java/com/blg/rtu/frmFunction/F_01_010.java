@@ -19,6 +19,7 @@ import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.cd10_50.Data_10_50;
 import com.blg.rtu.util.Constant;
+import com.blg.rtu.util.DialogConfirm;
 import com.blg.rtu.util.ImageUtil;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.SharepreferenceUtils;
@@ -292,6 +293,22 @@ public class F_01_010  extends FrmParent {
 							if (d.getRtuId().equals(listId[i])) {
 								SharepreferenceUtils.saveComPassword(act, listPassword[i]);
 								LogUtils.e("Lucian-->点击学习按钮","已经学习过，获取地址密码 " +listPassword[i]);
+								if (!listPassword[i].equals(sd.getPassWord())) {
+									act.frgTool.f_1_0.enableDoorList();
+									DialogConfirm dialogConfirm = new DialogConfirm() ;
+									dialogConfirm.showDialog(act,
+											act.getResources().getString(R.string.passwordError1),
+											new DialogConfirm.CallBackInterface() {
+												@Override
+												public void dialogCallBack(Object o) {
+													if ((Boolean) o) {
+
+													} else {
+
+													}
+												}
+											});
+								}
 							}
 						}
 
@@ -339,6 +356,22 @@ public class F_01_010  extends FrmParent {
 							SharepreferenceUtils.saveComPassword(act,listPassword[i]);
 							LogUtils.e("Lucian-->点击学习按钮","已经学习过，获取地址密码 " +listPassword[i]);
 							position = i;
+							if (!listPassword[i].equals(sd.getPassWord())) {
+								act.frgTool.f_1_0.enableDoorList();
+								DialogConfirm dialogConfirm = new DialogConfirm() ;
+								dialogConfirm.showDialog(act,
+										act.getResources().getString(R.string.passwordError1),
+										new DialogConfirm.CallBackInterface() {
+											@Override
+											public void dialogCallBack(Object o) {
+												if ((Boolean) o) {
+
+												} else {
+
+												}
+											}
+										});
+							}
 						}
 					}
 							/*if (position != -1) {

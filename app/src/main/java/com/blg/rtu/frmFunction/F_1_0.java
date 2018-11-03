@@ -220,22 +220,21 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					openCloseStop = 0 ;
 					onceComReceiveTrue = false ;
 					endReqFlag = false ;
-					if (SharepreferenceUtils.getIsWifi(act)) {
-						handler.postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								setCommand(1);
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if (SharepreferenceUtils.getIsWifi(act)) {
+							setCommand(1);
+							} else {
+								if (getCurrentIDIsempty()) {
+									ToastUtils.show(act, "没有可操作的门！");
+								} else {
+									isQuerySeverEnable = false ;
+									doorContralServer(currentID, currentAfn, currentCom,"1");
+								}
 							}
-						},700) ;
-					} else {
-						if (getCurrentIDIsempty()) {
-							ToastUtils.show(act, "没有可操作的门！");
-						} else {
-							isQuerySeverEnable = false ;
-							doorContralServer(currentID, currentAfn, currentCom,"1");
 						}
-					}
-
+					},700) ;
 					onceComCheckIsReceive() ;
 					handler.removeCallbacks(operatorTimeOverResetStatus);
 					handler.postDelayed(operatorTimeOverResetStatus, 30000) ;
@@ -261,22 +260,22 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					endReqFlag = false ;
 					openCloseStop = 0 ;
 					onceComReceiveTrue = false ;
-					if (SharepreferenceUtils.getIsWifi(act)) {
-						handler.postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								setCommand(2);
-							}
-						},700) ;
-					} else {
-						if (getCurrentIDIsempty()) {
-							ToastUtils.show(act, "没有可操作的门！");
-						} else {
-							isQuerySeverEnable = false ;
-							doorContralServer(currentID, currentAfn, currentCom,"1");
-						}
-					}
 
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if (SharepreferenceUtils.getIsWifi(act)) {
+								setCommand(2);
+							} else {
+								if (getCurrentIDIsempty()) {
+									ToastUtils.show(act, "没有可操作的门！");
+								} else {
+									isQuerySeverEnable = false ;
+									doorContralServer(currentID, currentAfn, currentCom,"1");
+								}
+							}
+						}
+					},700) ;
 					onceComCheckIsReceive() ;
 					handler.removeCallbacks(operatorTimeOverResetStatus);
 					handler.postDelayed(operatorTimeOverResetStatus, 30000) ;
@@ -304,21 +303,21 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					openCloseStop = 0 ;
 					onceComReceiveTrue = false ;
 					endReqFlag = false ;
-					if (SharepreferenceUtils.getIsWifi(act)) {
-						handler.postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								setCommand(3);
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if (SharepreferenceUtils.getIsWifi(act)) {
+							setCommand(3);
+							} else {
+								if (getCurrentIDIsempty()) {
+									ToastUtils.show(act, "没有可操作的门！");
+								} else {
+									handler.removeCallbacksAndMessages(null);
+									doorContralServer(currentID, currentAfn, currentCom,"1");
+								}
 							}
-						},700) ;
-					} else {
-						if (getCurrentIDIsempty()) {
-							ToastUtils.show(act, "没有可操作的门！");
-						} else {
-							handler.removeCallbacksAndMessages(null);
-							doorContralServer(currentID, currentAfn, currentCom,"1");
 						}
-					}
+					},700) ;
 
 					onceComCheckIsReceive() ;
 					handler.removeCallbacks(operatorTimeOverResetStatus);
@@ -475,6 +474,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
 		tv_jiaquan.setText("---");
 		setBtnBackground(0, 0);
+		act.frgTool.f_1_2.setFun1AllGray();
+		act.frgTool.f_1_2.setFun2AllGray();
 
 	}
 	public void removeHandler() {
@@ -774,6 +775,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						deviceNetStatus = true;
 						setBtnIsEnable(true);
 						setBtnBackground(4, 0);
+						act.frgTool.f_1_2.setFun1AllGreen();
+						act.frgTool.f_1_2.setFun2AllGreen();
 						act.updateConnectedStatus(true);
 					}
 				}else {
@@ -787,6 +790,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 							tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
 							tv_jiaquan.setText("---");
 							setBtnBackground(0, 0);
+							act.frgTool.f_1_2.setFun1AllGray();
+							act.frgTool.f_1_2.setFun2AllGray();
 							act.updateConnectedStatus(false);
 					}
 				}
@@ -970,6 +975,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private long num =0;
 	public void initDeviceConnect() {
 		setBtnBackground(0,0); //初始化按钮状态灰色，不使能
+		act.frgTool.f_1_2.setFun1AllGray();
+		act.frgTool.f_1_2.setFun2AllGray();
 		//setDoorButtonImg(3);
 		tv_door_status.setText("停");
 		tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
@@ -1048,6 +1055,10 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
 	}
+
+	public void enableDoorList() {
+        tv_doorList.setEnabled(true);
+    }
 
 	public void afterChangeWifiNameSuccess() {
 		setBtnBackground(0,0);
@@ -1196,11 +1207,16 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			tv_close.setEnabled(true);
 			tv_stop.setEnabled(true);
 			setBtnBackground(4,0);
+			act.frgTool.f_1_2.setFun1AllGreen();
+			act.frgTool.f_1_2.setFun2AllGreen();
 		}else {
 			tv_open.setEnabled(false);
 			tv_close.setEnabled(false);
 			tv_stop.setEnabled(false);
 			setBtnBackground(0,0);
+			act.frgTool.f_1_2.setFun1AllGray();
+			act.frgTool.f_1_2.setFun2AllGray();
+
 		}
 	}
 
@@ -1225,7 +1241,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			data[3] = 45 ;
 			setPieChartData() ;
 			initPieChart() ;
-			ToastUtils.show(act, "门角度超出范围:" + open);
+			//ToastUtils.show(act, "门角度超出范围:" + open);
 		}
 		setOpenCloseValue(data[1]);
 
@@ -1319,6 +1335,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		if (isFirst) {
 			isFirst = false ;
 			setBtnBackground(4,0);
+			act.frgTool.f_1_2.setFun1AllGreen();
+			act.frgTool.f_1_2.setFun2AllGreen();
 		}
 		Data_F1 data = (Data_F1)d.subData ;
 		if (currentCom.equals(data.getControlFlag()+"")) {
