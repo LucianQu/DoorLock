@@ -116,6 +116,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private boolean isShowing = false ;
 	private boolean enableOnlinequery = true ;
 	private HashMap<String , String> passErrorHashMap = new HashMap<String, String>() ;
+
+	private boolean testOpen = true ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -206,39 +208,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_open.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (Util.checkIsHasLearned(act)) {
-					stopTimer();
-					endReqFlag = true ;
-					receiveStopNum = 0 ;
-					setProgressVisible(1);
-					setBtnBackground(1, 2);
-					setBtnBackground(2, 0);
-					setBtnBackground(3, 1);
-					currentCom = "1";
-					currentAfn = "F1";
-					receiveOpenClose = false ;
-					openCloseStop = 0 ;
-					onceComReceiveTrue = false ;
-					endReqFlag = false ;
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							if (SharepreferenceUtils.getIsWifi(act)) {
-							setCommand(1);
-							} else {
-								if (getCurrentIDIsempty()) {
-									ToastUtils.show(act, "没有可操作的门！");
-								} else {
-									isQuerySeverEnable = false ;
-									doorContralServer(currentID, currentAfn, currentCom,"1");
-								}
-							}
-						}
-					},700) ;
-					onceComCheckIsReceive() ;
-					handler.removeCallbacks(operatorTimeOverResetStatus);
-					handler.postDelayed(operatorTimeOverResetStatus, 30000) ;
-				}
+				dealOpen() ;
 			}
 		});
 		pb_open = (ProgressBar) view.findViewById(R.id.pb_open);
@@ -247,39 +217,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_close.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (Util.checkIsHasLearned(act)) {
-					stopTimer();
-					receiveStopNum = 0 ;
-					setProgressVisible(2);
-					setBtnBackground(1, 0);
-					setBtnBackground(2, 2); //
-					setBtnBackground(3, 1);
-					currentCom = "2";
-					currentAfn = "F1";
-					receiveOpenClose = false ;
-					endReqFlag = false ;
-					openCloseStop = 0 ;
-					onceComReceiveTrue = false ;
-
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							if (SharepreferenceUtils.getIsWifi(act)) {
-								setCommand(2);
-							} else {
-								if (getCurrentIDIsempty()) {
-									ToastUtils.show(act, "没有可操作的门！");
-								} else {
-									isQuerySeverEnable = false ;
-									doorContralServer(currentID, currentAfn, currentCom,"1");
-								}
-							}
-						}
-					},700) ;
-					onceComCheckIsReceive() ;
-					handler.removeCallbacks(operatorTimeOverResetStatus);
-					handler.postDelayed(operatorTimeOverResetStatus, 30000) ;
-				}
+				dealClose() ;
 			}
 		});
 		pb_close = (ProgressBar) view.findViewById(R.id.pb_close);
@@ -287,42 +225,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_stop.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (Util.checkIsHasLearned(act)) {
-					endReqFlag = true ;
-					stopTimer();
-					receiveStopNum = 0 ;
-					setProgressVisible(3);
-					setBtnBackground(3, 2);
-					setBtnBackground(1,1); //复位
-					setBtnBackground(2,1);//复位
-					if (currentCom.equals("1") || currentCom.equals("2")) {
-						receiveOpenClose = false;
-					}
-					currentCom = "3";
-					currentAfn = "F1";
-					openCloseStop = 0 ;
-					onceComReceiveTrue = false ;
-					endReqFlag = false ;
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							if (SharepreferenceUtils.getIsWifi(act)) {
-							setCommand(3);
-							} else {
-								if (getCurrentIDIsempty()) {
-									ToastUtils.show(act, "没有可操作的门！");
-								} else {
-									handler.removeCallbacksAndMessages(null);
-									doorContralServer(currentID, currentAfn, currentCom,"1");
-								}
-							}
-						}
-					},700) ;
-
-					onceComCheckIsReceive() ;
-					handler.removeCallbacks(operatorTimeOverResetStatus);
-					handler.postDelayed(operatorTimeOverResetStatus, 10000) ;
-				}
+				dealStop() ;
 			}
 		});
 		pb_stop= (ProgressBar) view.findViewById(R.id.pb_stop);
@@ -334,6 +237,120 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		initPieChart();
 		return view ;
 	}
+
+	private void dealOpen() {
+		if (Util.checkIsHasLearned(act)) {
+			testOpen = true ;
+			stopTimer();
+			endReqFlag = true ;
+			receiveStopNum = 0 ;
+			setProgressVisible(1);
+			setBtnBackground(1, 2);
+			setBtnBackground(2, 0);
+			setBtnBackground(3, 1);
+			currentCom = "1";
+			currentAfn = "F1";
+			receiveOpenClose = false ;
+			openCloseStop = 0 ;
+			onceComReceiveTrue = false ;
+			endReqFlag = false ;
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if (SharepreferenceUtils.getIsWifi(act)) {
+						setCommand(1);
+					} else {
+						if (getCurrentIDIsempty()) {
+							ToastUtils.show(act, "没有可操作的门！");
+						} else {
+							isQuerySeverEnable = false ;
+							doorContralServer(currentID, currentAfn, currentCom,"1");
+						}
+					}
+				}
+			},700) ;
+			onceComCheckIsReceive() ;
+			handler.removeCallbacks(operatorTimeOverResetStatus);
+			handler.postDelayed(operatorTimeOverResetStatus, 30000) ;
+		}
+	}
+
+	private void dealClose() {
+		if (Util.checkIsHasLearned(act)) {
+			testOpen = false ;
+			stopTimer();
+			receiveStopNum = 0 ;
+			setProgressVisible(2);
+			setBtnBackground(1, 0);
+			setBtnBackground(2, 2); //
+			setBtnBackground(3, 1);
+			currentCom = "2";
+			currentAfn = "F1";
+			receiveOpenClose = false ;
+			endReqFlag = false ;
+			openCloseStop = 0 ;
+			onceComReceiveTrue = false ;
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if (SharepreferenceUtils.getIsWifi(act)) {
+						setCommand(2);
+					} else {
+						if (getCurrentIDIsempty()) {
+							ToastUtils.show(act, "没有可操作的门！");
+						} else {
+							isQuerySeverEnable = false ;
+							doorContralServer(currentID, currentAfn, currentCom,"1");
+						}
+					}
+				}
+			},700) ;
+			onceComCheckIsReceive() ;
+			handler.removeCallbacks(operatorTimeOverResetStatus);
+			handler.postDelayed(operatorTimeOverResetStatus, 30000) ;
+		}
+	}
+
+	private void dealStop() {
+		if (Util.checkIsHasLearned(act)) {
+			endReqFlag = true ;
+			stopTimer();
+			receiveStopNum = 0 ;
+			setProgressVisible(3);
+			setBtnBackground(3, 2);
+			setBtnBackground(1,1); //复位
+			setBtnBackground(2,1);//复位
+			if (currentCom.equals("1") || currentCom.equals("2")) {
+				receiveOpenClose = false;
+			}
+			currentCom = "3";
+			currentAfn = "F1";
+			openCloseStop = 0 ;
+			onceComReceiveTrue = false ;
+			endReqFlag = false ;
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if (SharepreferenceUtils.getIsWifi(act)) {
+						setCommand(3);
+					} else {
+						if (getCurrentIDIsempty()) {
+							ToastUtils.show(act, "没有可操作的门！");
+						} else {
+							handler.removeCallbacksAndMessages(null);
+							doorContralServer(currentID, currentAfn, currentCom,"1");
+						}
+					}
+				}
+			},700) ;
+
+			onceComCheckIsReceive() ;
+			handler.removeCallbacks(operatorTimeOverResetStatus);
+			handler.postDelayed(operatorTimeOverResetStatus, 10000) ;
+		}
+	}
+
 	@Override
 	public void senddata(String msg) {
 		positionId = Integer.parseInt(msg) ;
@@ -507,6 +524,17 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 	};
 
+	private Runnable testMode =  new Runnable() {
+		@Override
+		public void run() {
+			if (testOpen) {
+				dealClose();
+			}else {
+				dealOpen();
+			}
+		}
+	};
+
 	private void onceComCheckIsReceive() {
 		onceComReceiveTrue = false ;
 		handler.removeCallbacks(queryF1OnceTask);
@@ -517,6 +545,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 
 	}
+
+
 
 	private Runnable queryF1OnceTask = new Runnable() {
 		@Override
@@ -1190,8 +1220,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				isQuerySeverEnable = true ;
 				handler.removeCallbacks(operatorTimeOverResetStatus);
 				currentCom = "0" ;
-				startTimer();
-
+				//startTimer();
+				handler.postDelayed(testMode, 30000) ;
 			}
 			tv_door_status.setText("停");
 			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));

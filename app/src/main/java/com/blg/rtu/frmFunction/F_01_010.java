@@ -328,6 +328,7 @@ public class F_01_010  extends FrmParent {
 
 			}
 		}catch (Exception e) {
+			LogUtils.e("F_01_010",e.getMessage());
 			ToastUtils.show(act, e.getMessage());
 		}
 
@@ -335,7 +336,7 @@ public class F_01_010  extends FrmParent {
 		LogUtils.e("Lucian-->最新密码列表", SharepreferenceUtils.getPassword(act));
 		act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
-		act.frgTool.f_1_0.startTimer();
+		//act.frgTool.f_1_0.startTimer();
 	}
 
 	private void learningClick(RtuData d,Data_10_50 sd,String deviceID, String password) {
