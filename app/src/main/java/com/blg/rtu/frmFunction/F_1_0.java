@@ -1220,8 +1220,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				isQuerySeverEnable = true ;
 				handler.removeCallbacks(operatorTimeOverResetStatus);
 				currentCom = "0" ;
-				//startTimer();
-				handler.postDelayed(testMode, 30000) ;
+				startTimer();
+				//handler.postDelayed(testMode, 30000) ;
 			}
 			tv_door_status.setText("停");
 			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
