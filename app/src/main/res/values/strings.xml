@@ -2,13 +2,13 @@
 <resources>
     <string name="debug">true</string>
     
-    <string name="account_no">请输入用户名</string>
-    <string name="account_psw">请输入密码</string>
+    <string name="account_no">设备ID</string>
+    <string name="account_psw">设备密码</string>
     <string name="save_psw">记住密码</string>
     <string name="save_wifiConnectType">水表连接</string>
     <string name="login">登录</string>
-    <string name="copyright">版权所有：北京奥特美克科技股份有限公司</string>
-    <string name="connect">联系方式：010&#8211;82893548</string>
+    <string name="copyright">版权所有</string>
+    <string name="connect">联系方式</string>
        
     <string name="txtVersion">Version</string>
     
@@ -16,10 +16,10 @@
     <string name="rtuAssiName">智能门控制系统</string>
     <string name="welcome">专业智能门制造商!</string>
     
-    <string name="thirdPage">副页面2</string>
-    <string name="secondPage">副页面1</string>
-    <string name="fourPage">副页面3</string>
-    <string name="mainPage">主页面</string>
+    <string name="thirdPage">窗控制</string>
+    <string name="secondPage">监控</string>
+    <string name="fourPage">设置</string>
+    <string name="mainPage">门控制</string>
     
     <string name="image_description">图片</string>
     

@@ -42,11 +42,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blg.rtu.aidl.ServiceAidl;
-import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.Constant;
 import com.blg.rtu.util.MyTimeTask;
 import com.blg.rtu.util.Preferences;
-import com.blg.rtu.util.ResourceUtils;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SoundAlert;
 import com.blg.rtu.util.StringValueForActivity;
@@ -511,10 +509,10 @@ public class MainActivity  extends Activity {
 		mPager = (ViewPager) findViewById(R.id.vPager);
 		LayoutInflater mInflater = this.getLayoutInflater();
 		scrollbar = (ImageView)findViewById(R.id.scrollbar) ;
-		pageView_main = mInflater.inflate(R.layout.activity_main_function_page, null) ;
-		pageView_second = mInflater.inflate(R.layout.activity_main_loopquery_page, null) ;
-		pageView_fourth = mInflater.inflate(R.layout.activity_main_noprotocol_page, null) ;
-		pageView_third = mInflater.inflate(R.layout.activity_main_channel_page, null) ;
+		pageView_main = mInflater.inflate(R.layout.activity_f_1_00_page, null) ;
+		pageView_second = mInflater.inflate(R.layout.activity_f_1_01_page, null) ;
+		pageView_fourth = mInflater.inflate(R.layout.activity_f_1_03_page, null) ;
+		pageView_third = mInflater.inflate(R.layout.activity_f_1_02_page, null) ;
 
 		rtuAssiName = (TextView) findViewById(R.id.rtuAssiName) ;
 		String message = SharepreferenceUtils.getMessage(MainActivity.this) ;

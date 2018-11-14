@@ -8,12 +8,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.automic.watersource.model.UserInfo;
@@ -21,15 +18,13 @@ import com.automic.watersource.utils.Utils;
 import com.blg.rtu.util.AppUtils;
 import com.blg.rtu.util.SpinnerVO;
 
-import java.util.ArrayList;
-
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
 	public static LoginActivity instance = null ;
 	private Button btnLogin;
 
 	//public CheckBox cbSavePsw;
-	public Spinner item01;
+	//public Spinner item01;
 	private ArrayAdapter<SpinnerVO> spinnerAdapter01;
 	private int spinnerPosition01 ;
 
@@ -62,13 +57,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
 		//cbSavePsw = (CheckBox) findViewById(R.id.cb_save);
 		
-		spinnerAdapter01 = new ArrayAdapter<SpinnerVO>(LoginActivity.this, R.layout.spinner_style, new ArrayList<SpinnerVO>());
+		/*spinnerAdapter01 = new ArrayAdapter<SpinnerVO>(LoginActivity.this, R.layout.spinner_style, new ArrayList<SpinnerVO>());
 		this.putSpinnerValue_1(spinnerAdapter01);
-		spinnerAdapter01.setDropDownViewResource(R.layout.spinner_item);
+		spinnerAdapter01.setDropDownViewResource(R.layout.spinner_item);*/
 		
-		item01 = (Spinner) findViewById(R.id.connect_type);
+		/*item01 = (Spinner) findViewById(R.id.connect_type);
 		item01.setAdapter(spinnerAdapter01);
-		item01.setOnItemSelectedListener(spinLs);
+		item01.setOnItemSelectedListener(spinLs);*/
 		
 		etuser = (EditText) findViewById(R.id.et_user);
 		etpassword = (EditText) findViewById(R.id.et_pwd);
@@ -84,14 +79,14 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			openActivity(MainActivity.class);
 			finish();
 		}
-		int type = getCbWifiConnecyType() ;
+		/*int type = getCbWifiConnecyType() ;
 		if(type >= 0 && type <=2) {
 			item01.setSelection(type);
 			Utils.saveBnversion(getApplicationContext(), "" + type) ;
 		}else{
 			item01.setSelection(0);
 			Utils.saveBnversion(getApplicationContext(), "" + 0) ;
-		}
+		}*/
 	}
 	
 	private void putSpinnerValue_1(ArrayAdapter<SpinnerVO> spinnerAdapter){
@@ -100,7 +95,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		spinnerAdapter.add(new SpinnerVO("2", "中继器")) ;
 	}
 	
-	OnItemSelectedListener spinLs = new OnItemSelectedListener() {
+/*	OnItemSelectedListener spinLs = new OnItemSelectedListener() {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			if(parent == LoginActivity.this.item01){
 				spinnerPosition01 = position ;
@@ -109,7 +104,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
-	};	
+	};	*/
 	
 	private void login(String userName,String pwd){
 		//String[] saveUserPassword = Utils.getUserPushInfo(getApplicationContext());

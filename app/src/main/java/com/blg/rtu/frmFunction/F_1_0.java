@@ -21,8 +21,6 @@ import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.F1.Data_F1;
-import com.blg.rtu.protocol.p206.F2.Data_F2;
-import com.blg.rtu.protocol.p206.F3.Data_F3;
 import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.DialogConfirm;
@@ -31,7 +29,6 @@ import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SpinnerVO;
 import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.util.Util;
-
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.blg.rtu3.utils.DataTranslateUtils;
@@ -76,6 +73,14 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private ProgressBar pb_open ;
 	private ProgressBar pb_close ;
 	private ProgressBar pb_stop ;
+
+	private TextView tvLockStatus;
+
+	private ImageView imgLockInit ;
+	private ImageView imgLockAlarm ;
+	private ImageView imgLockPower ;
+
+
 
 	private PieChartView pieChart;
 	private PieChartData pieChardata;
@@ -233,6 +238,13 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		pieChart.setOnValueTouchListener(selectListener);//设置点击事件监听
 		imgDoorPower = (ImageView) view.findViewById(R.id.img_door_power) ;
 		imgDoorAlarm = (ImageView) view.findViewById(R.id.img_door_alarm) ;
+
+		tvLockStatus = (TextView) view.findViewById(R.id.tv_lock_status) ;
+
+		imgLockInit = (ImageView) view.findViewById(R.id.img_lock_init) ;
+		imgLockAlarm = (ImageView) view.findViewById(R.id.img_lock_alarm) ;
+		imgLockPower = (ImageView) view.findViewById(R.id.img_lock_power) ;
+
 		setPieChartData();
 		initPieChart();
 		return view ;
@@ -1146,7 +1158,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			setDoorAlarmImg(doorStatus.getWarnStates()[2]) ; //门关门故障
 		}
 
-		act.frgTool.f_1_1.displayServiceData(doorStatus);//显示第二页数据
+		displayServiceData1(doorStatus);//显示第二页数据
 	}
 
 	/**
@@ -1275,6 +1287,73 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 		setOpenCloseValue(data[1]);
 
+	}
+
+	public void displayServiceData1(DoorStatus doorStatus) {
+		if (!isAdded()) {
+			this.onAttach(act);
+		}
+		if (null != doorStatus) {
+			//锁状态
+			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 3) {
+				if (doorStatus.getLockStates()[0] == 1) {
+					tvLockStatus.setText("开锁");
+				} else if (doorStatus.getLockStates()[0] == 0) {
+					tvLockStatus.setText("关锁");
+				} else {
+					tvLockStatus.setText("未知");
+				}
+			}
+			//锁原点
+			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 2) {
+				if (doorStatus.getLockStates()[1] == 1) {
+					imgLockInit.setImageResource(R.mipmap.ic_circle_green);
+				} else if (doorStatus.getLockStates()[1] == 0) {
+					imgLockInit.setImageResource(R.mipmap.ic_circle_red);
+				} else {
+					imgLockInit.setImageResource(R.mipmap.ic_circle_gray1);
+				}
+			}
+			//锁电源
+			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 1) {
+				if (doorStatus.getLockStates()[0] == 1) {
+					imgLockPower.setImageResource(R.mipmap.ic_circle_green);
+				} else if (doorStatus.getLockStates()[0] == 0) {
+					imgLockPower.setImageResource(R.mipmap.ic_circle_red);
+				} else {
+					imgLockPower.setImageResource(R.mipmap.ic_circle_gray1);
+				}
+			}
+		}
+
+	}
+
+	public void displayWifiData1(Data_F1 data) {
+		if (!isAdded()) {
+			this.onAttach(act);
+		}
+		if (null != data) {
+			//锁状态
+			if (data.isOpenLock()) {
+				tvLockStatus.setText("开锁");
+			}else{
+				tvLockStatus.setText("关锁");
+			}
+			//锁原点
+			if (data.isLockInitPosition()) {
+				imgLockInit.setImageResource(R.mipmap.ic_circle_green);
+			}else{
+				imgLockInit.setImageResource(R.mipmap.ic_circle_red);
+			}
+			//锁报警
+			//锁电源
+
+			if (data.isHasPower()) {
+				imgLockPower.setImageResource(R.mipmap.ic_circle_green);
+			}else{
+				imgLockPower.setImageResource(R.mipmap.ic_circle_red);
+			}
+		}
 	}
 
 	private boolean checkIsNull(Object obj) {
@@ -1410,8 +1489,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			setDoorPowerImg(data.isNormalPower() ? 0 : 1) ; //电池欠压
 			setDoorAlarmImg(data.isDoorNormal() ? 0 : 1) ; //门关门故障
 
-			act.frgTool.f_1_1.displayWifiData(data);//显示第二页数据
-		}else if (data1 instanceof Data_F2) {
+			displayWifiData1(data);//显示第二页数据
+		}/*else if (data1 instanceof Data_F2) {
 			Data_F2 data = (Data_F2)data1;
 			//甲醛浓度
 			if (data.getJiaQuan() == 0) {
@@ -1450,7 +1529,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			setDoorAlarmImg(data.isDoorNormal() ? 0 : 1) ; //门关门故障
 
 			act.frgTool.f_1_1.displayWifiData3(data);//显示第二页数据
-		}
+		}*/
 
 	}
 

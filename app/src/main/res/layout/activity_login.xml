@@ -12,7 +12,7 @@
         android:layout_marginTop="30dp"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/dl2"
+        android:src="@mipmap/ic_jiankong1"
         android:scaleType="fitCenter" >
     </ImageView>
     
@@ -20,8 +20,8 @@
         android:id="@+id/login_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:layout_marginTop="35dp"
         android:gravity="center_vertical"
         android:orientation="vertical" >
@@ -87,12 +87,12 @@
             </EditText>
         </RelativeLayout>
     </LinearLayout>
-   <LinearLayout 
+   <!--<LinearLayout
        android:layout_width="match_parent"
        android:layout_height="40dp"
        android:orientation="horizontal"
        >
-<!--        
+&lt;!&ndash;
        <CheckBox
          android:id="@+id/cb_save"
          android:layout_width="0dp"
@@ -108,7 +108,7 @@
          android:gravity="center_vertical"
          android:text="@string/save_psw"
          android:textColor="#808080"
-         android:textSize="16sp" /> -->
+         android:textSize="16sp" /> &ndash;&gt;
      
           <TextView
             android:layout_width="wrap_content"
@@ -125,21 +125,21 @@
 			android:background="@android:color/transparent"
 			android:layout_marginRight = "5dp"
 			/>
-   </LinearLayout>
+   </LinearLayout>-->
 	
    	<Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="20dip"
+        android:layout_marginLeft="80dip"
+        android:layout_marginRight="80dip"
         android:layout_marginTop="40dip"
         android:background="#0b8de3"
         android:padding="10dp"
         android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="20sp" />
-   <LinearLayout
+   <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="40dip"
@@ -161,8 +161,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
             android:gravity="center_horizontal"
-            android:text="@string/connect"            
+            android:text="@string/connect"
             android:textColor="#303030">
         </TextView>
-    </LinearLayout>
+    </LinearLayout>-->
 </LinearLayout>
