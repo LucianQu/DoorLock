@@ -7,6 +7,7 @@ import com.blg.rtu.frmFunction.F_01_010;
 import com.blg.rtu.frmFunction.F_1_0;
 import com.blg.rtu.frmFunction.F_1_1;
 import com.blg.rtu.frmFunction.F_1_2;
+import com.blg.rtu.frmFunction.F_1_2_1;
 import com.blg.rtu.frmFunction.F_1_3;
 import com.blg.rtu.frmFunction.FrmParent;
 
@@ -20,7 +21,8 @@ public class FragmentTool {
 	private static List<FrmParent> frms = new ArrayList<FrmParent>() ;;
 	public F_1_0 f_1_0 ;
 	public F_1_1 f_1_1 ;
-	public F_1_2 f_1_2 ;
+	//public F_1_2 f_1_2 ;
+	public F_1_2_1 f_1_2_1 ;
 	public F_1_3 f_1_3 ;
 	public F_01_010 f_01_010 ;
 
@@ -30,11 +32,13 @@ public class FragmentTool {
         FragmentManager fm = this.mainAct.getFragmentManager();
 		f_1_0 = (F_1_0) fm.findFragmentById(R.id.f_1_00) ;
 		f_1_1 = (F_1_1) fm.findFragmentById(R.id.f_1_01) ;
-		f_1_2 = (F_1_2) fm.findFragmentById(R.id.f_1_02) ;
+		//f_1_2 = (F_1_2) fm.findFragmentById(R.id.f_1_02) ;
+		f_1_2_1 = (F_1_2_1) fm.findFragmentById(R.id.f_1_02_1) ;
 		f_1_3 = (F_1_3) fm.findFragmentById(R.id.f_1_03) ;
 		frms.add(f_1_0);
 		frms.add(f_1_1);
-		frms.add(f_1_2);
+		//frms.add(f_1_2);
+		frms.add(f_1_2_1);
 		frms.add(f_1_3);
 
         f_01_010 = (F_01_010)fm.findFragmentById(R.id.f_01_010) ;

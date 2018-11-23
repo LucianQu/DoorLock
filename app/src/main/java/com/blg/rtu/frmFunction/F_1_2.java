@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
-public class F_1_2 extends FrmParent {
+public class F_1_2 extends FrmParent implements AddPopWindow.Choice{
 
 	private Spinner spinner;
 	private ArrayAdapter<SpinnerVO> spinnerAdapter1;
@@ -72,6 +72,11 @@ public class F_1_2 extends FrmParent {
 
 	private TextView tvData1 ;
 	private TextView tvData2 ;
+	private TextView tv_doorList ;
+	private AddPopWindow popWindow;
+	private List<String> doorList = new ArrayList<String>() ;
+	private List<String> passwordList = new ArrayList<String>() ;
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -173,13 +178,23 @@ public class F_1_2 extends FrmParent {
 	};
 
 	@Override
+	public void senddata(String msg) {
+
+	}
+
+	@Override
+	public void longClick(int position) {
+
+	}
+
+	@Override
 	public View onCreateView(
 			LayoutInflater inflater, 
 			ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.f_1_02, container, false);
 
-		spinner = (Spinner)view.findViewById(R.id.spinner_doorList);
+		spinner = (Spinner)view.findViewById(R.id.spinner_communication);
 		spinnerAdapter1 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
 		this.putSpinnerValue1();
 		spinnerAdapter1.setDropDownViewResource(R.layout.spinner_item);
@@ -187,6 +202,20 @@ public class F_1_2 extends FrmParent {
 		spinner.setAdapter(spinnerAdapter1);
 		spinner.setOnItemSelectedListener(new SpinnerSelectedListener());
 
+		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
+		popWindow = new AddPopWindow(getActivity(), doorList);
+		popWindow.setChoice(this);
+		/*SharepreferenceUtils.saveHasLearn(act, true);
+		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
+		SharepreferenceUtils.savePassword(act,"2a23-5348-0102-0102");*/
+		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+		tv_doorList.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				popWindow.showPopupWindow(tv_doorList);
+			}
+		});
+		tv_doorList.setEnabled(false);
         pb_open1 = (ProgressBar) view.findViewById(R.id.pb_open1);
         pb_open2 = (ProgressBar) view.findViewById(R.id.pb_open2);
         pb_close1 = (ProgressBar) view.findViewById(R.id.pb_close1);
@@ -674,7 +703,9 @@ public class F_1_2 extends FrmParent {
 	}
 
 	public void putSpinnerValue1(){
-		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+		spinnerAdapter1.add(new SpinnerVO("0", "请选择")) ;
+		spinnerAdapter1.add(new SpinnerVO("1", "服务通信")) ;
+		spinnerAdapter1.add(new SpinnerVO("2", "Wifi通信")) ;
 	}
 
 	public void setCurrentPosition(int position) {
@@ -688,10 +719,69 @@ public class F_1_2 extends FrmParent {
 
 	private class SpinnerSelectedListener implements AdapterView.OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			if(parent.getId() == spinner.getId()){
-                currentID = parent.getSelectedItem().toString();
-                act.frgTool.f_1_0.setCurrentID(currentID);
-                act.frgTool.f_1_0.setCurrentPosition(position);
+			if(parent.getId() == spinner.getId()) {
+				/*if (position == 1) {//服务器
+					tv_doorList.setText("");
+					tv_doorList.setHint("请选择门地址");
+					wifiServer = 1;
+					initStatus();
+					act.requestServeice = true;
+					if (act.tcpConnected) {
+						NetManager.getInstance().toggleConnectRemote(false);
+						act.tcpConnected = false;
+					}
+					isFirst = true;
+					SharepreferenceUtils.saveIsWifi(act, false);
+					if (getCurrentIDIsempty()) {
+						spinner2.setSelection(2);
+						new DialogAlarm().showDialog(act, "门设备地址为空，请先学习！\n学习步骤：\n1、手机Wifi连接到门热点\n2、APP通信类型选择Wifi通信\n3、连接到Wifi后到<副页面3>进行门学习!");
+					} else {
+						act.connectWifiAndServer();
+					}
+					tv_doorList.setEnabled(true);
+					isQuerySeverEnable = true;
+				} else if (position == 2) {//wifi
+					initStatus();
+					if (act.tcpConnected) {
+						act.tcpConnected = false;
+						NetManager.getInstance().toggleConnectRemote(false);
+					}
+					LogUtils.e("Lucian-->门地址为空", "重新选择wifi通道");
+					wifiServer = 2;
+					act.requestServeice = false;
+					isFirst = true;
+					act.frgTool.f_01_010.setReceiveWifiData(false);
+					SharepreferenceUtils.saveIsWifi(act, true);
+					tv_doorList.setEnabled(false);
+					act.connectWifiAndServer();
+					isQuerySeverEnable = false;
+				} else {
+					initStatus();
+					if (SharepreferenceUtils.getIsWifi(act)) {
+						wifiServer = 0;
+						initStatus();
+						if (act.tcpConnected) {
+							NetManager.getInstance().toggleConnectRemote(false);
+							act.tcpConnected = false;
+						}
+						tv_doorList.setEnabled(false);
+						isQuerySeverEnable = false;
+					} else {
+						tv_doorList.setText("");
+						tv_doorList.setHint("请选择门地址");
+						initStatus();
+						if (act.tcpConnected) {
+							act.tcpConnected = false;
+							NetManager.getInstance().toggleConnectRemote(false);
+						}
+						wifiServer = 0;
+						act.requestServeice = false;
+						act.frgTool.f_01_010.setReceiveWifiData(false);
+						act.requestServeice = false;
+						tv_doorList.setEnabled(false);
+						isQuerySeverEnable = false;
+					}
+				}*/
 			}
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
@@ -732,8 +822,8 @@ public class F_1_2 extends FrmParent {
 									if (null != doorStatus) {
 										tvData1.setText(doorStatus.getAngle()+"");
 										//ToastUtils.show(act, "显示辅加功能1回传Wifi数据!");
-										act.frgTool.f_1_2.setFun1AllGreen();
-										act.frgTool.f_1_2.setFun2AllGreen();
+										setFun1AllGreen();
+										setFun2AllGreen();
 										act.frgTool.f_1_0.startTimer();
 										//ToastUtils.show(act, "附加功能-获取服务数据成功");
 									} else {
@@ -868,16 +958,16 @@ public class F_1_2 extends FrmParent {
 				//act.frgTool.f_1_0.displayWifiData(data) ;
 				tvData1.setText(data.getDoorOpen()+"");
 				//ToastUtils.show(act, "显示辅加功能1回传Wifi数据!");
-				act.frgTool.f_1_2.setFun1AllGreen();
-				act.frgTool.f_1_2.setFun2AllGreen();
+				setFun1AllGreen();
+				setFun2AllGreen();
 				act.frgTool.f_1_0.startTimer();
 			}else if (subD instanceof Data_F3) {
 				Data_F3 data = (Data_F3) subD ;
 				tvData2.setText(data.getDoorOpen()+"");
 				//act.frgTool.f_1_0.displayWifiData(data) ;
 				//ToastUtils.show(act, "显示辅加功能2回传Wifi数据!");
-				act.frgTool.f_1_2.setFun1AllGreen();
-				act.frgTool.f_1_2.setFun2AllGreen();
+				setFun1AllGreen();
+				setFun2AllGreen();
 				act.frgTool.f_1_0.startTimer();
 			}
 		}

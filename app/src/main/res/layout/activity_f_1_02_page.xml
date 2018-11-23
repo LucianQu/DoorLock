@@ -7,23 +7,34 @@
     android:orientation="vertical"
     android:background="#f0eff5">
 
- 	<LinearLayout 
-	    android:id="@+id/chLine_04"
-		android:orientation="vertical"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" 
-
-	    >
-		<fragment
-		android:id="@+id/f_1_02"
-		android:name="com.blg.rtu.frmFunction.F_1_2"
+	<ScrollView
+		android:id="@+id/f_func_scrollView"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"/>
- 	</LinearLayout>
-
- 	<TextView 
- 	    android:clickable="true"
-		android:textColor="#ddd4ff" 
-		style="@style/welcome"/>
- 					
+		android:layout_height="match_parent"
+		android:layout_marginTop="0.1dp"
+		android:layout_marginBottom="0.1dp"
+		android:scrollbars="none"
+		android:fadingEdge="vertical">
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+			<LinearLayout
+				android:id="@+id/chLine_04"
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				>
+				<fragment
+				android:id="@+id/f_1_02_1"
+				android:name="com.blg.rtu.frmFunction.F_1_2_1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+			</LinearLayout>
+			<TextView
+				android:clickable="true"
+				android:textColor="#ddd4ff"
+				style="@style/welcome"/>
+		</LinearLayout>
+	</ScrollView>
 </LinearLayout>

@@ -335,7 +335,7 @@ public class F_01_010  extends FrmParent {
 		LogUtils.e("Lucian-->最新设备列表", SharepreferenceUtils.getDeviceId(act));
 		LogUtils.e("Lucian-->最新密码列表", SharepreferenceUtils.getPassword(act));
 		act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
-		act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+
 		act.frgTool.f_1_0.startTimer();
 	}
 

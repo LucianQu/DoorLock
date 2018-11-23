@@ -58,44 +58,17 @@ import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.view.PieChartView;
 
 
-
-public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
+public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 
 	private Spinner spinner2;
-	private ArrayAdapter<SpinnerVO> spinnerAdapter1;
+
 	private ArrayAdapter<SpinnerVO> spinnerAdapter2;
-	private TextView tv_jiaquan ;
-	private TextView tv_openValue ;
-	private TextView tv_open ;
-	private TextView tv_close ;
-	private TextView tv_stop ;
-	private TextView tv_door_status ;
-	private ProgressBar pb_open ;
-	private ProgressBar pb_close ;
-	private ProgressBar pb_stop ;
-
-	private TextView tvLockStatus;
-
-	private ImageView imgLockInit ;
-	private ImageView imgLockAlarm ;
-	private ImageView imgLockPower ;
-
-
-
-	private PieChartView pieChart;
-	private PieChartData pieChardata;
 	List<SliceValue> values = new ArrayList<SliceValue>();
-	private int[] data = {135,0,180,45};
-	private int[] colors = {Color.parseColor("#ffffff"),Color.parseColor("#FF4040"),Color.parseColor("#CDC9C9"),Color.parseColor("#ffffff")};
-
-	private ImageView imgDoorPower ;
-	private ImageView imgDoorAlarm ;
 
 	private DoorStatus doorStatus ; //门状态
 	public String currentID = "" ; //当前门ID
 	public String currentPassword = "" ; //当前门ID
 	public Callback.Cancelable httpGet ;  //网络请求
-	public Callback.Cancelable httpGet1 ;  //网络请求
 	public String currentCom = "0" ; //当前命令
 	private String currentAfn = "" ; //当前功能码
 	public boolean isFirst = true ; //是否初始请求
@@ -106,7 +79,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private int receiveStopNum = 0 ; //接收门停止计数
 	public boolean isQuerySeverEnable = true ;
 	public int wifiServer = 0 ;
-	private int openCloseStop = 0 ;
 	private boolean onceComReceiveTrue  = false;
 	private boolean deviceNetStatus = false ;
 
@@ -119,10 +91,25 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private boolean taskStatus = false ;
 	private DialogConfirm dialogConfirm ;
 	private boolean isShowing = false ;
-	private boolean enableOnlinequery = true ;
 	private HashMap<String , String> passErrorHashMap = new HashMap<String, String>() ;
+	private TextView tv_open1;
+	private TextView tv_close1;
+	private TextView tv_stop1;
 
-	private boolean testOpen = true ;
+	private TextView tv_open2;
+	private TextView tv_close2;
+	private TextView tv_stop2;
+
+	private ProgressBar pb_open1 ;
+	private ProgressBar pb_close1 ;
+	private ProgressBar pb_stop1 ;
+
+	private ProgressBar pb_open2 ;
+	private ProgressBar pb_close2 ;
+	private ProgressBar pb_stop2 ;
+	private TextView tvData1 ;
+	private TextView tvData2 ;
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -135,13 +122,11 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		super.onCreate(savedInstanceState);
 		cntFrmOpened = false ;
 		loading = false ;
-		//setTimer() ;
 	}
 	private void setTimer(){
 		task =new MyTimeTask(2000, new TimerTask() {
 			@Override
 			public void run() {
-				//LogUtils.e("Lucian--->timer", "查询类型--->" + (SharepreferenceUtils.getIsWifi(act)? "WIFI":"服务"));
 				if (!SharepreferenceUtils.getIsWifi(act)) {
 					if (!getCurrentIDIsempty()) {
 						if (isQuerySeverEnable) {
@@ -183,7 +168,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.f_1_00, container, false);
+		View view = inflater.inflate(R.layout.f_1_02, container, false);
 		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
@@ -199,62 +184,69 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		});
 		tv_doorList.setEnabled(false);
 
-		tv_jiaquan = (TextView) view.findViewById(R.id.tv_jiaquan) ;
-		tv_jiaquan.setText("---");
-
-		tv_open = (TextView) view.findViewById(R.id.tv_open) ;
-		tv_openValue = (TextView) view.findViewById(R.id.tv_openValue) ;
-		tv_open.setOnClickListener(new View.OnClickListener() {
+		pb_open1 = (ProgressBar) view.findViewById(R.id.pb_open1);
+		pb_open2 = (ProgressBar) view.findViewById(R.id.pb_open2);
+		pb_close1 = (ProgressBar) view.findViewById(R.id.pb_close1);
+		pb_close2 = (ProgressBar) view.findViewById(R.id.pb_close2);
+		pb_stop1 = (ProgressBar) view.findViewById(R.id.pb_stop1);
+		pb_stop2 = (ProgressBar) view.findViewById(R.id.pb_stop2);
+		tv_open1 = (TextView) view.findViewById(R.id.tv_open1) ;
+		tvData1 = (TextView) view.findViewById(R.id.tv_data1) ;
+		tvData2 = (TextView) view.findViewById(R.id.tv_data2) ;
+		tv_open1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				dealOpen() ;
+
 			}
 		});
-		pb_open = (ProgressBar) view.findViewById(R.id.pb_open);
-		tv_door_status = (TextView) view.findViewById(R.id.tv_door_status) ;
-		tv_close = (TextView) view.findViewById(R.id.tv_close) ;
-		tv_close.setOnClickListener(new View.OnClickListener() {
+
+		tv_close1 = (TextView) view.findViewById(R.id.tv_close1) ;
+		tv_close1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				dealClose() ;
+
 			}
 		});
-		pb_close = (ProgressBar) view.findViewById(R.id.pb_close);
-		tv_stop = (TextView) view.findViewById(R.id.tv_stop) ;
-		tv_stop.setOnClickListener(new View.OnClickListener() {
+		tv_stop1 = (TextView) view.findViewById(R.id.tv_stop1) ;
+		tv_stop1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				dealStop() ;
+
 			}
 		});
-		pb_stop= (ProgressBar) view.findViewById(R.id.pb_stop);
-		pieChart = (PieChartView) view.findViewById(R.id.pie_chart);
-		pieChart.setOnValueTouchListener(selectListener);//设置点击事件监听
-		imgDoorPower = (ImageView) view.findViewById(R.id.img_door_power) ;
-		imgDoorAlarm = (ImageView) view.findViewById(R.id.img_door_alarm) ;
 
-		tvLockStatus = (TextView) view.findViewById(R.id.tv_lock_status) ;
+		tv_open2 = (TextView) view.findViewById(R.id.tv_open2) ;
+		tv_open2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
 
-		imgLockInit = (ImageView) view.findViewById(R.id.img_lock_init) ;
-		imgLockAlarm = (ImageView) view.findViewById(R.id.img_lock_alarm) ;
-		imgLockPower = (ImageView) view.findViewById(R.id.img_lock_power) ;
+			}
+		});
+		tv_close2 = (TextView) view.findViewById(R.id.tv_close2) ;
+		tv_close2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
 
-		setPieChartData();
-		initPieChart();
+			}
+		});
+		tv_stop2 = (TextView) view.findViewById(R.id.tv_stop2) ;
+		tv_stop2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
 
-		spinner2 = (Spinner)view.findViewById(R.id.spinner_communication);
-		spinnerAdapter2 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
-		spinnerAdapter2.setDropDownViewResource(R.layout.spinner_item);
-		this.putSpinnerValue2();
-		spinner2.setAdapter(spinnerAdapter2);
-		spinner2.setOnItemSelectedListener(new SpinnerSelectedListener2());
-
+        spinner2 = (Spinner)view.findViewById(R.id.spinner_communication);
+        spinnerAdapter2 = new ArrayAdapter<SpinnerVO>(this.act, R.layout.spinner_style, new ArrayList<SpinnerVO>());
+        spinnerAdapter2.setDropDownViewResource(R.layout.spinner_item);
+        this.putSpinnerValue2();
+        spinner2.setAdapter(spinnerAdapter2);
+        spinner2.setOnItemSelectedListener(new SpinnerSelectedListener2());
 		return view ;
 	}
 
 	private void dealOpen() {
 		if (Util.checkIsHasLearned(act)) {
-			testOpen = true ;
 			stopTimer();
 			endReqFlag = true ;
 			receiveStopNum = 0 ;
@@ -265,7 +257,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			currentCom = "1";
 			currentAfn = "F1";
 			receiveOpenClose = false ;
-			openCloseStop = 0 ;
 			onceComReceiveTrue = false ;
 			endReqFlag = false ;
 			handler.postDelayed(new Runnable() {
@@ -291,7 +282,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 
 	private void dealClose() {
 		if (Util.checkIsHasLearned(act)) {
-			testOpen = false ;
 			stopTimer();
 			receiveStopNum = 0 ;
 			setProgressVisible(2);
@@ -302,7 +292,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			currentAfn = "F1";
 			receiveOpenClose = false ;
 			endReqFlag = false ;
-			openCloseStop = 0 ;
 			onceComReceiveTrue = false ;
 
 			handler.postDelayed(new Runnable() {
@@ -340,7 +329,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 			currentCom = "3";
 			currentAfn = "F1";
-			openCloseStop = 0 ;
 			onceComReceiveTrue = false ;
 			endReqFlag = false ;
 			handler.postDelayed(new Runnable() {
@@ -498,16 +486,10 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		handler.removeCallbacksAndMessages(null);
 		act.updateConnectedStatus(false);
 
-		setDoorDit(0);
-		tv_door_status.setText("停");
-		tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
-		tv_jiaquan.setText("---");
 		setBtnBackground(0, 0);
+
 	}
-	public void removeHandler() {
-		handler.removeCallbacksAndMessages(null);
-		handler = null ;
-	}
+
 	public MyHandler handler = new MyHandler(act) ;
 	public class MyHandler extends Handler {
 		private final WeakReference<MainActivity> mActivty;
@@ -530,17 +512,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			endReqFlag = true;
 			isQuerySeverEnable = true ;
 			startTimer();//超时开始普通查询
-		}
-	};
-
-	private Runnable testMode =  new Runnable() {
-		@Override
-		public void run() {
-			if (testOpen) {
-				dealClose();
-			}else {
-				dealOpen();
-			}
 		}
 	};
 
@@ -617,22 +588,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 	}
 
-	public int getCurrentPosition() {
-		if (doorList.size() == 0) {
-			return -1 ;
-		}else {
-			return positionId ;
-		}
-	}
-
-	public void setCurrentPosition(int position) {
-		if (doorList.size() != 0) {
-			this.positionId = position ;
-			currentPassword = passwordList.get(position) ;
-			tv_doorList.setText(doorList.get(position));
-		}
-	}
-
 	public   void doorContralServer(final String dtuId, final String code, final String flag, String tp){//请求参数个数不确定，可变长参数,可变长参数放在最后一个
 		try {
 
@@ -645,10 +600,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			params.addBodyParameter("password",currentPassword);
 			final HttpUtils http = new HttpUtils();
 			http.configCurrentHttpCacheExpiry(1000 * 5);
-			//LogUtils.e("Lucian-->-->门控制服务", url +"dtuId="+
-                    //dtuId+"&code=" +code+"&tp="+tp+"&flag="+flag+"&password="+currentPassword);
-			//LogUtils.e("Lucian-->--->请求开始时间", Util.getCurrentTime());
-
 			http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
 				@Override
 				public void onStart() {
@@ -800,8 +751,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		String url =act.mIpPort +  "/door/door/online.act" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
-		//LogUtils.e("Lucian-->---->查询当前门是否在线", requestParams.toString());
-		//LogUtils.e("Lucian-->---->请求开始时间", Util.getCurrentTime());
 		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
 			public void onSuccess(String result) {
@@ -822,11 +771,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					if (deviceNetStatus) {
 							deviceNetStatus = false;
 							setBtnIsEnable(false);
-							setDoorDit(0);
-							tv_door_status.setText("停");
-							tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
-							tv_jiaquan.setText("---");
+
 							setBtnBackground(0, 0);
+
 							act.updateConnectedStatus(false);
 					}
 				}
@@ -849,73 +796,73 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 		if (position == 1) {
 			if (status == 1) {
-				tv_open.setEnabled(true);
-				tv_open.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+				tv_open1.setEnabled(true);
+				tv_open1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
 			}else if (status == 2) {
-				tv_open.setEnabled(false);
-				tv_open.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
+				tv_open1.setEnabled(false);
+				tv_open1.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
 			}else {
-				tv_open.setEnabled(false);
-				tv_open.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+				tv_open1.setEnabled(false);
+				tv_open1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
 			}
 		}else if (position == 2) {
 			if (status == 1) {
-				tv_close.setEnabled(true);
-				tv_close.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+				tv_close1.setEnabled(true);
+				tv_close1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
 			}else if (status == 2) {
-				tv_close.setEnabled(false);
-				tv_close.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
+				tv_close1.setEnabled(false);
+				tv_close1.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
 			}else {
-				tv_close.setEnabled(false);
-				tv_close.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+				tv_close1.setEnabled(false);
+				tv_close1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
 			}
 		}else if (position == 3) {
 			if (status == 1) {
-				tv_stop.setEnabled(true);
-				tv_stop.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+				tv_stop1.setEnabled(true);
+				tv_stop1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
 			}else if (status == 2) {
-				tv_stop.setEnabled(false);
-				tv_stop.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
+				tv_stop1.setEnabled(false);
+				tv_stop1.setBackground(act.getResources().getDrawable(R.mipmap.btn_red));
 			}else {
-				tv_stop.setEnabled(false);
-				tv_stop.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+				tv_stop1.setEnabled(false);
+				tv_stop1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
 			}
 		}else if (position == 4) {
 			setProgressVisible(0) ;
-			tv_open.setEnabled(true);
-			tv_close.setEnabled(true);
-			tv_stop.setEnabled(true);
-			tv_open.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
-			tv_close.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
-			tv_stop.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			tv_open1.setEnabled(true);
+			tv_close1.setEnabled(true);
+			tv_stop1.setEnabled(true);
+			tv_open1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			tv_close1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
+			tv_stop1.setBackground(act.getResources().getDrawable(R.mipmap.btn_green1));
 		}else {
 			setProgressVisible(0) ;
-			tv_open.setEnabled(false);
-			tv_close.setEnabled(false);
-			tv_stop.setEnabled(false);
-			tv_open.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
-			tv_close.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
-			tv_stop.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			tv_open1.setEnabled(false);
+			tv_close1.setEnabled(false);
+			tv_stop1.setEnabled(false);
+			tv_open1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			tv_close1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
+			tv_stop1.setBackground(act.getResources().getDrawable(R.mipmap.btn_gray));
 		}
 	}
 
 	private void setProgressVisible(int position){
 		if (position == 1) {
-			pb_open.setVisibility(View.VISIBLE);
-			pb_close.setVisibility(View.INVISIBLE);
-			pb_stop.setVisibility(View.INVISIBLE);
+			pb_open1.setVisibility(View.VISIBLE);
+			pb_close1.setVisibility(View.INVISIBLE);
+			pb_stop1.setVisibility(View.INVISIBLE);
 		}else if (position == 2) {
-			pb_open.setVisibility(View.INVISIBLE);
-			pb_close.setVisibility(View.VISIBLE);
-			pb_stop.setVisibility(View.INVISIBLE);
+			pb_open1.setVisibility(View.INVISIBLE);
+			pb_close1.setVisibility(View.VISIBLE);
+			pb_stop1.setVisibility(View.INVISIBLE);
 		}else if (position == 3) {
-			pb_open.setVisibility(View.INVISIBLE);
-			pb_close.setVisibility(View.INVISIBLE);
-			pb_stop.setVisibility(View.VISIBLE);
+			pb_open1.setVisibility(View.INVISIBLE);
+			pb_close1.setVisibility(View.INVISIBLE);
+			pb_stop1.setVisibility(View.VISIBLE);
 		}else {
-			pb_open.setVisibility(View.INVISIBLE);
-			pb_close.setVisibility(View.INVISIBLE);
-			pb_stop.setVisibility(View.INVISIBLE);
+			pb_open1.setVisibility(View.INVISIBLE);
+			pb_close1.setVisibility(View.INVISIBLE);
+			pb_stop1.setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -931,46 +878,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 	};
 
-	/**
-	 * 获取数据
-	 */
-	private void setPieChartData(){
-		values.clear();
-		setOpenCloseValue(data[1]);
-		for (int i = 0; i < data.length; ++i) {
-			SliceValue sliceValue = new SliceValue((float) data[i], colors[i]);//这里的颜色是我写了一个工具类 是随机选择颜色的
-			values.add(sliceValue);
-		}
-	}
 
-	private void setOpenCloseValue(int value) {
-		tv_openValue.setText(value+"度");
-	}
-
-	/**
-	 * 初始化
-	 */
-	private void initPieChart() {
-		if (!isAdded()) {
-			this.onAttach(act);
-		}
-		pieChardata = new PieChartData();
-		pieChardata.setHasLabels(false);//显示表情
-		pieChardata.setHasLabelsOnlyForSelected(false);//不用点击显示占的百分比
-		pieChardata.setHasLabelsOutside(false);//占的百分比是否显示在饼图外面
-		pieChardata.setHasCenterCircle(false);//是否是环形显示
-		pieChardata.setValues(values);//填充数据
-		pieChardata.setCenterCircleScale(1f);//设置环形的大小级别
-		pieChardata.setSlicesSpacing(0);//设置间隔为0
-
-		pieChart.setPieChartData(pieChardata);
-		pieChart.setValueSelectionEnabled(false);//设置是否选中值
-		pieChart.setAlpha(1f);//设置透明度
-		pieChart.setCircleFillRatio(1f);//设置饼图大小
-		pieChart.setViewportCalculationEnabled(true);//设置饼图自动适应大小
-		pieChart.setChartRotationEnabled(false);
-
-	}
 
 	public void updateSpinnerValue(String data) {
 		if (!"".equals(data)) {
@@ -1004,17 +912,10 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		spinnerAdapter2.add(new SpinnerVO("2", "Wifi通信")) ;
 	}
 
-	public void setCurrentID(String s) {
-		this.currentID = s ;
-	}
+
 	private long num =0;
 	public void initDeviceConnect() {
 		setBtnBackground(0,0); //初始化按钮状态灰色，不使能
-		//setDoorButtonImg(3);
-		tv_door_status.setText("停");
-		tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
-		setPieChart(0);
-		tv_jiaquan.setText("---");
 	}
 
 	private class SpinnerSelectedListener2 implements AdapterView.OnItemSelectedListener {
@@ -1089,23 +990,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		}
 	}
 
-	public void enableDoorList() {
-        tv_doorList.setEnabled(true);
-    }
-
-	public void afterChangeWifiNameSuccess() {
-		setBtnBackground(0,0);
-		setBtnIsEnable(false) ;
-		act.frgTool.f_01_010.setReceiveWifiData(false);
-		act.tcpConnected = false ;
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				act.connectWifiAndServer() ;
-			}
-		}, 2000) ;
-	}
-
 	public void pintServiceData(DoorStatus doorStatus) {
 		LogUtils.e("Lucian-->请求成功结束时间", Util.getCurrentTime());
 		LogUtils.e("Lucian-->接收到服务器返回数据",
@@ -1123,68 +1007,11 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		);
 	}
 	public void displayServiceData(DoorStatus doorStatus) {
-		//甲醛浓度
-		if (!checkIsNull(doorStatus.getHcho())){
-			tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree(doorStatus.getHcho()+""));
-		}else {
-			tv_jiaquan.setText("---");
-		}
 
-		if (!checkIsNull(doorStatus.getDoorState())) {
-			setDoorButtonImg(doorStatus.getDoorState()) ; //门控制按钮状态
-		}else {
-			setDoorButtonImg(0) ;
-		}
-
-		if (!checkIsNull(doorStatus.getAngle())) {
-			setPieChart(doorStatus.getAngle()) ; //门开关角度
-		}else {
-			setPieChart(0);
-		}
-		if(null != doorStatus.getWarnStates() && doorStatus.getWarnStates().length >= 1) {
-			setDoorPowerImg(doorStatus.getWarnStates()[0]) ; //电池欠压
-		}
-
-		if(null != doorStatus.getWarnStates()&& doorStatus.getWarnStates().length >= 3) {
-			setDoorAlarmImg(doorStatus.getWarnStates()[2]) ; //门关门故障
-		}
-
-		displayServiceData1(doorStatus);//显示第二页数据
 	}
 
-	/**
-	 * 设置门故障状态
-	 * @param positon
-	 */
-	private void setDoorAlarmImg(int positon) {
-		if (!isAdded()) {
-			this.onAttach(act);
-		}
-		if (positon == 1) {
-			imgDoorAlarm.setImageResource(R.mipmap.ic_circle_red);
-		} else if (positon == 0) {
-			imgDoorAlarm.setImageResource(R.mipmap.ic_circle_green);
-		} else {
-			imgDoorAlarm.setImageResource(R.mipmap.ic_circle_gray1);
-		}
-	}
 
-	/**
-	 * 设置门欠压状态
-	 * @param positon
-	 */
-	private void setDoorPowerImg(int positon) {
-		if (!isAdded()) {
-			this.onAttach(act);
-		}
-		if (positon == 1) {
-			imgDoorPower.setImageResource(R.mipmap.ic_circle_red);
-		}else if (positon == 0){
-			imgDoorPower.setImageResource(R.mipmap.ic_circle_green);
-		}else {
-			imgDoorPower.setImageResource(R.mipmap.ic_circle_gray1);
-		}
-	}
+
 
 	/**
 	 * 设置门控制按键状态
@@ -1195,20 +1022,16 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			this.onAttach(act);
 		}
 		if (positon== 1) {
-			openCloseStop = 1 ;
+
 			receiveStopNum = 0 ;
 			receiveOpenClose = true ;
-			tv_door_status.setText("开");
-			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_green_bg));
+
 		}else if (positon == 2) {
 			receiveStopNum = 0 ;
-			openCloseStop = 2;
-			tv_door_status.setText("关");
 			receiveOpenClose = true ;
-			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_red_bg));
 		}else if (positon == 3) {
 			receiveStopNum ++ ;
-			openCloseStop = 3 ;
+
 			if (receiveStopNum >= 3 || receiveOpenClose || currentCom.equals("3") ||
 					(currentCom.equals("1") && SharepreferenceUtils.getIsWifi(act)
 					|| (currentCom.equals("2") && SharepreferenceUtils.getIsWifi(act)))) {
@@ -1226,121 +1049,27 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				startTimer();
 				//handler.postDelayed(testMode, 30000) ;
 			}
-			tv_door_status.setText("停");
-			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
+
 		}else {
-			tv_door_status.setText("停");
-			tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
+
 		}
 	}
 
 	public void setBtnIsEnable(boolean isEnable) {
 		if (isEnable) {
-			tv_open.setEnabled(true);
-			tv_close.setEnabled(true);
-			tv_stop.setEnabled(true);
+			tv_open1.setEnabled(true);
+			tv_close1.setEnabled(true);
+			tv_stop1.setEnabled(true);
 			setBtnBackground(4,0);
 		}else {
-			tv_open.setEnabled(false);
-			tv_close.setEnabled(false);
-			tv_stop.setEnabled(false);
+			tv_open1.setEnabled(false);
+			tv_close1.setEnabled(false);
+			tv_stop1.setEnabled(false);
 			setBtnBackground(0,0);
+
 		}
 	}
 
-	private void setPieChart(int open){
-		setDoorDit(open) ;
-	}
-
-	private void setDoorDit(int open) {
-		int close = 0 ;
-		if (open <= 180 && open >=0) {
-			close = 180 - open ;
-			data[0] = 135;
-			data[1] = open ;
-			data[2] = close ;
-			data[3] = 45 ;
-			setPieChartData() ;
-			initPieChart() ;
-		}else {
-			data[0] = 135;
-			data[1] = 0 ;
-			data[2] = 180 ;
-			data[3] = 45 ;
-			setPieChartData() ;
-			initPieChart() ;
-			//ToastUtils.show(act, "门角度超出范围:" + open);
-		}
-		setOpenCloseValue(data[1]);
-
-	}
-
-	public void displayServiceData1(DoorStatus doorStatus) {
-		if (!isAdded()) {
-			this.onAttach(act);
-		}
-		if (null != doorStatus) {
-			//锁状态
-			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 3) {
-				if (doorStatus.getLockStates()[0] == 1) {
-					tvLockStatus.setText("开锁");
-				} else if (doorStatus.getLockStates()[0] == 0) {
-					tvLockStatus.setText("关锁");
-				} else {
-					tvLockStatus.setText("未知");
-				}
-			}
-			//锁原点
-			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 2) {
-				if (doorStatus.getLockStates()[1] == 1) {
-					imgLockInit.setImageResource(R.mipmap.ic_circle_green);
-				} else if (doorStatus.getLockStates()[1] == 0) {
-					imgLockInit.setImageResource(R.mipmap.ic_circle_red);
-				} else {
-					imgLockInit.setImageResource(R.mipmap.ic_circle_gray1);
-				}
-			}
-			//锁电源
-			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 1) {
-				if (doorStatus.getLockStates()[0] == 1) {
-					imgLockPower.setImageResource(R.mipmap.ic_circle_green);
-				} else if (doorStatus.getLockStates()[0] == 0) {
-					imgLockPower.setImageResource(R.mipmap.ic_circle_red);
-				} else {
-					imgLockPower.setImageResource(R.mipmap.ic_circle_gray1);
-				}
-			}
-		}
-
-	}
-
-	public void displayWifiData1(Data_F1 data) {
-		if (!isAdded()) {
-			this.onAttach(act);
-		}
-		if (null != data) {
-			//锁状态
-			if (data.isOpenLock()) {
-				tvLockStatus.setText("开锁");
-			}else{
-				tvLockStatus.setText("关锁");
-			}
-			//锁原点
-			if (data.isLockInitPosition()) {
-				imgLockInit.setImageResource(R.mipmap.ic_circle_green);
-			}else{
-				imgLockInit.setImageResource(R.mipmap.ic_circle_red);
-			}
-			//锁报警
-			//锁电源
-
-			if (data.isHasPower()) {
-				imgLockPower.setImageResource(R.mipmap.ic_circle_green);
-			}else{
-				imgLockPower.setImageResource(R.mipmap.ic_circle_red);
-			}
-		}
-	}
 
 	private boolean checkIsNull(Object obj) {
 		if (obj == null ||"".equals(obj)  || "-1".equals(obj.toString())) {
@@ -1372,8 +1101,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	 */
 	@Override
 	protected void queryCommand(){
-		//CoreThread.getInstance().newRtuId(F_01_100.getInstance().getRtuSelectedItem().replaceAll(" ", ""));
-		//this.sendRtuCommand(new CommandCreator().cd_EF(null), false) ;
 	}
 	
 	/**
@@ -1385,9 +1112,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	public void setCommand(int command) {
-		/*if (fragment_04 != null) {
-			fragment_04.setRtuData(null, null,null,command+"",++receiveWifiDataNum);
-		}*/
 		this.sendRtuCommand(new CommandCreator().cd_F_1(command,null), false);
 	}
 	
@@ -1418,7 +1142,22 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	public void resetLabelImg(){
 	}
 
-
+	public void setFun1AllGreen() {
+		tv_open1.setEnabled(true);
+		tv_stop1.setEnabled(true);
+		tv_close1.setEnabled(true);
+		setBtnBackground(1, 1); //绿
+		setBtnBackground(2, 1); //绿
+		setBtnBackground(3, 1); //绿
+	}
+	public void setFun2AllGreen() {
+		tv_open2.setEnabled(true);
+		tv_stop2.setEnabled(true);
+		tv_close2.setEnabled(true);
+		setBtnBackground(4, 1); //绿
+		setBtnBackground(5, 1); //绿
+		setBtnBackground(6, 1); //绿
+	}
 	/**
 	 * 收到数据
 	 * @param d
@@ -1430,7 +1169,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		if (isFirst) {
 			isFirst = false ;
 			setBtnBackground(4,0);
-
+			setFun1AllGreen();
+			setFun2AllGreen();
 		}
 		Data_F1 data = (Data_F1)d.subData ;
 		if (currentCom.equals(data.getControlFlag()+"")) {
@@ -1455,31 +1195,15 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 		}
 	}
+
 	public void displayWifiData(Object data1) {
 		if (data1 instanceof Data_F1) {
 			Data_F1 data = (Data_F1)data1;
 			//甲醛浓度
-			if (data.getJiaQuan() == 0) {
-				tv_jiaquan.setText("0.000") ;
-			}else {
-				if (data.getJiaQuan() > 100000) {
-					ToastUtils.show(act, "甲醛值超出范围");
-				}else {
-					tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree((data.getJiaQuan() / 1000) + "." + (data.getJiaQuan() % 1000))
-					);
-				}
-			}
 			setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
-			setPieChart(data.getDoorOpen()) ; //门开关角度
-			setDoorPowerImg(data.isNormalPower() ? 0 : 1) ; //电池欠压
-			setDoorAlarmImg(data.isDoorNormal() ? 0 : 1) ; //门关门故障
-
-			displayWifiData1(data);//显示第二页数据
 		}
 	}
 
-
-	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -1497,7 +1221,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	public void onResume() {
 		super.onResume();
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
