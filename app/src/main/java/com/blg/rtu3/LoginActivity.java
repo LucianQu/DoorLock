@@ -190,7 +190,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 			password = etpassword.getText().toString();
 			//saveUserPassword = Utils.getUserPushInfo(getApplicationContext());
 			if(cb.isChecked()){
-				if("".equals(userInfo.getUsername()) || "".equals(userInfo.getPassword())) {
+				if("".equals(userInfo.getUsername()) || "".equals(userInfo.getDoorPassword())) {
 					if (usercode.equals("admin") && password.equals("password")) {
 						Utils.savePswisSave(getApplicationContext(), true);
 					}else {
@@ -202,7 +202,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 						.create().show();
 					}
 				}else{
-					if (usercode.equals(userInfo.getUsername()) && password.equals(userInfo.getPassword())) {
+					if (usercode.equals(userInfo.getUsername()) && password.equals(userInfo.getDoorPassword())) {
 						Utils.savePswisSave(getApplicationContext(), true);
 					}else {
 						cb.setChecked(false);

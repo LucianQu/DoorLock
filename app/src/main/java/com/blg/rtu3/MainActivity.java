@@ -303,7 +303,7 @@ public class MainActivity  extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		StringValueForActivity.initOnlyOnce(this) ;
-		instance = this ;
+		instance = MainActivity.this ;
 		Preferences.initInstance(this) ;
 		this.broadcastReceiver = new MainBroadcastReceiver(this) ;
 		this.broadcastReceiver.registerAndReceive() ;
@@ -326,7 +326,8 @@ public class MainActivity  extends Activity {
 		mJPush.setTag("admin1,admin2");//为设备设置标签
 		mJPush.setAlias("doorlock");//为设备设置别名
 		registerMessageReceiver();
-		setTimer() ;
+		SharepreferenceUtils.saveIsDoor(MainActivity.this,true);
+		//setTimer() ;
 		//ToastUtils.show(instance, "网络是否为Wifi"+isWifi()+"");
 	}
 
@@ -671,6 +672,10 @@ public class MainActivity  extends Activity {
         }
 	}
 
+	public void disConnectWifi() {
+
+	}
+
 	public void updateConnectedType(int data) {
 		if (data == 1) {
 			tv_connectType.setText("Wifi连接状态:");
@@ -744,20 +749,32 @@ public class MainActivity  extends Activity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
+
 			switch(v.getId()) {
 			case R.id.switchQuery:
+
 				mPager.setCurrentItem(0);//设置viewPager的初始界面
 				defaultAnimation(0) ;
+				if (!SharepreferenceUtils.getIsDoor(MainActivity.this)) {
+					Log.e("Lucian-->", "page:"+1) ;
+					//initDoorAndWindowStatus(true);
+				}
 				break ;
 			case R.id.switchOnce:
+				Log.e("Lucian-->", "page:"+2) ;
 				mPager.setCurrentItem(1) ;
 				defaultAnimation(1) ;
 				break ;
 			case R.id.switchFun:
+				if (SharepreferenceUtils.getIsDoor(MainActivity.this)) {
+					Log.e("Lucian-->", "page:" + 3);
+					//initDoorAndWindowStatus(false);
+				}
 				mPager.setCurrentItem(2) ;
 				defaultAnimation(2) ;
 				break ;
 			case R.id.switchLog:
+				Log.e("Lucian-->", "page:"+4) ;
 				mPager.setCurrentItem(3) ;
 				defaultAnimation(3) ;
 				break ;
@@ -769,6 +786,14 @@ public class MainActivity  extends Activity {
 		}
 		
 	}
+	/*//点击了门或者窗
+	private void initDoorAndWindowStatus(boolean isDoor) {
+		if (isDoor) {
+			SharepreferenceUtils.saveIsDoor(this, true);
+		}else {
+			SharepreferenceUtils.saveIsDoor(this, false);
+		}
+	}*/
 
 	/**
 	 *  页卡切换监听

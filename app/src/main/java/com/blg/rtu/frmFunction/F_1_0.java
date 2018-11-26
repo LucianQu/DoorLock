@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,7 +122,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	private boolean isShowing = false ;
 	private boolean enableOnlinequery = true ;
 	private HashMap<String , String> passErrorHashMap = new HashMap<String, String>() ;
-
+	private boolean deviceIsOnline = false ;
 	private boolean testOpen = true ;
 	@Override
 	public void onAttach(Activity activity) {
@@ -147,7 +148,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						if (isQuerySeverEnable) {
 							if (!"".equals(currentID)) {
 								queryServerStatus(currentID);
-								doorContralServer(currentID, "F1", "0", "0");
+								if (deviceIsOnline) {
+									doorContralServer(currentID, "F1", "0", "0");
+								}
 							}
 						}
 					}
@@ -188,9 +191,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
 		SharepreferenceUtils.saveHasLearn(act, true);
-		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
-		SharepreferenceUtils.savePassword(act,"2a23-5348-0102-0102");
-		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+		SharepreferenceUtils.saveDoorDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
+		SharepreferenceUtils.saveDoorPassword(act,"2a23-5348-0102-0102");
+		updateSpinnerValue(SharepreferenceUtils.getDoorDeviceId(act));
 		tv_doorList.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -200,7 +203,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_doorList.setEnabled(false);
 
 		tv_jiaquan = (TextView) view.findViewById(R.id.tv_jiaquan) ;
-		tv_jiaquan.setText("---");
+		tv_jiaquan.setText(SharepreferenceUtils.getJiaQuan(act));
 
 		tv_open = (TextView) view.findViewById(R.id.tv_open) ;
 		tv_openValue = (TextView) view.findViewById(R.id.tv_openValue) ;
@@ -382,9 +385,13 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					isFirst = true ;
 					currentID = doorList.get(positionId);
 					currentPassword = passwordList.get(positionId) ;
-					SharepreferenceUtils.savePassword(act, currentPassword);
-					String deviceID = SharepreferenceUtils.getDeviceId(act) ;
-					String password = SharepreferenceUtils.getPassword(act) ;
+					SharepreferenceUtils.saveComPassword(act, currentPassword);
+					String deviceID = SharepreferenceUtils.getDoorDeviceId(act) ;
+					String password = SharepreferenceUtils.getDoorPassword(act) ;
+					LogUtils.e("Lucian-->选择的门锁地址", currentID);
+					LogUtils.e("Lucian-->选择的门锁密码", currentPassword);
+					Log.e("Lucian--->","设备列表：" +deviceID) ;
+					Log.e("Lucian--->","密码列表：" +password) ;
 					if (deviceID.contains(currentID)) {
 						SharepreferenceUtils.saveHasLearn(act,true);
 					}else {
@@ -394,8 +401,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 
 					act.delay = 5 ;
 					act.updateConnectedStatus(false);
-					LogUtils.e("Lucian-->选择的门锁地址", currentID);
-					LogUtils.e("Lucian-->选择的门锁密码", currentPassword);
                     tv_doorList.setText(currentID);
 					initDeviceConnect() ;
 					//deviceNetStatus = false ;
@@ -425,8 +430,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 									LogUtils.e("Lucian-->移除密码列表中的设备ID", doorList.get(position));
 								}
 							}
-							String deviceID = SharepreferenceUtils.getDeviceId(act) ;
-							String password = SharepreferenceUtils.getPassword(act) ;
+							String deviceID = SharepreferenceUtils.getDoorDeviceId(act) ;
+							String password = SharepreferenceUtils.getDoorPassword(act) ;
 							LogUtils.e("Lucian-->设备列表", deviceID);
 							LogUtils.e("Lucian-->密码列表", password);
 							String[] listId = deviceID.split("-");
@@ -466,20 +471,20 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 								}
 								LogUtils.e("Lucian-->设备列表", ids);
 								LogUtils.e("Lucian-->密码列表", pws);
-								SharepreferenceUtils.saveDeviceId(act, ids);
-								SharepreferenceUtils.savePassword(act, pws);
+								SharepreferenceUtils.saveDoorDeviceId(act, ids);
+								SharepreferenceUtils.saveDoorPassword(act, pws);
 							}else {
-								SharepreferenceUtils.saveDeviceId(act, "");
-								SharepreferenceUtils.savePassword(act, "");
+								SharepreferenceUtils.saveDoorDeviceId(act, "");
+								SharepreferenceUtils.saveDoorPassword(act, "");
 							}
-							updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+							updateSpinnerValue(SharepreferenceUtils.getDoorDeviceId(act));
 						}else{
 						}
 					}
 				}) ;
 	}
 
-	private void initStatus() {
+	public void initStatus() {
 		currentID = "" ;
 		stopTimer();
 		act.setDoorId("---");
@@ -503,6 +508,12 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
 		tv_jiaquan.setText("---");
 		setBtnBackground(0, 0);
+		if (SharepreferenceUtils.getIsWifi(act)) {
+			if (act.tcpConnected) {
+				NetManager.getInstance().toggleConnectRemote(false);
+				act.tcpConnected = false;
+			}
+		}
 	}
 	public void removeHandler() {
 		handler.removeCallbacksAndMessages(null);
@@ -810,6 +821,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					act.requestServeice = true;
 					if (!deviceNetStatus && !passErrorHashMap.containsKey(dtuId)) {
 						//LogUtils.e("Lucian-->是否包含ID", dtuId + !passErrorHashMap.containsKey(dtuId));
+						deviceIsOnline = true ;
 						startTimer();
 						deviceNetStatus = true;
 						setBtnIsEnable(true);
@@ -819,6 +831,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 				}else {
 					//LogUtils.e("Lucian-->----->接收到服务器返回数据", "-----> 不在线" );
 					act.requestServeice = false ;
+					deviceIsOnline = false ;
 					if (deviceNetStatus) {
 							deviceNetStatus = false;
 							setBtnIsEnable(false);
@@ -985,7 +998,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 			popWindow = new AddPopWindow(getActivity(), doorList);
 			popWindow.setChoice(this);
-            String passwordStr = SharepreferenceUtils.getPassword(act) ;
+            String passwordStr = SharepreferenceUtils.getDoorPassword(act) ;
             String[] arrPw = passwordStr.split("-") ;
             passwordList.clear();
             if (arrPw.length >= 1) {
@@ -1016,9 +1029,21 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		setPieChart(0);
 		tv_jiaquan.setText("---");
 	}
+	public void initSpinner2Position() {
+		spinner2.setSelection(0);
+	}
 
 	private class SpinnerSelectedListener2 implements AdapterView.OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+			if (position == 1 || position == 2) {
+				if (!SharepreferenceUtils.getIsDoor(act)) {
+					SharepreferenceUtils.saveIsDoor(act, true);
+					act.frgTool.f_1_2_1.initStatus();
+					act.frgTool.f_1_2_1.initSpinner2Position();
+				}
+			}
+
 			if(parent.getId() == spinner2.getId()){
 				/*fragment_04.setRtuData(new DoorStatus(),null);*/
 				if (position == 1) {//服务器
@@ -1056,7 +1081,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					tv_doorList.setEnabled(false);
 					act.connectWifiAndServer() ;
 					isQuerySeverEnable = false ;
-				}else {
+				}/*else {
 					initStatus();
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						wifiServer = 0 ;
@@ -1082,7 +1107,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 						tv_doorList.setEnabled(false);
 						isQuerySeverEnable = false ;
 					}
-				}
+				}*/
 			}
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
@@ -1125,9 +1150,10 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	public void displayServiceData(DoorStatus doorStatus) {
 		//甲醛浓度
 		if (!checkIsNull(doorStatus.getHcho())){
+			SharepreferenceUtils.saveJiaQuan(act, DataTranslateUtils.dataFloatWithThree(doorStatus.getHcho()+""));
 			tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree(doorStatus.getHcho()+""));
 		}else {
-			tv_jiaquan.setText("---");
+			tv_jiaquan.setText(SharepreferenceUtils.getJiaQuan(act));
 		}
 
 		if (!checkIsNull(doorStatus.getDoorState())) {

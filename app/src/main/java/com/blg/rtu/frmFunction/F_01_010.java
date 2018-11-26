@@ -180,8 +180,8 @@ public class F_01_010  extends FrmParent {
 		act.cancelQuery50();
 		LogUtils.e("接收Wifi数据标志", receiveWifiData + "");
 		try {
-			String deviceID = SharepreferenceUtils.getDeviceId(act) ;
-			String password = SharepreferenceUtils.getPassword(act) ;
+			String deviceID = SharepreferenceUtils.getDoorDeviceId(act) ;
+			String password = SharepreferenceUtils.getDoorPassword(act) ;
 			LogUtils.e("设备列表", deviceID);
 			LogUtils.e("密码列表", password);
 			Data_10_50 sd = (Data_10_50)d.subData ;
@@ -195,7 +195,7 @@ public class F_01_010  extends FrmParent {
 					act.frgTool.f_1_3.setLearningClickStatus(false);
 					if (!"".equals(deviceID)) {
 						String[] listId = deviceID.split("-");
-						String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
+						String[] listPassword = SharepreferenceUtils.getDoorPassword(act).split("-");
 						if (deviceID.contains(d.getRtuId())) {
 							ToastUtils.show(act, "设备已经学习过，不在学习!");
 							int position = -1;
@@ -217,20 +217,20 @@ public class F_01_010  extends FrmParent {
 										pws = pws + "-" + listPassword[j];
 									}
 								}
-								SharepreferenceUtils.saveDeviceId(act, ids);
-								SharepreferenceUtils.savePassword(act, pws);
+								SharepreferenceUtils.saveDoorDeviceId(act, ids);
+								SharepreferenceUtils.saveDoorPassword(act, pws);
 							}*//*
 						} else {
 							SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
-							SharepreferenceUtils.saveDeviceId(act, deviceID + "-" + d.getRtuId());
-							SharepreferenceUtils.savePassword(act, password + "-" + sd.getPassWord());
+							SharepreferenceUtils.saveDoorDeviceId(act, deviceID + "-" + d.getRtuId());
+							SharepreferenceUtils.saveDoorPassword(act, password + "-" + sd.getPassWord());
 						}
 					} else {
-						SharepreferenceUtils.saveDeviceId(act, d.getRtuId());
-						SharepreferenceUtils.savePassword(act, sd.getPassWord());
+						SharepreferenceUtils.saveDoorDeviceId(act, d.getRtuId());
+						SharepreferenceUtils.saveDoorPassword(act, sd.getPassWord());
 					}
-					act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
-					act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+					act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDoorDeviceId(act));
+					act.frgTool.f_1_2.updateSpinnerValue(SharepreferenceUtils.getDoorDeviceId(act));
 					act.setDoorId(d.getRtuId());
 					act.frgTool.f_1_0.setCommand(0);
 				} else {
@@ -238,7 +238,7 @@ public class F_01_010  extends FrmParent {
 						if (deviceID.contains(d.getRtuId())) {
 							SharepreferenceUtils.saveHasLearn(act, true);
 							String[] listId = deviceID.split("-");
-							String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
+							String[] listPassword = SharepreferenceUtils.getDoorPassword(act).split("-");
 							for (int i = 0; i < listId.length; i++) {
 								if (d.getRtuId().equals(listId[i])) {
 									SharepreferenceUtils.saveComPassword(act,listPassword[i]);
@@ -259,8 +259,8 @@ public class F_01_010  extends FrmParent {
 		}catch (Exception e) {
 			ToastUtils.show(act, e.getMessage());
 		}
-		LogUtils.e("设备列表", SharepreferenceUtils.getDeviceId(act));
-		LogUtils.e("密码列表", SharepreferenceUtils.getPassword(act));
+		LogUtils.e("设备列表", SharepreferenceUtils.getDoorDeviceId(act));
+		LogUtils.e("密码列表", SharepreferenceUtils.getDoorPassword(act));
 		act.frgTool.f_1_0.startTimer();
 	}*/
 
@@ -272,8 +272,8 @@ public class F_01_010  extends FrmParent {
 		act.cancelQuery50();
 		LogUtils.e("Lucian-->接收Wifi数据标志", receiveWifiData + "");
 		try {
-			String deviceID = SharepreferenceUtils.getDeviceId(act) ;
-			String password = SharepreferenceUtils.getPassword(act) ;
+			String deviceID = SharepreferenceUtils.getDoorDeviceId(act) ;
+			String password = SharepreferenceUtils.getDoorPassword(act) ;
 			LogUtils.e("Lucian-->已存储设备列表", deviceID);
 			LogUtils.e("Lucian-->已存储密码列表", password);
 			Data_10_50 sd = (Data_10_50)d.subData ;
@@ -288,7 +288,7 @@ public class F_01_010  extends FrmParent {
 						SharepreferenceUtils.saveHasLearn(act, true);
 						LogUtils.e("Lucian-->存储ID不为空","包含该ID，获取密码");
 						String[] listId = deviceID.split("-");
-						String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
+						String[] listPassword = SharepreferenceUtils.getDoorPassword(act).split("-");
 						for (int i = 0; i < listId.length; i++) {
 							if (d.getRtuId().equals(listId[i])) {
 								SharepreferenceUtils.saveComPassword(act, listPassword[i]);
@@ -332,9 +332,9 @@ public class F_01_010  extends FrmParent {
 			ToastUtils.show(act, e.getMessage());
 		}
 
-		LogUtils.e("Lucian-->最新设备列表", SharepreferenceUtils.getDeviceId(act));
-		LogUtils.e("Lucian-->最新密码列表", SharepreferenceUtils.getPassword(act));
-		act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+		LogUtils.e("Lucian-->最新设备列表", SharepreferenceUtils.getDoorDeviceId(act));
+		LogUtils.e("Lucian-->最新密码列表", SharepreferenceUtils.getDoorPassword(act));
+		act.frgTool.f_1_0.updateSpinnerValue(SharepreferenceUtils.getDoorDeviceId(act));
 
 		act.frgTool.f_1_0.startTimer();
 	}
@@ -347,7 +347,7 @@ public class F_01_010  extends FrmParent {
 			act.frgTool.f_1_3.setLearningClickStatus(false);
 			if (!"".equals(deviceID)) {
 				String[] listId = deviceID.split("-");
-				String[] listPassword = SharepreferenceUtils.getPassword(act).split("-");
+				String[] listPassword = SharepreferenceUtils.getDoorPassword(act).split("-");
 				if (deviceID.contains(d.getRtuId())) {
 					LogUtils.e("Lucian-->点击学习按钮","非第一次学习，包含该ID，已经学习过，不在学习");
 					ToastUtils.show(act, "设备已经学习过，不在学习!");
@@ -387,22 +387,22 @@ public class F_01_010  extends FrmParent {
 										pws = pws + "-" + listPassword[j];
 									}
 								}
-								SharepreferenceUtils.saveDeviceId(act, ids);
-								SharepreferenceUtils.savePassword(act, pws);
+								SharepreferenceUtils.saveDoorDeviceId(act, ids);
+								SharepreferenceUtils.saveDoorPassword(act, pws);
 							}*/
 				} else {
 					ToastUtils.show(act, "学习完毕");
 					LogUtils.e("Lucian-->点击学习按钮","非第一次学习，不包含该ID，学习成功"+" 地址" +  d.getRtuId()+" 密码" +  sd.getPassWord());
 					SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
-					SharepreferenceUtils.saveDeviceId(act, deviceID + "-" + d.getRtuId());
-					SharepreferenceUtils.savePassword(act, password + "-" + sd.getPassWord());
+					SharepreferenceUtils.saveDoorDeviceId(act, deviceID + "-" + d.getRtuId());
+					SharepreferenceUtils.saveDoorPassword(act, password + "-" + sd.getPassWord());
 				}
 			} else {
 				ToastUtils.show(act, "学习完毕");
 				LogUtils.e("Lucian-->点击学习按钮","第一次学习，学习成功"+" 地址" +  d.getRtuId()+" 密码" +  sd.getPassWord());
 				SharepreferenceUtils.saveComPassword(act,sd.getPassWord());
-				SharepreferenceUtils.saveDeviceId(act, d.getRtuId());
-				SharepreferenceUtils.savePassword(act, sd.getPassWord());
+				SharepreferenceUtils.saveDoorDeviceId(act, d.getRtuId());
+				SharepreferenceUtils.saveDoorPassword(act, sd.getPassWord());
 			}
 			act.setDoorId(d.getRtuId());
 			act.frgTool.f_1_0.setCommand(0);

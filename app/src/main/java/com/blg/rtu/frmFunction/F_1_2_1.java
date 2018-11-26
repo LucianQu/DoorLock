@@ -3,16 +3,15 @@ package com.blg.rtu.frmFunction;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,7 +30,6 @@ import com.blg.rtu.util.ToastUtils;
 import com.blg.rtu.util.Util;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
-import com.blg.rtu3.utils.DataTranslateUtils;
 import com.blg.rtu3.utils.LogUtils;
 import com.google.gson.Gson;
 import com.lidroid.xutils.HttpUtils;
@@ -53,9 +51,7 @@ import java.util.List;
 import java.util.TimerTask;
 
 import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
-import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
-import lecho.lib.hellocharts.view.PieChartView;
 
 
 public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
@@ -82,9 +78,9 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 	private boolean onceComReceiveTrue  = false;
 	private boolean deviceNetStatus = false ;
 
-	private TextView tv_doorList ;
+	private TextView tv_windowList;
 	private AddPopWindow popWindow;
-	private List<String> doorList = new ArrayList<String>() ;
+	private List<String> windowList = new ArrayList<String>() ;
 	private List<String> passwordList = new ArrayList<String>() ;
 	private int positionId = 0 ;
 	private MyTimeTask task ;
@@ -169,20 +165,20 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.f_1_02, container, false);
-		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
-		popWindow = new AddPopWindow(getActivity(), doorList);
+		tv_windowList = (TextView) view.findViewById(R.id.tv_doorList) ;
+		popWindow = new AddPopWindow(getActivity(), windowList);
 		popWindow.setChoice(this);
-		/*SharepreferenceUtils.saveHasLearn(act, true);
-		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
-		SharepreferenceUtils.savePassword(act,"2a23-5348-0102-0102");*/
-		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
-		tv_doorList.setOnClickListener(new View.OnClickListener() {
+		SharepreferenceUtils.saveHasLearn(act, true);
+		SharepreferenceUtils.saveWindowDeviceId(act,"0102030401-0102030402-0102030403-0102030404");
+		SharepreferenceUtils.saveWindowPassword(act,"1111-2222-3333-4444");
+		updateSpinnerValue(SharepreferenceUtils.getWindowDeviceId(act));
+		tv_windowList.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				popWindow.showPopupWindow(tv_doorList);
+				popWindow.showPopupWindow(tv_windowList);
 			}
 		});
-		tv_doorList.setEnabled(false);
+		tv_windowList.setEnabled(false);
 
 		pb_open1 = (ProgressBar) view.findViewById(R.id.pb_open1);
 		pb_open2 = (ProgressBar) view.findViewById(R.id.pb_open2);
@@ -255,7 +251,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 			setBtnBackground(2, 0);
 			setBtnBackground(3, 1);
 			currentCom = "1";
-			currentAfn = "F1";
+			currentAfn = "F2";
 			receiveOpenClose = false ;
 			onceComReceiveTrue = false ;
 			endReqFlag = false ;
@@ -289,7 +285,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 			setBtnBackground(2, 2); //
 			setBtnBackground(3, 1);
 			currentCom = "2";
-			currentAfn = "F1";
+			currentAfn = "F2";
 			receiveOpenClose = false ;
 			endReqFlag = false ;
 			onceComReceiveTrue = false ;
@@ -328,7 +324,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 				receiveOpenClose = false;
 			}
 			currentCom = "3";
-			currentAfn = "F1";
+			currentAfn = "F2";
 			onceComReceiveTrue = false ;
 			endReqFlag = false ;
 			handler.postDelayed(new Runnable() {
@@ -359,7 +355,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		LogUtils.e("Lucian-->当前选择Position", positionId+"");
 		if (!SharepreferenceUtils.getIsWifi(act) && wifiServer == 1) {
 			deviceNetStatus = false ;
-			if (doorList.size() > 0) {
+			if (windowList.size() > 0) {
 				num++ ;
 				LogUtils.e("Lucian-->点击item次数", num + "");
 				if (num > 0) {
@@ -368,11 +364,15 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 						startTimer();
 					}
 					isFirst = true ;
-					currentID = doorList.get(positionId);
+					currentID = windowList.get(positionId);
 					currentPassword = passwordList.get(positionId) ;
-					SharepreferenceUtils.savePassword(act, currentPassword);
-					String deviceID = SharepreferenceUtils.getDeviceId(act) ;
-					String password = SharepreferenceUtils.getPassword(act) ;
+					SharepreferenceUtils.saveComPassword(act, currentPassword);
+					String deviceID = SharepreferenceUtils.getWindowDeviceId(act) ;
+					String password = SharepreferenceUtils.getWindowPassword(act) ;
+					LogUtils.e("Lucian-->选择的窗户地址", currentID);
+					LogUtils.e("Lucian-->选择的窗户密码", currentPassword);
+					Log.e("Lucian--->","设备列表：" +deviceID) ;
+					Log.e("Lucian--->","密码列表：" +password) ;
 					if (deviceID.contains(currentID)) {
 						SharepreferenceUtils.saveHasLearn(act,true);
 					}else {
@@ -382,9 +382,8 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 
 					act.delay = 5 ;
 					act.updateConnectedStatus(false);
-					LogUtils.e("Lucian-->选择的门锁地址", currentID);
-					LogUtils.e("Lucian-->选择的门锁密码", currentPassword);
-                    tv_doorList.setText(currentID);
+
+                    tv_windowList.setText(currentID);
 					initDeviceConnect() ;
 					//deviceNetStatus = false ;
 					act.setDoorId(currentID);
@@ -408,22 +407,22 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 								initStatus() ;
 							}
 							if (!passErrorHashMap.isEmpty()) {
-								if (passErrorHashMap.containsKey(doorList.get(position))) {
-									passErrorHashMap.remove(doorList.get(position)) ;
-									LogUtils.e("Lucian-->移除密码列表中的设备ID", doorList.get(position));
+								if (passErrorHashMap.containsKey(windowList.get(position))) {
+									passErrorHashMap.remove(windowList.get(position)) ;
+									LogUtils.e("Lucian-->移除密码列表中的设备ID", windowList.get(position));
 								}
 							}
-							String deviceID = SharepreferenceUtils.getDeviceId(act) ;
-							String password = SharepreferenceUtils.getPassword(act) ;
+							String deviceID = SharepreferenceUtils.getWindowDeviceId(act) ;
+							String password = SharepreferenceUtils.getWindowPassword(act) ;
 							LogUtils.e("Lucian-->设备列表", deviceID);
 							LogUtils.e("Lucian-->密码列表", password);
 							String[] listId = deviceID.split("-");
 							String[] listPassword = password.split("-");
-							doorList.remove(position) ;
+							windowList.remove(position) ;
 
 							int postion1 = listId.length -position -1 ;
 							LogUtils.e("Lucian-->position", postion1 + "");
-							if (doorList.size() > 0) {
+							if (windowList.size() > 0) {
 								String ids = "";
 								String pws = "";
 								for (int j = 0; j < listId.length; j++) {
@@ -454,27 +453,27 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 								}
 								LogUtils.e("Lucian-->设备列表", ids);
 								LogUtils.e("Lucian-->密码列表", pws);
-								SharepreferenceUtils.saveDeviceId(act, ids);
-								SharepreferenceUtils.savePassword(act, pws);
+								SharepreferenceUtils.saveWindowDeviceId(act, ids);
+								SharepreferenceUtils.saveWindowPassword(act, pws);
 							}else {
-								SharepreferenceUtils.saveDeviceId(act, "");
-								SharepreferenceUtils.savePassword(act, "");
+								SharepreferenceUtils.saveWindowDeviceId(act, "");
+								SharepreferenceUtils.saveWindowPassword(act, "");
 							}
-							updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
+							updateSpinnerValue(SharepreferenceUtils.getWindowDeviceId(act));
 						}else{
 						}
 					}
 				}) ;
 	}
 
-	private void initStatus() {
+	public void initStatus() {
 		currentID = "" ;
 		stopTimer();
 		act.setDoorId("---");
 		isFirst = true ;
 		clickDeviceId = false;
-		tv_doorList.setText("");
-		tv_doorList.setHint("请选择门地址");
+		tv_windowList.setText("");
+		tv_windowList.setHint("请选择窗地址");
         deviceNetStatus = false ;
 		currentPassword = "0000" ;
 		positionId = 0 ;
@@ -485,9 +484,13 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		isQuerySeverEnable = true ;
 		handler.removeCallbacksAndMessages(null);
 		act.updateConnectedStatus(false);
-
 		setBtnBackground(0, 0);
-
+		if (SharepreferenceUtils.getIsWifi(act)) {
+			if (act.tcpConnected) {
+				NetManager.getInstance().toggleConnectRemote(false);
+				act.tcpConnected = false;
+			}
+		}
 	}
 
 	public MyHandler handler = new MyHandler(act) ;
@@ -581,7 +584,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	public boolean getCurrentIDIsempty() {
-		if (doorList.size() == 0) {
+		if (windowList.size() == 0) {
 			return true ;
 		}else {
 			return false ;
@@ -671,8 +674,8 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 										if (httpGet != null) {
 											httpGet.cancel();
 										}
-										tv_doorList.setText("");
-										tv_doorList.setHint("请选择门地址");
+										tv_windowList.setText("");
+										tv_windowList.setHint("请选择门地址");
 										initStatus() ;
 										showAlarm() ;
 									}
@@ -884,16 +887,16 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		if (!"".equals(data)) {
 			//spinnerAdapter1.clear();
 			String[] arr = data.split("-") ;
-			doorList.clear();
+			windowList.clear();
 			if (arr.length >= 1) {
 				doorNum = arr.length ;
 				for (int i = 0; i < arr.length; i++) {
-					doorList.add(arr[arr.length -i-1]) ;
+					windowList.add(arr[arr.length -i-1]) ;
 				}
 			}
-			popWindow = new AddPopWindow(getActivity(), doorList);
+			popWindow = new AddPopWindow(getActivity(), windowList);
 			popWindow.setChoice(this);
-            String passwordStr = SharepreferenceUtils.getPassword(act) ;
+            String passwordStr = SharepreferenceUtils.getWindowPassword(act) ;
             String[] arrPw = passwordStr.split("-") ;
             passwordList.clear();
             if (arrPw.length >= 1) {
@@ -918,13 +921,24 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		setBtnBackground(0,0); //初始化按钮状态灰色，不使能
 	}
 
+	public void initSpinner2Position() {
+		spinner2.setSelection(0);
+	}
 	private class SpinnerSelectedListener2 implements AdapterView.OnItemSelectedListener {
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 			if(parent.getId() == spinner2.getId()){
 				/*fragment_04.setRtuData(new DoorStatus(),null);*/
+
+				if (position == 1 || position == 2) {
+					if (SharepreferenceUtils.getIsDoor(act)) {
+						SharepreferenceUtils.saveIsDoor(act, false);
+						act.frgTool.f_1_0.initStatus();
+						act.frgTool.f_1_0.initSpinner2Position();
+					}
+				}
 				if (position == 1) {//服务器
-					tv_doorList.setText("");
-					tv_doorList.setHint("请选择门地址");
+					tv_windowList.setText("");
+					tv_windowList.setHint("请选择门地址");
 					wifiServer = 1 ;
 					initStatus();
 					act.requestServeice = true ;
@@ -940,7 +954,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 					}else {
 						act.connectWifiAndServer();
 					}
-					tv_doorList.setEnabled(true);
+					tv_windowList.setEnabled(true);
 					isQuerySeverEnable = true ;
 				}else if (position == 2){//wifi
 					initStatus();
@@ -954,10 +968,10 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 					isFirst = true ;
 					act.frgTool.f_01_010.setReceiveWifiData(false);
 					SharepreferenceUtils.saveIsWifi(act, true);
-					tv_doorList.setEnabled(false);
+					tv_windowList.setEnabled(false);
 					act.connectWifiAndServer() ;
 					isQuerySeverEnable = false ;
-				}else {
+				}/*else {
 					initStatus();
 					if (SharepreferenceUtils.getIsWifi(act)) {
 						wifiServer = 0 ;
@@ -966,11 +980,11 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 							NetManager.getInstance().toggleConnectRemote(false);
 							act.tcpConnected = false;
 						}
-						tv_doorList.setEnabled(false);
+						tv_windowList.setEnabled(false);
 						isQuerySeverEnable = false ;
 					}else {
-						tv_doorList.setText("");
-						tv_doorList.setHint("请选择门地址");
+						tv_windowList.setText("");
+						tv_windowList.setHint("请选择门地址");
 						initStatus();
 						if (act.tcpConnected) {
 							act.tcpConnected = false ;
@@ -980,10 +994,10 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 						act.requestServeice = false ;
 						act.frgTool.f_01_010.setReceiveWifiData(false);
 						act.requestServeice = false ;
-						tv_doorList.setEnabled(false);
+						tv_windowList.setEnabled(false);
 						isQuerySeverEnable = false ;
 					}
-				}
+				}*/
 			}
 		}
 		public void onNothingSelected(AdapterView<?> arg0) {
