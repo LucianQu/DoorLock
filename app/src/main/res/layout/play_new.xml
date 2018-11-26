@@ -1,0 +1,111 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     >
+	<RelativeLayout
+
+		android:id="@+id/title_rl"
+		android:layout_width="match_parent"
+		android:layout_height="48dp"
+		android:background="#000000" >
+
+		<TextView
+			android:id="@+id/title_txt"
+			android:layout_width="fill_parent"
+			android:layout_height="match_parent"
+			android:layout_centerVertical="true"
+			android:gravity="center"
+			android:text="实时视频"
+			android:textColor="@android:color/white"
+			android:textSize="18sp" />
+
+		<ImageButton
+			android:id="@+id/Cancel"
+			android:layout_width="50dp"
+			android:layout_height="40dp"
+			android:onClick="returnAction"
+			android:layout_centerVertical="true"
+			android:background="#00000000"
+			android:src="@drawable/returns" />
+		<Button
+
+			android:layout_alignParentRight="true"
+			android:id="@+id/settingBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="40dp"
+			android:text="设置"
+
+			/>
+	</RelativeLayout>
+	<TextView
+		android:background="#000000"
+		android:layout_below="@id/title_rl"
+		android:id="@+id/TextPlayInfo"
+		android:layout_width="match_parent"
+		android:layout_height="40dp"
+		android:textColor="#ffffffff"
+		 />
+	<RelativeLayout
+		android:id="@+id/surfaceview_rl"
+		android:background="#c000ff00"
+		android:layout_below="@id/TextPlayInfo"
+		android:layout_width="match_parent"
+		android:layout_height="320dp">
+    <com.xuanyuanxing.ui.XuanYuanSurfaceView
+		android:layout_centerInParent="true"
+        android:id="@+id/surfaceview"
+        android:layout_width="match_parent"
+        android:layout_height="320dp" />
+	</RelativeLayout>
+	<ImageButton
+		android:layout_below="@id/TextPlayInfo"
+		android:visibility="gone"
+		android:src="@mipmap/video_pre"
+		android:id="@+id/preIb"
+		android:layout_width="match_parent"
+		android:layout_height="300dp" />
+
+	<LinearLayout
+
+		android:id="@+id/tool_lin"
+		android:layout_marginTop="20dp"
+		android:layout_centerHorizontal="true"
+		android:layout_below="@id/surfaceview_rl"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="#0000003D"
+		android:orientation="horizontal" >
+
+		<ImageButton
+			android:id="@+id/list"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:layout_weight="4"
+			android:background="#0000003D"
+			android:scaleType="center"
+			android:src="@drawable/img_list" />
+
+		<ImageButton
+			android:id="@+id/talk"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:layout_weight="4"
+			android:background="#0000003D"
+			android:scaleType="center"
+			android:src="@drawable/img_talk" />
+	</LinearLayout>
+
+
+
+	<ImageView
+		android:visibility="gone"
+		android:background="#c0ffff00"
+		android:id="@+id/screen_img"
+
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" />
+
+</RelativeLayout>

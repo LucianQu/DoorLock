@@ -2,19 +2,29 @@ package com.blg.rtu.frmFunction;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
+import com.xuanyuanxing.camera.VideoPlayTool;
+import com.xuanyuanxing.camera.XuanYuanXingP2PTool;
+import com.xuanyuanxing.engine.ClientP2pListener;
 
-public class F_1_1 extends FrmParent {
-
+public class F_1_1 extends FrmParent implements ClientP2pListener {
+	XuanYuanXingP2PTool p2PTool;
+	private EditText edt_user ;
+	private EditText edt_password ;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -31,17 +41,91 @@ public class F_1_1 extends FrmParent {
 
 	@Override
 	public View onCreateView(
-			LayoutInflater inflater, 
+			final LayoutInflater inflater,
 			ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_login, container, false);
 
+		edt_user = (EditText) view.findViewById(R.id.et_user) ;
 
+		edt_password = (EditText) view.findViewById(R.id.et_pwd) ;
 
+        edt_user.setText(uuid);
+        edt_password.setText(pwd);
+
+		Button login = view.findViewById(R.id.btn_login) ;
+		login.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				connect();
+			}
+		});
 
 		return view ;
 	}
 
+
+	//摄像头默认用户
+	private String defaultUser = "admin";
+	//摄像头密码
+	private String pwd = "123456789a";
+	//摄像头uid
+	private String uuid = "LWEWZ36UZNVJNBTU111A";
+	private void connect() {
+	    if (edt_user.getText().toString().equals("")) {
+            showAlarmDialog("请输入用户名");
+            return;
+        }else {
+	        uuid = edt_user.getText().toString() ;
+        }
+        if (edt_password.getText().toString().equals("")) {
+	        showAlarmDialog("请输入密码");
+	        return;
+        }else {
+	        pwd = edt_password.getText().toString() ;
+        }
+
+		p2PTool = new XuanYuanXingP2PTool(uuid, defaultUser, pwd, "测试摄像机");
+		//设置连接监听
+		p2PTool.setClientP2pListener(this);
+		//开启连接
+		p2PTool.Start();
+	}
+
+	@Override
+	public void P2pState(int state) {
+		if (state == 2) {//成功
+			showAlarmDialog("连接成功");
+			//Intent intent = new Intent(act, VideoPlayActivity.class);
+			//startActivity(intent);
+		} else {
+			Log.e("Lucian-->连接视频", "当前状态" + state);
+			//-6 密码错误 其他 都连接失败
+			if (state == -6) {
+				// Toast.makeText(this,"密码错误",Toast.LENGTH_SHORT).show();
+				// Toast.makeText(this,"密码错误",Toast.LENGTH_SHORT).show();
+				showAlarmDialog("密码错误");
+			} else if (state < 0) {
+				// Toast.makeText(this,"连接失败",Toast.LENGTH_SHORT).show();
+				p2PTool.Stop(); //断开连接
+				showAlarmDialog("连接失败,请确认是否连接上设备的wifi和密码是否正确!");
+			}
+		}
+	}
+
+	public void showAlarmDialog(String msg) {
+		new AlertDialog.Builder(act)
+				.setTitle("提示")
+				.setMessage(msg)
+				.setCancelable(false)
+				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						//BlgActivity.this.finish();
+					}
+				})
+				.show();
+	}
 
 	/**
 	 * 查询命令前进行检查

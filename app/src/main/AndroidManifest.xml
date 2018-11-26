@@ -31,7 +31,7 @@
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
@@ -94,7 +94,11 @@
         <activity
             android:name="com.blg.rtu3.LoginActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>   
+        </activity>
+        <activity
+            android:name="com.blg.rtu.frmFunction.VideoPlayActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
         <!-- 
             Theme.Holo.NoActionBar 黑背景无标题
             Theme.Holo.NoActionBar.Fullscreen 黑背景无标题无手机状态栏(日期、信号、电池栏)
@@ -132,11 +136,11 @@
         	 （优先级的大小范围为 -1000 到 1000）这个优先级比收到短信的那个软件优先级高。
         	 所以SmsReceiver接收到了短信并不再往下传了，起到了拦截短信的作用。 
          -->
-        <receiver android:name="com.blg.rtu3.sm.SmsReceiver" android:enabled="true">
+      <!--  <receiver android:name="com.blg.rtu3.sm.SmsReceiver" android:enabled="true">
           <intent-filter android:priority="100"> 
               <action android:name="android.provider.Telephony.SMS_RECEIVED"/> 
           </intent-filter> 
-        </receiver>
+        </receiver>-->
         
     </application>
 

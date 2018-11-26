@@ -187,9 +187,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
-		/*SharepreferenceUtils.saveHasLearn(act, true);
+		SharepreferenceUtils.saveHasLearn(act, true);
 		SharepreferenceUtils.saveDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
-		SharepreferenceUtils.savePassword(act,"2a23-5348-0102-0102");*/
+		SharepreferenceUtils.savePassword(act,"2a23-5348-0102-0102");
 		updateSpinnerValue(SharepreferenceUtils.getDeviceId(act));
 		tv_doorList.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -645,8 +645,8 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			params.addBodyParameter("password",currentPassword);
 			final HttpUtils http = new HttpUtils();
 			http.configCurrentHttpCacheExpiry(1000 * 5);
-			//LogUtils.e("Lucian-->-->门控制服务", url +"dtuId="+
-                    //dtuId+"&code=" +code+"&tp="+tp+"&flag="+flag+"&password="+currentPassword);
+			LogUtils.e("Lucian-->-->门控制服务", url +"dtuId="+
+                    dtuId+"&code=" +code+"&tp="+tp+"&flag="+flag+"&password="+currentPassword);
 			//LogUtils.e("Lucian-->--->请求开始时间", Util.getCurrentTime());
 
 			http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
@@ -800,7 +800,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		String url =act.mIpPort +  "/door/door/online.act" ;
 		RequestParams requestParams = new RequestParams(url);
 		requestParams.addBodyParameter("dtuId", dtuId);
-		//LogUtils.e("Lucian-->---->查询当前门是否在线", requestParams.toString());
+		LogUtils.e("Lucian-->---->查询当前门是否在线", requestParams.toString());
 		//LogUtils.e("Lucian-->---->请求开始时间", Util.getCurrentTime());
 		httpGet = x.http().get(requestParams, new Callback.CommonCallback<String>() {
 			@Override
@@ -1302,9 +1302,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			}
 			//锁电源
 			if (null != doorStatus.getLockStates() && doorStatus.getLockStates().length >= 1) {
-				if (doorStatus.getLockStates()[0] == 1) {
+				if (doorStatus.getLockStates()[2] == 1) {
 					imgLockPower.setImageResource(R.mipmap.ic_circle_green);
-				} else if (doorStatus.getLockStates()[0] == 0) {
+				} else if (doorStatus.getLockStates()[2] == 0) {
 					imgLockPower.setImageResource(R.mipmap.ic_circle_red);
 				} else {
 					imgLockPower.setImageResource(R.mipmap.ic_circle_gray1);
