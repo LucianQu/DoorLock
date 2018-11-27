@@ -1,5 +1,6 @@
 package com.blg.rtu3;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -23,6 +24,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Parcelable;
 import android.os.RemoteException;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -43,12 +45,15 @@ import android.widget.Toast;
 
 import com.blg.rtu.aidl.ServiceAidl;
 import com.blg.rtu.util.Constant;
+import com.blg.rtu.util.DialogConfirm;
 import com.blg.rtu.util.MyTimeTask;
 import com.blg.rtu.util.Preferences;
 import com.blg.rtu.util.SharepreferenceUtils;
 import com.blg.rtu.util.SoundAlert;
 import com.blg.rtu.util.StringValueForActivity;
 import com.blg.rtu.util.ToastUtils;
+import com.blg.rtu.util.permission.PermissionHelper;
+import com.blg.rtu.util.permission.PermissionInterface;
 import com.blg.rtu3.receiver.JPushActivity;
 import com.blg.rtu3.server.LocalServer;
 import com.blg.rtu3.utils.LogUtils;
@@ -60,7 +65,7 @@ import java.util.TimerTask;
 
 
 @SuppressLint("HandlerLeak")
-public class MainActivity  extends Activity { 
+public class MainActivity  extends Activity implements PermissionInterface {
 	public static MainActivity instance = null ;
 
 	private MessageReceiver mMessageReceiver;
@@ -329,6 +334,24 @@ public class MainActivity  extends Activity {
 		SharepreferenceUtils.saveIsDoor(MainActivity.this,true);
 		//setTimer() ;
 		//ToastUtils.show(instance, "网络是否为Wifi"+isWifi()+"");
+
+		mPermissionHelper = new PermissionHelper(instance, this);
+		new DialogConfirm().showDialog(instance,
+				getResources().getString(R.string.quanxian) ,
+				new DialogConfirm.CallBackInterface(){
+					@Override
+					public void dialogCallBack(Object o) {
+						if((Boolean)o){
+							mPermissionHelper.requestPermissions();
+						}else{
+							ToastUtils.showLong(instance,"权限不开启，则无法使用监控模块!");
+						}
+					}
+				}) ;
+	}
+
+	public void requestPermissions() {
+		mPermissionHelper.requestPermissions();
 	}
 
 	private void setTimer(){
@@ -455,10 +478,47 @@ public class MainActivity  extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
+	private String[] permissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+	private PermissionHelper mPermissionHelper;
 	@Override
 	protected void onResume() {
 		super.onResume();
 	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+		if (mPermissionHelper.requestPermissionsResult(requestCode, permissions, grantResults)){
+			return;
+		}
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+	}
+
+	@Override
+	public int getPermissionsRequestCode() {
+		return 200;
+	}
+
+	@Override
+	public String[] getPermissions() {
+		return permissions;
+	}
+
+	@Override
+	public void requestPermissionsSuccess() {
+        /*if (shouldShowRequestPermissionRationale( Manifest.permission
+                .WRITE_EXTERNAL_STORAGE)) {
+            Toast.makeText(this, "请相关权限，否则无法正常使用本应用！", Toast.LENGTH_SHORT).show();
+        }*/
+	}
+
+	@Override
+	public void requestPermissionsFail() {
+		//ToastUtils.show(instance,"请开启相关权限，否则无法正常使用本应用！");
+	}
+
 	@Override
 	protected void onPause() {
 		super.onPause();

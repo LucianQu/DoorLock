@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F6EF"
     android:orientation="vertical" >
     <ImageView
         android:id="@+id/image_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
         android:src="@mipmap/ic_jiankong1"
@@ -22,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="60dp"
         android:gravity="center_vertical"
         android:orientation="vertical" >
 
@@ -48,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/iv_appicon"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="@string/account_no"
@@ -80,8 +79,9 @@
                 android:layout_toRightOf="@+id/iv_appicon1"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:textSize="15sp"
                 android:hint="@string/account_psw"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="#000" >
@@ -131,16 +131,15 @@
    	<Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="80dip"
-        android:layout_marginRight="80dip"
+        android:layout_height="40dp"
+        android:layout_marginLeft="100dip"
+        android:layout_marginRight="100dip"
         android:layout_marginTop="40dip"
-        android:background="#0b8de3"
-        android:padding="10dp"
+        android:background="@drawable/login_selector"
         android:text="@string/login"
         android:textColor="@color/white"
-        android:textSize="20sp" />
-   <!--<LinearLayout
+        android:textSize="18sp" />
+   <!--<LinearLayout#0b8de3
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="40dip"

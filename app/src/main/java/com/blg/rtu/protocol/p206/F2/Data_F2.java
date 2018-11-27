@@ -29,7 +29,7 @@ public class Data_F2 {
 	private boolean isDoorNormal ; //门正常
 	private boolean isNormalCurrent ; //正常电流
 	private boolean isNormalPower; // 正常电压
-
+	private int controlFlag ;
 	public String toString(){
 		String s = "\n" ;
 			s += "智能门应答：" + "\n" +
@@ -44,6 +44,14 @@ public class Data_F2 {
 					" 报警状态：" + alarmStaus+ "\n"
 					;
 		return s ;
+	}
+
+	public int getControlFlag() {
+		return controlFlag;
+	}
+
+	public void setControlFlag(int controlFlag) {
+		this.controlFlag = controlFlag;
 	}
 
 	public boolean isHasPower() {

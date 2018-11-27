@@ -662,12 +662,15 @@
 	<string name="txtConfirmSendCloseCommand">确定下发关闭命令</string>
 	<string name="txtConfirmSend">确定发送吗?</string>
 	<string name="passwordError">请注意，设备密码已更新，需要删除门ID后，重新连接WIFI学习！</string>
+	<string name="passwordErrorWin">请注意，设备密码已更新，需要删除窗ID后，重新连接WIFI学习！</string>
 	<string name="passwordError1">请注意，设备密码已更新，需要在主页面选择服务器通信，在操作门选择中删除门ID后，重新连接WIFI学习！</string>
     <string name="txtConfirmSend1">确定要修改WIFI的IP地址/端口号吗?</string>
     <string name="txtConfirmreset">通信服务地址确实要恢复出厂吗?</string>
     <string name="txtConfirmModiy">确定修改连接设备创建的Wifi热点密码吗，修改成功后，手机需要重新连接Wifi热点?</string>
 	<string name="txtConfirmClear">确定清空吗?</string>
+    <string name="quanxian">监控模块需要用到手机的存储权限，下面将请求权限，请确认！</string>
 	<string name="deleteId">确定删除门ID吗，请注意，删除门ID后需要通过连接WIFI，重新学习！</string>
+	<string name="deleteId1">确定删除窗ID吗，请注意，删除窗ID后需要通过连接WIFI，重新学习！</string>
 	<string name="txtConfirm">确定</string>
 	<string name="txtOk">确定</string>
     <string name="txtCancel">取消</string>

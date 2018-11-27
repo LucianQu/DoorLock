@@ -1,20 +1,29 @@
 package com.blg.rtu.frmFunction;
 
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.Code206;
+import com.blg.rtu.util.DialogConfirm;
+import com.blg.rtu.util.ToastUtils;
+import com.blg.rtu.util.permission.PermissionHelper;
+import com.blg.rtu.util.permission.PermissionInterface;
 import com.blg.rtu3.MainActivity;
 import com.blg.rtu3.R;
 import com.xuanyuanxing.camera.VideoPlayTool;
@@ -25,6 +34,7 @@ public class F_1_1 extends FrmParent implements ClientP2pListener {
 	XuanYuanXingP2PTool p2PTool;
 	private EditText edt_user ;
 	private EditText edt_password ;
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -37,6 +47,10 @@ public class F_1_1 extends FrmParent implements ClientP2pListener {
 		super.onCreate(savedInstanceState);
 		cntFrmOpened = false ;
 		loading = false ;
+	}
+
+	public void requestSuccess() {
+		connect();
 	}
 
 	@Override
@@ -55,22 +69,37 @@ public class F_1_1 extends FrmParent implements ClientP2pListener {
 
 		Button login = view.findViewById(R.id.btn_login) ;
 		login.setOnClickListener(new View.OnClickListener() {
+			@TargetApi(Build.VERSION_CODES.M)
 			@Override
 			public void onClick(View view) {
-				connect();
+				if (shouldShowRequestPermissionRationale( Manifest.permission
+                .WRITE_EXTERNAL_STORAGE)) {
+					new DialogConfirm().showDialog(act,
+							getResources().getString(R.string.quanxian) ,
+							new DialogConfirm.CallBackInterface(){
+								@Override
+								public void dialogCallBack(Object o) {
+									if((Boolean)o){
+										act.requestPermissions();
+									}else{
+									}
+								}
+							}) ;
+        		}else {
+					connect();
+				}
 			}
 		});
 
 		return view ;
 	}
 
-
 	//摄像头默认用户
 	private String defaultUser = "admin";
 	//摄像头密码
-	private String pwd = "123456789a";
+	private String pwd = "a12345678";
 	//摄像头uid
-	private String uuid = "LWEWZ36UZNVJNBTU111A";
+	private String uuid = "6UH2B3TYDTC8ZWF2111A";
 	private void connect() {
 	    if (edt_user.getText().toString().equals("")) {
             showAlarmDialog("请输入用户名");
@@ -95,9 +124,11 @@ public class F_1_1 extends FrmParent implements ClientP2pListener {
 	@Override
 	public void P2pState(int state) {
 		if (state == 2) {//成功
-			showAlarmDialog("连接成功");
-			//Intent intent = new Intent(act, VideoPlayActivity.class);
-			//startActivity(intent);
+			//showAlarmDialog("连接成功");
+			Intent intent = new Intent(act, VideoPlayActivity.class);
+			intent.putExtra("UID",uuid) ;
+			intent.putExtra("PW",pwd) ;
+			startActivity(intent);
 		} else {
 			Log.e("Lucian-->连接视频", "当前状态" + state);
 			//-6 密码错误 其他 都连接失败
@@ -218,6 +249,7 @@ public class F_1_1 extends FrmParent implements ClientP2pListener {
 	@Override
 	public void onResume() {
 		super.onResume();
+
 	}
 	
 	@Override

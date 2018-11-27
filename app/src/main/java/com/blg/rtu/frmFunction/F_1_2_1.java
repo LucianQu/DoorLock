@@ -20,6 +20,7 @@ import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.CommandCreator;
 import com.blg.rtu.protocol.p206.F1.Data_F1;
+import com.blg.rtu.protocol.p206.F2.Data_F2;
 import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.DialogAlarm;
 import com.blg.rtu.util.DialogConfirm;
@@ -65,6 +66,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 	public String currentID = "" ; //当前门ID
 	public String currentPassword = "" ; //当前门ID
 	public Callback.Cancelable httpGet ;  //网络请求
+	HttpUtils http ;
 	public String currentCom = "0" ; //当前命令
 	private String currentAfn = "" ; //当前功能码
 	public boolean isFirst = true ; //是否初始请求
@@ -128,7 +130,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 						if (isQuerySeverEnable) {
 							if (!"".equals(currentID)) {
 								queryServerStatus(currentID);
-								doorContralServer(currentID, "F1", "0", "0");
+								doorContralServer(currentID, "F2", "0", "0");
 							}
 						}
 					}
@@ -397,7 +399,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 	@Override
 	public void longClick(final int position) {
 		new DialogConfirm().showDialog(act,
-				act.getResources().getString(R.string.deleteId) ,
+				act.getResources().getString(R.string.deleteId1) ,
 				new DialogConfirm.CallBackInterface(){
 					@Override
 					public void dialogCallBack(Object o) {
@@ -601,7 +603,9 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 			params.addBodyParameter("code",code);
 			params.addBodyParameter("flag",flag);
 			params.addBodyParameter("password",currentPassword);
-			final HttpUtils http = new HttpUtils();
+			if (null == this.http) {
+				http = new HttpUtils();
+			}
 			http.configCurrentHttpCacheExpiry(1000 * 5);
 			http.send(HttpRequest.HttpMethod.POST, url, params, new RequestCallBack() {
 				@Override
@@ -663,7 +667,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 										act.updateConnectedStatus(false);
 										//act.second30 = minute10 ; //设备未上线，10分钟后再试
 									} else if (msg.contains("超时")) {
-										ToastUtils.show(act, "服务获取数据失败：" + "门锁设备回复数据超时！");
+										ToastUtils.show(act, "服务获取数据失败：" + "窗设备回复数据超时！");
 										//act.second30 = minute2; //设备回复超时，2分钟后再试
 									}else if (msg.contains("重新学习")){
 										LogUtils.e("Lucian-->重新学习", returnDtuId);
@@ -671,11 +675,8 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 											LogUtils.e("Lucian-->放入键值对", returnDtuId);
 											passErrorHashMap.put(returnDtuId,"1") ;
 										}
-										if (httpGet != null) {
-											httpGet.cancel();
-										}
 										tv_windowList.setText("");
-										tv_windowList.setHint("请选择门地址");
+										tv_windowList.setHint("请选择窗地址");
 										initStatus() ;
 										showAlarm() ;
 									}
@@ -722,7 +723,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 			if (null == dialogConfirm) {
 				dialogConfirm = new DialogConfirm() ;
 				dialogConfirm.showDialog(act,
-						act.getResources().getString(R.string.passwordError),
+						act.getResources().getString(R.string.passwordErrorWin),
 						new DialogConfirm.CallBackInterface() {
 							@Override
 							public void dialogCallBack(Object o) {
@@ -735,7 +736,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 						});
 			}else {
 				dialogConfirm.showDialog(act,
-						act.getResources().getString(R.string.passwordError),
+						act.getResources().getString(R.string.passwordErrorWin),
 						new DialogConfirm.CallBackInterface() {
 							@Override
 							public void dialogCallBack(Object o) {
@@ -938,7 +939,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 				}
 				if (position == 1) {//服务器
 					tv_windowList.setText("");
-					tv_windowList.setHint("请选择门地址");
+					tv_windowList.setHint("请选择窗地址");
 					wifiServer = 1 ;
 					initStatus();
 					act.requestServeice = true ;
@@ -950,7 +951,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 					SharepreferenceUtils.saveIsWifi(act, false);
 					if (getCurrentIDIsempty()) {
 						spinner2.setSelection(2);
-						new DialogAlarm().showDialog(act, "门设备地址为空，请先学习！\n学习步骤：\n1、手机Wifi连接到门热点\n2、APP通信类型选择Wifi通信\n3、连接到Wifi后到<副页面3>进行门学习!");
+						new DialogAlarm().showDialog(act, "窗设备地址为空，请先学习！\n学习步骤：\n1、手机Wifi连接到门热点\n2、APP通信类型选择Wifi通信\n3、连接到Wifi后到<副页面3>进行窗学习!");
 					}else {
 						act.connectWifiAndServer();
 					}
@@ -962,7 +963,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 						act.tcpConnected = false ;
 						NetManager.getInstance().toggleConnectRemote(false);
 					}
-					LogUtils.e("Lucian-->门地址为空","重新选择wifi通道");
+					LogUtils.e("Lucian-->窗地址为空","重新选择wifi通道");
 					wifiServer = 2 ;
 					act.requestServeice = false ;
 					isFirst = true ;
@@ -1186,10 +1187,10 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 			setFun1AllGreen();
 			setFun2AllGreen();
 		}
-		Data_F1 data = (Data_F1)d.subData ;
+		Data_F2 data = (Data_F2)d.subData ;
 		if (currentCom.equals(data.getControlFlag()+"")) {
 			if (data != null) {
-				displayWifiData(data);
+				tvData1.setText(data.getDoorOpen()+"");
 			} else {
 				ToastUtils.show(act, "F1接收数据为空");
 			}

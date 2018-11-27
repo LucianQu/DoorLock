@@ -572,7 +572,9 @@ public class VideoPlayActivity extends Activity implements PlayVideoCallBack, Cl
         //deviceInfo = (DeviceInfo) bundle.getSerializable("deviceInfo");
         //初始化PTP连接
         //p2PTool = new XuanYuanXingP2PTool(deviceInfo.getUuId(), defaultUser, pwd, deviceInfo.getName());
-        p2PTool = new XuanYuanXingP2PTool(uuid, defaultUser, pwd, "测试摄像机");
+        String uuid = getIntent().getStringExtra("UID") ;
+        String pw = getIntent().getStringExtra("PW") ;
+        p2PTool = new XuanYuanXingP2PTool(uuid, defaultUser, pw, "测试摄像机");
         //设置连接监听
         p2PTool.setClientP2pListener(this);
         //开启连接

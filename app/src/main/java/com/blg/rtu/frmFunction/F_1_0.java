@@ -96,6 +96,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 	public String currentID = "" ; //当前门ID
 	public String currentPassword = "" ; //当前门ID
 	public Callback.Cancelable httpGet ;  //网络请求
+	HttpUtils http ;
 	public Callback.Cancelable httpGet1 ;  //网络请求
 	public String currentCom = "0" ; //当前命令
 	private String currentAfn = "" ; //当前功能码
@@ -506,7 +507,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		setDoorDit(0);
 		tv_door_status.setText("停");
 		tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
-		tv_jiaquan.setText("---");
+		tv_jiaquan.setText(SharepreferenceUtils.getJiaQuan(act));
 		setBtnBackground(0, 0);
 		if (SharepreferenceUtils.getIsWifi(act)) {
 			if (act.tcpConnected) {
@@ -654,7 +655,9 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			params.addBodyParameter("code",code);
 			params.addBodyParameter("flag",flag);
 			params.addBodyParameter("password",currentPassword);
-			final HttpUtils http = new HttpUtils();
+			if (null == http) {
+				http = new HttpUtils();
+			}
 			http.configCurrentHttpCacheExpiry(1000 * 5);
 			LogUtils.e("Lucian-->-->门控制服务", url +"dtuId="+
                     dtuId+"&code=" +code+"&tp="+tp+"&flag="+flag+"&password="+currentPassword);
@@ -727,9 +730,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 										if (!passErrorHashMap.containsKey(returnDtuId)) {
 											LogUtils.e("Lucian-->放入键值对", returnDtuId);
 											passErrorHashMap.put(returnDtuId,"1") ;
-										}
-										if (httpGet != null) {
-											httpGet.cancel();
 										}
 										tv_doorList.setText("");
 										tv_doorList.setHint("请选择门地址");
@@ -838,7 +838,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 							setDoorDit(0);
 							tv_door_status.setText("停");
 							tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
-							tv_jiaquan.setText("---");
+							tv_jiaquan.setText(SharepreferenceUtils.getJiaQuan(act));
 							setBtnBackground(0, 0);
 							act.updateConnectedStatus(false);
 					}
@@ -1027,7 +1027,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_door_status.setText("停");
 		tv_door_status.setBackground(act.getResources().getDrawable(R.drawable.tv_selected_bg));
 		setPieChart(0);
-		tv_jiaquan.setText("---");
+		tv_jiaquan.setText(SharepreferenceUtils.getJiaQuan(act));
 	}
 	public void initSpinner2Position() {
 		spinner2.setSelection(0);
@@ -1486,13 +1486,13 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 			Data_F1 data = (Data_F1)data1;
 			//甲醛浓度
 			if (data.getJiaQuan() == 0) {
-				tv_jiaquan.setText("0.000") ;
+				tv_jiaquan.setText(SharepreferenceUtils.getJiaQuan(act)) ;
 			}else {
 				if (data.getJiaQuan() > 100000) {
-					ToastUtils.show(act, "甲醛值超出范围");
+					tv_jiaquan.setText(SharepreferenceUtils.getJiaQuan(act)) ;
 				}else {
-					tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree((data.getJiaQuan() / 1000) + "." + (data.getJiaQuan() % 1000))
-					);
+					tv_jiaquan.setText(DataTranslateUtils.dataFloatWithThree((data.getJiaQuan() / 1000) + "." + (data.getJiaQuan() % 1000)));
+					SharepreferenceUtils.saveJiaQuan(act, tv_jiaquan.getText().toString());
 				}
 			}
 			setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
