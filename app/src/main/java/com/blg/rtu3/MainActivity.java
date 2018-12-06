@@ -2,6 +2,7 @@ package com.blg.rtu3;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -18,6 +19,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -304,6 +306,7 @@ public class MainActivity  extends Activity implements PermissionInterface {
 		handler.postDelayed(queryF1Task, 30000);
 	}*/
 	
+
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -334,20 +337,26 @@ public class MainActivity  extends Activity implements PermissionInterface {
 		SharepreferenceUtils.saveIsDoor(MainActivity.this,true);
 		//setTimer() ;
 		//ToastUtils.show(instance, "网络是否为Wifi"+isWifi()+"");
-
-		mPermissionHelper = new PermissionHelper(instance, this);
-		new DialogConfirm().showDialog(instance,
-				getResources().getString(R.string.quanxian) ,
-				new DialogConfirm.CallBackInterface(){
-					@Override
-					public void dialogCallBack(Object o) {
-						if((Boolean)o){
-							mPermissionHelper.requestPermissions();
-						}else{
-							ToastUtils.showLong(instance,"权限不开启，则无法使用监控模块!");
-						}
-					}
-				}) ;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (checkSelfPermission(Manifest.permission
+					.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+			/*if (shouldShowRequestPermissionRationale( Manifest.permission
+					.WRITE_EXTERNAL_STORAGE))*/ {
+				mPermissionHelper = new PermissionHelper(instance, this);
+				new DialogConfirm().showDialog(instance,
+						getResources().getString(R.string.quanxian),
+						new DialogConfirm.CallBackInterface() {
+							@Override
+							public void dialogCallBack(Object o) {
+								if ((Boolean) o) {
+									mPermissionHelper.requestPermissions();
+								} else {
+									ToastUtils.showLong(instance, "权限不开启，则无法使用监控模块!");
+								}
+							}
+						});
+			}
+		}
 	}
 
 	public void requestPermissions() {

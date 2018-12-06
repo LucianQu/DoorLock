@@ -191,10 +191,10 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		tv_doorList = (TextView) view.findViewById(R.id.tv_doorList) ;
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
-		SharepreferenceUtils.saveHasLearn(act, true);
-		SharepreferenceUtils.saveDoorDeviceId(act,"0102030406-0102030407-0102030408-0102030409");
-		SharepreferenceUtils.saveDoorPassword(act,"2a23-5348-0102-0102");
-		updateSpinnerValue(SharepreferenceUtils.getDoorDeviceId(act));
+		/*SharepreferenceUtils.saveHasLearn(act, true);
+		SharepreferenceUtils.saveDoorDeviceId(act,"0000000008");
+		SharepreferenceUtils.saveDoorPassword(act,"1161");
+		updateSpinnerValue(SharepreferenceUtils.getDoorDeviceId(act));*/
 		tv_doorList.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -391,6 +391,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					String password = SharepreferenceUtils.getDoorPassword(act) ;
 					LogUtils.e("Lucian-->选择的门锁地址", currentID);
 					LogUtils.e("Lucian-->选择的门锁密码", currentPassword);
+					ToastUtils.showLong(act, "密码："+currentPassword);
 					Log.e("Lucian--->","设备列表：" +deviceID) ;
 					Log.e("Lucian--->","密码列表：" +password) ;
 					if (deviceID.contains(currentID)) {
@@ -1043,7 +1044,6 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					act.frgTool.f_1_2_1.initSpinner2Position();
 				}
 			}
-
 			if(parent.getId() == spinner2.getId()){
 				/*fragment_04.setRtuData(new DoorStatus(),null);*/
 				if (position == 1) {//服务器
@@ -1058,6 +1058,7 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 					}
 					isFirst = true;
 					SharepreferenceUtils.saveIsWifi(act, false);
+					updateSpinnerValue(SharepreferenceUtils.getDoorDeviceId(act));
 					if (getCurrentIDIsempty()) {
 						spinner2.setSelection(2);
 						new DialogAlarm().showDialog(act, "门设备地址为空，请先学习！\n学习步骤：\n1、手机Wifi连接到门热点\n2、APP通信类型选择Wifi通信\n3、连接到Wifi后到<副页面3>进行门学习!");

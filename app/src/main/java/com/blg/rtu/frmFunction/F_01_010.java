@@ -278,54 +278,52 @@ public class F_01_010  extends FrmParent {
 			LogUtils.e("Lucian-->已存储密码列表", password);
 			Data_10_50 sd = (Data_10_50)d.subData ;
 			LogUtils.e("Lucian-->50H", sd.toString());
-			if (null != d && null != sd) {
-				item01.setText(d.getRtuId() + "");
-				item02.setText(sd.getPassWord());
 
-				if (!"".equals(deviceID)) {
-					if (deviceID.contains(d.getRtuId())) {
-						LogUtils.e("Lucian-->存储ID不为空","包含该ID");
-						SharepreferenceUtils.saveHasLearn(act, true);
-						LogUtils.e("Lucian-->存储ID不为空","包含该ID，获取密码");
-						String[] listId = deviceID.split("-");
-						String[] listPassword = SharepreferenceUtils.getDoorPassword(act).split("-");
-						for (int i = 0; i < listId.length; i++) {
-							if (d.getRtuId().equals(listId[i])) {
-								SharepreferenceUtils.saveComPassword(act, listPassword[i]);
-								LogUtils.e("Lucian-->点击学习按钮","已经学习过，获取地址密码 " +listPassword[i]);
-								if (!listPassword[i].equals(sd.getPassWord())) {
-									act.frgTool.f_1_0.enableDoorList();
-									DialogConfirm dialogConfirm = new DialogConfirm() ;
-									dialogConfirm.showDialog(act,
-											act.getResources().getString(R.string.passwordError1),
-											new DialogConfirm.CallBackInterface() {
-												@Override
-												public void dialogCallBack(Object o) {
-													if ((Boolean) o) {
+			item01.setText(d.getRtuId() + "");
+			item02.setText(sd.getPassWord());
 
-													} else {
+			if (!"".equals(deviceID)) {
+				if (deviceID.contains(d.getRtuId())) {
+					LogUtils.e("Lucian-->存储ID不为空","包含该ID");
+					SharepreferenceUtils.saveHasLearn(act, true);
+					LogUtils.e("Lucian-->存储ID不为空","包含该ID，获取密码");
+					String[] listId = deviceID.split("-");
+					String[] listPassword = SharepreferenceUtils.getDoorPassword(act).split("-");
+					for (int i = 0; i < listId.length; i++) {
+						if (d.getRtuId().equals(listId[i])) {
+							SharepreferenceUtils.saveComPassword(act, listPassword[i]);
+							LogUtils.e("Lucian-->点击学习按钮","已经学习过，获取地址密码 " +listPassword[i]);
+							if (!listPassword[i].equals(sd.getPassWord())) {
+								act.frgTool.f_1_0.enableDoorList();
+								DialogConfirm dialogConfirm = new DialogConfirm() ;
+								dialogConfirm.showDialog(act,
+										act.getResources().getString(R.string.passwordError1),
+										new DialogConfirm.CallBackInterface() {
+											@Override
+											public void dialogCallBack(Object o) {
+												if ((Boolean) o) {
 
-													}
+												} else {
+
 												}
-											});
-								}
+											}
+										});
 							}
 						}
-
-						act.setDoorId(d.getRtuId());
-						act.frgTool.f_1_0.setCommand(0);
-
-					} else {//连接设备未学习，存储过ID
-						LogUtils.e("Lucian-->存储ID不为空","但没有存储该ID");
-						learningClick(d,sd,deviceID,password) ;
-						//ToastUtils.show(act, "该设备未学习，请先学习！");
 					}
-				} else {//连接设备未学习，未存储过ID
-					LogUtils.e("Lucian-->存储ID为空","第一次学习");
+
+					act.setDoorId(d.getRtuId());
+					act.frgTool.f_1_0.setCommand(0);
+
+				} else {//连接设备未学习，存储过ID
+					LogUtils.e("Lucian-->存储ID不为空","但没有存储该ID");
 					learningClick(d,sd,deviceID,password) ;
 					//ToastUtils.show(act, "该设备未学习，请先学习！");
 				}
-
+			} else {//连接设备未学习，未存储过ID
+				LogUtils.e("Lucian-->存储ID为空","第一次学习");
+				learningClick(d,sd,deviceID,password) ;
+				//ToastUtils.show(act, "该设备未学习，请先学习！");
 			}
 		}catch (Exception e) {
 			LogUtils.e("F_01_010",e.getMessage());

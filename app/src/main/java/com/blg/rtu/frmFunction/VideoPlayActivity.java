@@ -2,11 +2,14 @@ package com.blg.rtu.frmFunction;
 
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -443,11 +446,17 @@ public class VideoPlayActivity extends Activity implements PlayVideoCallBack, Cl
         ToastUtils.show(VideoPlayActivity.this,"权限申请失败···");
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        mPermissionHelper = new PermissionHelper(this, this);
-        mPermissionHelper.requestPermissions();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission
+                    .WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                mPermissionHelper = new PermissionHelper(this, this);
+                mPermissionHelper.requestPermissions();
+            }
+        }
     }
 
 

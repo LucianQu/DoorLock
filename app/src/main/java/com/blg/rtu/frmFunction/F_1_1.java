@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -69,26 +70,28 @@ public class F_1_1 extends FrmParent implements ClientP2pListener {
 
 		Button login = view.findViewById(R.id.btn_login) ;
 		login.setOnClickListener(new View.OnClickListener() {
-			@TargetApi(Build.VERSION_CODES.M)
+
 			@Override
 			public void onClick(View view) {
-				if (shouldShowRequestPermissionRationale( Manifest.permission
-                .WRITE_EXTERNAL_STORAGE)) {
-					new DialogConfirm().showDialog(act,
-							getResources().getString(R.string.quanxian) ,
-							new DialogConfirm.CallBackInterface(){
-								@Override
-								public void dialogCallBack(Object o) {
-									if((Boolean)o){
-										act.requestPermissions();
-									}else{
-									}
-								}
-							}) ;
-        		}else {
-					connect();
-				}
-			}
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (act.checkSelfPermission(Manifest.permission
+                            .WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        new DialogConfirm().showDialog(act,
+                                getResources().getString(R.string.quanxian) ,
+                                new DialogConfirm.CallBackInterface(){
+                                    @Override
+                                    public void dialogCallBack(Object o) {
+                                        if((Boolean)o){
+                                            act.requestPermissions();
+                                        }else{
+                                        }
+                                    }
+                                }) ;
+}else {
+                        connect();
+                    }
+                }
+            }
 		});
 
 		return view ;
