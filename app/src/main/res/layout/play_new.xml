@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
      >
 	<RelativeLayout
-
 		android:id="@+id/title_rl"
 		android:layout_width="match_parent"
 		android:layout_height="48dp"
@@ -79,6 +78,7 @@
 
 		<ImageButton
 			android:id="@+id/list"
+			android:visibility="invisible"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
@@ -89,6 +89,7 @@
 
 		<ImageButton
 			android:id="@+id/talk"
+			android:visibility="invisible"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"

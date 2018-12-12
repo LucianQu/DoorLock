@@ -87,9 +87,11 @@ public class F_1_1 extends FrmParent implements ClientP2pListener {
                                         }
                                     }
                                 }) ;
-}else {
+					}else {
                         connect();
                     }
+                }else {
+                    connect();
                 }
             }
 		});
