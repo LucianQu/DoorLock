@@ -855,14 +855,18 @@ public class MainActivity  extends Activity implements PermissionInterface {
 		}
 		
 	}
-	/*//点击了门或者窗
-	private void initDoorAndWindowStatus(boolean isDoor) {
+	//点击了门或者窗
+	public void initDoorAndWindowPage(boolean isDoor) {
 		if (isDoor) {
-			SharepreferenceUtils.saveIsDoor(this, true);
+		    SharepreferenceUtils.saveIsDoor(this,true);
+            mPager.setCurrentItem(0);//设置viewPager的初始界面
+            defaultAnimation(0) ;
 		}else {
-			SharepreferenceUtils.saveIsDoor(this, false);
+		    SharepreferenceUtils.saveIsDoor(this,false);
+            mPager.setCurrentItem(2) ;
+            defaultAnimation(2) ;
 		}
-	}*/
+	}
 
 	/**
 	 *  页卡切换监听

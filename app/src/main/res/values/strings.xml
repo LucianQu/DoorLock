@@ -663,7 +663,8 @@
 	<string name="txtConfirmSend">确定发送吗?</string>
 	<string name="passwordError">请注意，设备密码已更新，需要删除门ID后，重新连接WIFI学习！</string>
 	<string name="passwordErrorWin">请注意，设备密码已更新，需要删除窗ID后，重新连接WIFI学习！</string>
-	<string name="passwordError1">请注意，设备密码已更新，需要在主页面选择服务器通信，在操作门选择中删除门ID后，重新连接WIFI学习！</string>
+	<string name="passwordError1">请注意，设备密码已更新，需要在门控制页面选择服务器通信，在操作门选择中删除门ID后，重新连接WIFI学习！</string>
+	<string name="passwordError2">请注意，设备密码已更新，需要在窗页面选择服务器通信，在操作窗选择中删除窗ID后，重新连接WIFI学习！</string>
     <string name="txtConfirmSend1">确定要修改WIFI的IP地址/端口号吗?</string>
     <string name="txtConfirmreset">通信服务地址确实要恢复出厂吗?</string>
     <string name="txtConfirmModiy">确定修改连接设备创建的Wifi热点密码吗，修改成功后，手机需要重新连接Wifi热点?</string>

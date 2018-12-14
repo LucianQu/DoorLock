@@ -916,6 +916,10 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		spinnerAdapter2.add(new SpinnerVO("2", "Wifi通信")) ;
 	}
 
+	public void enableWindowList() {
+		tv_windowList.setEnabled(true);
+	}
+
 
 	private long num =0;
 	public void initDeviceConnect() {
@@ -1127,7 +1131,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	public void setCommand(int command) {
-		this.sendRtuCommand(new CommandCreator().cd_F_1(command,null), false);
+		this.sendRtuCommand(new CommandCreator().cd_F_2(command,null), false);
 	}
 	
 	/**
