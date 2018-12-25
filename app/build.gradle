@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 26
     buildToolsVersion "27.0.3"
-
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.blg.rtu3"
-        minSdkVersion 17
-        targetSdkVersion 20
+        minSdkVersion 21
+        targetSdkVersion 26
         ndk {
             //选择要添加的对应cpu类型的.so库
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
@@ -22,6 +22,15 @@ android {
 
     }
 
+    lintOptions {
+        disable 'GoogleAppIndexingWarning'
+        //baseline file("lint-baseline.xml")
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
@@ -36,6 +45,7 @@ dependencies {
     compile files('libs/model.jar')
     compile files('libs/slf4j-android-1.6.1-RC1.jar')
     compile files('libs/utils.jar')
+    compile files('libs/utils.jar')
     compile files('libs/xpp3_min-1.1.4c.jar')
     compile files('libs/xstream-1.4.7.jar')
     compile 'cn.jiguang.sdk:jpush:3.1.1'
@@ -47,4 +57,5 @@ dependencies {
     //compile 'com.github.lecho:hellocharts-android:v1.5.8'
     compile files('libs/Volley.jar')
     compile files('libs/xUtils-2.6.14.jar')
+    compile(name: 'xuanyuanxing_p2p', ext: 'aar')
 }
