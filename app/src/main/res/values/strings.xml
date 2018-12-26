@@ -671,6 +671,7 @@
 	<string name="txtConfirmClear">确定清空吗?</string>
     <string name="quanxian">监控模块需要用到手机的存储权限，下面将请求权限，请确认！</string>
 	<string name="deleteId">确定删除门ID吗，请注意，删除门ID后需要通过连接WIFI，重新学习！</string>
+	<string name="deleteId2">确定删除监控设备吗！</string>
 	<string name="deleteId1">确定删除窗ID吗，请注意，删除窗ID后需要通过连接WIFI，重新学习！</string>
 	<string name="txtConfirm">确定</string>
 	<string name="txtOk">确定</string>

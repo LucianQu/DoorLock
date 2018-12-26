@@ -88,12 +88,12 @@
             </EditText>
         </RelativeLayout>
     </LinearLayout>
-   <!--<LinearLayout
+   <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="40dp"
        android:orientation="horizontal"
        >
-&lt;!&ndash;
+<!--
        <CheckBox
          android:id="@+id/cb_save"
          android:layout_width="0dp"
@@ -109,24 +109,19 @@
          android:gravity="center_vertical"
          android:text="@string/save_psw"
          android:textColor="#808080"
-         android:textSize="16sp" /> &ndash;&gt;
+         android:textSize="16sp" /> -->
      
           <TextView
+              android:id="@+id/tv_list"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-			android:text="@string/connect_type"
+            android:layout_marginLeft="30dp"
+			android:text="监控设备列表"
 			android:gravity="center_vertical"
 			android:textSize="14sp"
+              android:drawableRight="@mipmap/ic_down1"
 			android:textColor="#808080"/>
-		 <Spinner 
-		    android:id="@+id/connect_type" 
-			android:layout_width="120dp"
-			android:layout_height="40dp"
-			android:background="@android:color/transparent"
-			android:layout_marginRight = "5dp"
-			/>
-   </LinearLayout>-->
+   </LinearLayout>
 	
    	<Button
         android:id="@+id/btn_login"

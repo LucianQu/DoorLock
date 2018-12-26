@@ -153,6 +153,58 @@ public class SharepreferenceUtils {
         String deviceId = preferences.getString("device_id", "");
         return deviceId;
     }
+
+    public static void saveJkDeviceId(Context context, String is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("device_jk_id", is);
+        editor.commit();
+    }
+
+    public static String getJkDeviceId(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
+        String deviceId = preferences.getString("device_jk_id", "");
+        return deviceId;
+    }
+
+    public static void saveJkDevicePw(Context context, String is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("device_jk_pw", is);
+        editor.commit();
+    }
+
+    public static String getJkDeviceIdLast(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
+        String deviceId = preferences.getString("device_jk_last_id", "");
+        return deviceId;
+    }
+
+    public static void saveJkDeviceIdLast(Context context, String is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("device_jk_last_id", is);
+        editor.commit();
+    }
+
+    public static String getJkDevicePwLast(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
+        String deviceId = preferences.getString("device_jk_last_pw", "");
+        return deviceId;
+    }
+
+    public static void saveJkDevicePwLast(Context context, String is) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("device_jk_last_pw", is);
+        editor.commit();
+    }
+
+    public static String getJkDevicePw(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
+        String deviceId = preferences.getString("device_jk_pw", "");
+        return deviceId;
+    }
     public static void saveWindowDeviceId(Context context, String is) {
         SharedPreferences preferences = context.getSharedPreferences("preference_id", 0);
         SharedPreferences.Editor editor = preferences.edit();

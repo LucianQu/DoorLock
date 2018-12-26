@@ -3,7 +3,6 @@ package com.blg.rtu.frmFunction;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -13,12 +12,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
+import com.blg.rtu.util.DisplayUtil;
 import com.blg.rtu3.R;
-import com.blg.rtu3.utils.LogUtils;
 
 import java.util.List;
 
-public class AddPopWindow extends PopupWindow {
+public class AddPop1Window extends PopupWindow {
 private View conentView;
 	private final int h;
 	private final int w;
@@ -30,7 +29,7 @@ void longClick(int position) ;
 private  Choice choice;
 Activity mActivity;
 //private List<String> options;
-	public AddPopWindow(final Activity context, final List<String> data) {
+	public AddPop1Window(final Activity context, final List<String> data) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		conentView = inflater.inflate(R.layout.popuwindow_dialog, null);
@@ -60,7 +59,7 @@ Activity mActivity;
 		this.setChoice(choice);
 		ListView lView=(ListView)conentView.findViewById(R.id.pp_listview);
 		// options = Arrays.asList(data);
-		PopuwindowAdapter adapter=new PopuwindowAdapter(context, data);
+		Popuwindow1Adapter adapter=new Popuwindow1Adapter(context, data);
 		 //ArrayAdapter<String> adapter=new ArrayAdapter<String>(context, android.R.activity_nfc_ic.simple_list_item_1, data);
 		 lView.setAdapter(adapter);
 		lView.setOnItemClickListener(new OnItemClickListener() {
@@ -70,7 +69,7 @@ Activity mActivity;
 				// TODO Auto-generated method stub
 				//choice.senddata(data[arg2]);
 				choice.senddata(String.valueOf(arg2));//把位置传过去
-				AddPopWindow.this.dismiss();
+				AddPop1Window.this.dismiss();
 				//弹框消失，回复原来的颜色
 				 WindowManager.LayoutParams params=mActivity.getWindow().getAttributes();
 			      params.alpha=1f;  
@@ -82,7 +81,7 @@ Activity mActivity;
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 				choice.longClick(position);//把位置传过去
-				AddPopWindow.this.dismiss();
+				AddPop1Window.this.dismiss();
 				//弹框消失，回复原来的颜色
 				WindowManager.LayoutParams params=mActivity.getWindow().getAttributes();
 				params.alpha=1f;
@@ -106,7 +105,7 @@ Activity mActivity;
 			WindowManager.LayoutParams params = mActivity.getWindow().getAttributes();
 			params.alpha = 0.7f;
 			mActivity.getWindow().setAttributes(params);// 设置SelectPicPopupWindow弹出窗体的宽
-		this.setWidth(parent.getWidth());
+		this.setWidth(DisplayUtil.dp2px(mActivity,240));
 		// 设置SelectPicPopupWindow弹出窗体的高
 		this.setHeight(LayoutParams.WRAP_CONTENT);
 			// 以下拉方式显示popupwindow
