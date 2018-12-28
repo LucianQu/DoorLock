@@ -741,7 +741,6 @@ public class VideoPlayActivity extends Activity implements PlayVideoCallBack, Cl
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // TODO Auto-generated method stub
         boolean result;
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (tool_lin.getVisibility() == View.VISIBLE) {
@@ -763,7 +762,6 @@ public class VideoPlayActivity extends Activity implements PlayVideoCallBack, Cl
 
     @Override
     public void onPause() {
-        // TODO Auto-generated method stub
         if (isExit == false) {
             StopVideo();
         }

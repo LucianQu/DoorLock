@@ -67,7 +67,6 @@ Activity mActivity;
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				// TODO Auto-generated method stub
 				//choice.senddata(data[arg2]);
 				choice.senddata(String.valueOf(arg2));//把位置传过去
 				AddPopWindow.this.dismiss();
@@ -142,7 +141,6 @@ Activity mActivity;
 	}
 	@Override
 		public void dismiss() {
-			// TODO Auto-generated method stub
 			super.dismiss();
 			//弹框消失，回复原来的颜色
 			 WindowManager.LayoutParams params=mActivity.getWindow().getAttributes();

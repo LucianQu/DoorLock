@@ -14,7 +14,6 @@ public class BaseActivity extends Activity {
 	private AlertDialog.Builder builder;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		// 声明一个等待框以提示用户等待
     	dialog=new ProgressDialog(this);

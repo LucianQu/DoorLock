@@ -56,9 +56,9 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 		cntFrmOpened = false ;
 		loading = false ;
 
-		SharepreferenceUtils.saveJkDeviceId(act,"RNSZ5LG57U4X89J9111A-6UH2B3TYDTC8ZWF2111A");
-		SharepreferenceUtils.saveJkDevicePw(act,"a12345678-a12345678");
-		updateSpinnerValue(SharepreferenceUtils.getJkDeviceId(act));
+//		SharepreferenceUtils.saveJkDeviceId(act,"RNSZ5LG57U4X89J9111A-6UH2B3TYDTC8ZWF2111A");
+//		SharepreferenceUtilsrepreferenceUtils.saveJkDevicePw(act,"a12345678-a12345678");
+//		updateSpinnerValue(SharepreferenceUtils.getJkDeviceId(act));
 	}
 
 	public void requestSuccess() {
@@ -198,9 +198,10 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 		edt_user = (EditText) view.findViewById(R.id.et_user) ;
 
 		edt_password = (EditText) view.findViewById(R.id.et_pwd) ;
-
-        edt_user.setText(SharepreferenceUtils.getJkDeviceIdLast(act));
-        edt_password.setText(SharepreferenceUtils.getJkDevicePwLast(act));
+		id = SharepreferenceUtils.getJkDeviceIdLast(act);
+		pw = SharepreferenceUtils.getJkDevicePwLast(act) ;
+        edt_user.setText(id);
+        edt_password.setText(pw);
 
 		Button login = view.findViewById(R.id.btn_login) ;
 		login.setOnClickListener(new View.OnClickListener() {
@@ -225,6 +226,8 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
                         connect();
                     }
                 }else {
+					// TODO: 2018/12/28
+					addDeviceId();
                     connect();
                 }
             }
@@ -300,6 +303,10 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 				}
 			}
 		}
+
+		updateSpinnerValue(SharepreferenceUtils.getJkDeviceId(act));
+		SharepreferenceUtils.saveJkDeviceIdLast(act,id);
+		SharepreferenceUtils.saveJkDevicePwLast(act,pw);
 	}
 
 	@Override
@@ -307,9 +314,6 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 		if (state == 2) {//成功
 			//showAlarmDialog("连接成功");
 			addDeviceId();
-			updateSpinnerValue(SharepreferenceUtils.getJkDeviceId(act));
-			SharepreferenceUtils.saveJkDeviceIdLast(act,id);
-			SharepreferenceUtils.saveJkDevicePwLast(act,pw);
 			Intent intent = new Intent(act, VideoPlayActivity.class);
 			intent.putExtra("UID",id) ;
 			intent.putExtra("PW",pw) ;
