@@ -39,6 +39,7 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 
 	private AddPop1Window popWindow;
 	private TextView tv_list ;
+	private TextView tv_add ;
 	private List<String> deviceIdList = new ArrayList<String>() ;
 	private List<String> devicePwList = new ArrayList<String>() ;
 	private String id ;
@@ -187,12 +188,20 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 		View view = inflater.inflate(R.layout.activity_login, container, false);
 
 		tv_list = (TextView) view.findViewById(R.id.tv_list) ;
+		tv_add = (TextView) view.findViewById(R.id.tv_add) ;
 		popWindow = new AddPop1Window(getActivity(), deviceIdList);
 		popWindow.setChoice(this);
 		tv_list.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				popWindow.showPopupWindow(tv_list);
+			}
+		});
+		tv_add.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(),CameraAddActivity.class) ;
+				startActivity(intent);
 			}
 		});
 		edt_user = (EditText) view.findViewById(R.id.et_user) ;

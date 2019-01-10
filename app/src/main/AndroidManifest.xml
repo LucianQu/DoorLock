@@ -99,6 +99,10 @@
             android:name="com.blg.rtu.frmFunction.VideoPlayActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        <activity
+            android:name="com.blg.rtu.frmFunction.CameraAddActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
         <!-- 
             Theme.Holo.NoActionBar 黑背景无标题
             Theme.Holo.NoActionBar.Fullscreen 黑背景无标题无手机状态栏(日期、信号、电池栏)

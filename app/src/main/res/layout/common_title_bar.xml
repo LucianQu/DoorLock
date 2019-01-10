@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/top_rll"
+    android:background="@color/color_ffffff"
+    android:paddingTop="@dimen/status_height"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/nav_height"
+    >
+    <TextView
+        android:id="@+id/tv_left"
+        android:textSize="16.0sp"
+        android:textColor="@color/color_262626"
+        android:gravity="center"
+        android:padding="10.0dip"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:text="@string/str_back"
+        android:drawableLeft="@mipmap/common_icon_back2"
+        android:drawablePadding="5.0dip"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="@null" />
+    <TextView
+        android:id="@+id/tv_title"
+        android:textSize="18.0sp"
+        android:textColor="@color/color_262626"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="80.0dip"
+        android:layout_marginRight="80.0dip"
+        android:maxLines="1"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/tv_right"
+        android:textSize="16.0sp"
+        android:textColor="@color/color_262626"
+        android:gravity="center"
+        android:paddingLeft="10.0dip"
+        android:paddingRight="10.0dip"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true" />
+    <ImageView
+        android:id="@+id/iv_right"
+        android:paddingLeft="10.0dip"
+        android:paddingRight="10.0dip"
+        android:visibility="gone"
+        android:clickable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:scaleType="centerInside"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@null" />
+    <View
+        android:id="@+id/v_divider"
+        android:background="@color/color_e5e5e5"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

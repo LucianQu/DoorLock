@@ -90,36 +90,28 @@
     </LinearLayout>
    <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="40dp"
-       android:orientation="horizontal"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
        >
-<!--
-       <CheckBox
-         android:id="@+id/cb_save"
-         android:layout_width="0dp"
-         android:layout_height="40dp"
-         android:layout_weight="1"
-         android:layout_gravity="right"
-         android:layout_marginLeft="10dip"
-         android:layout_marginRight="10dip"
-         android:drawablePadding="10dp"
-         android:drawableLeft="@drawable/item_selector"
-         android:button="@null"
-         android:layout_marginTop="10dp"
-         android:gravity="center_vertical"
-         android:text="@string/save_psw"
-         android:textColor="#808080"
-         android:textSize="16sp" /> -->
-     
+       <TextView
+           android:id="@+id/tv_add"
+           android:layout_width="wrap_content"
+           android:layout_height="40dp"
+           android:layout_marginLeft="40dp"
+           android:text="添加监控设备"
+           android:gravity="center_vertical"
+           android:textSize="14sp"
+           android:drawableRight="@mipmap/ic_add1"
+           android:textColor="#808080"/>
           <TextView
-              android:id="@+id/tv_list"
+            android:id="@+id/tv_list"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="40dp"
 			android:text="监控设备列表"
 			android:gravity="center_vertical"
 			android:textSize="14sp"
-              android:drawableRight="@mipmap/ic_down1"
+            android:drawableRight="@mipmap/ic_down1"
 			android:textColor="#808080"/>
    </LinearLayout>
 	
