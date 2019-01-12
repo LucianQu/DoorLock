@@ -14,7 +14,7 @@
         android:src="@mipmap/ic_jiankong1"
         android:scaleType="fitCenter" >
     </ImageView>
-    
+
     <LinearLayout
         android:id="@+id/login_info"
         android:layout_width="match_parent"

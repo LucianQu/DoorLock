@@ -170,10 +170,12 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		tv_windowList = (TextView) view.findViewById(R.id.tv_doorList) ;
 		popWindow = new AddPopWindow(getActivity(), windowList);
 		popWindow.setChoice(this);
-		SharepreferenceUtils.saveHasLearn(act, true);
+
+		/*SharepreferenceUtils.saveHasLearn(act, true);
 		SharepreferenceUtils.saveWindowDeviceId(act,"0102030401-0102030402-0102030403-0102030404");
 		SharepreferenceUtils.saveWindowPassword(act,"1111-2222-3333-4444");
-		updateSpinnerValue(SharepreferenceUtils.getWindowDeviceId(act));
+		updateSpinnerValue(SharepreferenceUtils.getWindowDeviceId(act));*/
+
 		tv_windowList.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -264,7 +266,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 						setCommand(1);
 					} else {
 						if (getCurrentIDIsempty()) {
-							ToastUtils.show(act, "没有可操作的门！");
+							ToastUtils.show(act, "没有可操作的窗！");
 						} else {
 							isQuerySeverEnable = false ;
 							doorContralServer(currentID, currentAfn, currentCom,"1");
@@ -299,7 +301,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 						setCommand(2);
 					} else {
 						if (getCurrentIDIsempty()) {
-							ToastUtils.show(act, "没有可操作的门！");
+							ToastUtils.show(act, "没有可操作的窗！");
 						} else {
 							isQuerySeverEnable = false ;
 							doorContralServer(currentID, currentAfn, currentCom,"1");
@@ -336,7 +338,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 						setCommand(3);
 					} else {
 						if (getCurrentIDIsempty()) {
-							ToastUtils.show(act, "没有可操作的门！");
+							ToastUtils.show(act, "没有可操作的窗！");
 						} else {
 							handler.removeCallbacksAndMessages(null);
 							doorContralServer(currentID, currentAfn, currentCom,"1");

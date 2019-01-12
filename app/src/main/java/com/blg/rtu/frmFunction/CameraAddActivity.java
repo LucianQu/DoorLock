@@ -560,10 +560,10 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                 isSearchUuid = false;
                 if (isSearchSuccess) {
                     //成功
-                    Log.e(TAG, "扫描到设备 ");
+                    Log.e("Lucian--->searchUuid", "扫描到设备 ");
                 } else {
                     //没有扫描到
-                    Log.e(TAG, "没有扫描到设备 ");
+                    Log.e("Lucian--->searchUuid", "没有扫描到设备 ");
                     handlerUtil.sendEmptyMessage(2);
                 }
             }
@@ -728,6 +728,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                 Map<String, String> wifiMap = new HashMap<>();
                 wifiMap.put("ssid", account);
                 wifiMap.put("password", pwd);
+                LogUtils.e("Lucian---->设置摄像头连接wifi名称和密码", account + "---"+pwd);
                 // TODO: 2019/1/8
                 //Log.e("add wifi", String.valueOf(DataUtil.getInstance().addWifi(CameraAddActivity.this, wifiMap)));
                 nClientP2P.SetIPNCWifiInfo(account, pwd, mode, enctype);
@@ -881,11 +882,12 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         }.getType();
         RequestParams requestParams = new RequestParams(Urls.USER_ROOM_URL);
         //requestParams.addBodyParameter("dtuId", dtuId);
-        LogUtils.e("---->loadRoom", requestParams.toString());
+        LogUtils.e("Lucian---->loadRoom", requestParams.toString());
         x.http().get(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 try{
+                    LogUtils.e("Lucian---->result", result);
                     JSONObject jsonResult = new JSONObject(result) ;
                     int code = jsonResult.getInt("code") ;
                     if (code == 200) {
@@ -1103,11 +1105,12 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         }*/
         DialogMaker.showProgressDialog(this, getString(R.string.str_submitting));
 
-        LogUtils.e("---->loadRoom", requestParams.toString());
+        LogUtils.e("Lucian---->bindDevice", requestParams.toString());
         x.http().get(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 try{
+                    LogUtils.e("Lucian---->result", result);
                     DialogMaker.dismissProgressDialog();
                     JSONObject jsonResult = new JSONObject(result) ;
                     int code = jsonResult.getInt("code") ;
@@ -1238,11 +1241,12 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
 
        // requestParams.addBodyParameter("deviceId", deviceId); // 设备id
 
-        LogUtils.e("---->loadRoom", requestParams.toString());
+        LogUtils.e("Lucian---->loadDataDevice", requestParams.toString());
         x.http().get(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 try{
+                    LogUtils.e("Lucian---->result", result);
                     JSONObject jsonResult = new JSONObject(result) ;
                     int code = jsonResult.getInt("result") ;
                     if (code == 1) {

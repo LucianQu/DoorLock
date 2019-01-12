@@ -192,10 +192,10 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		popWindow = new AddPopWindow(getActivity(), doorList);
 		popWindow.setChoice(this);
 
-		SharepreferenceUtils.saveHasLearn(act, true);
+		/*SharepreferenceUtils.saveHasLearn(act, true);
 		SharepreferenceUtils.saveDoorDeviceId(act,"0000000008");
 		SharepreferenceUtils.saveDoorPassword(act,"1161");
-		updateSpinnerValue(SharepreferenceUtils.getDoorDeviceId(act));
+		updateSpinnerValue(SharepreferenceUtils.getDoorDeviceId(act));*/
 
 		tv_doorList.setOnClickListener(new View.OnClickListener() {
 			@Override
