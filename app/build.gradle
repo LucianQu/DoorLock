@@ -58,4 +58,7 @@ dependencies {
     compile files('libs/Volley.jar')
     compile files('libs/xUtils-2.6.14.jar')
     compile(name: 'xuanyuanxing_p2p', ext: 'aar')
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    compile 'com.squareup.okio:okio:1.12.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }
