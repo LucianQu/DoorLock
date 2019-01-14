@@ -522,6 +522,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
             WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             String ssid = wifiInfo.getSSID();
+            Log.e("Lucian----SSID",ssid) ;
             if (ssid.indexOf("AI-M2") == -1) {
                 ToastUtils.show(CameraAddActivity.this, R.string.str_device_no_connect_ap);
                 return;
@@ -550,6 +551,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         XuanYuanXingP2PTool.mLanSearch(new LanSearchCallBack() {
             @Override
             public void mLanSearchUUid(String uuid) {
+                Log.e("Lucian---->搜索到UUID", uuid) ;
                 isSearchSuccess = true;
                 CameraAddActivity.this.uuid = uuid;
                 handlerUtil.sendEmptyMessage(1);
