@@ -13,19 +13,14 @@
     <uses-permission android:name="com.blg.rtu3.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    
-    
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -37,7 +32,6 @@
 	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
 	<uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    
     <!-- 读写sdcard权 -->
  	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
  	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -47,7 +41,16 @@
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <!-- 手机震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE"/>
-	
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
+
 	<supports-screens android:xlargeScreens="true"
 	    android:largeScreens="true"
 	    android:normalScreens="true" 

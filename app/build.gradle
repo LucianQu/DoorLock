@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     buildToolsVersion "27.0.3"
+    //sourceSets.main.jniLibs.srcDirs = ['src/main/jniLibs']
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.blg.rtu3"
@@ -10,8 +11,8 @@ android {
         targetSdkVersion 26
         ndk {
             //选择要添加的对应cpu类型的.so库
-            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
-            //'x86', 'x86_64', 'mips', 'mips64'
+           abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // abiFilters 'armeabi-v7a'
         }
 
         manifestPlaceholders = [
@@ -20,7 +21,15 @@ android {
                 JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
 
+
+
     }
+/* sourceSets {
+            main {
+                jniLibs.srcDirs = ['src/main/jniLibs']
+                aidl.srcDirs = ['src/main/aidl']
+            }
+        }*/
 
     lintOptions {
         disable 'GoogleAppIndexingWarning'

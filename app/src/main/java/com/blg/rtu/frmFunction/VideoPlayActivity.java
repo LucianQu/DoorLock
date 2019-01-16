@@ -36,6 +36,7 @@ import com.blg.rtu.util.permission.PermissionInterface;
 import com.blg.rtu3.R;
 import com.xuanyuanxing.camera.VideoPlayTool;
 import com.xuanyuanxing.camera.XuanYuanXingP2PTool;
+import com.xuanyuanxing.engine.AudioTalkStartActionCallBack;
 import com.xuanyuanxing.engine.ClientP2pListener;
 import com.xuanyuanxing.engine.GetVideoSharpnessCallBack;
 import com.xuanyuanxing.engine.PlayVideoCallBack;
@@ -377,13 +378,13 @@ public class VideoPlayActivity extends Activity implements PlayVideoCallBack, Cl
         }
         isTalkShow = true;
         Bimg_talk.setImageDrawable(getResources().getDrawable(R.drawable.img_talk_bu));
-        videoTool.AudioTalkStart(new VideoPlayTool.AudioTalkStartActionCallBack() {
+        videoTool.AudioTalkStart(new AudioTalkStartActionCallBack() {
             @Override
-            public void startRet(int ret) {
-                if (ret != 0) {
+            public void startRet(int i) {
+                if (i != 0) {
                     Message msg = Message.obtain();
                     msg.what = 100;
-                    msg.arg1 = ret;
+                    msg.arg1 = i;
                     handle.sendMessage(msg);
                 }
             }

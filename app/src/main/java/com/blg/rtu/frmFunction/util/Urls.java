@@ -13,6 +13,8 @@ public class Urls {
     public static final String CODE_URL = "https://api.365uj.com/api/user/code";
     public static final String DEVICE_ADD_URL = "https://api.365uj.com/api/device/bind";
     public static final String DEVICE_CONNECTION_STATUS = "https://api.365uj.com/api/device/connection/status/%s";
+    public static final String DEVICE_CONNECTION_STATUS1 = "https://api.365uj.com/api/open/device/connection/status?deviceNo=";
+    public static final String DEVICE_GET_UID = "https://api.365uj.com/api/open/device/find/uid?deviceNo=";
     public static final String DEVICE_DEL_URL = "https://api.365uj.com/api/device/delete";
     public static final String DEVICE_FORMAT_SETTING_HOST_URL = "https://api.365uj.com/api/device/setting";
     public static final String DEVICE_FORMAT_TF_URL = "https://api.365uj.com/api/device/formatTF";

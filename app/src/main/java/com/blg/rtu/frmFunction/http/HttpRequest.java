@@ -6,6 +6,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebSettings;
 
+import com.blg.rtu.frmFunction.util.AppUtil;
+import com.blg.rtu.frmFunction.util.LocaleUtils;
+import com.blg.rtu.frmFunction.util.PreferencesUtil;
+
 import org.json.JSONObject;
 
 import java.io.File;

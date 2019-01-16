@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.blg.rtu.frmFunction.bean.BaseVo;
+import com.blg.rtu.frmFunction.util.JsonUtil;
 
 import org.json.JSONObject;
 
@@ -28,18 +29,18 @@ public class HttpUtil {
         return single;
     }
 
-    private void sendError(final String paramString, final Exception paramException, final HttpCallback paramHttpCallback)
+    private void sendError(final String url, final Exception e, final HttpCallback callback)
     {
-        StringBuilder localStringBuilder = new StringBuilder();
-        localStringBuilder.append("接口地址为");
-        localStringBuilder.append(paramString);
-        localStringBuilder.append(".....请求异常");
-        Log.e("HttpUtil", localStringBuilder.toString());
+        StringBuilder builder = new StringBuilder();
+        builder.append("接口地址为:");
+        builder.append(url);
+        builder.append(".....请求异常");
+        Log.e("Lucian--->HttpUtil", builder.toString());
         this.handler.post(new Runnable()
         {
             public void run()
             {
-                paramHttpCallback.onError(paramString, paramException);
+                callback.onError(url, e);
             }
         });
     }
@@ -61,6 +62,7 @@ public class HttpUtil {
     {
         if (1003 == ((BaseVo)JsonUtil.getModelFromJSON(paramString2, BaseVo.class)).getCode()) {
             EventManager.getInstance().notify(null, "appExit");
+            Log.e("Lucian--->","结果码为1003") ;
         }
         if (paramType != null)
         {
@@ -70,30 +72,30 @@ public class HttpUtil {
         sendMessage(paramString1, paramString2, paramHttpCallback);
     }
 
-    public void get(final String paramString, final Type paramType, final HttpCallback paramHttpCallback)
+    public void get(final String url, final Type paramType, final HttpCallback callback)
     {
-        StringBuilder localStringBuilder = new StringBuilder();
-        localStringBuilder.append(paramString);
-        localStringBuilder.append("");
-        Log.e("接口请求URL", localStringBuilder.toString());
-        HttpRequest.getInstance().get(paramString, null, new HttpRequestCallback()
+        StringBuilder builder = new StringBuilder();
+        builder.append(url);
+        builder.append("");
+        Log.e("Lucian--->接口请求URL", builder.toString());
+        HttpRequest.getInstance().get(url, null, new HttpRequestCallback()
         {
-            public void onFailure(Request paramAnonymousRequest, Exception paramAnonymousException)
+            public void onFailure(Request request, Exception e)
             {
-                HttpUtil.this.sendError(paramString, paramAnonymousException, paramHttpCallback);
+                HttpUtil.this.sendError(url, e, callback);
             }
 
-            public void onSuccess(String paramAnonymousString)
+            public void onSuccess(String result)
             {
-                Log.e("接口响应", paramAnonymousString);
+                Log.e("接口响应", result);
                 try
                 {
-                    HttpUtil.this.verifyDatas(paramString, paramAnonymousString, paramType, paramHttpCallback);
+                    HttpUtil.this.verifyDatas(url, result, paramType, callback);
                     return;
                 }
                 catch (Exception e)
                 {
-                    HttpUtil.this.sendError(paramString, e, paramHttpCallback);
+                    HttpUtil.this.sendError(url, e, callback);
                 }
             }
         });

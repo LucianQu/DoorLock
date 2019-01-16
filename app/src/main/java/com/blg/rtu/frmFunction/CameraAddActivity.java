@@ -36,9 +36,16 @@ import android.widget.Toast;
 
 import com.blg.rtu.frmFunction.base.BaseActivity;
 import com.blg.rtu.frmFunction.bean.BaseVo;
+import com.blg.rtu.frmFunction.bean.DeviceInfo;
+import com.blg.rtu.frmFunction.bean.FamilyVo;
 import com.blg.rtu.frmFunction.bean.RoomVo;
 import com.blg.rtu.frmFunction.dialog.DialogMaker;
+import com.blg.rtu.frmFunction.http.HttpCallback;
+import com.blg.rtu.frmFunction.http.HttpUtil;
+import com.blg.rtu.frmFunction.util.DataUtil;
 import com.blg.rtu.frmFunction.util.HandlerUtils;
+import com.blg.rtu.frmFunction.util.StrUtil;
+import com.blg.rtu.frmFunction.util.StringUtil;
 import com.blg.rtu.frmFunction.util.ThreadPoolUtils;
 import com.blg.rtu.frmFunction.util.Urls;
 import com.blg.rtu.frmFunction.view.CountDownProgress;
@@ -48,13 +55,16 @@ import com.blg.rtu3.utils.LogUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xuanyuanxing.camera.XuanYuanXingP2PTool;
+import com.xuanyuanxing.domain.St_SWifiAp;
 import com.xuanyuanxing.engine.ClientP2pListener;
 import com.xuanyuanxing.engine.GetDeviceIdCallback;
+import com.xuanyuanxing.engine.GetWifiCallBack;
 import com.xuanyuanxing.engine.LanSearchCallBack;
 import com.xuanyuanxing.engine.SetWifiCallBack;
 
 import org.json.JSONObject;
 import org.xutils.common.Callback;
+import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -91,7 +101,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     private TextView tvTitle;
     //图片
     ImageView iv_icon1;
-
+    private Context mContext ;
     private CameraAddActivity activity;
     private RelativeLayout rlyContent;
 
@@ -149,7 +159,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     private byte enctype = 0x01;
     //WiFi列表
     //  private ArrayList<St_SWifiAp> wifis;
-    private ArrayList<String> wifis;
+    private ArrayList<St_SWifiAp> wifis;
     //房间列表
     private List<RoomVo> roomVoList;
     //房间id
@@ -177,8 +187,10 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         public void handleMessage(CameraAddActivity activity, Message msg) {
             if (activity == null) // WeakReference could be GC'ed early
                 return;
+            // TODO: 2019/1/15 handler
             switch (msg.what) {
                 case 1:
+                    Log.e("Lucian--->handler 1连接:","connect") ;
                     activity.connect();
                     break;
                 case 2:
@@ -222,14 +234,16 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
             String action = intent.getAction();
             if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                 if (!isSendWifi || isReceiveWifiRes) {
+                    //ToastUtils.show(mContext, "没发送wifi请求 获取已经收到结果 返回");
                     //还没发送wifi请求 获取已经收到结果 返回
                     return;
                 }
-                if (isWifi(CameraAddActivity.this)) {
+                if (isWifi(mContext)) {
                     WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                     WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                     String ssid = wifiInfo.getSSID();
                     if (!TextUtils.isEmpty(ssid) && ssid.equals(saveSSid)) {
+                        //ToastUtils.show(mContext, "同一个wifi 返回");
                         //如果还是同一个wifi不管他
                         return;
                     } else {
@@ -255,6 +269,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_add);
+        mContext = CameraAddActivity.this ;
         initData();
         initView();
         activity = this;
@@ -332,8 +347,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     public void initData() {
         wifis = new ArrayList<>();
         adapter = new CustomListAdapter();
-        // TODO: 2019/1/8
-        /*FamilyVo familyVo = DataUtil.getInstance().getCurrentFamily();
+        FamilyVo familyVo = DataUtil.getInstance().getCurrentFamily();
         if (null == familyVo || null == familyVo.getRooms() || familyVo.getRooms().size() == 0) {
             return;
 
@@ -348,17 +362,16 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
             } catch (Exception ex) {
 
             }
-        }*/
+        }
     }
 
     @Override
     public void onResume() {
-        // TODO: 2019/1/8  
-       /* Map wifi = DataUtil.getInstance().getWifi(CameraAddActivity.this);
+        Map wifi = DataUtil.getInstance().getWifi(CameraAddActivity.this);
         if (wifi != null) {
             etAccount.setText((CharSequence) wifi.get("ssid"));
             etPwd.setText((CharSequence) wifi.get("password"));
-        }*/
+        }
         super.onResume();
     }
 
@@ -403,13 +416,9 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//            St_SWifiAp wifi = wifis.get(i - listView.getHeaderViewsCount());
-//            etAccount.setText(wifi.ssid);
-
-            String wifi_name = wifis.get(i - listView.getHeaderViewsCount());
-            etAccount.setText(wifi_name);
+            St_SWifiAp wifiap = (St_SWifiAp)wifis.get(i - listView.getHeaderViewsCount());
+            etAccount.setText(wifiap.ssid);
             llyWifi.setVisibility(View.GONE);
-
         }
     };
 
@@ -453,9 +462,11 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     private void configureSuccess() {
         step = 2;
         changeStep();
-        getWifiList();
-        //  nClientP2P.setGetWifiCallBack(getWifiCallBack);
+        Log.e("Lucian--->获取wifi列表:","开始") ;
+        nClientP2P.setGetWifiCallBack(getWifiCallBack);
         nClientP2P.setSetWifiCallBack(setWifiCallBack);
+        //getWifiList();
+        refreshWifi();
     }
 
     /**
@@ -467,7 +478,6 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         changeStep();
         loadRoom();
     }
-
 
     /**
      * 提交
@@ -514,39 +524,54 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         }
     }
 
+
+
+    // TODO: 2019/1/15 搜索
     /**
      * 搜索
      */
     private void search() {
-        if (!isSearchUuid) {
-            WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            String ssid = wifiInfo.getSSID();
-            Log.e("Lucian----SSID",ssid) ;
-            if (ssid.indexOf("AI-M2") == -1) {
-                ToastUtils.show(CameraAddActivity.this, R.string.str_device_no_connect_ap);
-                return;
-            }
+        if (!isSearchUuid ) {
+            if (isSearchSuccess) {
+                Log.e(TAG, "已连上 ");
+                ToastUtils.show(CameraAddActivity.this, "已连上！");
+            }else {
+                WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                String ssid = wifiInfo.getSSID();
 
-            //如果当前没有在搜索状态  就去搜索
-            isSearchUuid = true;
-            isSearchSuccess = false;
-            DialogMaker.showProgressDialog(CameraAddActivity.this, getString(R.string.str_searching));
-            ThreadPoolUtils.getInstance().submit(new Runnable() {
-                @Override
-                public void run() {
-                    searchUuid();
+                if (!ssid.contains("AI-M2")) {
+                    ToastUtils.show(CameraAddActivity.this, R.string.str_device_no_connect_ap);
+                    return;
                 }
-            }) ;
-            //startConfigCountDown();
+                Log.e("Lucian----SSID",ssid) ;
+
+                //如果当前没有在搜索状态  就去搜索
+                isSearchUuid = true;
+                isSearchSuccess = false;
+                DialogMaker.showProgressDialog(CameraAddActivity.this, getString(R.string.str_searching));
+                ThreadPoolUtils.getInstance().submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e("Lucian--->开始扫描","") ;
+                        searchUuid();
+                    }
+                }) ;
+            }
         } else {
-            Log.e(TAG, "已经在扫描 ");
+            if (isSearchSuccess) {
+                Log.e(TAG, "已连上 ");
+                ToastUtils.show(CameraAddActivity.this, "已连上！");
+            }else {
+                Log.e(TAG, "已经在扫描 ");
+                ToastUtils.show(CameraAddActivity.this, "已经在扫描！");
+            }
         }
     }
 
     /**
      * 搜索uuid
-     */
+     *//*
     private void searchUuid() {
         XuanYuanXingP2PTool.mLanSearch(new LanSearchCallBack() {
             @Override
@@ -570,6 +595,56 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                 }
             }
         });
+    }*/
+
+    static String defuuid = "UZUBW272DCRVNZBY111A";
+
+    private void searchUuid()
+    {
+        XuanYuanXingP2PTool.Init();
+        XuanYuanXingP2PTool.mLanSearch(new LanSearchCallBack()
+        {
+            @Override
+            public void mLanSearchUUid(com.xuanyuanxing.domain.DeviceInfo deviceInfo) {
+                CameraAddActivity.this.isSearchSuccess = true ;
+                CameraAddActivity.this.uuid = deviceInfo.getUuId();
+                Log.e("Lucian--->扫描UUID成功", uuid) ;
+                if (CameraAddActivity.defuuid.equals(deviceInfo.getUuId()))
+                {
+                    if (!StringUtil.isEmpty(deviceInfo.getDeviceNo()))
+                    {
+                        if ("0101".equals(deviceInfo.getDeviceNo().substring(0, 4)))
+                        {
+                            Log.e("Lucian--->Device", "DeviceNO:"+deviceInfo.getDeviceNo()) ;
+                            Log.e("Lucian--->DevNo 0101", "sendEmptyMessage1") ;
+                            CameraAddActivity.this.handlerUtil.sendEmptyMessage(1);
+                            return;
+                        }
+                        Log.e("Lucian--->DevNo非0101", "sendEmptyMessage2") ;
+                        CameraAddActivity.this.handlerUtil.sendEmptyMessage(2);
+                        return;
+                    }
+                    Log.e("Lucian--->DevNo空", "sendEmptyMessage1") ;
+                    CameraAddActivity.this.handlerUtil.sendEmptyMessage(1);
+                    return;
+                }
+                Log.e("Lucian--->DevNo不为默认", "sendEmptyMessage2") ;
+                CameraAddActivity.this.handlerUtil.sendEmptyMessage(2);
+            }
+
+            public void mLanSearchFinsh()
+            {
+                isSearchUuid = false ;
+                if (CameraAddActivity.this.isSearchSuccess)
+                {
+                    Log.e(CameraAddActivity.TAG, "扫描到设备 ");
+                    return;
+                }
+                Log.e(CameraAddActivity.TAG, "没有扫描到设备 ");
+                CameraAddActivity.this.handlerUtil.sendEmptyMessage(2);
+            }
+
+        });
     }
 
     /**
@@ -579,8 +654,8 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         ThreadPoolUtils.getInstance().submit(new Runnable() {
             @Override
             public void run() {
-                //nClientP2P.GetIPNCInfo();
-                getWifiList();
+                nClientP2P.GetIPNCInfo();
+                //getWifiList();
             }
         });
     }
@@ -590,7 +665,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
      * 刷新wifi
      */
     private void refreshWifi() {
-        ///DialogMaker.showProgressDialog(CameraAddActivity.this, getString(R.string.str_searching));
+        DialogMaker.showProgressDialog(CameraAddActivity.this, getString(R.string.str_searching));
         searchWifi();
     }
 
@@ -598,7 +673,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
      * 展示wifi
      */
     private void showWifis() {
-        ///showKeyboard(false);
+        showKeyboard(false);
         if (wifis.size() > 0) {
             showWifiAlert();
         } else {
@@ -632,6 +707,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                 nClientP2P.getDeviceID(new GetDeviceIdCallback() {
                     @Override
                     public void DeviceId(String deviceId) {
+                        Log.e("Lucian--->获取设备ID", "ID:"+deviceId) ;
                         CameraAddActivity.this.deviceId = deviceId;
                         handlerUtil.sendEmptyMessage(3);
                     }
@@ -646,27 +722,29 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     /**
      * 获取WiFi名称
      */
+    // TODO: 2019/1/16 wifi列表
     private void getWifiList() {
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         wifiManager.startScan();  //开始扫描AP
         ArrayList<ScanResult> list = (ArrayList<ScanResult>) wifiManager.getScanResults();
-
+        Log.e("Lucian-->wifi列表", "个数："+list.size());
         if (list == null) {
             Toast.makeText(this, "当前周围无WiFi", Toast.LENGTH_LONG).show();
         } else {
             wifis.clear();
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            Log.d("wifiInfo.getBSSID()", wifiInfo.getBSSID());
+            Log.e("Lucian-->wifi BSSID()", wifiInfo.getBSSID());
             for (int i = 0; i < list.size(); i++) {
                 ScanResult scanResult = list.get(i);
                 String wifiName = scanResult.SSID;
-//                LogUtil.d("wifiName->{}", wifiName);
-//                LogUtil.d("BSSID", scanResult.BSSID);
+                Log.e("Lucian-->wifiName->{}", wifiName);
+                Log.e("Lucian-->BSSID", scanResult.BSSID);
                 if (!wifiInfo.getBSSID().equals(scanResult.BSSID)) {
-                    wifis.add(wifiName);
+                    Log.e("Lucian-->wifiName add", wifiName);
+                    //wifis.add(wifiName);
                 }
             }
-            removeDuplicate(wifis);
+            //removeDuplicate(wifis);
         }
 
         handlerUtil.sendEmptyMessage(6);
@@ -731,8 +809,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                 wifiMap.put("ssid", account);
                 wifiMap.put("password", pwd);
                 LogUtils.e("Lucian---->设置摄像头连接wifi名称和密码", account + "---"+pwd);
-                // TODO: 2019/1/8
-                //Log.e("add wifi", String.valueOf(DataUtil.getInstance().addWifi(CameraAddActivity.this, wifiMap)));
+                Log.e("add wifi", String.valueOf(DataUtil.getInstance().addWifi(CameraAddActivity.this, wifiMap)));
                 nClientP2P.SetIPNCWifiInfo(account, pwd, mode, enctype);
             }
         });
@@ -772,6 +849,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
             if (state == 2) {
                 if (!isPresent) {
                     isPresent = true;
+                    Log.e("Lucian--->p2p连接成功", "下步获取设备ID") ;
                     getDeviceId();
                 }
             } else {
@@ -790,31 +868,32 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     };
 
 
-//    GetWifiCallBack getWifiCallBack = new GetWifiCallBack() {
-//
-//        @Override
-//        public void wifiInfo(List<St_SWifiAp> WifiSt, boolean isOver) {
-//            if (WifiSt != null) {
-//                wifis.clear();
-//                for (St_SWifiAp wifi : WifiSt) {
-//                    if (!TextUtils.isEmpty(wifi.ssid)) {
-//                        wifis.add(wifi);
-//                    }
-//                }
-//                handlerUtil.sendEmptyMessage(6);
-//            }
-//            DialogMaker.dismissProgressDialog();
-//        }
-//    };
+    GetWifiCallBack getWifiCallBack = new GetWifiCallBack() {
+
+        @Override
+        public void wifiInfo(List<St_SWifiAp> WifiSt, boolean isOver) {
+            if (WifiSt != null) {
+                wifis.clear();
+                for (St_SWifiAp wifi : WifiSt) {
+                    if (!TextUtils.isEmpty(wifi.ssid)) {
+                        wifis.add(wifi);
+                    }
+                }
+                handlerUtil.sendEmptyMessage(6);
+            }
+            DialogMaker.dismissProgressDialog();
+        }
+    };
 
     SetWifiCallBack setWifiCallBack = new SetWifiCallBack() {
 
         @Override
         public void setWifiRes(int i) {
-            Log.e("设置wifi结果：", ""+ i);
+
             if (isReceiveWifiRes) {
                 return;
             }
+            Log.e("Lucian--->设置wifi结果：" ,i +"") ;
             isReceiveWifiRes = true;
             if (i == 0) {
                 handlerUtil.sendEmptyMessage(5);
@@ -1091,7 +1170,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
 
         RequestParams requestParams = new RequestParams(Urls.DEVICE_ADD_URL);
 
-        requestParams.addBodyParameter("deviceId", deviceId); // 设备id
+        requestParams.addBodyParameter("deviceNo", deviceId); // 设备id
         requestParams.addBodyParameter("uid", uuid); // 名称
         requestParams.addBodyParameter("timeZone", TimeZone.getDefault().getID());//时区
         requestParams.addBodyParameter("deviceName", deviceName);// 名称
@@ -1171,11 +1250,11 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                 holder = (ViewHolder) convertView.getTag();
             }
 
-//            St_SWifiAp wifi = wifis.get(position);
-//            holder.tvTitle.setText(StrUtil.nullToStr(wifi.ssid));
+            St_SWifiAp wifi = wifis.get(position);
+            holder.tvTitle.setText(StrUtil.nullToStr(wifi.ssid));
 
-            String wifi_name = wifis.get(position);
-            holder.tvTitle.setText(nullToStr(wifi_name));
+            /*String wifi_name = wifis.get(position);
+            holder.tvTitle.setText(nullToStr(wifi_name));*/
 
             return convertView;
         }
@@ -1206,23 +1285,27 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     };
 
 
-   /* private void loadDataDevice() {
+    private void loadDataDevice() {
         Type type = new TypeToken<BaseVo<Integer>>() {
         }.getType();
-        HttpUtil.getInstance().get(String.format(Urls.DEVICE_CONNECTION_STATUS, deviceId), type, new HttpCallback() {
+        HttpUtil.getInstance().get((Urls.DEVICE_CONNECTION_STATUS1+deviceId), type, new HttpCallback() {
             @Override
             public void onSuccess(String url, Object object) {
                 BaseVo<Integer> baseVo = (BaseVo<Integer>) object;
                 int status = baseVo.getResult();
+                LogUtils.e("Lucian---->loadDataDevice", "status:"+ status);
                 if (status == 1) {
+                    LogUtils.e("Lucian---->deviceStatusTimerRun", "onSuccess");
                     TimerHandler.postDelayed(deviceStatusTimerRun, 3000);
                 } else {
+                    LogUtils.e("Lucian---->handlerUtil.sendEmptyMessage(7)", "onSuccess");
                     handlerUtil.sendEmptyMessage(7);
                 }
             }
 
             @Override
             public void onError(String url, Exception e) {
+                LogUtils.e("Lucian---->deviceStatusTimerRun", "error");
                 TimerHandler.postDelayed(deviceStatusTimerRun, 3000);
             }
         });
@@ -1232,9 +1315,10 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     public void onStop() {
         super.onStop();
         TimerHandler.removeCallbacks(deviceStatusTimerRun);//调用此方法，以关闭此定时器
-    }*/
+    }
 
-    public void loadDataDevice() {
+    // TODO: 2019/1/16 loaddatadevice
+   /* public void loadDataDevice() {
 
         final Type type = new TypeToken<BaseVo<Integer>>() {
         }.getType();
@@ -1271,5 +1355,5 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
             public void onFinished() {
             }
         });
-    }
+    }*/
 }
