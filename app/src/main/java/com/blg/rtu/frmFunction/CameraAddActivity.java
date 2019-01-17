@@ -36,7 +36,6 @@ import android.widget.Toast;
 
 import com.blg.rtu.frmFunction.base.BaseActivity;
 import com.blg.rtu.frmFunction.bean.BaseVo;
-import com.blg.rtu.frmFunction.bean.DeviceInfo;
 import com.blg.rtu.frmFunction.bean.FamilyVo;
 import com.blg.rtu.frmFunction.bean.RoomVo;
 import com.blg.rtu.frmFunction.dialog.DialogMaker;
@@ -64,7 +63,6 @@ import com.xuanyuanxing.engine.SetWifiCallBack;
 
 import org.json.JSONObject;
 import org.xutils.common.Callback;
-import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -896,9 +894,11 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
             Log.e("Lucian--->设置wifi结果：" ,i +"") ;
             isReceiveWifiRes = true;
             if (i == 0) {
-                handlerUtil.sendEmptyMessage(5);
+                ToastUtils.show(mContext,"设置wifi成功");
+                // TODO: 2019/1/16
+                //handlerUtil.sendEmptyMessage(5);
             } else {
-                handlerUtil.sendEmptyMessage(4);
+                //handlerUtil.sendEmptyMessage(4);
             }
         }
     };

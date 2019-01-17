@@ -3,3 +3,29 @@
 3、窗户和门控制板，app如何区分，还是通过人为切换，如果是独立的wifi模块，可人为切换，如果是转发，需要有标志
 4、控制窗户是单次命令还是和门一样的连续命令
 5、目前的实现逻辑是两者切换后，选择完通信协议，另外一个初始化，当进来后需要重新
+
+
+摄像头：
+https://api.365uj.com/api/open/device/connection/status?deviceNo=0101B7617B6AD000
+{
+    "code": 200,
+    "message": "SUCCESS",
+    "result": 0
+}
+
+https://api.365uj.com/api/open/device/find/uid?deviceNo=0101B7617B6AD000
+{
+    "code": 200,
+    "message": "SUCCESS",
+    "result": {
+        "compile_time": "1546089746",
+        "uid": "FXVY6HMHL571XSU9111A",
+        "device_id": "0101b7617b6ad000",
+        "hosttype": "1",
+        "ip": "192.168.1.106\u0000",
+        "devstatus": "0",
+        "pid": "00002000",
+        "logtime": "2019-01-17 21:25:06",
+        "version": "1.0.0.6"
+    }
+}

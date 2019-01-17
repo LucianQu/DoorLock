@@ -57,9 +57,9 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 		cntFrmOpened = false ;
 		loading = false ;
 
-		/*SharepreferenceUtils.saveJkDeviceId(act,"RNSZ5LG57U4X89J9111A-6UH2B3TYDTC8ZWF2111A");
-		SharepreferenceUtils.saveJkDevicePw(act,"a12345678-a12345678");
-		updateSpinnerValue(SharepreferenceUtils.getJkDeviceId(act));*/
+		SharepreferenceUtils.saveJkDeviceId(act,"RNSZ5LG57U4X89J9111A-6UH2B3TYDTC8ZWF2111A-FXVY6HMHL571XSU9111A");
+		SharepreferenceUtils.saveJkDevicePw(act,"a12345678-a12345678-antsmartlife365");
+		updateSpinnerValue(SharepreferenceUtils.getJkDeviceId(act));
 	}
 
 	public void requestSuccess() {
