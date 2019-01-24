@@ -584,6 +584,10 @@ public class VideoPlayActivity extends Activity implements PlayVideoCallBack, Cl
         //p2PTool = new XuanYuanXingP2PTool(deviceInfo.getUuId(), defaultUser, pwd, deviceInfo.getName());
         String uuid = getIntent().getStringExtra("UID") ;
         String pw = getIntent().getStringExtra("PW") ;
+        if (p2PTool != null) {
+            p2PTool.Stop();
+            p2PTool = null;
+        }
         p2PTool = new XuanYuanXingP2PTool(uuid, defaultUser, pw, "测试摄像机");
         //设置连接监听
         p2PTool.setClientP2pListener(this);

@@ -38,6 +38,7 @@ import com.blg.rtu.frmFunction.base.BaseActivity;
 import com.blg.rtu.frmFunction.bean.BaseVo;
 import com.blg.rtu.frmFunction.bean.FamilyVo;
 import com.blg.rtu.frmFunction.bean.RoomVo;
+import com.blg.rtu.frmFunction.bean.UidBean;
 import com.blg.rtu.frmFunction.dialog.DialogMaker;
 import com.blg.rtu.frmFunction.http.HttpCallback;
 import com.blg.rtu.frmFunction.http.HttpUtil;
@@ -134,6 +135,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     private TextView tvSelectRoom;
     //设备uuid
     private String uuid;
+    private String UID = "";
     //WiFi名称
     private String account;
     //密码
@@ -208,7 +210,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                     break;
                 case 5:
                     //设置wifi成功
-                    //activity.setWifiSuccess();
+                    activity.setWifiSuccess();
                     activity.TimerHandler.postDelayed(activity.deviceStatusTimerRun, 3000);
                     break;
                 case 6:
@@ -217,6 +219,15 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                 case 7:
                     //查询服务器上线了
                     activity.setWifiSuccess();
+                    break;
+                case 8:
+                    //设备在线
+                    activity.getDeviceStatus() ;
+                    break;
+                case 9:
+                    //设置wifi失败
+                    ToastUtils.show(activity, "设置wifi失败！");
+                    activity.backUid();
                     break;
             }
 
@@ -411,6 +422,14 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         }
     };
 
+    private void backUid() {
+        Intent intent = new Intent() ;
+        intent.putExtra("UID",UID) ;
+        setResult(0xa5, intent);
+        Log.e("Lucian--->返回", "UID:"+UID) ;
+        finish();
+    }
+
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -474,7 +493,8 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         stopConfigCountDown();
         step = 3;
         changeStep();
-        loadRoom();
+        getDeviceStatus();
+        //loadRoom();
     }
 
     /**
@@ -557,13 +577,8 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                 }) ;
             }
         } else {
-            if (isSearchSuccess) {
-                Log.e(TAG, "已连上 ");
-                ToastUtils.show(CameraAddActivity.this, "已连上！");
-            }else {
                 Log.e(TAG, "已经在扫描 ");
                 ToastUtils.show(CameraAddActivity.this, "已经在扫描！");
-            }
         }
     }
 
@@ -597,6 +612,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
 
     static String defuuid = "UZUBW272DCRVNZBY111A";
 
+    // TODO: 2019/1/23 searchuuid
     private void searchUuid()
     {
         XuanYuanXingP2PTool.Init();
@@ -604,42 +620,43 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         {
             @Override
             public void mLanSearchUUid(com.xuanyuanxing.domain.DeviceInfo deviceInfo) {
-                CameraAddActivity.this.isSearchSuccess = true ;
-                CameraAddActivity.this.uuid = deviceInfo.getUuId();
+                isSearchSuccess = true ;
+                uuid = deviceInfo.getUuId();
                 Log.e("Lucian--->扫描UUID成功", uuid) ;
-                if (CameraAddActivity.defuuid.equals(deviceInfo.getUuId()))
+                if (defuuid.equals(deviceInfo.getUuId()))
                 {
                     if (!StringUtil.isEmpty(deviceInfo.getDeviceNo()))
                     {
                         if ("0101".equals(deviceInfo.getDeviceNo().substring(0, 4)))
                         {
                             Log.e("Lucian--->Device", "DeviceNO:"+deviceInfo.getDeviceNo()) ;
-                            Log.e("Lucian--->DevNo 0101", "sendEmptyMessage1") ;
-                            CameraAddActivity.this.handlerUtil.sendEmptyMessage(1);
+                            Log.e("Lucian--->设备号前四位为0101", "开始连接") ;
+
+                            handlerUtil.sendEmptyMessage(1);
                             return;
                         }
-                        Log.e("Lucian--->DevNo非0101", "sendEmptyMessage2") ;
-                        CameraAddActivity.this.handlerUtil.sendEmptyMessage(2);
+                        Log.e("Lucian--->设备号前四位不为0101", "扫描失败") ;
+                        handlerUtil.sendEmptyMessage(2);
                         return;
                     }
-                    Log.e("Lucian--->DevNo空", "sendEmptyMessage1") ;
-                    CameraAddActivity.this.handlerUtil.sendEmptyMessage(1);
+                    Log.e("Lucian--->没有注册过服务", "开始连接") ;
+                    handlerUtil.sendEmptyMessage(1);
                     return;
                 }
-                Log.e("Lucian--->DevNo不为默认", "sendEmptyMessage2") ;
-                CameraAddActivity.this.handlerUtil.sendEmptyMessage(2);
+                Log.e("Lucian--->DevNo不等于默认", "扫描失败") ;
+                handlerUtil.sendEmptyMessage(2);
             }
 
             public void mLanSearchFinsh()
             {
                 isSearchUuid = false ;
-                if (CameraAddActivity.this.isSearchSuccess)
+                if (isSearchSuccess)
                 {
-                    Log.e(CameraAddActivity.TAG, "扫描到设备 ");
+                    Log.e(TAG, "扫描到设备 ");
                     return;
                 }
-                Log.e(CameraAddActivity.TAG, "没有扫描到设备 ");
-                CameraAddActivity.this.handlerUtil.sendEmptyMessage(2);
+                Log.e(TAG, "没有扫描到设备 ");
+                handlerUtil.sendEmptyMessage(2);
             }
 
         });
@@ -896,9 +913,9 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
             if (i == 0) {
                 ToastUtils.show(mContext,"设置wifi成功");
                 // TODO: 2019/1/16
-                //handlerUtil.sendEmptyMessage(5);
+                handlerUtil.sendEmptyMessageDelayed(8,4000);
             } else {
-                //handlerUtil.sendEmptyMessage(4);
+                handlerUtil.sendEmptyMessage(9);
             }
         }
     };
@@ -957,6 +974,93 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
             }).show();
         }
     }
+
+    // TODO: 2019/1/21 获取设备在线状态
+    public void getDeviceStatus() {
+        final Type type = new TypeToken<BaseVo<Integer>>() {
+        }.getType();
+        RequestParams requestParams = new RequestParams(Urls.DEVICE_CONNECTION_STATUS1);
+        //requestParams.addBodyParameter("dtuId", dtuId);
+        LogUtils.e("Lucian---->deviceStatus", requestParams.toString());
+        x.http().get(requestParams, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                try{
+                    LogUtils.e("Lucian---->result", result);
+                    JSONObject jsonResult = new JSONObject(result) ;
+                    int code = jsonResult.getInt("code") ;
+                    if (code == 200) {
+                        if (jsonResult.getInt("result") == 1) {
+                            ToastUtils.showLong(CameraAddActivity.this, "摄像头未在线，网络可能未配置成功");
+                        }else {
+                            ToastUtils.showLong(CameraAddActivity.this, "摄像头在线");
+                            getDeviceUid() ;
+                        }
+                    }else {
+                        ToastUtils.showLong(CameraAddActivity.this, jsonResult.getString("message"));
+                    }
+                }catch (Exception e){
+
+                }
+            }
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+            }
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+            @Override
+            public void onFinished() {
+            }
+        });
+    }
+
+    // TODO: 2019/1/21 获取设备在线状态
+    public void getDeviceUid() {
+        final Type type = new TypeToken<BaseVo<UidBean.ResultBean>>() {
+        }.getType();
+        RequestParams requestParams = new RequestParams(Urls.DEVICE_CONNECTION_STATUS1);
+        //requestParams.addBodyParameter("dtuId", dtuId);
+        LogUtils.e("Lucian---->deviceStatus", requestParams.toString());
+        x.http().get(requestParams, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                try{
+                    LogUtils.e("Lucian---->result", result);
+                    JSONObject jsonResult = new JSONObject(result) ;
+                    int code = jsonResult.getInt("code") ;
+                    if (code == 200) {
+                        Gson gson = new Gson() ;
+                        String data = jsonResult.getString("result") ;
+                        if (!data.equals("")) {
+                            UidBean.ResultBean  resultBean = gson.fromJson(data, type) ;
+                            UID = resultBean.getUid() ;
+                            Log.e("Lucian-->获取设备ID", UID) ;
+                        }
+                    }else {
+                        ToastUtils.showLong(CameraAddActivity.this, jsonResult.getString("message"));
+                    }
+                    backUid();
+                }catch (Exception e){
+                    backUid();
+                }
+            }
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                backUid();
+            }
+            @Override
+            public void onCancelled(CancelledException cex) {
+                backUid();
+            }
+            @Override
+            public void onFinished() {
+                backUid();
+            }
+        });
+    }
+
+
 
     public void loadRoom() {
         final Type type = new TypeToken<BaseVo<List<RoomVo>>>() {

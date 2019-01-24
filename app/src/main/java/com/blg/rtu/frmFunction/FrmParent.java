@@ -1,6 +1,7 @@
 package com.blg.rtu.frmFunction;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.RemoteException;
 import android.view.View;
 import android.widget.Button;
@@ -148,6 +149,8 @@ public abstract class FrmParent extends Fragment {
 			}
 		}
 	} ;
+
+
 	
 	/**
 	 * 打开功能内容部分窗体
@@ -234,7 +237,24 @@ public abstract class FrmParent extends Fragment {
 	 * 功能项右侧图标复原
 	 */
 	public abstract void resetLabelImg() ;
-		
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		//super.onActivityResult(requestCode, resultCode, data);
+		if (onFragmentResult != null) {
+			onFragmentResult.result(requestCode, resultCode, data);
+		}
+	}
+
+	private onFragmentResult onFragmentResult ;
+	public void setFragmentResultListener(onFragmentResult onFragmentResult) {
+		this.onFragmentResult = onFragmentResult;
+	}
+
+	 public interface onFragmentResult {
+		void result(int requestCode, int resultCode, Intent data);
+	}
+
 	/**
 	 * 发送RTU命令
 	 * @param com 命令a

@@ -32,8 +32,8 @@ import com.xuanyuanxing.engine.ClientP2pListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window.Choice {
-	XuanYuanXingP2PTool p2PTool;
+public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window.Choice,FrmParent.onFragmentResult {
+	private XuanYuanXingP2PTool p2PTool;
 	private EditText edt_user ;
 	private EditText edt_password ;
 
@@ -180,6 +180,27 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 
 	}
 
+	/*@Override
+	protected void onFragmentResult(int requestCode, int resultCode, Intent data) {
+		ToastUtils.show(getActivity(), requestCode + "---"+resultCode);
+	}*/
+
+	@Override
+	public void result(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 0x5a && resultCode == 0xa5) {
+			String uid = data.getStringExtra("UID") ;
+			if (TextUtils.isEmpty(uid)) {
+				ToastUtils.show(getActivity(),"获取摄像头ID失败!");
+			}else {
+				id = uid ;
+				pw = defaultPwd ;
+				ToastUtils.show(getActivity(),"摄像头UID：" + uid);
+				addDeviceId();
+				ToastUtils.show(getActivity(),"添加ID成功");
+			}
+		}
+	}
+
 	@Override
 	public View onCreateView(
 			final LayoutInflater inflater,
@@ -197,15 +218,18 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 				popWindow.showPopupWindow(tv_list);
 			}
 		});
+
+		setFragmentResultListener(this);
 		tv_add.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(),CameraAddActivity.class) ;
-				startActivity(intent);
+				startActivityForResult(intent,0x5a);
+				//startActivity(intent);
 			}
 		});
-		edt_user = (EditText) view.findViewById(R.id.et_user) ;
 
+		edt_user = (EditText) view.findViewById(R.id.et_user) ;
 		edt_password = (EditText) view.findViewById(R.id.et_pwd) ;
 		id = SharepreferenceUtils.getJkDeviceIdLast(act);
 		pw = SharepreferenceUtils.getJkDevicePwLast(act) ;
@@ -266,6 +290,11 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 	        pw = edt_password.getText().toString() ;
         }
 
+		if (p2PTool != null) {
+			p2PTool.Stop();
+			p2PTool = null;
+		}
+		Log.e("Lucian连接admin和pw", "admin:"+id +"---pw:"+pw) ;
 		p2PTool = new XuanYuanXingP2PTool(id, defaultUser, pw, "测试摄像机");
 		//设置连接监听
 		p2PTool.setClientP2pListener(this);
@@ -273,6 +302,7 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 		p2PTool.Start();
 	}
 
+	private String defaultPwd = "antsmartlife365";
 	private void  addDeviceId() {
 		String ids = SharepreferenceUtils.getJkDeviceId(act) ;
 		String pws = SharepreferenceUtils.getJkDevicePw(act) ;
@@ -326,7 +356,13 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 			Intent intent = new Intent(act, VideoPlayActivity.class);
 			intent.putExtra("UID",id) ;
 			intent.putExtra("PW",pw) ;
+			if (p2PTool != null) {
+				p2PTool.setClientP2pListener(null);
+				p2PTool.Stop();
+				p2PTool = null;
+			}
 			startActivity(intent);
+
 		} else {
 			Log.e("Lucian-->连接视频", "当前状态" + state);
 			//-6 密码错误 其他 都连接失败
@@ -341,6 +377,8 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 			}
 		}
 	}
+
+
 
 	public void showAlarmDialog(String msg) {
 		new AlertDialog.Builder(act)
