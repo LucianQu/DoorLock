@@ -2,7 +2,6 @@ package com.blg.rtu3;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -184,6 +183,52 @@ public class MainActivity  extends Activity implements PermissionInterface {
 		}
 	}
 
+	/*
+	查询RtuId命令，上线第一次查询
+	* */
+	private void queryRtuId() {
+		//frgTool.f_01_010.queryCommand();
+		waitServerStartedAndToConnectNet("192.168.4.1", 60009) ; //wifi连接
+	}
+
+	private void wifiStatus() {
+		WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		String ssid = wifiInfo.getSSID();
+
+		/*if (!ssid.contains("AI-M2")) {
+			ToastUtils.show(MainActivity.this, R.string.str_device_no_connect_ap);
+			return;
+		}*/
+		if (ssid.contains("jyjj_window")) {
+			SharepreferenceUtils.saveIsWifi(this,true);
+			queryRtuId();
+		}
+		Log.e("Lucian----SSID",ssid) ;
+	}
+
+	private ConnectivityManager connectivityManager ;
+	private boolean checkNetworkState() {
+		boolean flag = false ;
+		connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE) ;
+		if (connectivityManager.getActiveNetworkInfo() != null ) {
+			flag = connectivityManager.getActiveNetworkInfo().isAvailable() ;
+		}
+		return flag ;
+	}
+
+	private boolean isWifiMode() {
+		if (null == connectivityManager) {
+			connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE) ;
+		}
+		NetworkInfo.State wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() ;
+		if (wifi == NetworkInfo.State.CONNECTED || wifi == NetworkInfo.State.CONNECTING) {
+			return true ;
+		}else {
+			return false ;
+		}
+	}
+
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			Log.e("Connect Service:","Start") ;
@@ -356,6 +401,10 @@ public class MainActivity  extends Activity implements PermissionInterface {
 							}
 						});
 			}
+		}
+
+		if (isWifiMode()) {
+			wifiStatus();
 		}
 	}
 
@@ -857,6 +906,7 @@ public class MainActivity  extends Activity implements PermissionInterface {
 	//点击了门或者窗
 	public void initDoorAndWindowPage(boolean isDoor) {
 		if (isDoor) {
+
 		    SharepreferenceUtils.saveIsDoor(this,true);
             mPager.setCurrentItem(0);//设置viewPager的初始界面
             defaultAnimation(0) ;

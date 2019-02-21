@@ -270,8 +270,10 @@ public class F_01_010  extends FrmParent {
 		act.cancelQuery50();
 		Data_10_50 sd = (Data_10_50)d.subData ;
 		if (sd.isDoor()) {
+		    ToastUtils.show(act,"连接类型为：门");
 			LogUtils.e("Lucian-->设备类型",  "门");
 		}else {
+            ToastUtils.show(act,"连接类型为：窗");
 			LogUtils.e("Lucian-->设备类型",  "窗");
 		}
 		LogUtils.e("Lucian-->接收Wifi数据标志", receiveWifiData + "");
@@ -281,9 +283,11 @@ public class F_01_010  extends FrmParent {
 			String password = "" ;
 			if (sd.isDoor()) {
 				act.initDoorAndWindowPage(true);
+				act.frgTool.f_1_0.setSpinner2SelectWifi() ;
 				deviceID = SharepreferenceUtils.getDoorDeviceId(act);
 				password = SharepreferenceUtils.getDoorPassword(act);
 			}else {
+				act.frgTool.f_1_2_1.setSpinner2SelectWifi() ;
 				act.initDoorAndWindowPage(false);
 				deviceID = SharepreferenceUtils.getWindowDeviceId(act);
 				password = SharepreferenceUtils.getWindowPassword(act);

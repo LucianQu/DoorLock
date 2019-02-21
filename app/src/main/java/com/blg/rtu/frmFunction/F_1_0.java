@@ -258,6 +258,12 @@ public class F_1_0 extends FrmParent implements AddPopWindow.Choice{
 		return view ;
 	}
 
+	public void setSpinner2SelectWifi() {
+		if (spinner2.getSelectedItemPosition() != 2) {
+			spinner2.setSelection(2, true);
+		}
+	}
+
 	private void dealOpen() {
 		if (Util.checkIsHasLearned(act)) {
 			testOpen = true ;
