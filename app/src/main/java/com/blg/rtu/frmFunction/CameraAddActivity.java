@@ -221,7 +221,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                     activity.setWifiSuccess();
                     break;
                 case 8:
-                    //设备在线
+                    //查询设备在线
                     activity.getDeviceStatus() ;
                     break;
                 case 9:
@@ -781,7 +781,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         isConfigInternet = true;
         llyCountDown.setVisibility(View.VISIBLE);
 
-        countDownProgress.setCountdownTime(120 * 1000);
+        countDownProgress.setCountdownTime(30 * 1000);
         countDownProgress.startCountDownTime(new CountDownProgress.OnCountdownFinishListener() {
             @Override
             public void countdownFinished() {
@@ -803,7 +803,6 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         isConfigInternet = false;
         countDownProgress.stopCountDown();
         llyCountDown.setVisibility(View.GONE);
-
         TimerHandler.removeCallbacks(deviceStatusTimerRun);//调用此方法，以关闭此定时器
     }
 
@@ -913,7 +912,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
             if (i == 0) {
                 ToastUtils.show(mContext,"设置wifi成功");
                 // TODO: 2019/1/16
-                handlerUtil.sendEmptyMessageDelayed(8,4000);
+                handlerUtil.sendEmptyMessageDelayed(8,10000);
             } else {
                 handlerUtil.sendEmptyMessage(9);
             }
@@ -979,8 +978,8 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     public void getDeviceStatus() {
         final Type type = new TypeToken<BaseVo<Integer>>() {
         }.getType();
-        RequestParams requestParams = new RequestParams(Urls.DEVICE_CONNECTION_STATUS1);
-        //requestParams.addBodyParameter("dtuId", dtuId);
+        LogUtils.e("Lucian_deviceId", "设备ID："+deviceId);
+        RequestParams requestParams = new RequestParams(Urls.DEVICE_CONNECTION_STATUS1+deviceId);
         LogUtils.e("Lucian---->deviceStatus", requestParams.toString());
         x.http().get(requestParams, new Callback.CommonCallback<String>() {
             @Override
@@ -1019,9 +1018,9 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
     public void getDeviceUid() {
         final Type type = new TypeToken<BaseVo<UidBean.ResultBean>>() {
         }.getType();
-        RequestParams requestParams = new RequestParams(Urls.DEVICE_CONNECTION_STATUS1);
+        RequestParams requestParams = new RequestParams(Urls.DEVICE_GET_UID+this.deviceId);
         //requestParams.addBodyParameter("dtuId", dtuId);
-        LogUtils.e("Lucian---->deviceStatus", requestParams.toString());
+        LogUtils.e("Lucian---->uid", requestParams.toString());
         x.http().get(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -1033,7 +1032,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
                         Gson gson = new Gson() ;
                         String data = jsonResult.getString("result") ;
                         if (!data.equals("")) {
-                            UidBean.ResultBean  resultBean = gson.fromJson(data, type) ;
+                            UidBean.ResultBean  resultBean = gson.fromJson(data, UidBean.ResultBean.class) ;
                             UID = resultBean.getUid() ;
                             Log.e("Lucian-->获取设备ID", UID) ;
                         }

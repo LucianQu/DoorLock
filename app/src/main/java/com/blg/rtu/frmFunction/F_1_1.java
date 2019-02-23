@@ -194,6 +194,8 @@ public class F_1_1 extends FrmParent implements ClientP2pListener, AddPop1Window
 			}else {
 				id = uid ;
 				pw = defaultPwd ;
+				edt_user.setText(id);
+				edt_password.setText(pw);
 				ToastUtils.show(getActivity(),"摄像头UID：" + uid);
 				addDeviceId();
 				ToastUtils.show(getActivity(),"添加ID成功");

@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.blg.rtu.frmFunction.bean.DoorStatus;
 import com.blg.rtu.protocol.RtuData;
 import com.blg.rtu.protocol.p206.CommandCreator;
-import com.blg.rtu.protocol.p206.F1.Data_F1;
 import com.blg.rtu.protocol.p206.F2.Data_F2;
 import com.blg.rtu.server.net.NetManager;
 import com.blg.rtu.util.DialogAlarm;
@@ -196,7 +195,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		tv_open1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				dealOpen();
 			}
 		});
 
@@ -204,14 +203,14 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		tv_close1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				dealClose();
 			}
 		});
 		tv_stop1 = (TextView) view.findViewById(R.id.tv_stop1) ;
 		tv_stop1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				dealStop();
 			}
 		});
 
@@ -585,7 +584,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 
 	private void queryF1Once() {
 		if (SharepreferenceUtils.getIsWifi(act)) {
-			currentCom = "0" ;
+			//currentCom = "0" ;
 			setCommand(0);
 		}else {
 			handler.postDelayed(onceServerReq, 500) ;
@@ -1021,8 +1020,8 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		LogUtils.e("Lucian-->请求成功结束时间", Util.getCurrentTime());
 		LogUtils.e("Lucian-->接收到服务器返回数据",
 				"\n甲醛浓度：" + doorStatus.getHcho()+
-						"\n门状态：" + doorStatus.getDoorState()+
-						"\n门角度：" + doorStatus.getAngle()+
+						"\n窗状态：" + doorStatus.getDoorState()+
+						"\n窗角度：" + doorStatus.getAngle()+
 						"\n锁标记：" + doorStatus.getLockMark()+
 						"\n锁状态" + doorStatus.getLockState()+
 						"\n锁状态数组：" + doorStatus.getLockStates()+
@@ -1048,6 +1047,7 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		if (!isAdded()) {
 			this.onAttach(act);
 		}
+		LogUtils.e("门状态：",""+positon);
 		if (positon== 1) {
 
 			receiveStopNum = 0 ;
@@ -1194,14 +1194,18 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		onceComReceiveTrue = true ;
 		setProgressVisible(0) ;
 		if (isFirst) {
+			LogUtils.e("F_1_2_1","使能按钮");
 			isFirst = false ;
 			setBtnBackground(4,0);
-			setFun1AllGreen();
-			setFun2AllGreen();
+			//setFun1AllGreen();
+			//setFun2AllGreen();
 		}
 		Data_F2 data = (Data_F2)d.subData ;
-		if (currentCom.equals(data.getControlFlag()+"")) {
+		LogUtils.e("F_1_2_1", "控制命令："+currentCom+"数据中控制命令："+data.getControlFlag());
+		//if (currentCom.equals(data.getControlFlag()+"")) {
+		if (true) {
 			if (data != null) {
+				displayWifiData(data) ;
 				tvData1.setText(data.getDoorOpen()+"");
 			} else {
 				ToastUtils.show(act, "F1接收数据为空");
@@ -1224,9 +1228,8 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 	}
 
 	public void displayWifiData(Object data1) {
-		if (data1 instanceof Data_F1) {
-			Data_F1 data = (Data_F1)data1;
-			//甲醛浓度
+		if (data1 instanceof Data_F2) {
+			Data_F2 data = (Data_F2)data1;
 			setDoorButtonImg(data.getDoorStatus()) ; //门控制按钮状态
 		}
 	}
