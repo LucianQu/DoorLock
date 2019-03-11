@@ -39,7 +39,7 @@ public class Answer_10_50 extends ProtocolSupport{
 			/*SharepreferenceUtils.saveComPassword(MainActivity.instance,password);
 			LogUtils.e("保存通信密码", password);*/
 			subD.setPassWord(password);
-			if (b[index] == 1) {
+			if (b[index] == 0) {
 				subD.setDoor(true);
 			}else {
 				subD.setDoor(false);

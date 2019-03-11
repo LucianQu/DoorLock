@@ -172,8 +172,8 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 
 		/*SharepreferenceUtils.saveHasLearn(act, true);
 		SharepreferenceUtils.saveWindowDeviceId(act,"0102030401-0102030402-0102030403-0102030404");
-		SharepreferenceUtils.saveWindowPassword(act,"1111-2222-3333-4444");
-		updateSpinnerValue(SharepreferenceUtils.getWindowDeviceId(act));*/
+		SharepreferenceUtils.saveWindowPassword(act,"1111-2222-3333-4444");*/
+		updateSpinnerValue(SharepreferenceUtils.getWindowDeviceId(act));
 
 		tv_windowList.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -1033,6 +1033,17 @@ public class F_1_2_1 extends FrmParent implements AddPopWindow.Choice{
 		);
 	}
 	public void displayServiceData(DoorStatus doorStatus) {
+		if (!checkIsNull(doorStatus.getDoorState())) {
+			setDoorButtonImg(doorStatus.getDoorState()) ; //门控制按钮状态
+		}else {
+			setDoorButtonImg(0) ;
+		}
+
+		if (!checkIsNull(doorStatus.getAngle())) {
+			tvData1.setText(doorStatus.getAngle()+"");
+		}else {
+			tvData1.setText("");
+		}
 
 	}
 

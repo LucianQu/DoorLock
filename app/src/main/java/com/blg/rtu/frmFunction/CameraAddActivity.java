@@ -1187,6 +1187,7 @@ public class CameraAddActivity extends BaseActivity implements CountDownProgress
         alphaAnimation.setRepeatCount(Animation.INFINITE);
         alphaAnimation.setRepeatMode(Animation.REVERSE);
         view.startAnimation(alphaAnimation);
+
     }
 
     private void toMainActivity() {

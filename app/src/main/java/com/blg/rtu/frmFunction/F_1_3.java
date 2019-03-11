@@ -185,7 +185,12 @@ public class F_1_3 extends FrmParent {
 					if (act.tcpConnected) {
 						clickFlag = 1;
 						isLearning = true;
-						ToastUtils.show(act, "门学习");
+						if (SharepreferenceUtils.getIsDoor(act)) {
+							ToastUtils.show(act, "门学习") ;
+						}else {
+							ToastUtils.show(act, "窗学习") ;
+						}
+						;
 						act.frgTool.f_1_0.stopTimer();
 						act.frgTool.f_01_010.queryCommand();
 						maxNum = 0;
